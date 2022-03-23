@@ -1,0 +1,24 @@
+{
+  "name": "steam-game-stats",
+  "version": "0.0.1",
+  "description": "Application for steam games statistics.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukatarman/steam-game-stats.git"
+  },
+  "keywords": [
+    "steam",
+    "games",
+    "statistics"
+  ],
+  "author": "Luka Tarman, Stanislav Jakuschevskij",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukatarman/steam-game-stats/issues"
+  },
+  "homepage": "https://github.com/lukatarman/steam-game-stats#readme"
+}
