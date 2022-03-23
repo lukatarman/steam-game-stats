@@ -1,0 +1,1 @@
+console.log('start steam game stats runtime - entry point');
