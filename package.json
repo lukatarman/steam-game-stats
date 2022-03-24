@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/lukatarman/steam-game-stats/issues"
   },
-  "homepage": "https://github.com/lukatarman/steam-game-stats#readme"
+  "homepage": "https://github.com/lukatarman/steam-game-stats#readme",
+  "dependencies": {
+    "axios": "0.26.1"
+  }
 }
