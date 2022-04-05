@@ -25,6 +25,8 @@
     "axios": "0.26.1"
   },
   "devDependencies": {
-    "jasmine": "4.0.2"
+    "jasmine": "4.0.2",
+    "eslint": "8.11.0",
+    "prettier": "2.6.0"
   }
 }
