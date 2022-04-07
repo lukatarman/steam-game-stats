@@ -22,11 +22,13 @@
   },
   "homepage": "https://github.com/lukatarman/steam-game-stats#readme",
   "dependencies": {
-    "axios": "0.26.1"
+    "axios": "0.26.1",
+    "mongodb": "4.5.0"
   },
   "devDependencies": {
-    "jasmine": "4.0.2",
     "eslint": "8.11.0",
+    "jasmine": "4.0.2",
     "prettier": "2.6.0"
-  }
+  },
+  "type": "module"
 }
