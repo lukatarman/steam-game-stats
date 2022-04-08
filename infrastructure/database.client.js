@@ -21,6 +21,8 @@ export class DatabaseClient {
     options.collections.forEach((c) =>
       this.#collections.set(c, database.collection(c))
     );
+
+    return this;
   }
 
   async insertMany(collectionName, data) {
