@@ -1,25 +1,19 @@
 import { MongoClient } from "mongodb";
 
-const connectToMongoDB = async (uri = "", options = {}) => {
-  if (!process.mongodb) {
-    const mongodb = await MongoClient.connect(uri, {
+export class DatabaseClient {
+  #database;
+
+  async init(
+    options = {
+      url: "mongodb://localhost:27017",
+      databaseName: "game-stats",
+    }
+  ) {
+    const mongodb = await MongoClient.connect(options.url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      ssl: process.env.NODE_ENV === "production",
-      ...options,
     });
 
-    const db = mongodb.db("Games-List");
-    process.mongodb = db;
-
-    return {
-      db,
-      Collection: db.collection.bind(db),
-      connection: mongodb,
-    };
+    this.#database = mongodb.db(options.databaseName);
   }
-
-  return null;
-};
-
-export default await connectToMongoDB("mongodb://localhost:27017", {});
+}
