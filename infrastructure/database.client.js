@@ -1,12 +1,13 @@
 import { MongoClient } from "mongodb";
 
 export class DatabaseClient {
-  #database;
+  #collections;
 
   async init(
     options = {
       url: "mongodb://localhost:27017",
       databaseName: "game-stats",
+      collections: ["games"],
     }
   ) {
     const mongodb = await MongoClient.connect(options.url, {
@@ -14,6 +15,18 @@ export class DatabaseClient {
       useUnifiedTopology: true,
     });
 
-    this.#database = mongodb.db(options.databaseName);
+    const database = mongodb.db(options.databaseName);
+
+    this.#collections = new Map();
+    options.collections.forEach((c) =>
+      this.#collections.set(c, database.collection(c))
+    );
+  }
+
+  async insertMany(collectionName, data) {
+    const insertResult = await this.#collections
+      .get(collectionName)
+      .insertMany(data);
+    console.log("Inserted documents =>", insertResult);
   }
 }
