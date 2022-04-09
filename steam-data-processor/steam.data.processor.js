@@ -13,6 +13,7 @@ export class SteamDataProcessor {
     const games = await this.#httpClient.get(url, options).data.applist.apps;
     const filteredGames = this.#filterNonGames(games);
     await this.#databaseClient.insertMany("games", filteredGames);
+    const sanitizedGames = this.#sanitizeGamesListMOCK(filteredGames);
   }
 
   #filterNonGames(games) {
@@ -37,7 +38,7 @@ export class SteamDataProcessor {
     }
   }
 
-  async sanitizeGamesListMOCK() {
+  async #sanitizeGamesListMOCK(filteredGames) {
     // const games = await this.#databaseClient.getAll("games", { game: [ 'true', 'undefined' ] });
     // for each game call steamcharts and check if the game has a page - here we will need a page crawler
     // update game object property "game" with true or false
