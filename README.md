@@ -2,11 +2,11 @@
 
 ## Concepts
 
-1. Data Model
-1. Separation of Concerns
-1. Singe Responsibility Principle
-1. Database Client
-1. Entry Point
+1. [Data Model](#data-model)
+1. [Separation of Concerns](#separation-of-concerns)
+1. [Singe Responsibility Principle](#singe-responsibility-principle)
+1. [Database Client](#database-client)
+1. [Entry Point](#entry-point)
 
 ### Upcomming
 
