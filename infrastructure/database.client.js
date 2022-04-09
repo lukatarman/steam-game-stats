@@ -31,4 +31,17 @@ export class DatabaseClient {
       .insertMany(data);
     console.log("Inserted documents =>", insertResult);
   }
+
+  async getAll(collectionName, options = {}) {
+    const getAllResults = await this.#collections
+      .get(collectionName)
+      .find(options);
+  }
+
+  async updateOne(collectionName, filter, update) {
+    const updateResults = await this.collection
+      .get(collectionName)
+      .updateOne(filter, options);
+    console.log("Matched document =>", updateResults.matchedCount);
+  }
 }
