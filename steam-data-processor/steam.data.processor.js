@@ -13,7 +13,8 @@ export class SteamDataProcessor {
     const games = await this.#httpClient.get(url, options).data.applist.apps;
     const filteredGames = this.#filterNonGames(games);
     await this.#databaseClient.insertMany("games", filteredGames);
-    const sanitizedGames = this.#sanitizeGamesListMOCK(filteredGames);
+    const sanitizedGames = this.#sanitizeGamesListMOCK();
+    this.#updateSanitizedGamesWithDatabase(sanitizedGames);
   }
 
   #filterNonGames(games) {
@@ -38,10 +39,22 @@ export class SteamDataProcessor {
     }
   }
 
-  async #sanitizeGamesListMOCK(filteredGames) {
-    // const games = await this.#databaseClient.getAll("games", { game: [ 'true', 'undefined' ] });
+  async #sanitizeGamesListMOCK() {
+    const games = await this.#databaseClient.getAll("games", { game: undefined });
     // for each game call steamcharts and check if the game has a page - here we will need a page crawler
+    games.forEach((game) => {
+      if (runCrawlerAndValidate(game)) {
+        game.isGame = false;
+      } else {
+        game.isGame = true;
+      }
+    });
     // update game object property "game" with true or false
     // store each game to the database
+    return games;
   }
-}
+
+//   async #updateSanitizedGamesWithDatabase(games) {
+//     await this.#databaseClient.
+//   }
+// }
