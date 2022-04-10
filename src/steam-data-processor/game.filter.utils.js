@@ -19,3 +19,19 @@ function filterByGameName(game) {
     return false;
   }
 }
+
+export function tagNonGames(games) {
+  return games
+    .map((game) => gameNameToLowerCase(game))
+    .map((game) => tagGameIfIncludesKeywords(game));
+
+  function gameNameToLowerCase(game) {
+    return { ...game, name: game.name.toLowerCase() };
+  }
+
+  function tagGameIfIncludesKeywords(game) {
+    return game.name.includes("dlc") || game.name.includes("soundtrack")
+      ? { ...game, isGame: false }
+      : game;
+  }
+}
