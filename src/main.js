@@ -1,5 +1,6 @@
 import { axios as httpClient } from "axios";
 import { DatabaseClient } from "./infrastructure/database.client";
+import { SteamClient } from "./infrastructure/steam.client";
 import { SteamDataProcessor } from "./steam-data-processor/steam.data.processor";
 
 // our entry point = main
@@ -11,7 +12,11 @@ function main() {
     collections: ["games"],
   };
   const databaseClient = new DatabaseClient().init(databaseOptions);
-  const steamDataProcessor = new SteamDataProcessor(httpClient, databaseClient);
+  const steamClient = new SteamClient(httpClient);
+  const steamDataProcessor = new SteamDataProcessor(
+    steamClient,
+    databaseClient
+  );
 
   // run phase
   steamDataProcessor.createGamesList();
