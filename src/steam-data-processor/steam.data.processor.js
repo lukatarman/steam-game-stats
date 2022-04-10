@@ -1,5 +1,6 @@
 import { filterNonGames } from "./game.filter.utils";
 
+// rename to GameData
 export class SteamDataProcessor {
   #databaseClient;
   #steamClient;
@@ -15,6 +16,18 @@ export class SteamDataProcessor {
     await this.#databaseClient.insertMany("games", filteredGames);
     const sanitizedGames = this.#sanitizeGamesListMOCK();
     await this.#updateSanitizedGamesWithDatabase(sanitizedGames);
+  }
+
+  async getAllSteamAppsMOCK() {
+    // get all the steam apps
+    // store them to the db into the new collection
+  }
+
+  async identifyGamesMOCK() {
+    // get all steam apps from our db
+    // one by one check is it a game
+    // if its a game, store it in the games collection
+    // and get missing data { imageUrl, image }
   }
 
   async #sanitizeGamesListMOCK() {
