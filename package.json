@@ -4,7 +4,7 @@
   "description": "Application for steam games statistics.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jasmine --config=jasmine.json"
   },
   "repository": {
     "type": "git",
