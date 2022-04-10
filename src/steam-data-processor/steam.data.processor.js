@@ -21,7 +21,7 @@ export class SteamDataProcessor {
 
   async #sanitizeGamesListMOCK() {
     const games = await this.#databaseClient.getAll("games", {
-      game: undefined,
+      isGame: undefined,
     });
     // for each game call steamcharts and check if the game has a page - here we will need a page crawler
     games.forEach((game) => {
