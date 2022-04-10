@@ -44,7 +44,7 @@ _Detailed Wikipedia description: [link](https://en.wikipedia.org/wiki/Separation
 
 Devide a programm in sections where each section is responsible for one specific set of functionality that belongs together.
 
-**Important: It's a law. Do it if possible and break it if you must.**
+**Important: It's not a law. Do it if possible and break it if you must.**
 
 ### In Out App
 
@@ -70,7 +70,7 @@ Nice example from Wikipedia:
 
 > As an example, consider a module that compiles and prints a report. Imagine such a module can be changed for two reasons. First, the content of the report could change. Second, the format of the report could change. These two things change for different causes. The single-responsibility principle says that these two aspects of the problem are really two separate responsibilities, and should, therefore, be in separate classes or modules. It would be a bad design to couple two things that change for different reasons at different times.
 
-**Important: It's a law. Do it if possible and break it if you must.**
+**Important: It's not a law. Do it if possible and break it if you must.**
 
 ### In Our App
 
