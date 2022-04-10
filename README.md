@@ -34,8 +34,6 @@ _Detailed Wikipedia description: [link](https://en.wikipedia.org/wiki/Data_model
 
 At the time of this writing: `game.js, players.js`.
 
----
-
 ## Separation of Concerns
 
 _Blog article: [link](https://effectivesoftwaredesign.com/2012/02/05/separation-of-concerns/)._
@@ -57,8 +55,6 @@ One concern is getting data from the steam api. Taken care by: `steam.data.proce
 One concern is setup and orchestration of the parts of our application. Taken care by: `main.js`.
 
 One concern is documentation. Taken care by: `README.md` which is this file.
-
----
 
 ## Single Responsibility Principle
 
@@ -82,8 +78,6 @@ The database client: `database.client.js`.
 
 The entry point: `main.js`.
 
----
-
 ## Database Client
 
 A class which encapsulates database operations and setup. So with that we follow the principles outlined above.
@@ -91,8 +85,6 @@ A class which encapsulates database operations and setup. So with that we follow
 ### In Our App
 
 The database client: `database.client.js`.
-
----
 
 ## Entry Point
 
