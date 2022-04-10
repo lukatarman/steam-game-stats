@@ -9,7 +9,7 @@ function main() {
   const databaseOptions = {
     url: "mongodb://localhost:27017",
     databaseName: "game-stats",
-    collections: ["games"],
+    collections: ["games", "steam_apps"],
   };
   const databaseClient = new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
