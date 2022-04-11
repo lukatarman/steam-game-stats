@@ -37,3 +37,4 @@ export class SteamDataProcessor {
 
     this.#databaseClient.insertMany("games", games);
   }
+}
