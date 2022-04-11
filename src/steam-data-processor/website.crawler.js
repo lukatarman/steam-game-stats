@@ -1,7 +1,7 @@
-export function crawlWebsiteForImage(games) {
+export function crawlWebsiteForImageMOCK(games) {
   return games;
 }
 
-export function crawlCheckIfGame(game) {
+export function crawlCheckIfGameMOCK(game) {
   console.log("Do something");
 }
