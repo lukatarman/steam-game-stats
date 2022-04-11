@@ -20,5 +20,4 @@ function main() {
 
   // run phase
   steamDataProcessor.addGamesToCollection();
-  steamDataProcessor.sanitizeGamesListMOCK();
 }
