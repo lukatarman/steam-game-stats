@@ -44,4 +44,14 @@ export class DatabaseClient {
       .updateOne(filter, options);
     console.log("Matched document =>", updateResults.matchedCount);
   }
+
+  async getLast(collectionName) {
+    const result = await this.collection
+      .get(collectionName)
+      .find()
+      .limit(1)
+      .sort({ $natural: -1 });
+
+      return result;
+  }
 }
