@@ -11,6 +11,8 @@ export class SteamDataProcessor {
   }
 
   async createGamesList() {
+    this.#getAllSteamApps();
+
     const games = await this.#steamClient.getAppList();
     const filteredGames = filterNonGames(games);
     await this.#databaseClient.insertMany("games", filteredGames);
@@ -18,9 +20,11 @@ export class SteamDataProcessor {
     await this.#updateSanitizedGamesWithDatabase(sanitizedGames);
   }
 
-  async getAllSteamAppsMOCK() {
+  async #getAllSteamApps() {
     // get all the steam apps
     // store them to the db into the new collection
+    const steamApps = await this.#steamClient.getAppList();
+    await this.#databaseClient.insertMany("steam_apps", steamApps);
   }
 
   async identifyGamesMOCK() {
