@@ -1,19 +1,18 @@
-// export function filterGamesByName(steamApps) {
-// let gamesNameFiltered = [];
+export function filterGamesByName(steamApps) {
+  // let gamesNameFiltered = [];
 
-// for (let steamApp of steamApps) {
-//   if (!checkIfIncludesKeywords(steamApp)) {
-//     gamesNameFiltered.push(steamApp);
-//   }
-// }
-// return gamesNameFiltered;
+  // for (let steamApp of steamApps) {
+  //   if (!checkIfIncludesKeywords(steamApp)) {
+  //     gamesNameFiltered.push(steamApp);
+  //   }
+  // }
+  // return gamesNameFiltered;
 
-// //previous implementation
-// return steamApps.filter((steamApp) => !checkIfIncludesKeywords(steamApp));
-// }
+  return steamApps.filter((steamApp) => !checkIfIncludesKeywords(steamApp));
+}
 
 //The names for non games is very inconsistent, only included ones that are for sure not games
-export function checkIfIncludesKeywords(steamApp) {
+function checkIfIncludesKeywords(steamApp) {
   const lowercaseGameName = steamApp.name.toLowerCase();
   const endsWithDlc = /dlc$/;
   const endsWithSoundtrack = /soundtrack$/;
