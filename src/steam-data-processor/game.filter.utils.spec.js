@@ -1,53 +1,66 @@
 import { gamesMock } from "../../assets/small.data.set.js";
-import { checkIfIncludesKeywords, tagNonGames } from "./game.filter.utils.js";
+import { filterGamesByName, tagNonGames } from "./game.filter.utils.js";
 
 describe("game.filter.utils.js", () => {
-  describe(".checkIfIncludesKeywords", () => {
+  describe(".filterGamesByName", () => {
     describe("if steamApp.name string ends with 'DLC' keyword", () => {
-      let includesKeyword;
+      let includesKeywords;
 
       beforeAll(() => {
         const steamApp = {
           appid: 1234,
           name: "Holy smokes DLC",
         };
-        includesKeyword = checkIfIncludesKeywords(steamApp);
+        includesKeywords = filterGamesByName([steamApp]);
       });
 
-      it("function checkIfIncludesKeywords returns true", () => {
-        expect(includesKeyword).toBeTrue();
+      it("function filterGamesByName returns true", () => {
+        expect(includesKeywords.length).toBe(0);
       });
     });
 
     describe("if steamApp.name string ends with 'soundtrack' keyword", () => {
-      let includesKeyword;
+      let includesKeywords;
 
       beforeAll(() => {
         const steamApp = {
           appid: 1235,
           name: "The Mire Soundtrack",
         };
-        includesKeyword = checkIfIncludesKeywords(steamApp);
+        includesKeywords = filterGamesByName([steamApp]);
       });
 
-      it("function checkIfIncludesKeywords returns true", () => {
-        expect(includesKeyword).toBeTrue();
+      it("function filterGamesByName returns true", () => {
+        expect(includesKeywords.length).toBe(0);
       });
     });
 
     describe("if steamApp.name string does not end with dlc or soundtrack keyword", () => {
-      let includesKeyword;
+      let includesKeywords;
 
       beforeAll(() => {
         const steamApp = {
           appid: 1236,
           name: "Fantasy Grounds - Deneb Adventure 1: The Lost Duke",
         };
-        includesKeyword = checkIfIncludesKeywords(steamApp);
+        includesKeywords = filterGamesByName([steamApp]);
       });
 
-      it("function checkIfIncludesKeywords returns false", () => {
-        expect(includesKeyword).toBe(false);
+      it("function filterGamesByName returns false", () => {
+        expect(includesKeywords.length).toBeTrue;
+      });
+    });
+
+    describe("returns array of only the games that do not contain keywords 'dlc' or 'soundtrack' at the end of their names", () => {
+      let games;
+
+      beforeAll(() => {
+        games = filterGamesByName(gamesMock);
+      });
+
+      it("returns array with 15 entries", () => {
+        const isGameFalseCounter = games.length;
+        expect(isGameFalseCounter).toBe(gamesMock.length - 15);
       });
     });
 
@@ -98,22 +111,6 @@ describe("game.filter.utils.js", () => {
     //       expect(games[0].isGame).toBeUndefined();
     //     });
     //   });
-
-    //   describe("tags every game as not a game which contains the keywords 'dlc' or 'soundtrack' as the last word", () => {
-    //     let games;
-
-    //     beforeAll(() => {
-    //       games = filterNonGames(gamesMock);
-    //     });
-
-    //     it("adds isGame=false to 15 games", () => {
-    //       const isGameFalseCounter = games.filter(
-    //         (games) => games.isGame !== undefined
-    //       ).length;
-    //       expect(isGameFalseCounter).toBe(15);
-    //     });
-    //   });
-    // });
 
     describe(".tagNonGames", () => {
       describe("tags an entry as not a game", () => {
@@ -171,7 +168,7 @@ describe("game.filter.utils.js", () => {
           games = tagNonGames(gamesMock);
         });
 
-        it("adds isGame=false to 28 games", () => {
+        it("the array has 15 entries", () => {
           const isGameFalseCounter = games.filter(
             (games) => games.isGame !== undefined
           ).length;
