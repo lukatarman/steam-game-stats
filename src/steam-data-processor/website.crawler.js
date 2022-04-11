@@ -1,3 +1,3 @@
-export function crawlWebsiteForMissingDataMOCK(games) {
+export function crawlWebsiteForImage(games) {
   return games;
 }

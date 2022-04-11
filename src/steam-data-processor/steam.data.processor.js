@@ -1,5 +1,5 @@
 import { filterGamesByName } from "./game.filter.utils";
-import { crawlWebsiteForMissingDataMOCK } from "./website.crawler";
+import { crawlWebsiteForImage } from "./website.crawler";
 
 // rename to GameData
 export class SteamDataProcessor {
@@ -32,7 +32,7 @@ export class SteamDataProcessor {
     // and get missing data { imageUrl, image }
     const steamApps = await this.#databaseClient.getAll("steam_apps");
     const games = filterGamesByName(steamApps);
-    await crawlWebsiteForMissingDataMOCK(games);
+    await crawlWebsiteForImage(games);
 
     await this.#databaseClient.insertMany("games", games);
   }
