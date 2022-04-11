@@ -19,6 +19,6 @@ function main() {
   );
 
   // run phase
-  steamDataProcessor.createGamesList();
+  steamDataProcessor.addGamesToCollection();
   steamDataProcessor.sanitizeGamesListMOCK();
 }
