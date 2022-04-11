@@ -1,5 +1,5 @@
 import { filterGamesByName } from "./game.filter.utils";
-import { sanitizeGamesListMOCK } from "./game.sanitizer.utils";
+import { sanitizeGamesList } from "./game.sanitizer.utils";
 import { crawlWebsiteForImageMOCK } from "./website.crawler";
 
 // rename to GameData
@@ -12,12 +12,9 @@ export class SteamDataProcessor {
     this.#databaseClient = databaseClient;
   }
 
-  async createGamesList() {
+  async addGamesToCollection() {
     this.#getAllSteamApps();
     this.#identifyGames();
-
-    const sanitizedGames = this.#sanitizeGamesListMOCK();
-    await this.#updateSanitizedGamesWithDatabase(sanitizedGames);
   }
 
   async #getAllSteamApps() {
@@ -34,5 +31,9 @@ export class SteamDataProcessor {
     // and get missing data { imageUrl, image }
     const steamApps = await this.#databaseClient.getAll("steam_apps");
     const gamesNameFiltered = filterGamesByName(steamApps);
-    sanitizeGamesListMOCK(gamesNameFiltered);
+    const games = sanitizeGamesList(gamesNameFiltered);
+
+    crawlWebsiteForImageMOCK(games);
+
+    this.#databaseClient.insertMany("games", games);
   }
