@@ -1,12 +1,12 @@
 export function filterGamesByName(steamApps) {
-  let games = [];
+  let gamesNameFiltered = [];
 
   for (let steamApp of steamApps) {
     if (!checkIfIncludesKeywords(steamApp)) {
-      games.push(steamApp);
+      gamesNameFiltered.push(steamApp);
     }
   }
-  return games;
+  return gamesNameFiltered;
 }
 
 //The names for non games is very inconsistent, only included ones that are for sure not games
