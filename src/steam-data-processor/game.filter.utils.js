@@ -1,23 +1,25 @@
-export function filterNonGames(games) {
-  for (let game of games) {
-    if (filterByGameName(game)) {
-      game.isGame = false;
+export function filterGamesByName(steamApps) {
+  let games = [];
+
+  for (let steamApp of steamApps) {
+    if (!checkIfIncludesKeywords(steamApp)) {
+      games.push(steamApp);
     }
   }
   return games;
 }
 
 //The names for non games is very inconsistent, only included ones that are for sure not games
-function filterByGameName(game) {
-  if (game.isGame === undefined) {
-    const lowercaseGameName = game.name.toLowerCase();
+function checkIfIncludesKeywords(steamApp) {
+  const lowercaseGameName = steamApp.name.toLowerCase();
+  const endsWithDlc = /dlc$/;
+  const endsWithSoundtrack = /soundtrack$/;
 
-    if (lowercaseGameName.match(/dlc$/)) return true;
+  if (lowercaseGameName.match(endsWithDlc)) return true;
 
-    if (lowercaseGameName.match(/soundtrack$/)) return true;
+  if (lowercaseGameName.match(endsWithSoundtrack)) return true;
 
-    return false;
-  }
+  return false;
 }
 
 export function tagNonGames(games) {
