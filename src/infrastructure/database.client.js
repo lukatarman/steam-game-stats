@@ -38,7 +38,7 @@ export class DatabaseClient {
       .find(options);
   }
 
-  async updateOne(collectionName, filter, update) {
+  async updateOne(collectionName, filter, options) {
     const updateResults = await this.collection
       .get(collectionName)
       .updateOne(filter, options);
