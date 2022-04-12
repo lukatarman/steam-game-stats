@@ -5,8 +5,8 @@ import { standardizeDataModel } from "./game.standardize.data.model.utils";
 
 // rename to GameData
 export class SteamGameListProcessor {
-  #databaseClient;
   #steamClient;
+  #databaseClient;
 
   constructor(steamClient, databaseClient) {
     this.#steamClient = steamClient;
