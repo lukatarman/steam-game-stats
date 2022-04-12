@@ -1,7 +1,7 @@
 import { filterGamesByName } from "./game.filter.utils";
 import { addImageLinks } from "./game.image.utils";
 import { sanitizeGamesList } from "./game.sanitizer.utils";
-import { standardizeDataModel } from "./game.data.model.utils";
+import { standardizeDataModel } from "./game.standardize.data.model.utils";
 
 // rename to GameData
 export class SteamGameListProcessor {
