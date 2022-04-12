@@ -21,7 +21,7 @@ export async function getCurrentPlayers(games, steamClient) {
   const currentPlayersArray = await Promise.all(currentPlayersPromise);
 
   for (let currentPlayers of currentPlayersArray) {
-    const PlayersDateObj = {
+    const playersDateObj = {
       date: currentTime,
       players: currentPlayers,
     };
