@@ -4,7 +4,7 @@ import { sanitizeGamesList } from "./game.sanitizer.utils";
 import { standardizeDataModel } from "./game.standardize.utils";
 
 // rename to GameData
-export class SteamDataProcessor {
+export class SteamGameListProcessor {
   #databaseClient;
   #steamClient;
 

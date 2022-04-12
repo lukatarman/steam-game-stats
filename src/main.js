@@ -1,7 +1,7 @@
 import { axios as httpClient } from "axios";
 import { DatabaseClient } from "./infrastructure/database.client";
 import { SteamClient } from "./infrastructure/steam.client";
-import { SteamDataProcessor } from "./steam-data-processor/steam.data.processor";
+import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor";
 
 // our entry point = main
 function main() {
@@ -13,7 +13,7 @@ function main() {
   };
   const databaseClient = new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
-  const steamDataProcessor = new SteamDataProcessor(
+  const steamDataProcessor = new SteamGameListProcessor(
     steamClient,
     databaseClient
   );
