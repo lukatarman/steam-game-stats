@@ -1,6 +1,7 @@
 import { filterGamesByName } from "./game.filter.utils";
+import { addImageLinks } from "./game.image.utils";
 import { sanitizeGamesList } from "./game.sanitizer.utils";
-import { crawlWebsiteForImageMOCK } from "./website.crawler";
+import { standardizeDataModel } from "./game.standardize.utils";
 
 // rename to GameData
 export class SteamDataProcessor {
@@ -28,12 +29,12 @@ export class SteamDataProcessor {
     // get all steam apps from our db
     // one by one check is it a game
     // if its a game, store it in the games collection
-    // and get missing data { imageUrl, image }
+    // and get missing data { imageUrl, image } https://cdn.akamai.steamstatic.com/steam/apps/APPID/header.jpg
     const steamApps = await this.#databaseClient.getAll("steam_apps");
     const gamesNameFiltered = filterGamesByName(steamApps);
-    const games = sanitizeGamesList(gamesNameFiltered);
-
-    crawlWebsiteForImageMOCK(games);
+    const gamesNotStandardized = sanitizeGamesList(gamesNameFiltered);
+    const gamesNoImg = standardizeDataModel(gamesNotStandardized);
+    const games = addImageLinks(gamesNoImg);
 
     this.#databaseClient.insertMany("games", games);
   }
