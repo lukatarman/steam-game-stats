@@ -18,4 +18,10 @@ export class SteamClient {
 
     return this.#httpClient.get(url, options).data.response.player_count;
   }
+
+  getAppDetailsPage(appid) {
+    const url = `https://store.steampowered.com/app/${appid}`;
+
+    return this.#httpClient.get(url).data;
+  }
 }
