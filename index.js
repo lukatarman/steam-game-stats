@@ -1,7 +1,7 @@
-const axios = require("axios").default;
-import MongoDB from "./database.client.js";
+import axios from "axios";
+// import MongoDB from "./database.client.js";
 
-let searchTerm = "swords soldiers 2";
+let searchTerm = "tooth and tail";
 let gameList;
 let searchResults = [];
 getGameDetails();
