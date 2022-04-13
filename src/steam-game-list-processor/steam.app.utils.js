@@ -1,3 +1,5 @@
+import { JSDOM } from "jsdom";
+
 export function filterSteamAppsByName(steamApps) {
   return steamApps.filter((steamApp) =>
     doesNotEndWithDlcOrSoundtrack(steamApp)
@@ -34,7 +36,10 @@ export function tagNonGames(steamApps) {
   }
 }
 
-export function steamAppIsAgameMOCK(steamAppDetailPage) {
-  // check html page for details of the steam app if its a game or something else and return true or false
-  console.log("Do something");
+// check html page for details of the steam app if its a game or something else and return true or false
+export function steamAppIsAgameMOCK(steamAppDetailPageAsString) {
+  const steamAppDetailPageAsDom = new JSDOM(steamAppDetailPageAsString);
+  const categoriesDiv = steamAppDetailPageAsDom.window.document.querySelector('.game_area_features_list_ctn');
+  const listOfLinks = categoriesDiv.querySelectorAll('a');
+
 }
