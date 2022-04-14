@@ -20,6 +20,12 @@ export class SteamGameListProcessor {
     await this.#databaseClient.insertMany("steam_apps", steamApps);
   }
 
+  // feature/NR-1 - Add bulk identification
+  // get 10 not identified games
+  // handle case if filteredSteamApps is empty
+  // handle if games is empty
+  // update steamApps elements identified property with true
+  // as last store the steamApps as identified: true
   async #identifyGames() {
     const steamApps = await this.#databaseClient.getAll("steam_apps");
     const filteredSteamApps = filterSteamAppsByName(steamApps);
