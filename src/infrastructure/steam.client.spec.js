@@ -2,7 +2,7 @@ import axios from "axios";
 import { JSDOM } from "jsdom";
 import { SteamClient } from "./steam.client.js";
 
-describe("steam.client.js", () => {
+xdescribe("steam.client.js", () => {
   const steamClient = new SteamClient(axios);
 
   it("fetch html page of metro", async () => {
