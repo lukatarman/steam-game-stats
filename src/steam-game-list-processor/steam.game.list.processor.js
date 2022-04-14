@@ -1,4 +1,4 @@
-import { filterSteamAppsByName, steamAppIsGameMOCK } from "./steam.app.utils.js";
+import { filterSteamAppsByName, steamAppIsGame } from "./steam.app.utils.js";
 import { Game } from "../models/game.js";
 
 export class SteamGameListProcessor {
@@ -32,7 +32,20 @@ export class SteamGameListProcessor {
     const games = [];
 
     for (let steamApp in steamApps) {
-      if (steamAppIsGameMOCK(steamApp, this.#steamClient)) games.push(new Game(steamApp));
+      const detailsPage = await this.#steamClient.getAppDetailsPage(steamApp);
+
+      if (steamAppIsGame(detailsPage)) {
+        games.push(new Game(steamApp));
+        continue;
+      }
+
+      try {
+        await this.#steamClient.getAppDetailsSteamcharts(steamApp);
+      } catch (error) {
+        if (error.status === 500) continue;
+      }
+
+      games.push(new Game(steamApp));
     }
 
     return games;
