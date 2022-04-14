@@ -19,9 +19,15 @@ export class SteamClient {
     return this.#httpClient.get(url, options).data.response.player_count;
   }
 
-  getAppDetailsPage(appid) {
-    const url = `https://store.steampowered.com/app/${appid}`;
+  getAppDetailsPage(steamApp) {
+    const url = `https://store.steampowered.com/app/${steamApp.id}`;
 
-    return this.#httpClient.get(url).data;
+    return this.#httpClient.get(url);
+  }
+
+  getAppDetailsSteamCharts(steamApp) {
+    const url = `https://steamcharts.com/app/${steamApp.id}`;
+
+    return this.#httpClient.get(url);
   }
 }
