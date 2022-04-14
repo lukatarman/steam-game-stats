@@ -14,14 +14,8 @@ function main() {
   };
   const databaseClient = new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
-  const steamGameListProcessor = new SteamGameListProcessor(
-    steamClient,
-    databaseClient
-  );
-  const steamPlayerProcessor = new SteamPlayerProcessor(
-    steamClient,
-    databaseClient
-  );
+  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient);
+  const steamPlayerProcessor = new SteamPlayerProcessor(steamClient, databaseClient);
 
   // run phase
   steamGameListProcessor.addGamesToCollection();
