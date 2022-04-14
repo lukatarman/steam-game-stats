@@ -1,9 +1,7 @@
 import { JSDOM } from "jsdom";
 
 export function filterSteamAppsByName(steamApps) {
-  return steamApps.filter((steamApp) =>
-    doesNotEndWithDlcOrSoundtrack(steamApp)
-  );
+  return steamApps.filter((steamApp) => doesNotEndWithDlcOrSoundtrack(steamApp));
 
   function doesNotEndWithDlcOrSoundtrack(steamApp) {
     const lowercaseGameName = steamApp.name.toLowerCase();
@@ -37,9 +35,29 @@ export function tagNonGames(steamApps) {
 }
 
 // check html page for details of the steam app if its a game or something else and return true or false
-export function steamAppIsAgameMOCK(steamAppDetailPageAsString) {
-  const steamAppDetailPageAsDom = new JSDOM(steamAppDetailPageAsString);
-  const categoriesDiv = steamAppDetailPageAsDom.window.document.querySelector('.game_area_features_list_ctn');
-  const listOfLinks = categoriesDiv.querySelectorAll('a');
+export function steamAppIsGameMOCK(steamApp, steamClient) {
+  const steamAppDetailPageAsString = await steamClient.getAppDetailsPage(steamApp);
+  const steamAppDetailPageAsDom = new JSDOM(steamAppDetailPageAsString).data;
+  const breadCrumbClass =
+    steamAppDetailPageAsDom.window.document.querySelector(".blockbg");
 
+  if (hasAgeVerification()) {
+    if (checkIfGameThroughSteamCharts(steamApp, steamClient)) return true;
+  }
+
+  const breadCrumbText = breadCrumbClass.children[0].textContent;
+}
+
+function hasAgeVerification(breadCrumbClass) {
+  if (!breadCrumbClass) return true;
+}
+
+function checkIfGameThroughSteamCharts(steamApp, steamClient) {
+  const steamChartsAppDetailsAsString = await steamClient.getAppDetailsSteamCharts(
+    steamApp
+  );
+  const steamChartsAppDetailsAsDom = new JSDOM(steamChartsAppDetailsAsString).data;
+
+  if (steamChartsAppDetailsAsDom) return true;
+  return false;
 }
