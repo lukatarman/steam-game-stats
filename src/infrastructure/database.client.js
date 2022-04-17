@@ -32,17 +32,23 @@ export class DatabaseClient {
     console.log("Inserted documents =>", insertResult);
   }
 
-  async getAll(collectionName, options = {}) {
+  async getAll(collectionName, filter = {}) {
     const getAllResults = await this.#collections
       .get(collectionName)
-      .find(options);
+      .find(filter);
   }
 
-  async updateOne(collectionName, filter, update) {
-    const updateResults = await this.collection
+  async updateOne(collectionName, filter, options) {
+    const updateResults = await this.#collections
       .get(collectionName)
       .updateOne(filter, options);
     console.log("Matched document =>", updateResults.matchedCount);
+  }
+
+  async deleteMany(collectionName, filter) {
+    const deletedResults = this.#collections
+      .get(collectionName)
+      .deleteMany(filter);
   }
 
   async getLast(collectionName) {
