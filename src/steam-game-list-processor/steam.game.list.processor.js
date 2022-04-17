@@ -21,7 +21,7 @@ export class SteamGameListProcessor {
   }
 
   async #identifyGames() {
-    const steamApps = await this.#databaseClient.getAll("steam_apps");
+    const steamApps = await this.#databaseClient.getAllSteamApps();
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     const games = this.#filterSteamAppsByAppType(filteredSteamApps);
 
