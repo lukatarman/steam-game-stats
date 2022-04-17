@@ -16,12 +16,12 @@ export class SteamDataAggregator {
     runFuncWithDelayOfXhours(this.#updateList.bind(this), 24);
   }
 
-  #initialUpdate() {
-    const lastUpdate = this.#databaseClient.getLastUpdateTimestamp();
+  async #initialUpdate() {
+    const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
     if (moreThanXhoursPassedSince(24, lastUpdate)) this.#updateList();
   }
 
-  #updateList() {
+  async #updateList() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb = await this.#databaseClient.getAllSteamApps();
     const steamApps = tagNonIdentified(diffMOCK(steamAppsApi, steamAppsDb));
