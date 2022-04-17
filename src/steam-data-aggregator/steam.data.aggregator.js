@@ -1,4 +1,6 @@
-import { diffMOCK } from "./steam.data.aggregator.utils";
+import { diffMOCK } from "./services/diff.service";
+import { tagNonIdentified } from "./services/tag.service";
+import { delay } from "./services/time.service";
 
 export class SteamDataAggregator {
   #databaseClient;
@@ -12,7 +14,7 @@ export class SteamDataAggregator {
   run() {
     // @todo: extract to initalUpdate
     const lastUpdate = this.#databaseClient.getLast('update_timestamps');
-    // @todo: extract to time utils - hoursDiff(date1, date2)
+    // @todo: extract to time utils - hoursPassedSince(date)
     const now = new Date();
     const milliseconds = Math.abs(now - lastUpdate);
     const hours = milliseconds / 36e5;
@@ -37,16 +39,8 @@ export class SteamDataAggregator {
   #updateList() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb = await this.#databaseClient.getAllSteamApps();
-    const steamAppsDiff = diffMOCK(steamAppsApi, steamAppsDb);
-    const steamAppsDiffNonIdentified = steamAppsDiff.map(app => { return {...app, identified:false }});
-
-    await this.#databaseClient.insertManySteamApps(steamAppsDiffNonIdentified);
+    const steamApps = tagNonIdentified(diffMOCK(steamAppsApi, steamAppsDb));
+    await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
-}
-
-// @todo: extract into time utils - delay
-function delay(ms) {
-  ms = ms || 2000;
-  return new Promise(done => setTimeout(done, ms));
 }
