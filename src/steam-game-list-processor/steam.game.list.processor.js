@@ -17,7 +17,7 @@ export class SteamGameListProcessor {
 
   async #getAllSteamApps() {
     const steamApps = await this.#steamClient.getAppList();
-    await this.#databaseClient.insertMany("steam_apps", steamApps);
+    await this.#databaseClient.insertManySteamApps(steamApps);
   }
 
   async #identifyGames() {
@@ -25,7 +25,7 @@ export class SteamGameListProcessor {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     const games = this.#filterSteamAppsByAppType(filteredSteamApps);
 
-    this.#databaseClient.insertMany("games", games);
+    this.#databaseClient.insertManyGames(games);
   }
 
   async #filterSteamAppsByAppType(steamApps) {
