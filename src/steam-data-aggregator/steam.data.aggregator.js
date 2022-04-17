@@ -1,6 +1,6 @@
 import { diffMOCK } from "./services/diff.service";
 import { tagNonIdentified } from "./services/tag.service";
-import { delay } from "./services/time.service";
+import { runFuncWithDelayOfXhours } from "./services/time.service";
 
 export class SteamDataAggregator {
   #databaseClient;
@@ -12,24 +12,13 @@ export class SteamDataAggregator {
   }
 
   run() {
-    // @todo: extract to initalUpdate
-    const lastUpdate = this.#databaseClient.getLast('update_timestamps');
+    this.#initialUpdate();
+    runFuncWithDelayOfXhours(this.#updateList.bind(this), 24);
+  }
+
+  #initialUpdate() {
+    const lastUpdate = this.#databaseClient.getLastUpdateTimestamp();
     if (moreThanXhoursPassedSince(24, lastUpdate)) this.#updateList();
-
-    // @todo: extract into startUpdateIntervall
-    // @todo: pass updater
-    let firstRunSinceStart = true;
-    while(true) {
-      if (firstRunSinceStart) {
-        firstRunSinceStart = false;
-        const tillNextUpdate = hours > 24 ? hours - 24 : 24 - hours;
-        await delay(tillNextUpdate * 36e5);
-      }
-
-      this.#updateList();
-
-      await delay(24 * 36e5);
-    }
   }
 
   #updateList() {
