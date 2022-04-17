@@ -25,6 +25,21 @@ export class DatabaseClient {
     return this;
   }
 
+  async insertOneUpdateTimestamp(date) {
+    const updateTimestamp = { updatedOn: date };
+    await this.insertOne(update_timestamps, updateTimestamp);
+  }
+
+  async insertOne(collectionName, data) {
+    await this.#collections
+      .get(collectionName)
+      .insertOne(data);
+  }
+
+  async insertManySteamApps(data) {
+    await this.insertMany("steam_apps", data);
+  }
+
   async insertMany(collectionName, data) {
     const insertResult = await this.#collections
       .get(collectionName)
@@ -32,6 +47,13 @@ export class DatabaseClient {
     console.log("Inserted documents =>", insertResult);
   }
 
+  getAllSteamApps(filter = {}) {
+    return this.getAll("steam_apps", filter);
+  }
+
+  /**
+   * @TODO - implement
+   */
   async getAll(collectionName, filter = {}) {
     const getAllResults = await this.#collections
       .get(collectionName)
