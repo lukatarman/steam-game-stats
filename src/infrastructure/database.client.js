@@ -40,6 +40,10 @@ export class DatabaseClient {
     await this.insertMany("steam_apps", data);
   }
 
+  async insertManyGames(data) {
+    await this.insertMany("games", data);
+  }
+
   async insertMany(collectionName, data) {
     const insertResult = await this.#collections
       .get(collectionName)
