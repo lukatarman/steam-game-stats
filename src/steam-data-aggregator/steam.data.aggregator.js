@@ -14,11 +14,7 @@ export class SteamDataAggregator {
   run() {
     // @todo: extract to initalUpdate
     const lastUpdate = this.#databaseClient.getLast('update_timestamps');
-    // @todo: extract to time utils - hoursPassedSince(date)
-    const now = new Date();
-    const milliseconds = Math.abs(now - lastUpdate);
-    const hours = milliseconds / 36e5;
-    if (hours > 24) this.#updateList();
+    if (moreThanXhoursPassedSince(24, lastUpdate)) this.#updateList();
 
     // @todo: extract into startUpdateIntervall
     // @todo: pass updater
