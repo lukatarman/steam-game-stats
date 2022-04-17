@@ -7,5 +7,5 @@ export function diffMOCK(steamAppsApi, steamAppsDb) {
   // const diff = ...;
   const steamAppsDiff = {};
 
-  return steamAppsDiff;
+  return steamAppsDiff.map(app => { return {...app, identified:false }});
 }

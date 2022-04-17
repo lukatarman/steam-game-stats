@@ -1,5 +1,4 @@
 import { diffMOCK } from "./services/diff.service";
-import { tagNonIdentified } from "./services/tag.service";
 import { runFuncWithDelayOfXhours } from "./services/time.service";
 
 export class SteamDataAggregator {
@@ -25,7 +24,7 @@ export class SteamDataAggregator {
   async #updateList() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb = await this.#databaseClient.getAllSteamApps();
-    const steamApps = tagNonIdentified(diffMOCK(steamAppsApi, steamAppsDb));
+    const steamApps = diffMOCK(steamAppsApi, steamAppsDb);
     await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
