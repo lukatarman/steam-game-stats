@@ -77,6 +77,10 @@ export class DatabaseClient {
       .deleteMany(filter);
   }
 
+  async getLastUpdateTimestamp() {
+    return this.getLast("update_timestamp");
+  }
+
   async getLast(collectionName) {
     const result = await this.collection
       .get(collectionName)
