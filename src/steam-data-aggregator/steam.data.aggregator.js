@@ -10,12 +10,16 @@ export class SteamDataAggregator {
   }
 
   run() {
+    // @todo: extract to initalUpdate
     const lastUpdate = this.#databaseClient.getLast('update_timestamps');
+    // @todo: extract to time utils - hoursDiff(date1, date2)
     const now = new Date();
     const milliseconds = Math.abs(now - lastUpdate);
     const hours = milliseconds / 36e5;
     if (hours > 24) this.#updateList();
 
+    // @todo: extract into startUpdateIntervall
+    // @todo: pass updater
     let firstRunSinceStart = true;
     while(true) {
       if (firstRunSinceStart) {
@@ -41,7 +45,7 @@ export class SteamDataAggregator {
   }
 }
 
-// extract
+// @todo: extract into time utils - delay
 function delay(ms) {
   ms = ms || 2000;
   return new Promise(done => setTimeout(done, ms));
