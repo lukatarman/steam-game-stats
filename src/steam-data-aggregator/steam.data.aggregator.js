@@ -13,6 +13,7 @@ export class SteamDataAggregator {
 
   run() {
     this.#initialUpdate();
+    // todo: refac to runFuncWithDelayOfXms
     runFuncWithDelayOfXhours(this.#updateList.bind(this), 24);
   }
 
