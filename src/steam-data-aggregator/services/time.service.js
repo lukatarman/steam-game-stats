@@ -1,9 +1,13 @@
 export function moreThanXhoursPassedSince(x, date) {
+  return hoursPassedSince(date) > x;
+}
+
+export function hoursPassedSince(date) {
   const now = new Date();
   const milliseconds = Math.abs(now - date);
   const hours = milliseconds / 36e5;
 
-  return hours > x;
+  return hours;
 }
 
 export function delay(ms) {
@@ -12,17 +16,12 @@ export function delay(ms) {
 }
 
 export function runFuncInLoopWithDelayOfXhours(func, x) {
-  let firstRun = true;
+  // todo: pass in lastUpdate time in hours maybe?
+  const tillNextRun = hours > x ? hours - x : x - hours;
+  await delay(tillNextRun * 36e5);
+
   while(true) {
-    if (firstRun) {
-      firstRun = false;
-      // todo: set hours variable
-      const tillNextRun = hours > x ? hours - x : x - hours;
-      await delay(tillNextRun * 36e5);
-    }
-
     func();
-
     await delay(x * 36e5);
   }
 }
