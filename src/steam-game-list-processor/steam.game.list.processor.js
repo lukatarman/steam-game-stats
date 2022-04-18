@@ -62,4 +62,49 @@ export class SteamGameListProcessor {
 
     return games;
   }
+
+  async #filterSteamAppsByAppTypeXXX(steamApps) {
+    if(steamApps.length === 0) return [];
+
+    const detailsPages = this.#getDetailsPages(steamApps);
+
+    const games = this.#addIdentifiedGamesToList(steamApps, detailsPages);
+    
+    for (let i = 0; i < steamApps.length; i++) {
+      if (steamAppIsGame(detailsPages[i])) continue;
+
+      try {
+        await this.#steamClient.getAppDetailsSteamcharts(steamApps[i]);
+      } catch (error) {
+        if (error.status === 500) continue;
+        throw error;
+      }
+
+      games.push(new Game(steamApp));
+
+      await delay(this.#options.unitDelay);
+    }
+
+    return games;
+  }
+
+  async #getDetailsPages(steamApps) {
+    const detailsPages = [];
+    for (let steamApp in steamApps) {
+      detailsPages.push(await this.#steamClient.getAppDetailsPage(steamApp));
+      await delay(this.#options.unitDelay);
+    }
+
+    return detailsPages;
+  }
+
+  #addIdentifiedGamesToList(steamApps, detailsPages) {
+    const games = [];
+
+    for (let i = 0; i < steamApps.length; i++) {
+      if (steamAppIsGame(detailsPages[i])) games.push(new Game(steamApps[i]));
+    }
+
+    return games;
+  }
 }
