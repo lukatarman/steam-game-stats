@@ -11,16 +11,6 @@ export class SteamGameListProcessor {
   }
 
   run() {
-    this.#getAllSteamApps();
-    this.#runIdentification();
-  }
-
-  async #getAllSteamApps() {
-    const steamApps = await this.#steamClient.getAppList();
-    await this.#databaseClient.insertMany("steam_apps", steamApps);
-  }
-  
-  async #runIdentification() {
     while(true) {
       const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(10);
       if(steamApps.length === 0) {
@@ -32,7 +22,7 @@ export class SteamGameListProcessor {
       await this.#identifyGames(steamApps);
     }
   }
-
+  
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     
