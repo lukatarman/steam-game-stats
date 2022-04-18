@@ -56,4 +56,12 @@ export class DatabaseClient {
                             .find({ identified: { $eq: false }})
                             .limit(amount);
   }
+
+  identifySteamAppById(id) {
+    this.#collections.get("steam_apps")
+                     .updateOne(
+                       { appid : { $eq : id }},
+                       { $set: {identified: true}},
+                      );
+  }
 }
