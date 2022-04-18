@@ -1,5 +1,5 @@
 import { diffMOCK } from "./services/diff.service";
-import { runFuncWithDelayOfXhours } from "./services/time.service";
+import { runFuncInLoopWithDelayOfXhours, moreThanXhoursPassedSince } from "./services/time.service";
 
 export class SteamDataAggregator {
   #databaseClient;
@@ -13,7 +13,7 @@ export class SteamDataAggregator {
   run() {
     this.#initialUpdate();
     // todo: refac to runFuncWithDelayOfXms
-    runFuncWithDelayOfXhours(this.#updateSteamApps.bind(this), 24);
+    runFuncInLoopWithDelayOfXhours(this.#updateSteamApps.bind(this), 24);
   }
 
   async #initialUpdate() {

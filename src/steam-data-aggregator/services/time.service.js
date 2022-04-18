@@ -11,11 +11,12 @@ export function delay(ms) {
   return new Promise(done => setTimeout(done, ms));
 }
 
-export function runFuncWithDelayOfXhours(func, x) {
+export function runFuncInLoopWithDelayOfXhours(func, x) {
   let firstRun = true;
   while(true) {
     if (firstRun) {
       firstRun = false;
+      // todo: set hours variable
       const tillNextRun = hours > x ? hours - x : x - hours;
       await delay(tillNextRun * 36e5);
     }
