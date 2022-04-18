@@ -27,7 +27,7 @@ export class DatabaseClient {
 
   async insertOneUpdateTimestamp(date) {
     const updateTimestamp = { updatedOn: date };
-    await this.insertOne(update_timestamps, updateTimestamp);
+    await this.insertOne("update_timestamps", updateTimestamp);
   }
 
   async insertOne(collectionName, data) {
