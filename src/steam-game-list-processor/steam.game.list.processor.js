@@ -4,25 +4,27 @@ import { Game } from "../models/game.js";
 export class SteamGameListProcessor {
   #steamClient;
   #databaseClient;
+  #options;
 
-  constructor(steamClient, databaseClient) {
+  constructor(steamClient, databaseClient, options) {
     this.#steamClient = steamClient;
     this.#databaseClient = databaseClient;
+    this.#options = options;
   }
 
   run() {
     while(true) {
-      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(10);
+      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
       if(steamApps.length === 0) {
-        // todo: implement delayHours()
-        await delayHours(24);
+        // todo: implement delay()
+        await delay(this.#options.batchDelay);
         continue;
       }
 
       await this.#identifyGames(steamApps);
     }
   }
-  
+
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     
@@ -54,8 +56,15 @@ export class SteamGameListProcessor {
       }
 
       games.push(new Game(steamApp));
+
+      await delay(this.#options.unitDelay);
     }
 
     return games;
   }
+}
+
+function delay(ms) {
+  ms = ms || 2000;
+  return new Promise(done => setTimeout(done, ms));
 }
