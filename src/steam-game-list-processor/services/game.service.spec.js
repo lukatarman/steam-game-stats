@@ -1,7 +1,7 @@
 import { gamesMock } from "../../assets/small.data.set.js";
-import { filterSteamAppsByName, tagNonGames } from "./steam.app.utils.js";
+import { filterSteamAppsByName, tagNonGames } from "./game.service.js";
 
-describe("steam.app.utils.js", () => {
+describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
     describe("if steamApp.name string ends with 'DLC' keyword", () => {
       let includesKeywords;
