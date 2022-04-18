@@ -18,6 +18,6 @@ function main() {
   const steamPlayerProcessor = new SteamPlayerProcessor(steamClient, databaseClient);
 
   // run phase
-  steamGameListProcessor.addGamesToCollection();
+  steamGameListProcessor.run();
   steamPlayerProcessor.addPlayerCounts();
 }

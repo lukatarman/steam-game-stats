@@ -10,33 +10,16 @@ export class SteamGameListProcessor {
     this.#databaseClient = databaseClient;
   }
 
-  async addGamesToCollection() {
-    setInterval()
+  run() {
     this.#getAllSteamApps();
-    this.#identifyGames();
-    
+    this.#runIdentification();
   }
 
   async #getAllSteamApps() {
     const steamApps = await this.#steamClient.getAppList();
     await this.#databaseClient.insertMany("steam_apps", steamApps);
   }
-
-  // feature/NR-1 - Add bulk identification
-  // get 10 not identified games
-  // handle case if filteredSteamApps is empty
-  // handle if games is empty
-  // update steamApps elements identified property with true
-  // as last store the steamApps as identified: true
-  // run identification process in a loop
-  async #identifyGames() {
-    const steamApps = await this.#databaseClient.getAppList();
-    const filteredSteamApps = filterSteamAppsByName(steamApps);
-    const games = this.#filterSteamAppsByAppType(filteredSteamApps);
-
-    this.#databaseClient.insertMany("games", games);
-  }
-
+  
   async #runIdentification() {
     while(true) {
       const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(10);
@@ -46,11 +29,11 @@ export class SteamGameListProcessor {
         continue;
       }
 
-      await this.#identifyGamesXXX(steamApps);
+      await this.#identifyGames(steamApps);
     }
   }
   
-  async #identifyGamesXXX(steamApps) {
+  async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     if(filteredSteamApps.length) {
       const games = this.#filterSteamAppsByAppType(filteredSteamApps);
