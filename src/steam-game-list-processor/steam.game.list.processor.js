@@ -1,5 +1,6 @@
-import { filterSteamAppsByName, steamAppIsGame } from "./steam.app.utils.js";
+import { filterSteamAppsByName, steamAppIsGame } from "./services/game.service.js";
 import { Game } from "../models/game.js";
+import { delay } from "../shared/time.utils.js";
 
 export class SteamGameListProcessor {
   #steamClient;
@@ -16,7 +17,6 @@ export class SteamGameListProcessor {
     while(true) {
       const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
       if(steamApps.length === 0) {
-        // todo: implement delay()
         await delay(this.#options.batchDelay);
         continue;
       }
@@ -62,9 +62,4 @@ export class SteamGameListProcessor {
 
     return games;
   }
-}
-
-function delay(ms) {
-  ms = ms || 2000;
-  return new Promise(done => setTimeout(done, ms));
 }
