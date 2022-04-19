@@ -35,8 +35,8 @@ export function tagNonGames(steamApps) {
 }
 
 // todo: add tests 
-export function steamAppIsGame(detailsPage) {
-  const dom = new JSDOM(detailsPage).data;
+export function steamAppIsGame(httpDetailsPage) {
+  const dom = new JSDOM(httpDetailsPage).data;
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
   if (!breadcrumbElement) return false;
