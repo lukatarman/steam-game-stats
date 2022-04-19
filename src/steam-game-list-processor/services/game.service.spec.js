@@ -1,4 +1,4 @@
-import { gamesMock } from "../../assets/small.data.set.js";
+import { gamesMock } from "../../../assets/small.data.set.js";
 import { filterSteamAppsByName, tagNonGames } from "./game.service.js";
 
 describe("game.service.js", () => {
