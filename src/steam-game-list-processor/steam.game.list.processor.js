@@ -17,11 +17,12 @@ export class SteamGameListProcessor {
     while(true) {
       const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
       if(steamApps.length === 0) {
-        await delay(this.#options.batchDelay);
+        await delay(this.#options.noAppsFoundDelay);
         continue;
       }
 
       await this.#identifyGames(steamApps);
+      await delay(this.#options.batchDelay);
     }
   }
 

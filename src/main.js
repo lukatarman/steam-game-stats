@@ -18,8 +18,9 @@ function main() {
     batchSize: 10,
     batchDelay: 5000,
     unitDelay: 500,
+    noAppsFoundDelay: 3600000,
   };
-  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
+  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, steamGameListProcessorOptions);
   const steamPlayerProcessor = new SteamPlayerProcessor(steamClient, databaseClient);
 
   // run phase
