@@ -44,7 +44,8 @@ export function steamAppIsGame(httpDetailsPage) {
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
   if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return false;
-
+  
+//bug I think
   const indexOfDlc = breadcrumbElement.children.indexOf(child => child.textContent === 'Downloadable Content');
 
   return indexOfDlc === -1 ? false : true;
