@@ -34,9 +34,9 @@ export function tagNonGames(steamApps) {
   }
 }
 
-// todo: add tests 
+// todo: add tests
 export function steamAppIsGame(httpDetailsPage) {
-  const dom = new JSDOM(httpDetailsPage).data;
+  const dom = new JSDOM(httpDetailsPage.data);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
   if (!breadcrumbElement) return false;
@@ -44,9 +44,10 @@ export function steamAppIsGame(httpDetailsPage) {
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
   if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return false;
-  
-//bug I think
-  const indexOfDlc = breadcrumbElement.children.indexOf(child => child.textContent === 'Downloadable Content');
 
-  return indexOfDlc === -1 ? false : true;
+  for (let child of breadcrumbElement.children) {
+    if (child.textContent === "Downloadable Content") return false;
+  }
+
+  return true;
 }

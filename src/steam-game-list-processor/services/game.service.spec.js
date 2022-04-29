@@ -1,5 +1,8 @@
+import axios from "axios";
 import { gamesMock } from "../../../assets/small.data.set.js";
-import { filterSteamAppsByName, tagNonGames } from "./game.service.js";
+import { steamAppIsGame, filterSteamAppsByName, tagNonGames } from "./game.service.js";
+import { JSDOM } from "jsdom";
+import { SteamClient } from "../../infrastructure/steam.client.js";
 
 describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
@@ -126,6 +129,68 @@ describe("game.service.js", () => {
           (games) => games.isGame !== undefined
         ).length;
         expect(isGameFalseCounter).toBe(28);
+      });
+    });
+  });
+
+  describe(".steamAppIsGame", () => {
+    describe("if there is no .blockbg class on the page", () => {
+      let isGame;
+
+      beforeAll(async () => {
+        const steamClient = new SteamClient(axios);
+        const steamApp = { id: 271590 };
+        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        isGame = steamAppIsGame(httpDetails);
+      });
+
+      it("the function returns false", () => {
+        expect(isGame).toBe(false);
+      });
+    });
+
+    describe("if there is no 'All Software' or 'All Games' in the first breadcrumb child text", () => {
+      let isGame;
+
+      beforeAll(async () => {
+        const steamClient = new SteamClient(axios);
+        const steamApp = { id: 1701720 };
+        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        isGame = steamAppIsGame(httpDetails);
+      });
+
+      it("the function returns false", () => {
+        expect(isGame).toBe(false);
+      });
+    });
+
+    describe("if the text 'Downloadable Content' is in one of the breadcrumbs", () => {
+      let isGame;
+
+      beforeAll(async () => {
+        const steamClient = new SteamClient(axios);
+        const steamApp = { id: 1656330 };
+        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        isGame = steamAppIsGame(httpDetails);
+      });
+
+      it("the function returns false", () => {
+        expect(isGame).toBe(false);
+      });
+    });
+
+    describe(".blockbg class is on the page, 'All Software' or 'All Games' is in the first breadcrumb and there is no 'Downloadable Content' text in the breadcrumbs", () => {
+      let isGame;
+
+      beforeAll(async () => {
+        const steamClient = new SteamClient(axios);
+        const steamApp = { id: 1794680 };
+        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        isGame = steamAppIsGame(httpDetails);
+      });
+
+      it("the function returns true", () => {
+        expect(isGame).toBe(true);
       });
     });
   });
