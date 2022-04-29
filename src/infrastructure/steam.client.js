@@ -30,6 +30,6 @@ export class SteamClient {
   getAppHttpDetailsSteamcharts(steamApp) {
     const url = `https://steamcharts.com/app/${steamApp.id}`;
 
-    return this.#httpClient.get(url);;
+    return this.#httpClient.get(url);
   }
 }
