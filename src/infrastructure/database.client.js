@@ -38,16 +38,30 @@ export class DatabaseClient {
       .find(filter);
   }
 
-  async updateOne(collectionName, filter, options) {
+  async updateOne(collectionName, filter, data) {
     const updateResults = await this.#collections
       .get(collectionName)
-      .updateOne(filter, options);
+      .updateOne(filter, data);
     console.log("Matched document =>", updateResults.matchedCount);
   }
 
   async deleteMany(collectionName, filter) {
-    const deletedResults = this.#collections
+    const deletedResults = await this.#collections
       .get(collectionName)
       .deleteMany(filter);
+  }
+
+  getXunidentifiedSteamApps( amount ) {
+    return this.#collections.get("steam_apps")
+                            .find({ identified: { $eq: false }})
+                            .limit(amount);
+  }
+
+  identifySteamAppById(id) {
+    this.#collections.get("steam_apps")
+                     .updateOne(
+                       { appid : { $eq : id }},
+                       { $set: {identified: true}},
+                      );
   }
 }

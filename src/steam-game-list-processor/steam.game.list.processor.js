@@ -1,50 +1,88 @@
-import { filterSteamAppsByName, steamAppIsGame } from "./steam.app.utils.js";
+import {
+  filterSteamAppsByName,
+  steamAppIsGame,
+} from "./services/game.service.js";
 import { Game } from "../models/game.js";
+import { delay } from "../shared/time.utils.js";
 
 export class SteamGameListProcessor {
   #steamClient;
   #databaseClient;
+  #options;
 
-  constructor(steamClient, databaseClient) {
+  constructor(steamClient, databaseClient, options) {
     this.#steamClient = steamClient;
     this.#databaseClient = databaseClient;
+    this.#options = options;
   }
 
-  async addGamesToCollection() {
-    this.#getAllSteamApps();
-    this.#identifyGames();
+  run() {
+    while (true) {
+      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(
+        this.#options.batchSize
+      );
+      if (steamApps.length === 0) {
+        await delay(this.#options.noAppsFoundDelay);
+        continue;
+      }
+
+      await this.#identifyGames(steamApps);
+      await delay(this.#options.batchDelay);
+    }
   }
 
-  async #getAllSteamApps() {
-    const steamApps = await this.#steamClient.getAppList();
-    await this.#databaseClient.insertMany("steam_apps", steamApps);
-  }
-
-  async #identifyGames() {
-    const steamApps = await this.#databaseClient.getAll("steam_apps");
+  async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
-    const games = this.#filterSteamAppsByAppType(filteredSteamApps);
 
-    this.#databaseClient.insertMany("games", games);
+    const games = this.#filterSteamAppsByAppType(filteredSteamApps);
+    if (games.length !== 0) {
+      this.#databaseClient.insertMany("games", games);
+    }
+
+    steamApps.forEach((steamApp) =>
+      this.#databaseClient.identifySteamAppById(steamApp.appid)
+    );
   }
 
   async #filterSteamAppsByAppType(steamApps) {
+    if (steamApps.length === 0) return [];
+
+    const httpDetailsPages = this.#getHttpDetailsPages(steamApps);
+
+    const games = this.#addIdentifiedGamesToList(steamApps, httpDetailsPages);
+
+    await delay(this.#options.unitDelay);
+
+    return games;
+  }
+
+  async #getHttpDetailsPages(steamApps) {
+    const httpDetailsPages = [];
+    for (let steamApp in steamApps) {
+      httpDetailsPages.push(
+        await this.#steamClient.getAppHttpDetailsSteam(steamApp)
+      );
+      await delay(this.#options.unitDelay);
+    }
+
+    return httpDetailsPages;
+  }
+
+  #addIdentifiedGamesToList(steamApps, httpDetailsPages) {
     const games = [];
 
-    for (let steamApp in steamApps) {
-      const detailsPage = await this.#steamClient.getAppDetailsPage(steamApp);
-
-      if (steamAppIsGame(detailsPage)) {
-        games.push(new Game(steamApp));
+    for (let i = 0; i < steamApps.length; i++) {
+      if (steamAppIsGame(httpDetailsPages[i])) {
+        games.push(new Game(steamApps[i]));
         continue;
       }
 
       try {
-        await this.#steamClient.getAppDetailsSteamcharts(steamApp);
+        await this.#steamClient.getAppHttpDetailsSteamcharts(steamApps[i]);
       } catch (error) {
         if (error.status === 500) continue;
+        throw error;
       }
-
       games.push(new Game(steamApp));
     }
 

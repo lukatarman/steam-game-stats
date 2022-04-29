@@ -14,10 +14,16 @@ function main() {
   };
   const databaseClient = new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
-  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient);
+  const steamGameListProcessorOptions = {
+    batchSize: 10,
+    batchDelay: 5000,
+    unitDelay: 500,
+    noAppsFoundDelay: 3600000,
+  };
+  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, steamGameListProcessorOptions);
   const steamPlayerProcessor = new SteamPlayerProcessor(steamClient, databaseClient);
 
   // run phase
-  steamGameListProcessor.addGamesToCollection();
+  steamGameListProcessor.run();
   steamPlayerProcessor.addPlayerCounts();
 }
