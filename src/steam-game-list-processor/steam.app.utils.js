@@ -14,7 +14,7 @@ export function filterSteamAppsByName(steamApps) {
     )
       return true;
 
-    return false;
+    return true;
   }
 }
 
@@ -72,7 +72,9 @@ export function steamAppIsGame(detailsPage) {
 
   if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return false;
 
-  const indexOfDlc = breadcrumbElement.children.indexOf(child => child.textContent === 'Downloadable Content');
+  const indexOfDlc = breadcrumbElement.children.indexOf(
+    (child) => child.textContent === "Downloadable Content"
+  );
 
   return indexOfDlc === -1 ? false : true;
 }
