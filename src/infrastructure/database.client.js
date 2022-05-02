@@ -75,7 +75,7 @@ export class DatabaseClient {
     this.#collections.get("games")
                      .updateOne(
                        { appid : { $eq : id }},
-                       { $set: {addedSteamchartsPlayerHistory: true}},
+                       { $set: {hasSteamchartsPlayerHistory: true}},
                       );
   }
 }
