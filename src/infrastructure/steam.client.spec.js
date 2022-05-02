@@ -1,24 +1,34 @@
 import axios from "axios";
 import { JSDOM } from "jsdom";
 import { SteamClient } from "./steam.client.js";
+import * as fs from 'fs';
 
-xdescribe("steam.client.js", () => {
-  const steamClient = new SteamClient(axios);
+fdescribe("steam.client.js", () => {
+  // const steamClient = new SteamClient(axios);
 
-  it("fetch html page of metro", async () => {
-    const page = await axios.get(`https://store.steampowered.com/app/1113410`);
+  // it("fetch html page of metro", async () => {
+  //   const page = await axios.get(`https://store.steampowered.com/app/570`);
 
-    console.log("Showing Vampire Survivors page:");
+  //   console.log("Showing Vampire Survivors page:");
+
+  //   fs.writeFile("../dota2steamcharts.txt", page.data, err => {
+  //     if(err) {
+  //       console.errer(err);
+  //     }
+  //   })
     // console.log(page.data);
 
-    const appDetilsAsString = new JSDOM(page.data);
-    const testText = appDetilsAsString.window.document.querySelector(".blockbg");
+    const date = new Date("September 21, 1989");
+    console.log(date);
 
-    for (let child of testText.children) {
-      console.log(child.textContent);
-      if (child.textContent === "Downloadable Content") console.log("Is DLC");
-    }
-    console.log("Is not DLC");
+    // const appDetilsAsString = new JSDOM(page.data);
+    // const testText = appDetilsAsString.window.document.querySelector(".blockbg");
+
+    // for (let child of testText.children) {
+    //   console.log(child.textContent);
+    //   if (child.textContent === "Downloadable Content") console.log("Is DLC");
+    // }
+    // console.log("Is not DLC");
 
     // const steamChartsAppDetailsAsString = await steamClient
     //   .getAppDetailsSteamCharts({ id: 829050 })
@@ -50,5 +60,5 @@ xdescribe("steam.client.js", () => {
     // console.log(indexOfTest);
 
     // expect(steamChartsAppDetailsAsDom).toBeDefined();
-  });
+  // });
 });
