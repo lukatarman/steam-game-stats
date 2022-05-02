@@ -5,18 +5,23 @@ export class SteamPlayerProcessor {
   #steamClient;
   #databaseClient;
 
-  constructor(steamClient, databaseClient) {
+  constructor(steamClient, databaseClient, options) {
     this.#databaseClient = databaseClient;
     this.#steamClient = steamClient;
+    this.#options = options;
   }
 
-  addPlayerCounts() {
-    this.#addPreviousPlayerCountsMOCK();
+  run() {
+    this.#addSteamchartsPlayerInfo();
     this.#addCurrentPlayerCounts;
   }
 
-  #addpreviousPlayerCountsMOCK() {
-    console.log("use crawler");
+  async #addSteamchartsPlayerInfo() {
+    const games = await this.#databaseClient.getXidentifiedGames(this.#options.batchSize);
+
+    while(games) {
+      
+    }
   }
 
   async #addCurrentPlayerCounts() {
