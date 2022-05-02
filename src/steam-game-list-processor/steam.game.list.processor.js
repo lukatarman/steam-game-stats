@@ -16,7 +16,7 @@ export class SteamGameListProcessor {
     this.#options = options;
   }
 
-  run() {
+  async run() {
     while (true) {
       const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(
         this.#options.batchSize
