@@ -3,8 +3,9 @@ import { JSDOM } from "jsdom";
 export function parsePlayerHistory(pageHttpDetails) {
     const dom = new JSDOM(pageHttpDetails.data);
     const playerHistoryEntries = dom.window.document.querySelector(".common-table tbody").children;
-    const playerHistories = [];
 
+    const playerHistories = [];
+    
     for(let entry of playerHistoryEntries) {
         if(entry[0].textContent === "Last 30 Days") continue;
     
