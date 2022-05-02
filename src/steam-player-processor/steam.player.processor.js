@@ -1,5 +1,6 @@
 import { getCurrentPlayers } from "./current.players.receive.utils";
 import { addCurrentPlayersToGames } from "./current.players.updater";
+import { parsePlayerHistory } from "./services/player.history.service";
 
 export class SteamPlayerProcessor {
   #steamClient;
@@ -12,15 +13,24 @@ export class SteamPlayerProcessor {
   }
 
   run() {
-    this.#addSteamchartsPlayerInfo();
-    this.#addCurrentPlayerCounts;
+    this.#addSteamchartsPlayerHistory();
+    this.#addCurrentPlayerCounts();
   }
 
-  async #addSteamchartsPlayerInfo() {
-    const games = await this.#databaseClient.getXidentifiedGames(this.#options.batchSize);
+  async #addSteamchartsPlayerHistory() {
+    while(true) {
+      const games = await this.#databaseClient.getXidentifiedGamesNoSteamchartsPlayerHistory(this.#options.batchSize);
+      if(!games) break;
 
-    while(games) {
-      
+      for(let game of games) {
+        const pageHttpDetails = this.#steamClient.game.getAppHttpDetailsSteamcharts(game);
+
+        const gamePlayerHistories = parsePlayerHistory(pageHttpDetails);
+
+        game.playerHistory = gamePlayerHistories;
+
+        this.#databaseClient.addSteamchartsPlayerHistoryById(game.id);
+      }
     }
   }
 
