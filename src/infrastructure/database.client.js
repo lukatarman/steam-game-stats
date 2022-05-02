@@ -64,4 +64,12 @@ export class DatabaseClient {
                        { $set: {identified: true}},
                       );
   }
+
+  getXidentifiedGamesNoPlayerHistory( amount ) {
+    return this.#collections.get("games")
+                            .find({ $and: [{ identified: { $eq: true }}, ]
+                              
+                            })
+                            .limit(amount);
+  }
 }
