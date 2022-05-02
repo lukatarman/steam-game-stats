@@ -65,11 +65,17 @@ export class DatabaseClient {
                       );
   }
 
-  getXidentifiedGamesNoPlayerHistory( amount ) {
+  getXidentifiedGamesNoSteamchartsPlayerHistory( amount ) {
     return this.#collections.get("games")
-                            .find({ $and: [{ identified: { $eq: true }}, ]
-                              
-                            })
+                            .find({ $and: [{ identified: { $eq: true }}, {hasSteamchartsPlayerHistory : { $eq: false }}]})
                             .limit(amount);
+  }
+
+  addSteamchartsPlayerHistoryById(id) {
+    this.#collections.get("games")
+                     .updateOne(
+                       { appid : { $eq : id }},
+                       { $set: {addedSteamchartsPlayerHistory: true}},
+                      );
   }
 }
