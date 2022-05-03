@@ -36,4 +36,28 @@ export class SteamchartsHistoryProcessor {
     }
     delay(this.#options.batchDelay);
   }
+
+  async #addSteamchartsPlayerHistoryXXX() {
+    while(true) {
+      const gamesNoSteamchartsPlayerHistory = await this.#databaseClient.getXidentifiedGamesNoSteamchartsPlayerHistory(this.#options.batchSize);
+      if(!gamesNoSteamchartsPlayerHistory) break;
+
+      this.#processAndAddData(gamesNoSteamchartsPlayerHistory);
+
+      this.#databaseClient.addSteamchartsPlayerHistoryById(game.id);
+    }
+    delay(this.#options.batchDelay);
+  }
+
+  #processDataAndAdd(games) {
+    for(let game of gamesNoSteamchartsPlayerHistory) {
+      const pageHttpDetails = await this.#steamClient.game.getAppHttpDetailsSteamcharts(game);
+
+      const gamePlayerHistories = parsePlayerHistory(pageHttpDetails);
+
+      game.playerHistory = gamePlayerHistories;
+
+      delay(this.#options.unitDelay);
+    }
+  }
 }
