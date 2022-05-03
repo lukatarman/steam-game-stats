@@ -18,9 +18,7 @@ export class SteamGameListProcessor {
 
   async run() {
     while (true) {
-      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(
-        this.#options.batchSize
-      );
+      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
       if (steamApps.length === 0) {
         await delay(this.#options.noAppsFoundDelay);
         continue;
@@ -42,6 +40,8 @@ export class SteamGameListProcessor {
     steamApps.forEach((steamApp) =>
       this.#databaseClient.identifySteamAppById(steamApp.appid)
     );
+
+    return Promise.resolve();
   }
 
   async #filterSteamAppsByAppType(steamApps) {
