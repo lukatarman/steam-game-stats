@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { parsePlayerHistory } from "./player.history.service.js";
 
-fdescribe("player.history.service.js", () => {
+describe("player.history.service.js", () => {
     describe(".parsePlayerHistory", () => {
         describe("if the first entry is 'Last 30 Days', and the game is Elden Ring", () => {
             let playerHistories;
