@@ -3,20 +3,20 @@ import { JSDOM } from "jsdom";
 import { SteamClient } from "./steam.client.js";
 import * as fs from 'fs';
 
-fdescribe("steam.client.js", () => {
+xdescribe("steam.client.js", () => {
   // const steamClient = new SteamClient(axios);
 
-  // it("fetch html page of metro", async () => {
-  //   const page = await axios.get(`https://store.steampowered.com/app/570`);
+  it("fetch html page of metro", async () => {
+    const page = await axios.get(`https://steamcharts.com/app/1245620`);
 
-  //   console.log("Showing Vampire Survivors page:");
+    console.log("Showing Vampire Survivors page:");
 
-  //   fs.writeFile("../dota2steamcharts.txt", page.data, err => {
-  //     if(err) {
-  //       console.errer(err);
-  //     }
-  //   })
-    // console.log(page.data);
+    fs.writeFile("../elden-ring-steamcharts.txt", page.data, err => {
+      if(err) {
+        console.errer(err);
+      }
+    })
+    console.log(page.data);
 
     const date = new Date("September 21, 1989");
     console.log(date);
@@ -60,5 +60,5 @@ fdescribe("steam.client.js", () => {
     // console.log(indexOfTest);
 
     // expect(steamChartsAppDetailsAsDom).toBeDefined();
-  // });
+  });
 });
