@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+export const eldenRingHttpDetailsSteamcharts = `<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -49,11 +49,11 @@
 		alt="ELDEN RING"
 		width="184" height="69">
 	<div class="app-stat"> 
-		<span class="num">102319</span>
-		<br>playing <abbr class="timeago" title="2022-05-03T10:00:55Z"></abbr>
+		<span class="num">121861</span>
+		<br>playing <abbr class="timeago" title="2022-05-04T14:01:19Z"></abbr>
 	</div>
 	<div class="app-stat"> 
-		<span class="num">148352</span>
+		<span class="num">139192</span>
 		<br>24-hour peak
 	</div>
 	<div class="app-stat"> 
@@ -88,10 +88,10 @@
 		<tbody>
 			<tr class="odd">
 				<td class="month-cell left italic">Last 30 Days</td>
-				<td class="right num-f italic">198437.64</td>
-				<td class="right num-p gainorloss italic">-13031.2</td>
-				<td class="right gainorloss italic">-6.16%</td>
-				<td class="right num italic">457067</td>
+				<td class="right num-f italic">189565.76</td>
+				<td class="right num-p gainorloss italic">-21903.1</td>
+				<td class="right gainorloss italic">-10.36%</td>
+				<td class="right num italic">367192</td>
 			</tr>
 			
 			<tr >
@@ -179,4 +179,4 @@ ga('pcn.send', 'pageview');
 </script>
 
 </body>
-</html>
+</html>`;
