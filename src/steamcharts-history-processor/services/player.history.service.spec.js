@@ -1,20 +1,13 @@
-import * as fs from 'fs';
 import { parsePlayerHistory } from "./player.history.service.js";
+import { eldenRingHttpDetailsSteamcharts } from "../../../assets/http.details.page.steamcharts.data.set.js";
 
 describe("player.history.service.js", () => {
     describe(".parsePlayerHistory", () => {
         describe("if the first entry is 'Last 30 Days', and the game is Elden Ring", () => {
             let playerHistories;
-            let response;
 
-            beforeAll(async () => {
-                try{
-                    response = fs.readFileSync("assets/elden-ring-steamcharts.txt", "utf8");
-                } catch (err) {
-                    console.error(err);
-                }
-
-                playerHistories = parsePlayerHistory(response);
+            beforeAll(() => {
+                playerHistories = parsePlayerHistory(eldenRingHttpDetailsSteamcharts); 
             })
 
             it("playerHistories has two entries", () => {
@@ -22,60 +15,23 @@ describe("player.history.service.js", () => {
             })
         })
 
-        describe("the first entries' player amount", () => {
+        describe("the first entries'", () => {
             let playerHistories;
-            let response;
 
-            beforeAll(async () => {
-                try{
-                    response = fs.readFileSync("assets/elden-ring-steamcharts.txt", "utf8");
-                } catch (err) {
-                    console.error(err);
-                }
-
-                playerHistories = parsePlayerHistory(response);
+            beforeAll(() => {
+                playerHistories = parsePlayerHistory(eldenRingHttpDetailsSteamcharts); 
             })
 
-            it("is 211468", () => {
+            it("player amount is 211468", () => {
                 expect(playerHistories[0].players).toBe(211468);
             })
-        })
 
-        describe("the second entries' month", () => {
-            let playerHistories;
-            let response;
-
-            beforeAll(async () => {
-                try{
-                    response = fs.readFileSync("assets/elden-ring-steamcharts.txt", "utf8");
-                } catch (err) {
-                    console.error(err);
-                }
-
-                playerHistories = parsePlayerHistory(response);
+            it("month is March", () => {
+                expect(playerHistories[0].date.getMonth()).toBe(3);
             })
 
-            it("to be March", () => {
-                expect(playerHistories[1].date.getMonth()).toBe(2);
-            })
-        })
-
-        describe("the second entries' year", () => {
-            let playerHistories;
-            let response;
-
-            beforeAll(async () => {
-                try{
-                    response = fs.readFileSync("assets/elden-ring-steamcharts.txt", "utf8");
-                } catch (err) {
-                    console.error(err);
-                }
-
-                playerHistories = parsePlayerHistory(response);
-            })
-
-            it("to be March", () => {
-                expect(playerHistories[1].date.getFullYear()).toBe(2022);
+            it("year is 2022", () => {
+                expect(playerHistories[0].date.getFullYear()).toBe(2022);
             })
         })
     })
