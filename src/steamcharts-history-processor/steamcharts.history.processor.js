@@ -20,24 +20,24 @@ export class SteamchartsHistoryProcessor {
     let breakCondition = true;
 
     while(breakCondition) {
-      const gamesNoSteamchartsPlayerHistory = await this.#databaseClient.getXidentifiedGamesNoSteamchartsPlayerHistory(this.#options.batchSize);
-      if(!gamesNoSteamchartsPlayerHistory) breakCondition = false;
+      const gamesWithoutPlayerHistory = await this.#databaseClient.getXidentifiedGamesNoSteamchartsPlayerHistory(this.#options.batchSize);
+      if(!gamesWithoutPlayerHistory) breakCondition = false;
 
-      const games = this.#processData(gamesNoSteamchartsPlayerHistory);
+      const games = this.#processData(gamesWithoutPlayerHistory);
 
       games.forEach(game => this.#databaseClient.updatePlayerHistoryById(game.id))
     }
     delay(this.#options.batchDelay);
   }
 
-  #processData(gamesNoSteamchartsPlayerHistory) {
+  #processData(gamesWithoutPlayerHistory) {
     let games = [];
-    for(let game of gamesNoSteamchartsPlayerHistory) {
+    for(let game of gamesWithoutPlayerHistory) {
       const pageHttpDetails = await this.#steamClient.getAppHttpDetailsSteamcharts(game);
 
-      const gamePlayerHistories = parsePlayerHistory(pageHttpDetails.data);
+      const playerHistory = parsePlayerHistory(pageHttpDetails.data);
 
-      game.playerHistory = gamePlayerHistories;
+      game.playerHistory = playerHistory;
 
       games.push(game);
 
