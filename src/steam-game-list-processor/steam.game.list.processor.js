@@ -86,18 +86,4 @@ export class SteamGameListProcessor {
 
     return games;
   }
-
-  #xxxaddIdentifiedGamesToList(steamApps, httpDetailsPages) {
-    const games = [];
-
-    for (let i = 0; i < steamApps.length; i++) {
-      if (steamAppIsGame(httpDetailsPages[i])) {
-        games.push(new Game(steamApps[i]));
-      }
-
-      await delay(this.#options.unitDelay);
-    }
-
-    return games;
-  }
 }
