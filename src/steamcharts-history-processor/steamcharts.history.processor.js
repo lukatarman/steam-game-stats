@@ -20,7 +20,7 @@ export class SteamchartsHistoryProcessor {
     let breakCondition = true;
 
     while(breakCondition) {
-      const gamesWithoutPlayerHistory = await this.#databaseClient.getXidentifiedGamesNoSteamchartsPlayerHistory(this.#options.batchSize);
+      const gamesWithoutPlayerHistory = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
       if(!gamesWithoutPlayerHistory) breakCondition = false;
 
       const games = this.#processData(gamesWithoutPlayerHistory);
