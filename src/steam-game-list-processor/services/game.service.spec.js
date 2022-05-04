@@ -139,25 +139,25 @@ describe("game.service.js", () => {
   describe(".steamAppIsGame", () => {
     describe("if there is no .blockbg class on the page", () => {
       it("the function returns false", () => {
-        expect(steamAppIsGame(gta5httpDetailPage)).toBe(false);
+        expect(steamAppIsGame( {data: gta5httpDetailPage} )).toBe(false);
       });
     });
 
     describe("if there is no 'All Software' or 'All Games' in the first breadcrumb child text", () => {
       it("the function returns false", () => {
-        expect(steamAppIsGame(cupheadSoundtrackHttpDetailPage)).toBe(false);
+        expect(steamAppIsGame( {data: cupheadSoundtrackHttpDetailPage })).toBe(false);
       });
     });
 
     describe("if the text 'Downloadable Content' is in one of the breadcrumbs", () => {
       it("the function returns false", () => {
-        expect(steamAppIsGame(destiny2dlcHttpDetailPage)).toBe(false);
+        expect(steamAppIsGame({ data: destiny2dlcHttpDetailPage })).toBe(false);
       });
     });
 
     describe(".blockbg class is on the page, either 'All Software' or 'All Games' is in the first breadcrumb and there is no 'Downloadable Content' text in the breadcrumbs", () => {
       it("the function returns true", () => {
-        expect(steamAppIsGame(vampireSurvivorsHttpDetailPage)).toBe(true);
+        expect(steamAppIsGame({ data: vampireSurvivorsHttpDetailPage })).toBe(true);
       });
     });
   });
