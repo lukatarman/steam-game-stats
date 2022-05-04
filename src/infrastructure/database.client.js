@@ -51,7 +51,7 @@ export class DatabaseClient {
       .deleteMany(filter);
   }
 
-  getXunidentifiedSteamApps( amount ) {
+  getXunidentifiedSteamApps(amount) {
     return this.#collections.get("steam_apps")
                             .find({ identified: { $eq: false }})
                             .limit(amount);
@@ -65,7 +65,7 @@ export class DatabaseClient {
                       );
   }
 
-  getxGamesWithoutPlayerHistory( amount ) {
+  getxGamesWithoutPlayerHistory(amount) {
     return this.#collections.get("games")
                             .find( {playerHistory : { $eq: false }} )
                             .limit(amount);
@@ -74,7 +74,7 @@ export class DatabaseClient {
   updatePlayerHistoryById(id, playerHistory) {
     this.#collections.get("games")
                      .updateOne(
-                       { appid : { $eq : id }},
+                       { id : { $eq : id }},
                        {$set: { playerHistory}}
                       );
   }
