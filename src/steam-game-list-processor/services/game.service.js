@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+import { Game } from "../models/game.js";
 
 export function filterSteamAppsByName(steamApps) {
   return steamApps.filter((steamApp) => doesNotEndWithDlcOrSoundtrack(steamApp));
@@ -34,7 +35,6 @@ export function tagNonGames(steamApps) {
   }
 }
 
-// todo: add tests
 export function steamAppIsGame(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage.data);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
@@ -51,3 +51,16 @@ export function steamAppIsGame(httpDetailsPage) {
 
   return true;
 }
+
+export function identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
+  const identifiedPages = [...htmlDetailsPages];
+
+  const games = steamApps.map((steamApp, index) => {
+    if (steamAppIsGame(htmlDetailsPages[index])) {
+      identifiedPages[index] = 'identified';
+      return new Game(steamApp);
+    }
+  }).filter(game => !!game);
+
+  return [games, identifiedPages];
+} 
