@@ -33,6 +33,12 @@ export class SteamGameListProcessor {
 
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
+    if (filteredSteamApps.length === 0) {
+      steamApps.forEach((steamApp) =>
+        this.#databaseClient.identifySteamAppById(steamApp.appid)
+      );
+      return;
+    }
 
     const games = this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
@@ -45,8 +51,6 @@ export class SteamGameListProcessor {
   }
 
   async #filterSteamAppsByAppType(steamApps) {
-    if (steamApps.length === 0) return [];
-
     const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const [games, identifiedPages] = this.#identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
