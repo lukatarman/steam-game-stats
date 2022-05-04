@@ -51,8 +51,6 @@ export class SteamGameListProcessor {
 
     const games = this.#addIdentifiedGamesToList(steamApps, httpDetailsPages);
 
-    await delay(this.#options.unitDelay);
-
     return games;
   }
 
@@ -84,6 +82,22 @@ export class SteamGameListProcessor {
         throw error;
       }
       games.push(new Game(steamApp));
+
+      await delay(this.#options.unitDelay);
+    }
+
+    return games;
+  }
+
+  #xxxaddIdentifiedGamesToList(steamApps, httpDetailsPages) {
+    const games = [];
+
+    for (let i = 0; i < steamApps.length; i++) {
+      if (steamAppIsGame(httpDetailsPages[i])) {
+        games.push(new Game(steamApps[i]));
+      }
+
+      await delay(this.#options.unitDelay);
     }
 
     return games;
