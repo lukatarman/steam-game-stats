@@ -24,12 +24,12 @@ export class SteamGameListProcessor {
         continue;
       }
 
-      await this.#identifyGames(steamApps);
+      this.#identifyGames(steamApps);
       await delay(this.#options.batchDelay);
     }
   }
 
-  async #identifyGames(steamApps) {
+  #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
 
     const games = this.#filterSteamAppsByAppType(filteredSteamApps);
@@ -40,8 +40,6 @@ export class SteamGameListProcessor {
     steamApps.forEach((steamApp) =>
       this.#databaseClient.identifySteamAppById(steamApp.appid)
     );
-
-    return Promise.resolve();
   }
 
   async #filterSteamAppsByAppType(steamApps) {
