@@ -9,11 +9,11 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
     for(let entry of playerHistoryEntries) {
         const firstElement = entry.firstElementChild;
 
-        if(entry.firstElementChild.textContent === "Last 30 Days") continue;
+        if(firstElement.textContent === "Last 30 Days") continue;
 
-        const averagePlayers = parseInt(entry.firstElementChild.nextElementSibling.textContent);
+        const averagePlayers = parseInt(firstElement.nextElementSibling.textContent);
         
-        const monthAndYear = entry.firstElementChild.textContent;
+        const monthAndYear = firstElement.textContent;
         const date = new Date(monthAndYear);
 
         const playerHistory = {
