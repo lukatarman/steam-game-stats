@@ -1,6 +1,6 @@
 import {
   filterSteamAppsByName,
-  steamAppIsGame,
+  identifyGamesFromSteamHtmlDetailsPages,
 } from "./services/game.service.js";
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
@@ -50,37 +50,24 @@ export class SteamGameListProcessor {
     );
   }
 
-  async #filterSteamAppsByAppType(steamApps) {
+  #filterSteamAppsByAppType(steamApps) {
     const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const [games, identifiedPages] = this.#identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+    const [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
 
     games.push(...this.#identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedPages));
 
     return games;
   }
 
-  #getSteamAppsHtmlDetailsPages(steamApps) {
+  async #getSteamAppsHtmlDetailsPages(steamApps) {
     return steamApps.map(async (steamApp) => {
       await delay(this.#options.unitDelay);
       return await this.#steamClient.getAppHttpDetailsSteam(steamApp);
     });
   }
 
-  #identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
-    const identifiedPages = [...htmlDetailsPages];
-
-    const games = steamApps.map((steamApp, index) => {
-      if (steamAppIsGame(htmlDetailsPages[index])) {
-        identifiedPages[index] = 'identified';
-        return new Game(steamApp);
-      }
-    }).filter(game => !!game);
-
-    return [games, identifiedPages];
-  }
-
-  #identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedPages) {
+  async #identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedPages) {
     return steamApps.map((steamApp, index) => {
       if (identifiedPages[index] === 'identified') return;
 
