@@ -65,9 +65,9 @@ export class DatabaseClient {
                       );
   }
 
-  getXidentifiedGamesNoSteamchartsPlayerHistory( amount ) {
+  getxGamesWithoutPlayerHistory( amount ) {
     return this.#collections.get("games")
-                            .find({ $and: [{ identified: { $eq: true }}, {playerHistory : { $eq: false }}]})
+                            .find( {playerHistory : { $eq: false }} )
                             .limit(amount);
   }
 
