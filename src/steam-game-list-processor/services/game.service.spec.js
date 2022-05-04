@@ -5,7 +5,7 @@ import {
   destiny2dlcHttpDetailPage, 
   cupheadSoundtrackHttpDetailPage, 
   vampireSurvivorsHttpDetailPage 
-} from "../../../assets/http.details.pages.data.set"
+} from "../../../assets/http.details.pages.data.set.js"
 
 describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
