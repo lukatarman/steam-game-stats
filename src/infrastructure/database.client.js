@@ -71,10 +71,11 @@ export class DatabaseClient {
                             .limit(amount);
   }
 
-  updatePlayerHistoryById(id) {
+  updatePlayerHistoryById(id, playerHistory) {
     this.#collections.get("games")
                      .updateOne(
                        { appid : { $eq : id }},
+                       {$set: { playerHistory}}
                       );
   }
 }
