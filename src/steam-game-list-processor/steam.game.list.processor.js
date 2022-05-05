@@ -74,7 +74,7 @@ export class SteamGameListProcessor {
       await delay(this.#options.unitDelay);
 
       try {
-        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[i]);
+        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[i].appid);
         return new Game(steamApp);
       } catch (error) {
         if (error.status !== 500) throw error;
