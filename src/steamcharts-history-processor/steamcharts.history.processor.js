@@ -36,9 +36,7 @@ export class SteamchartsHistoryProcessor {
     games.forEach((game) => {
       const pageHttpDetails = await this.#steamClient.getAppHttpDetailsSteamcharts(game);
 
-      const playerHistory = parsePlayerHistory(pageHttpDetails.data);
-
-      game.playerHistory = playerHistory;
+      game.playerHistory = parsePlayerHistory(pageHttpDetails.data);
 
       delay(this.#options.unitDelay);
     })
