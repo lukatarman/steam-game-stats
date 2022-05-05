@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+import { Game } from "../../models/game.js";
 
 export function filterSteamAppsByName(steamApps) {
   return steamApps.filter((steamApp) => doesNotEndWithDlcOrSoundtrack(steamApp));
@@ -18,27 +19,8 @@ export function filterSteamAppsByName(steamApps) {
   }
 }
 
-/**
- * @deprecated
- */
-export function tagNonGames(steamApps) {
-  return steamApps
-    .map((steamApp) => steamAppNameToLowerCase(steamApp))
-    .map((steamApp) => tagNonGameIfIncludesKeywords(steamApp));
-
-  function steamAppNameToLowerCase(steamApp) {
-    return { ...steamApp, name: steamApp.name.toLowerCase() };
-  }
-
-  function tagNonGameIfIncludesKeywords(steamApp) {
-    return steamApp.name.includes("dlc") || steamApp.name.includes("soundtrack")
-      ? { ...steamApp, isGame: false }
-      : steamApp;
-  }
-}
-
 export function steamAppIsGame(httpDetailsPage) {
-  const dom = new JSDOM(httpDetailsPage.data);
+  const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
   if (!breadcrumbElement) return false;
