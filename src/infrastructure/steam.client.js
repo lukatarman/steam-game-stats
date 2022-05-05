@@ -24,7 +24,7 @@ export class SteamClient {
   getAppHttpDetailsSteam(steamApp) {
     const url = `https://store.steampowered.com/app/${steamApp.id}`;
 
-    return this.#httpClient.get(url);
+    return this.#httpClient.get(url).data;
   }
 
   getAppHttpDetailsSteamcharts(steamApp) {
