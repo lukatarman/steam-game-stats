@@ -72,71 +72,6 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".tagNonGames", () => {
-    describe("tags an entry as not a game", () => {
-      let games;
-
-      beforeAll(() => {
-        const game = {
-          appid: 1903570,
-          name: "MY HERO ONE'S JUSTICE 2 DLC Pack 9 Midnight",
-        };
-        games = tagNonGames([game]);
-      });
-
-      it("adds isGame=false if name includes 'dlc' keyword", () => {
-        expect(games[0].isGame).toBeFalse();
-      });
-    });
-
-    describe("tags an entry as not a game", () => {
-      let games;
-
-      beforeAll(() => {
-        const game = {
-          appid: 1902590,
-          name: "Logic World Soundtrack",
-        };
-        games = tagNonGames([game]);
-      });
-
-      it("adds isGame=false if name includes 'soundtrack' keyword", () => {
-        expect(games[0].isGame).toBeFalse();
-      });
-    });
-
-    describe("does not tag if the name contains no keywords", () => {
-      let games;
-
-      beforeAll(() => {
-        const game = {
-          appid: 1902630,
-          name: "Lighthouse of Madness Playtest",
-        };
-        games = tagNonGames([game]);
-      });
-
-      it("does not add isGame property", () => {
-        expect(games[0].isGame).toBeUndefined();
-      });
-    });
-
-    describe("tags every game as not a game which contains the keywords 'dlc' or 'soundtrack' in its name", () => {
-      let games;
-
-      beforeAll(() => {
-        games = tagNonGames(gamesMock);
-      });
-
-      it("the array has 15 entries", () => {
-        const isGameFalseCounter = games.filter(
-          (games) => games.isGame !== undefined
-        ).length;
-        expect(isGameFalseCounter).toBe(28);
-      });
-    });
-  });
-
   describe(".steamAppIsGame", () => {
     describe("if there is no .blockbg class on the page", () => {
       let isGame;
@@ -199,7 +134,7 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".identifyGamesFromSteamHtmlDetailsPages", () => {
+ fdescribe(".identifyGamesFromSteamHtmlDetailsPages", () => {
     let steamApps;
     let htmlDetailsPages;
     let games;
@@ -207,8 +142,17 @@ describe("game.service.js", () => {
 
     describe("identifies one game successfully", () => {
       beforeAll(() => {
-        steamApps = smallSteamAppsDataset()
-        htmlDetailsPages = smallHtmlDetailsPagesDataset();
+        steamApps = [
+          {
+            appid: 1904380,
+            name: "Mortal Darkness",
+          },
+          {
+            appid: 1898200,
+            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
+          },
+        ];
+        htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
 
         [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
       });
@@ -218,11 +162,11 @@ describe("game.service.js", () => {
       });
 
       it("the game has the same id as the steam app", () => {
-        expect(games[0].id).toBe(steamApps[3].appid);
+        expect(games[0].id).toBe(steamApps[0].appid);
       });
 
       it("the game has the same name as the steam app", () => {
-        expect(games[0].name).toBe(steamApps[3].name);
+        expect(games[0].name).toBe(steamApps[0].name);
       });
 
       it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
@@ -230,11 +174,11 @@ describe("game.service.js", () => {
       });
 
       it("the identified game page has the string 'identified' in its place in the array", () => {
-        expect(identifiedPages[3]).toBe('identified');
+        expect(identifiedPages[0]).toBe('identified');
       });
     });
 
-    describe("identifies two games successfully", () => {
+    xdescribe("identifies two games successfully", () => {
       it("returns an array of games with length 2", () => {});
       it("the first game has the same id as the according steam app", () => {});
       it("the first game has the same name as the according steam app", () => {});
@@ -245,7 +189,7 @@ describe("game.service.js", () => {
       it("the second identified game page has the string 'identified' in its place in the array", () => {});
     });
 
-    describe("can not identify any games", () => {
+    xdescribe("can not identify any games", () => {
       it("returns an empty array of games with length 0", () => {});
       it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {});
       it("identifiedPages array has no entry with the 'identified' string'", () => {});
