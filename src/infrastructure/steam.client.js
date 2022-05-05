@@ -21,7 +21,7 @@ export class SteamClient {
     return this.#httpClient.get(url, options).data.response.player_count;
   }
 
-  getAppHttpDetailsSteam(steamApp) {
+  getSteamAppHtmlDetailsPage(steamApp) {
     const url = `https://store.steampowered.com/app/${steamApp.id}`;
 
     return this.#httpClient.get(url).data;

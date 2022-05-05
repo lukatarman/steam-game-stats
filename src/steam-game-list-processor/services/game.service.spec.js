@@ -80,7 +80,7 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 271590 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp);
         isGame = steamAppIsGame(httpDetails);
       });
 
@@ -95,7 +95,7 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 1701720 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp);
         isGame = steamAppIsGame(httpDetails);
       });
 
@@ -110,7 +110,7 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 1656330 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp);
         isGame = steamAppIsGame(httpDetails);
       });
 
@@ -125,7 +125,7 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 1794680 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp);
         isGame = steamAppIsGame(httpDetails);
       });
 
