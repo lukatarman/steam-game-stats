@@ -13,26 +13,20 @@ describe("player.history.service.js", () => {
             it("playerHistories has two entries", () => {
                 expect(playerHistories.length).toBe(2);
             })
-        })
 
-        describe("the first entries'", () => {
-            let playerHistories;
-
-            beforeAll(() => {
-                playerHistories = parsePlayerHistory(eldenRingHttpDetailsSteamcharts); 
-            })
-
-            it("player amount is 211468", () => {
+            it("the first entries' player amount is 211468", () => {
                 expect(playerHistories[0].players).toBe(211468);
             })
 
-            it("month is March", () => {
+            it("the first entries' month is March", () => {
                 expect(playerHistories[0].date.getMonth()).toBe(3);
             })
 
-            it("year is 2022", () => {
+            it("the first entries' year is 2022", () => {
                 expect(playerHistories[0].date.getFullYear()).toBe(2022);
             })
         })
+
+            
     })
 })
