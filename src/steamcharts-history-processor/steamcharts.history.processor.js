@@ -23,14 +23,14 @@ export class SteamchartsHistoryProcessor {
       const gamesWithoutPlayerHistory = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
       if(!gamesWithoutPlayerHistory) continueLoop = false;
 
-      const games = this.#processData(gamesWithoutPlayerHistory);
+      const games = this.#collectPlayerHistory(gamesWithoutPlayerHistory);
 
-      this.#addToDatabase(games);
+      this.#persist(games);
     }
     delay(this.#options.batchDelay);
   }
 
-  #processData(gamesWithoutPlayerHistory) {
+  #collectPlayerHistory(gamesWithoutPlayerHistory) {
     const games = [...gamesWithoutPlayerHistory];
 
     games.forEach((game) => {
@@ -46,7 +46,7 @@ export class SteamchartsHistoryProcessor {
     return games;
   }
 
-  #addToDatabase(games) {
+  #persist(games) {
     games.forEach((game) => {
       this.#databaseClient.updatePlayerHistoryById(game);
     })
