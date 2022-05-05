@@ -193,4 +193,31 @@ describe("game.service.js", () => {
       });
     });
   });
+
+  describe(".identifyGamesFromSteamHtmlDetailsPages", () => {
+    describe("identifies one game successfully", () => {
+      it("returns an array of games with length 1", () => {});
+      it("the game has the same id as the steam app", () => {});
+      it("the game has the same name as the steam app", () => {});
+      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {});
+      it("the identified game page has the string 'identified' in its place in the array", () => {});
+    });
+
+    describe("identifies two games successfully", () => {
+      it("returns an array of games with length 2", () => {});
+      it("the first game has the same id as the according steam app", () => {});
+      it("the first game has the same name as the according steam app", () => {});
+      it("the second game has the same id as the according steam app", () => {});
+      it("the second game has the same name as the according steam app", () => {});
+      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {});
+      it("the first identified game page has the string 'identified' in its place in the array", () => {});
+      it("the second identified game page has the string 'identified' in its place in the array", () => {});
+    });
+
+    describe("can not identify any games", () => {
+      it("returns an empty array of games with length 0", () => {});
+      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {});
+      it("identifiedPages array has no entry with the 'identified' string'", () => {});
+    });
+  });
 });
