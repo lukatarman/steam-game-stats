@@ -18,6 +18,9 @@ export function filterSteamAppsByName(steamApps) {
   }
 }
 
+/**
+ * @deprecated
+ */
 export function tagNonGames(steamApps) {
   return steamApps
     .map((steamApp) => steamAppNameToLowerCase(steamApp))
@@ -34,7 +37,6 @@ export function tagNonGames(steamApps) {
   }
 }
 
-// todo: add tests
 export function steamAppIsGame(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage.data);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
@@ -50,4 +52,18 @@ export function steamAppIsGame(httpDetailsPage) {
   }
 
   return true;
+}
+
+export function identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
+  const identifiedPages = [...htmlDetailsPages];
+
+  const games = steamApps.map((steamApp, index) => {
+    if (steamAppIsGame(identifiedPages[index])) {
+      identifiedPages[index] = 'identified';
+      return new Game(steamApp);
+    }
+    return;
+  }).filter(game => !!game);
+
+  return [games, identifiedPages];
 }
