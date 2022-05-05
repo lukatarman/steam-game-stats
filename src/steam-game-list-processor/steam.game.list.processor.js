@@ -16,22 +16,20 @@ export class SteamGameListProcessor {
     this.#options = options;
   }
 
-  run() {
+  async run() {
     while (true) {
-      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(
-        this.#options.batchSize
-      );
+      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
       if (steamApps.length === 0) {
         await delay(this.#options.noAppsFoundDelay);
         continue;
       }
 
-      await this.#identifyGames(steamApps);
+      this.#identifyGames(steamApps);
       await delay(this.#options.batchDelay);
     }
   }
 
-  async #identifyGames(steamApps) {
+  #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
 
     const games = this.#filterSteamAppsByAppType(filteredSteamApps);
@@ -50,8 +48,6 @@ export class SteamGameListProcessor {
     const httpDetailsPages = this.#getHttpDetailsPages(steamApps);
 
     const games = this.#addIdentifiedGamesToList(steamApps, httpDetailsPages);
-
-    await delay(this.#options.unitDelay);
 
     return games;
   }
@@ -84,6 +80,8 @@ export class SteamGameListProcessor {
         throw error;
       }
       games.push(new Game(steamApp));
+
+      await delay(this.#options.unitDelay);
     }
 
     return games;

@@ -14,7 +14,7 @@ export function filterSteamAppsByName(steamApps) {
     )
       return true;
 
-    return true;
+    return false;
   }
 }
 
@@ -34,7 +34,6 @@ export function tagNonGames(steamApps) {
   }
 }
 
-// todo: add tests
 export function steamAppIsGame(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage.data);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
