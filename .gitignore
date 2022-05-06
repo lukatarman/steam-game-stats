@@ -1,4 +1,5 @@
 node_modules/
 db/
 todo.md
+.vscode
 src/infrastructure/steam.client.spec.js
