@@ -15,7 +15,7 @@ export function filterSteamAppsByName(steamApps) {
     )
       return true;
 
-    return true;
+    return false;
   }
 }
 
