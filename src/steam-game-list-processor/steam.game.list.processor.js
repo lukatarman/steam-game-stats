@@ -34,9 +34,7 @@ export class SteamGameListProcessor {
   #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     if (filteredSteamApps.length === 0) {
-      steamApps.forEach((steamApp) =>
-        this.#databaseClient.identifySteamAppById(steamApp.appid)
-      );
+      this.#identifySteamApps(steamApps);
       return;
     }
 
@@ -45,9 +43,11 @@ export class SteamGameListProcessor {
       this.#databaseClient.insertMany("games", games);
     }
 
-    steamApps.forEach((steamApp) =>
-      this.#databaseClient.identifySteamAppById(steamApp.appid)
-    );
+    this.#identifySteamApps(steamApps);
+  }
+
+  #identifySteamApps(steamApps) {
+    steamApps.forEach((steamApp) => this.#databaseClient.identifySteamAppById(steamApp.appid));
   }
 
   #filterSteamAppsByAppType(steamApps) {
