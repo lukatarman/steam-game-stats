@@ -27,18 +27,18 @@ export class SteamchartsHistoryProcessor {
 
       this.#persist(games);
     }
-    delay(this.#options.batchDelay);
+    await delay(this.#options.batchDelay);
   }
 
   #collectPlayerHistory(gamesWithoutPlayerHistory) {
     const games = [...gamesWithoutPlayerHistory];
 
-    games.forEach((game) => {
+    games.forEach(async (game) => {
       const pageHttpDetails = await this.#steamClient.getAppHttpDetailsSteamcharts(game);
 
       game.playerHistory = parsePlayerHistory(pageHttpDetails.data);
 
-      delay(this.#options.unitDelay);
+      await delay(this.#options.unitDelay);
     })
 
     return games;
