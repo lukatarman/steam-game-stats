@@ -1,5 +1,5 @@
 import { gamesMock } from "../../../assets/small.data.set.js";
-import { steamAppIsGame, filterSteamAppsByName, identifyGamesFromSteamHtmlDetailsPages } from "./game.service.js";
+import { steamAppIsGame, filterSteamAppsByName, discoverGamesFromSteamHtmlDetailsPages } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
@@ -123,13 +123,13 @@ describe("game.service.js", () => {
     });
   });
 
- describe(".identifyGamesFromSteamHtmlDetailsPages", () => {
+ describe(".discoverGamesFromSteamHtmlDetailsPages", () => {
     let steamApps;
     let htmlDetailsPages;
     let games;
-    let identifiedPages;
+    let discoveredPages;
 
-    describe("identifies one game successfully", () => {
+    describe("discovers one game successfully", () => {
       beforeAll(() => {
         steamApps = [
           {
@@ -143,7 +143,7 @@ describe("game.service.js", () => {
         ];
         htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
 
-        [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
       });
 
       it("returns an array of games with length 1", () => {
@@ -158,16 +158,16 @@ describe("game.service.js", () => {
         expect(games[0].name).toBe(steamApps[0].name);
       });
 
-      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
-        expect(identifiedPages.length).toBe(htmlDetailsPages.length);
+      it("returns an array of discoveredPages with the same length as htmlDetailsPages", () => {
+        expect(discoveredPages.length).toBe(htmlDetailsPages.length);
       });
 
-      it("the identified game page has the string 'identified' in its place in the array", () => {
-        expect(identifiedPages[0]).toBe('identified');
+      it("the discovered game page has the string 'discovered' in its place in the array", () => {
+        expect(discoveredPages[0]).toBe('discovered');
       });
     });
 
-    describe("identifies two games successfully", () => {
+    describe("discovers two games successfully", () => {
       beforeAll(() => {
         steamApps = [
           {
@@ -189,7 +189,7 @@ describe("game.service.js", () => {
           animaddicts2gameHtmlDetailsPage
         ];
 
-        [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
       });
 
       it("returns an array of games with length 2", () => {
@@ -212,16 +212,16 @@ describe("game.service.js", () => {
         expect(games[1].name).toBe(steamApps[2].name);
       });
 
-      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
-        expect(identifiedPages.length).toBe(htmlDetailsPages.length);
+      it("returns an array of discoveredPages with the same length as htmlDetailsPages", () => {
+        expect(discoveredPages.length).toBe(htmlDetailsPages.length);
       });
 
-      it("the first identified game page has the string 'identified' in its place in the array", () => {
-        expect(identifiedPages[0]).toBe('identified');
+      it("the first discovered game page has the string 'discovered' in its place in the array", () => {
+        expect(discoveredPages[0]).toBe('discovered');
       });
 
-      it("the second identified game page has the string 'identified' in its place in the array", () => {
-        expect(identifiedPages[2]).toBe('identified');
+      it("the second discovered game page has the string 'discovered' in its place in the array", () => {
+        expect(discoveredPages[2]).toBe('discovered');
       });
     });
 
@@ -237,19 +237,19 @@ describe("game.service.js", () => {
           glitchhikersSoundtrackHtmlDetailsPage,
         ];
 
-        [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
       });
 
       it("returns an empty array of games with length 0", () => {
         expect(games.length).toBe(0);
       });
 
-      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
-        expect(identifiedPages.length).toBe(htmlDetailsPages.length);
+      it("returns an array of discoveredPages with the same length as htmlDetailsPages", () => {
+        expect(discoveredPages.length).toBe(htmlDetailsPages.length);
       });
 
-      it("identifiedPages array has no entry with the 'identified' string'", () => {
-        expect(identifiedPages.indexOf('identified')).toBe(-1);
+      it("discoveredPages array has no entry with the 'discovered' string'", () => {
+        expect(discoveredPages.indexOf('discovered')).toBe(-1);
       });
     });
   });
