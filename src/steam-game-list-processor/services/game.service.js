@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { Game } from "../models/game.js";
+import { Game } from "../../models/game.js";
 
 export function filterSteamAppsByName(steamApps) {
   return steamApps.filter((steamApp) => doesNotEndWithDlcOrSoundtrack(steamApp));
@@ -19,24 +19,8 @@ export function filterSteamAppsByName(steamApps) {
   }
 }
 
-export function tagNonGames(steamApps) {
-  return steamApps
-    .map((steamApp) => steamAppNameToLowerCase(steamApp))
-    .map((steamApp) => tagNonGameIfIncludesKeywords(steamApp));
-
-  function steamAppNameToLowerCase(steamApp) {
-    return { ...steamApp, name: steamApp.name.toLowerCase() };
-  }
-
-  function tagNonGameIfIncludesKeywords(steamApp) {
-    return steamApp.name.includes("dlc") || steamApp.name.includes("soundtrack")
-      ? { ...steamApp, isGame: false }
-      : steamApp;
-  }
-}
-
 export function steamAppIsGame(httpDetailsPage) {
-  const dom = new JSDOM(httpDetailsPage.data);
+  const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
   if (!breadcrumbElement) return false;
@@ -56,11 +40,12 @@ export function identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
   const identifiedPages = [...htmlDetailsPages];
 
   const games = steamApps.map((steamApp, index) => {
-    if (steamAppIsGame(htmlDetailsPages[index])) {
+    if (steamAppIsGame(identifiedPages[index])) {
       identifiedPages[index] = 'identified';
       return new Game(steamApp);
     }
+    return;
   }).filter(game => !!game);
 
   return [games, identifiedPages];
-} 
+}

@@ -1,7 +1,12 @@
 import axios from "axios";
 import { gamesMock } from "../../../assets/small.data.set.js";
-import { steamAppIsGame, filterSteamAppsByName, tagNonGames } from "./game.service.js";
+import { steamAppIsGame, filterSteamAppsByName, identifyGamesFromSteamHtmlDetailsPages } from "./game.service.js";
 import { SteamClient } from "../../infrastructure/steam.client.js";
+import { featressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.detals.page.js";
+import { goAceItGameHtmlDetailsPage } from "../../../assets/steam-details-pages/go.ace.it.game.html.details.page.js";
+import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.detail.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
 
 describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
@@ -67,79 +72,15 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".tagNonGames", () => {
-    describe("tags an entry as not a game", () => {
-      let games;
-
-      beforeAll(() => {
-        const game = {
-          appid: 1903570,
-          name: "MY HERO ONE'S JUSTICE 2 DLC Pack 9 Midnight",
-        };
-        games = tagNonGames([game]);
-      });
-
-      it("adds isGame=false if name includes 'dlc' keyword", () => {
-        expect(games[0].isGame).toBeFalse();
-      });
-    });
-
-    describe("tags an entry as not a game", () => {
-      let games;
-
-      beforeAll(() => {
-        const game = {
-          appid: 1902590,
-          name: "Logic World Soundtrack",
-        };
-        games = tagNonGames([game]);
-      });
-
-      it("adds isGame=false if name includes 'soundtrack' keyword", () => {
-        expect(games[0].isGame).toBeFalse();
-      });
-    });
-
-    describe("does not tag if the name contains no keywords", () => {
-      let games;
-
-      beforeAll(() => {
-        const game = {
-          appid: 1902630,
-          name: "Lighthouse of Madness Playtest",
-        };
-        games = tagNonGames([game]);
-      });
-
-      it("does not add isGame property", () => {
-        expect(games[0].isGame).toBeUndefined();
-      });
-    });
-
-    describe("tags every game as not a game which contains the keywords 'dlc' or 'soundtrack' in its name", () => {
-      let games;
-
-      beforeAll(() => {
-        games = tagNonGames(gamesMock);
-      });
-
-      it("the array has 15 entries", () => {
-        const isGameFalseCounter = games.filter(
-          (games) => games.isGame !== undefined
-        ).length;
-        expect(isGameFalseCounter).toBe(28);
-      });
-    });
-  });
-
-  describe(".steamAppIsGame", () => {
+  // todo: update tests - remove steam client
+  xdescribe(".steamAppIsGame", () => {
     describe("if there is no .blockbg class on the page", () => {
       let isGame;
 
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 271590 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
         isGame = steamAppIsGame(httpDetails);
       });
 
@@ -154,7 +95,7 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 1701720 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
         isGame = steamAppIsGame(httpDetails);
       });
 
@@ -169,7 +110,7 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 1656330 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
         isGame = steamAppIsGame(httpDetails);
       });
 
@@ -184,12 +125,143 @@ describe("game.service.js", () => {
       beforeAll(async () => {
         const steamClient = new SteamClient(axios);
         const steamApp = { id: 1794680 };
-        const httpDetails = await steamClient.getAppHttpDetailsSteam(steamApp);
+        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
         isGame = steamAppIsGame(httpDetails);
       });
 
       it("the function returns true", () => {
         expect(isGame).toBe(true);
+      });
+    });
+  });
+
+ describe(".identifyGamesFromSteamHtmlDetailsPages", () => {
+    let steamApps;
+    let htmlDetailsPages;
+    let games;
+    let identifiedPages;
+
+    describe("identifies one game successfully", () => {
+      beforeAll(() => {
+        steamApps = [
+          {
+            appid: 1904380,
+            name: "Mortal Darkness",
+          },
+          {
+            appid: 1898200,
+            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
+          },
+        ];
+        htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
+
+        [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+      });
+
+      it("returns an array of games with length 1", () => {
+        expect(games.length).toBe(1);
+      });
+
+      it("the game has the same id as the steam app", () => {
+        expect(games[0].id).toBe(steamApps[0].appid);
+      });
+
+      it("the game has the same name as the steam app", () => {
+        expect(games[0].name).toBe(steamApps[0].name);
+      });
+
+      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
+        expect(identifiedPages.length).toBe(htmlDetailsPages.length);
+      });
+
+      it("the identified game page has the string 'identified' in its place in the array", () => {
+        expect(identifiedPages[0]).toBe('identified');
+      });
+    });
+
+    describe("identifies two games successfully", () => {
+      beforeAll(() => {
+        steamApps = [
+          {
+            appid: 1904380,
+            name: "Mortal Darkness",
+          },
+          {
+            appid: 1898200,
+            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
+          },
+          {
+            appid: 1904320,
+            name: "Animaddicts 2",
+          },
+        ];
+        htmlDetailsPages = [
+          mortalDarknessGameHtmlDetailsPage,
+          glitchhikersSoundtrackHtmlDetailsPage,
+          animaddicts2gameHtmlDetailsPage
+        ];
+
+        [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+      });
+
+      it("returns an array of games with length 2", () => {
+        expect(games.length).toBe(2);
+      });
+
+      it("the first game has the same id as the according steam app", () => {
+        expect(games[0].id).toBe(steamApps[0].appid);
+      });
+
+      it("the first game has the same name as the according steam app", () => {
+        expect(games[0].name).toBe(steamApps[0].name);
+      });
+
+      it("the second game has the same id as the according steam app", () => {
+        expect(games[1].id).toBe(steamApps[2].appid);
+      });
+
+      it("the second game has the same name as the according steam app", () => {
+        expect(games[1].name).toBe(steamApps[2].name);
+      });
+
+      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
+        expect(identifiedPages.length).toBe(htmlDetailsPages.length);
+      });
+
+      it("the first identified game page has the string 'identified' in its place in the array", () => {
+        expect(identifiedPages[0]).toBe('identified');
+      });
+
+      it("the second identified game page has the string 'identified' in its place in the array", () => {
+        expect(identifiedPages[2]).toBe('identified');
+      });
+    });
+
+    describe("can not identify any games", () => {
+      beforeAll(() => {
+        steamApps = [
+          {
+            appid: 1898200,
+            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
+          },
+        ];
+        htmlDetailsPages = [
+          glitchhikersSoundtrackHtmlDetailsPage,
+        ];
+
+        [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+      });
+
+      it("returns an empty array of games with length 0", () => {
+        expect(games.length).toBe(0);
+      });
+
+      it("returns an array of identifiedPages with the same length as htmlDetailsPages", () => {
+        expect(identifiedPages.length).toBe(htmlDetailsPages.length);
+      });
+
+      it("identifiedPages array has no entry with the 'identified' string'", () => {
+        expect(identifiedPages.indexOf('identified')).toBe(-1);
       });
     });
   });

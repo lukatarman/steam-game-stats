@@ -31,7 +31,7 @@ export class SteamGameListProcessor {
     }
   }
 
-  async #identifyGames(steamApps) {
+  #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     if (filteredSteamApps.length === 0) {
       steamApps.forEach((steamApp) =>
@@ -53,9 +53,9 @@ export class SteamGameListProcessor {
   #filterSteamAppsByAppType(steamApps) {
     const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const [games, identifiedPages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+    const [games, identifiedGamePages] = identifyGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
 
-    games.push(...this.#identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedPages));
+    games.push(...this.#identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedGamePages));
 
     return games;
   }
@@ -63,23 +63,22 @@ export class SteamGameListProcessor {
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     return steamApps.map(async (steamApp) => {
       await delay(this.#options.unitDelay);
-      return await this.#steamClient.getAppHttpDetailsSteam(steamApp);
+      return await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
     });
   }
 
-  async #identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedPages) {
-    return steamApps.map((steamApp, index) => {
-      if (identifiedPages[index] === 'identified') return;
+  #identifyGamesFromSteamchartsHtmlDetailsPages(steamApps, identifiedGamePages) {
+    return steamApps.map(async (steamApp, index) => {
+      if (identifiedGamePages[index] === 'identified') return;
 
       await delay(this.#options.unitDelay);
 
       try {
-        await this.#steamClient.getAppHttpDetailsSteamcharts(steamApps[i]);
+        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[i].appid);
+        return new Game(steamApp);
       } catch (error) {
         if (error.status !== 500) throw error;
       }
-
-      return new Game(steamApp);
     }).filter(game => !!game);
   }
 }
