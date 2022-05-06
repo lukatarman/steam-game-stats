@@ -1,12 +1,13 @@
-import axios from "axios";
 import { gamesMock } from "../../../assets/small.data.set.js";
 import { steamAppIsGame, filterSteamAppsByName, identifyGamesFromSteamHtmlDetailsPages } from "./game.service.js";
-import { SteamClient } from "../../infrastructure/steam.client.js";
-import { featressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.detals.page.js";
-import { goAceItGameHtmlDetailsPage } from "../../../assets/steam-details-pages/go.ace.it.game.html.details.page.js";
-import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.detail.page.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
+import { goAceItGameHtmlDetailsPage } from "../../../assets/steam-details-pages/go.ace.it.game.html.details.page.js";
+import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
+import { theSims4catsAndDogsHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 
 describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
@@ -72,16 +73,12 @@ describe("game.service.js", () => {
     });
   });
 
-  // todo: update tests - remove steam client
-  xdescribe(".steamAppIsGame", () => {
-    describe("if there is no .blockbg class on the page", () => {
+  describe(".steamAppIsGame", () => {
+    describe("game is age restricted - there is no .blockbg class on the page", () => {
       let isGame;
 
       beforeAll(async () => {
-        const steamClient = new SteamClient(axios);
-        const steamApp = { id: 271590 };
-        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-        isGame = steamAppIsGame(httpDetails);
+        isGame = steamAppIsGame(gta5ageRestrictedHtmlDetailsPage);
       });
 
       it("the function returns false", () => {
@@ -93,10 +90,7 @@ describe("game.service.js", () => {
       let isGame;
 
       beforeAll(async () => {
-        const steamClient = new SteamClient(axios);
-        const steamApp = { id: 1701720 };
-        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-        isGame = steamAppIsGame(httpDetails);
+        isGame = steamAppIsGame(padakVideoHtmlDetailsPage);
       });
 
       it("the function returns false", () => {
@@ -108,10 +102,7 @@ describe("game.service.js", () => {
       let isGame;
 
       beforeAll(async () => {
-        const steamClient = new SteamClient(axios);
-        const steamApp = { id: 1656330 };
-        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-        isGame = steamAppIsGame(httpDetails);
+        isGame = steamAppIsGame(theSims4catsAndDogsHtmlDetailsPage);
       });
 
       it("the function returns false", () => {
@@ -123,10 +114,7 @@ describe("game.service.js", () => {
       let isGame;
 
       beforeAll(async () => {
-        const steamClient = new SteamClient(axios);
-        const steamApp = { id: 1794680 };
-        const httpDetails = await steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-        isGame = steamAppIsGame(httpDetails);
+        isGame = steamAppIsGame(feartressGameHtmlDetailsPage);
       });
 
       it("the function returns true", () => {
