@@ -15,9 +15,9 @@ export function delay(ms) {
   return new Promise(done => setTimeout(done, ms));
 }
 
-export function runFuncInLoopWithDelayOfXhours(func, x) {
-  // todo: pass in lastUpdate time in hours maybe?
-  const tillNextRun = hours > x ? hours - x : x - hours;
+export function runFuncInLoopWithDelayOfXhoursFromDate(func, x, date) {
+  const hours = hoursPassedSince(date);
+  const tillNextRun = hours > x ? x : x - hours;
   await delay(tillNextRun * 36e5);
 
   while(true) {
