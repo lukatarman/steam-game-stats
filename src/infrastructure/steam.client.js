@@ -21,15 +21,15 @@ export class SteamClient {
     return this.#httpClient.get(url, options).data.response.player_count;
   }
 
-  getAppHttpDetailsSteam(steamApp) {
-    const url = `https://store.steampowered.com/app/${steamApp.id}`;
+  getSteamAppHtmlDetailsPage(id) {
+    const url = `https://store.steampowered.com/app/${id}`;
 
-    return this.#httpClient.get(url);
+    return this.#httpClient.get(url).data;
   }
 
-  getAppHttpDetailsSteamcharts(steamApp) {
-    const url = `https://steamcharts.com/app/${steamApp.id}`;
+  getSteamAppHtmlDetailsPageFromSteamcharts(id) {
+    const url = `https://steamcharts.com/app/${id}`;
 
-    return this.#httpClient.get(url);
+    return this.#httpClient.get(url).data;
   }
 }

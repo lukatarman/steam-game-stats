@@ -4,19 +4,16 @@ import { addCurrentPlayersToGames } from "./current.players.updater";
 export class SteamPlayerProcessor {
   #steamClient;
   #databaseClient;
+  #options;
 
-  constructor(steamClient, databaseClient) {
+  constructor(steamClient, databaseClient, options) {
     this.#databaseClient = databaseClient;
     this.#steamClient = steamClient;
+    this.#options = options;
   }
 
-  addPlayerCounts() {
-    this.#addPreviousPlayerCountsMOCK();
-    this.#addCurrentPlayerCounts;
-  }
-
-  #addpreviousPlayerCountsMOCK() {
-    console.log("use crawler");
+  run() {
+    this.#addCurrentPlayerCounts();
   }
 
   async #addCurrentPlayerCounts() {
