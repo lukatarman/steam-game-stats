@@ -2,7 +2,5 @@
 export function diff(steamAppsApi, steamAppsDb) {
   const steamAppsDbIds = steamAppsDb.map(app => app.appid);
 
-  const steamAppsDiff = steamAppsApi.filter(app => !steamAppsDbIds.includes(app.appid));
-
-  return steamAppsDiff.map(app => { return { ...app, identified: false }});
+  return steamAppsApi.filter(app => !steamAppsDbIds.includes(app.appid));
 }
