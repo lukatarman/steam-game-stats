@@ -43,6 +43,7 @@ export class SteamDataAggregator {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
     const steamApps    = diff(steamAppsApi, steamAppsDb);
+    if (steamApps.length === 0) return;
     await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
