@@ -1,13 +1,18 @@
 import { diff } from "./services/diff.service";
-import { runFuncInLoopWithDelayOfXhoursFromDate, moreThanXhoursPassedSince } from "./services/time.service";
+import { 
+  runFuncInLoopWithDelayOfXhoursFromDate, 
+  moreThanXhoursPassedSince ,
+} from "./services/time.service";
 
 export class SteamDataAggregator {
   #databaseClient;
   #steamClient;
+  #options;
 
-  constructor(steamClient, databaseClient) {
+  constructor(steamClient, databaseClient, options) {
     this.#steamClient = steamClient;
     this.#databaseClient = databaseClient;
+    this.#options = options;
   }
 
   run() {
@@ -16,13 +21,17 @@ export class SteamDataAggregator {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
 
     // todo: refac to runFuncWithDelayOfXms
-    runFuncInLoopWithDelayOfXhoursFromDate(this.#updateSteamApps.bind(this), 24, lastUpdate);
+    runFuncInLoopWithDelayOfXhoursFromDate(
+      this.#updateSteamApps.bind(this), 
+      this.#options.updateIntervalDelay, 
+      lastUpdate,
+    );
   }
 
   async #initialUpdate() {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
     if (!lastUpdate) this.#firstUpdate();
-    if (moreThanXhoursPassedSince(24, lastUpdate)) this.#updateSteamApps();
+    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) this.#updateSteamApps();
   }
 
   async #firstUpdate() {
