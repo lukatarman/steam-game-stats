@@ -18,6 +18,7 @@ export class SteamDataAggregator {
 
   async #initialUpdate() {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
+    if(!lastUpdate) return;
     if (moreThanXhoursPassedSince(24, lastUpdate)) this.#updateSteamApps();
   }
 

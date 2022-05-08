@@ -1,6 +1,4 @@
 export function moreThanXhoursPassedSince(x, date) {
-  if(!date) return true;
-  
   return hoursPassedSince(date) > x;
 }
 
