@@ -1,6 +1,6 @@
 import { diff } from "./services/diff.service";
 import { 
-  runFuncInLoopWithDelayOfXhoursFromDate, 
+  runFuncInLoopWithDelayOfXmsFromDate, 
   moreThanXhoursPassedSince ,
 } from "./services/time.service";
 
@@ -20,8 +20,7 @@ export class SteamDataAggregator {
 
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
 
-    // todo: refac to runFuncWithDelayOfXms
-    runFuncInLoopWithDelayOfXhoursFromDate(
+    runFuncInLoopWithDelayOfXmsFromDate(
       this.#updateSteamApps.bind(this), 
       this.#options.updateIntervalDelay, 
       lastUpdate,

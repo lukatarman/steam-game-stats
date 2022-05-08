@@ -1,13 +1,10 @@
 export function moreThanXhoursPassedSince(x, date) {
-  return hoursPassedSince(date) > x;
+  return (msPassedSince(date) / 36e5) > x;
 }
 
-export function hoursPassedSince(date) {
+export function msPassedSince(date) {
   const now = new Date();
-  const milliseconds = Math.abs(now - date);
-  const hours = milliseconds / 36e5;
-
-  return hours;
+  return Math.abs(now - date);
 }
 
 export function delay(ms) {
@@ -15,13 +12,13 @@ export function delay(ms) {
   return new Promise(done => setTimeout(done, ms));
 }
 
-export function runFuncInLoopWithDelayOfXhoursFromDate(func, x, date) {
-  const hours = hoursPassedSince(date);
-  const tillNextRun = hours > x ? x : x - hours;
-  await delay(tillNextRun * 36e5);
+export function runFuncInLoopWithDelayOfXmsFromDate(func, x, date) {
+  const ms = msPassedSince(date);
+  const tillNextRun = ms > x ? x : x - ms;
+  await delay(tillNextRun);
 
   while(true) {
     func();
-    await delay(x * 36e5);
+    await delay(x);
   }
 }
