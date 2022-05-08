@@ -1,8 +1,8 @@
 // todo: consider https://stackoverflow.com/questions/41222805/compare-a-mongo-diff-on-two-collections
-export function diffMOCK(steamAppsApi, steamAppsDb) {
+export function diff(steamAppsApi, steamAppsDb) {
   const steamAppsDbIds = steamAppsDb.map(app => app.appid);
 
-  const steamAppsDiff = steamAppsApi.filter(app => steamAppsDbIds.includes(app.appid));
+  const steamAppsDiff = steamAppsApi.filter(app => !steamAppsDbIds.includes(app.appid));
 
-  return steamAppsDiff.map(app => { return {...app, identified:false }});
+  return steamAppsDiff.map(app => { return { ...app, identified: false }});
 }

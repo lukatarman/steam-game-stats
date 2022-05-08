@@ -1,4 +1,4 @@
-import { diffMOCK } from "./services/diff.service";
+import { diff } from "./services/diff.service";
 import { runFuncInLoopWithDelayOfXhours, moreThanXhoursPassedSince } from "./services/time.service";
 
 export class SteamDataAggregator {
@@ -25,7 +25,7 @@ export class SteamDataAggregator {
   async #updateSteamApps() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb = await this.#databaseClient.getAllSteamApps();
-    const steamApps = diffMOCK(steamAppsApi, steamAppsDb);
+    const steamApps = diff(steamAppsApi, steamAppsDb);
     await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
