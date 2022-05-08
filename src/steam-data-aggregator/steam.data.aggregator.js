@@ -12,6 +12,9 @@ export class SteamDataAggregator {
 
   run() {
     this.#initialUpdate();
+
+    const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
+
     // todo: refac to runFuncWithDelayOfXms
     runFuncInLoopWithDelayOfXhours(this.#updateSteamApps.bind(this), 24);
   }
