@@ -4,7 +4,7 @@ import {
   runFuncInLoopWithDelayOfXmsFromDate,
 } from "./time.service.js";
 
-fdescribe("time.service.js", () => {
+describe("time.service.js", () => {
   describe(".moreThanXhoursPassedSince", () => {
     let oneDayInMs;
     let threeHoursInMs;
