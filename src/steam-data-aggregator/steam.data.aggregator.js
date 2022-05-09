@@ -1,30 +1,50 @@
-import { diffMOCK } from "./services/diff.service";
-import { runFuncInLoopWithDelayOfXhours, moreThanXhoursPassedSince } from "./services/time.service";
+import { diff } from "./services/diff.service";
+import { 
+  runFuncInLoopWithDelayOfXmsFromDate, 
+  moreThanXhoursPassedSince ,
+} from "./services/time.service";
 
 export class SteamDataAggregator {
   #databaseClient;
   #steamClient;
+  #options;
 
-  constructor(steamClient, databaseClient) {
+  constructor(steamClient, databaseClient, options) {
     this.#steamClient = steamClient;
     this.#databaseClient = databaseClient;
+    // when we add the options for this function remember options.updateIntervalDelay needs to be in ms!
+    this.#options = options;
   }
 
   run() {
     this.#initialUpdate();
-    // todo: refac to runFuncWithDelayOfXms
-    runFuncInLoopWithDelayOfXhours(this.#updateSteamApps.bind(this), 24);
+
+    const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
+
+    runFuncInLoopWithDelayOfXmsFromDate(
+      this.#updateSteamApps.bind(this), 
+      this.#options.updateIntervalDelay, 
+      lastUpdate,
+    );
   }
 
   async #initialUpdate() {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
-    if (moreThanXhoursPassedSince(24, lastUpdate)) this.#updateSteamApps();
+    if (!lastUpdate) this.#firstUpdate();
+    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) this.#updateSteamApps();
+  }
+
+  async #firstUpdate() {
+    const steamApps = await this.#steamClient.getAppList();
+    await this.#databaseClient.insertManySteamApps(steamApps);
+    await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 
   async #updateSteamApps() {
     const steamAppsApi = await this.#steamClient.getAppList();
-    const steamAppsDb = await this.#databaseClient.getAllSteamApps();
-    const steamApps = diffMOCK(steamAppsApi, steamAppsDb);
+    const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
+    const steamApps    = diff(steamAppsApi, steamAppsDb);
+    if (steamApps.length === 0) return;
     await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
