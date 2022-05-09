@@ -11,8 +11,8 @@ describe("time.service.js", () => {
       beforeAll(() => {
         const oneDayInMs = 864e5;
         const threeHoursInMs = 108e5;
-        const oneDayFromNow = new Date().getTime() + oneDayInMs;
-        const date = new Date(oneDayFromNow);
+        const oneDayBehind = new Date().getTime() - oneDayInMs;
+        const date = new Date(oneDayBehind);
 
         result = moreThanXhoursPassedSince(threeHoursInMs, date);
       })
@@ -30,8 +30,8 @@ describe("time.service.js", () => {
       beforeAll(() => {
         const oneDayInMs = 864e5;
         const threeHoursInMs = 108e5;
-        const threeHoursFromNow = new Date().getTime() + threeHoursInMs;
-        const date = new Date(threeHoursFromNow);
+        const threeHoursBehind = new Date().getTime() - threeHoursInMs;
+        const date = new Date(threeHoursBehind);
 
         result = moreThanXhoursPassedSince(oneDayInMs, date);
       })
