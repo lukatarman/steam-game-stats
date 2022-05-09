@@ -12,7 +12,7 @@ export function msPassedSince(date) {
 
 export async function runFuncInLoopWithDelayOfXmsFromDate(func, x, date) {
   const ms = msPassedSince(date);
-  const tillNextRun = ms > x ? x : x - ms;
+  const tillNextRun = ms > x ? 0 : x - ms;
   await delay(tillNextRun);
 
   while(true) {
