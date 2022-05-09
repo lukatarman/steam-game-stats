@@ -1,10 +1,11 @@
 export function moreThanXhoursPassedSince(x, date) {
-  return (msPassedSince(date) / 36e5) > x;
+  return (msPassedSince(date)) > x;
 }
 
 export function msPassedSince(date) {
-  const now = new Date();
-  return Math.abs(now - date);
+  const now = new Date().getTime();
+  const dateInMs = date.getTime();
+  return Math.abs(now - dateInMs);
 }
 
 export function delay(ms) {
