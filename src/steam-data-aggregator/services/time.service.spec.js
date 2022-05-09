@@ -3,7 +3,7 @@ import {
   moreThanXhoursPassedSince ,
 } from "./time.service.js";
 
-fdescribe("time.service.js", () => {
+describe("time.service.js", () => {
   describe(".moreThanXhoursPassedSince", () => {
     describe("if the date value is larger than 'x' hours passed", () => {
       let result;
