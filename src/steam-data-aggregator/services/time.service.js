@@ -1,3 +1,5 @@
+import { delay } from "../../shared/time.utils.js";
+
 export function moreThanXhoursPassedSince(x, date) {
   return (msPassedSince(date)) > x;
 }
@@ -8,12 +10,7 @@ export function msPassedSince(date) {
   return Math.abs(now - dateInMs);
 }
 
-export function delay(ms) {
-  ms = ms || 2000;
-  return new Promise(done => setTimeout(done, ms));
-}
-
-export function runFuncInLoopWithDelayOfXmsFromDate(func, x, date) {
+export async function runFuncInLoopWithDelayOfXmsFromDate(func, x, date) {
   const ms = msPassedSince(date);
   const tillNextRun = ms > x ? x : x - ms;
   await delay(tillNextRun);
