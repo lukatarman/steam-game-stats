@@ -12,6 +12,7 @@ export class SteamDataAggregator {
   constructor(steamClient, databaseClient, options) {
     this.#steamClient = steamClient;
     this.#databaseClient = databaseClient;
+    // when we add the options for this function remember options.updateIntervalDelay needs to be in ms!
     this.#options = options;
   }
 
