@@ -1,8 +1,8 @@
-import { diff } from "./services/diff.service";
+import { diff } from "./services/diff.service.js";
 import { 
   runFuncInLoopWithDelayOfXmsFromDate, 
   moreThanXhoursPassedSince ,
-} from "./services/time.service";
+} from "./services/time.service.js";
 
 export class SteamDataAggregator {
   #databaseClient;
