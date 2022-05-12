@@ -1,6 +1,6 @@
 import { delay } from "./time.utils.js";
 
-fdescribe("time.utils.js", () => {
+describe("time.utils.js", () => {
   describe(".delay", () => {
     describe("0 is passed in as an argument", () => {
       let timePassedIsWithinRange;
