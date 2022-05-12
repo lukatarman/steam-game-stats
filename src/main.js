@@ -1,6 +1,7 @@
 import { axios as httpClient } from "axios";
 import { DatabaseClient } from "./infrastructure/database.client";
 import { SteamClient } from "./infrastructure/steam.client";
+import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregator";
 import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor";
 import { hoursToMs } from "./shared/time.utils.js"
 
@@ -22,10 +23,13 @@ function main() {
     updateIntervalDelay: hoursToMs(12),
 
   };
-  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, steamGameListProcessorOptions);
-  const steamPlayerProcessor = new SteamPlayerProcessor(steamClient, databaseClient);
+  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
+  const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
 
   // run phase
   steamGameListProcessor.run();
-  steamPlayerProcessor.addPlayerCounts();
+  steamDataAggregator.run();
+
 }
+
+main();
