@@ -1,8 +1,8 @@
-import { axios as httpClient } from "axios";
-import { DatabaseClient } from "./infrastructure/database.client";
-import { SteamClient } from "./infrastructure/steam.client";
-import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregator";
-import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor";
+import httpClient from "axios";
+import { DatabaseClient } from "./infrastructure/database.client.js";
+import { SteamClient } from "./infrastructure/steam.client.js";
+import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregator.js";
+import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor.js";
 import { hoursToMs } from "./shared/time.utils.js"
 
 // our entry point = main
