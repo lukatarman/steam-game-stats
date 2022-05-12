@@ -3,14 +3,9 @@ import { MongoClient } from "mongodb";
 export class DatabaseClient {
   #collections;
 
-  async init(
-    options = {
-      url: "mongodb://localhost:27017",
-      databaseName: "game-stats",
-      collections: ["games"],
-    }
-  ) {
-    const mongodb = await MongoClient.connect(options.url, {
+  async init(options) {
+    const urlToDb = `${options.url}/${options.databaseName}`;
+    const mongodb = await MongoClient.connect(urlToDb, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
