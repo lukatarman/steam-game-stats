@@ -6,7 +6,7 @@ export function moreThanXhoursPassedSince(x, date) {
 
 export function msPassedSince(date) {
   const now = new Date().getTime();
-  const dateInMs = date.getTime();
+  const dateInMs = date.updatedOn.getTime();
   return Math.abs(now - dateInMs);
 }
 
