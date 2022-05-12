@@ -1,4 +1,4 @@
-import { delay } from "./time.utils.js";
+import { delay, hoursToMs } from "./time.utils.js";
 
 describe("time.utils.js", () => {
   describe(".delay", () => {
@@ -82,4 +82,42 @@ describe("time.utils.js", () => {
       });
     });
   });
+
+  describe(".hoursToMs", () => {
+    describe("passing a value of 12 into the function", () => {
+      let result;
+
+      beforeAll(() => {
+        result = hoursToMs(12);
+      })
+
+      it("the function returns '43200000'", () => {
+        expect(result).toBe(43200000);
+      })
+    })
+
+    describe("passing a value of 0 into the function", () => {
+      let result;
+
+      beforeAll(() => {
+        result = hoursToMs(0);
+      })
+
+      it("the function returns '43200000'", () => {
+        expect(result).toBe(0);
+      })
+    })
+
+    describe("passing a value of 100000 into the function", () => {
+      let result;
+
+      beforeAll(() => {
+        result = hoursToMs(100000);
+      })
+
+      it("the function returns '360000000000'", () => {
+        expect(result).toBe(360000000000);
+      })
+    })
+  })
 });
