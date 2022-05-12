@@ -25,6 +25,25 @@ export class DatabaseClient {
     return this;
   }
 
+  async insertOneUpdateTimestamp(date) {
+    const updateTimestamp = { updatedOn: date };
+    await this.insertOne("update_timestamps", updateTimestamp);
+  }
+
+  async insertOne(collectionName, data) {
+    await this.#collections
+      .get(collectionName)
+      .insertOne(data);
+  }
+
+  async insertManySteamApps(data) {
+    await this.insertMany("steam_apps", data);
+  }
+
+  async insertManyGames(data) {
+    await this.insertMany("games", data);
+  }
+
   async insertMany(collectionName, data) {
     const insertResult = await this.#collections
       .get(collectionName)
@@ -32,6 +51,13 @@ export class DatabaseClient {
     console.log("Inserted documents =>", insertResult);
   }
 
+  getAllSteamApps(filter = {}) {
+    return this.getAll("steam_apps", filter);
+  }
+
+  /**
+   * @TODO - implement
+   */
   async getAll(collectionName, filter = {}) {
     const getAllResults = await this.#collections
       .get(collectionName)
@@ -49,6 +75,20 @@ export class DatabaseClient {
     const deletedResults = await this.#collections
       .get(collectionName)
       .deleteMany(filter);
+  }
+
+  async getLastUpdateTimestamp() {
+    return this.getLast("update_timestamp");
+  }
+
+  async getLast(collectionName) {
+    const result = await this.collection
+      .get(collectionName)
+      .find()
+      .limit(1)
+      .sort({ $natural: -1 });
+
+      return result;
   }
 
   getXunidentifiedSteamApps(amount) {
