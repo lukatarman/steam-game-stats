@@ -39,8 +39,6 @@ export class SteamGameListProcessor {
     }
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
-    console.log("GAMES HERE");
-    console.log(games);
     if (games.length !== 0) {
       this.#databaseClient.insertMany("games", games);
     }
