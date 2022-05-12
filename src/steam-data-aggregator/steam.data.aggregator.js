@@ -16,7 +16,7 @@ export class SteamDataAggregator {
     this.#options = options;
   }
 
-  run() {
+  async run() {
     this.#initialUpdate();
 
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
