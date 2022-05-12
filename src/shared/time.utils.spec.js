@@ -2,103 +2,65 @@ import { delay, hoursToMs } from "./time.utils.js";
 
 describe("time.utils.js", () => {
   describe(".delay", () => {
-    describe("0 is passed in as an argument", () => {
-      let timePassedIsWithinRange;
+    let timePassed;
 
+    describe("0 is passed in as an argument", () => {
       beforeAll(async () => {
-        const beforeFunction = new Date().getTime();
+        const timestampOne = new Date().getTime();
         await delay(0);
-        const afterFunction = new Date().getTime();
-        const timePassed = afterFunction - beforeFunction;
-        timePassedIsWithinRange = timePassed <= 30;
+        const timestampTwo = new Date().getTime();
+        timePassed = timestampTwo - timestampOne;
       });
 
       it("the function waits for a negligable time", () => {
-        expect(timePassedIsWithinRange).toBeTrue();
+        expect(timePassed).toBeLessThanOrEqual(30);
+        expect(timePassed).toBeGreaterThanOrEqual(0);
       });
     });
 
     describe("a value of 100 is passed in as an argument", () => {
-      let timePassedIsWithinRange;
-
       beforeAll(async () => {
-        const beforeFunction = new Date().getTime();
+        const timestamOne = new Date().getTime();
         await delay(100);
-        const afterFunction = new Date().getTime();
-        const timePassed = afterFunction - beforeFunction;
-        timePassedIsWithinRange = timePassed <= 130;
+        const timestampTwo = new Date().getTime();
+        timePassed = timestampTwo - timestamOne;
       });
 
       it("the function waits 100ms", () => {
-        expect(timePassedIsWithinRange).toBeTrue();
+        expect(timePassed).toBeLessThanOrEqual(130);
+        expect(timePassed).toBeGreaterThanOrEqual(100);
       });
     });
 
     describe("a value of 500 is passed in as an argument", () => {
-      let timePassedIsWithinRange;
-
       beforeAll(async () => {
-        const beforeFunction = new Date().getTime();
+        const timestamOne = new Date().getTime();
         await delay(500);
-        const afterFunction = new Date().getTime();
-        const timePassed = afterFunction - beforeFunction;
-        timePassedIsWithinRange = timePassed <= 530;
+        const timestampTwo = new Date().getTime();
+        timePassed = timestampTwo - timestamOne;
       });
 
       it("the function waits 500ms", () => {
-        expect(timePassedIsWithinRange).toBeTrue();
-      });
-    });
-
-    describe("a value of 2000 is passed in as an argument", () => {
-      let timePassedIsWithinRange;
-
-      beforeAll(async () => {
-        const beforeFunction = new Date().getTime();
-        await delay(500);
-        const afterFunction = new Date().getTime();
-        const timePassed = afterFunction - beforeFunction;
-        timePassedIsWithinRange = timePassed <= 2100;
-      });
-
-      it("the function waits 2000ms", () => {
-        expect(timePassedIsWithinRange).toBeTrue();
-      });
-    });
-
-    describe("nothing is passed as an argument", () => {
-      let timePassedIsWithinRange;
-
-      beforeAll(async () => {
-        const beforeFunction = new Date().getTime();
-        await delay();
-        const afterFunction = new Date().getTime();
-        const timePassed = afterFunction - beforeFunction;
-        timePassedIsWithinRange = timePassed <= 2100;
-      });
-
-      it("the function waits 2000ms", () => {
-        expect(timePassedIsWithinRange).toBeTrue();
+        expect(timePassed).toBeLessThanOrEqual(530);
+        expect(timePassed).toBeGreaterThanOrEqual(500);
       });
     });
   });
 
   describe(".hoursToMs", () => {
+    let result;
+    
     describe("passing a value of 12 into the function", () => {
-      let result;
-
       beforeAll(() => {
         result = hoursToMs(12);
       })
 
       it("the function returns '43200000'", () => {
-        expect(result).toBe(43200000);
+        expect(result).toBe(432e5);
       })
     })
 
     describe("passing a value of 0 into the function", () => {
-      let result;
-
       beforeAll(() => {
         result = hoursToMs(0);
       })
@@ -109,14 +71,12 @@ describe("time.utils.js", () => {
     })
 
     describe("passing a value of 100000 into the function", () => {
-      let result;
-
       beforeAll(() => {
-        result = hoursToMs(100000);
+        result = hoursToMs(1e5);
       })
 
       it("the function returns '360000000000'", () => {
-        expect(result).toBe(360000000000);
+        expect(result).toBe(36e10);
       })
     })
   })
