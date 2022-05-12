@@ -1,8 +1,8 @@
-import { diff } from "./services/diff.service";
+import { diff } from "./services/diff.service.js";
 import { 
   runFuncInLoopWithDelayOfXmsFromDate, 
   moreThanXhoursPassedSince ,
-} from "./services/time.service";
+} from "./services/time.service.js";
 
 export class SteamDataAggregator {
   #databaseClient;
@@ -16,7 +16,7 @@ export class SteamDataAggregator {
     this.#options = options;
   }
 
-  run() {
+  async run() {
     this.#initialUpdate();
 
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
