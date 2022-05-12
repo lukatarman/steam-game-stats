@@ -78,7 +78,7 @@ export class DatabaseClient {
   }
 
   async getLastUpdateTimestamp() {
-    return this.getLast("update_timestamp");
+    return this.getLast("update_timestamps");
   }
 
   async getLast(collectionName) {
