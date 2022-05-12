@@ -6,14 +6,14 @@ import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.l
 import { hoursToMs } from "./shared/time.utils.js"
 
 // our entry point = main
-function main() {
+async function main() {
   // setup phase
   const databaseOptions = {
     url: "mongodb://localhost:27017",
     databaseName: "game-stats",
     collections: ["games", "steam_apps", "update_timestamps"],
   };
-  const databaseClient = new DatabaseClient().init(databaseOptions);
+  const databaseClient = await new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
   const options = {
     batchSize: 10,
@@ -27,8 +27,9 @@ function main() {
   const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
 
   // run phase
-  steamGameListProcessor.run();
   steamDataAggregator.run();
+  steamGameListProcessor.run();
+  
 
 }
 
