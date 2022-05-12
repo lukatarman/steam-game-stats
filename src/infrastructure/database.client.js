@@ -77,11 +77,12 @@ export class DatabaseClient {
   }
 
   async getLast(collectionName) {
-    const result = await this.collection
+    const result = await this.#collections
       .get(collectionName)
       .find()
       .limit(1)
-      .sort({ $natural: -1 });
+      .sort({ $natural: -1 })
+      .next();
 
       return result;
   }
