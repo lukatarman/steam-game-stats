@@ -1,4 +1,5 @@
 import { diff } from "./services/diff.service.js";
+import { labelAsNotIdentified } from "./services/label.service.js";
 import { 
   runFuncInLoopWithDelayOfXmsFromDate, 
   moreThanXhoursPassedSince ,
@@ -32,9 +33,11 @@ export class SteamDataAggregator {
     if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) this.#updateSteamApps();
   }
 
+  
   async #firstUpdate() {
     const steamApps = await this.#steamClient.getAppList();
-    await this.#databaseClient.insertManySteamApps(steamApps);
+    const steamAppsNotIdentified = labelAsNotIdentified(steamApps);
+    await this.#databaseClient.insertManySteamApps(steamAppsNotIdentified);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 
@@ -43,7 +46,8 @@ export class SteamDataAggregator {
     const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
     const steamApps    = diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) return;
-    await this.#databaseClient.insertManySteamApps(steamApps);
+    const steamAppsNotIdentified = labelAsNotIdentified(steamApps);
+    await this.#databaseClient.insertManySteamApps(steamAppsNotIdentified);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 }
