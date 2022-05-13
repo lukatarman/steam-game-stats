@@ -24,11 +24,11 @@ async function main() {
 
   };
   const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
-  // const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
+  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
 
   // run phase
-  steamDataAggregator.run();
-  // steamGameListProcessor.run();
+  await steamDataAggregator.run();
+  steamGameListProcessor.run();
 }
 
 main();
