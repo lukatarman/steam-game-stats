@@ -87,11 +87,11 @@ export class DatabaseClient {
       return result;
   }
 
-  getXunidentifiedSteamApps(amount) {
-    return this.#collections.get("steam_apps")
+  async getXunidentifiedSteamApps(amount) {
+    const cursor = this.#collections.get("steam_apps")
                             .find({ identified: { $eq: false }})
-                            .limit(amount)
-                            .next();
+                            .limit(amount);
+    return await cursor.toArray();
   }
 
   identifySteamAppById(id) {
