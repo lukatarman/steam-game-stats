@@ -19,7 +19,6 @@ export class SteamDataAggregator {
     this.#initialUpdate();
 
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
-    // NEEDS FIXING - app still waiting for this function to keep repeating!
     runFuncInLoopWithDelayOfXmsFromDate(
       this.#updateSteamApps.bind(this), 
       this.#options.updateIntervalDelay, 
