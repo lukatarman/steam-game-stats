@@ -90,7 +90,8 @@ export class DatabaseClient {
   getXunidentifiedSteamApps(amount) {
     return this.#collections.get("steam_apps")
                             .find({ identified: { $eq: false }})
-                            .limit(amount);
+                            .limit(amount)
+                            .next();
   }
 
   identifySteamAppById(id) {
