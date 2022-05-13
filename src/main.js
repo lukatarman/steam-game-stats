@@ -18,7 +18,7 @@ async function main() {
   const options = {
     batchSize: 10,
     batchDelay: 5000,
-    unitDelay: 500,
+    unitDelay: 800,
     noAppsFoundDelay: hoursToMs(1),
     updateIntervalDelay: hoursToMs(12),
 
