@@ -17,9 +17,10 @@ export class SteamDataAggregator {
   }
 
   async run() {
-    this.#initialUpdate();
+    await this.#initialUpdate();
 
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
+
     runFuncInLoopWithDelayOfXmsFromDate(
       this.#updateSteamApps.bind(this), 
       this.#options.updateIntervalDelay, 
@@ -29,13 +30,15 @@ export class SteamDataAggregator {
 
   async #initialUpdate() {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
-    if (!lastUpdate) this.#firstUpdate();
+    if (!lastUpdate) await this.#firstUpdate();
+
     if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) this.#updateSteamApps();
   }
 
   
   async #firstUpdate() {
     const steamApps = await this.#steamClient.getAppList();
+    console.log(steamApps);
     const steamAppsNotIdentified = labelAsNotIdentified(steamApps);
     await this.#databaseClient.insertManySteamApps(steamAppsNotIdentified);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
