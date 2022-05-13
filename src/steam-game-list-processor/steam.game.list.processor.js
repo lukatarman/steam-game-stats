@@ -49,6 +49,7 @@ export class SteamGameListProcessor {
   }
 
   async #filterSteamAppsByAppType(steamApps) {
+    //TODO: this is being returned as an array of unresolved promises - needs fixing
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const [games, discoveredGamePages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
