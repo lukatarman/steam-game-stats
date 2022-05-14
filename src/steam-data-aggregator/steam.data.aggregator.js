@@ -41,9 +41,8 @@ export class SteamDataAggregator {
   
   async #firstUpdate() {
     const steamApps = await this.#steamClient.getAppList();
-    console.log(steamApps);
-    const steamAppsNotIdentified = labelAsNotIdentified(steamApps);
-    await this.#databaseClient.insertManySteamApps(steamAppsNotIdentified);
+    const enrichedSteamApps = labelAsNotIdentified(steamApps);
+    await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 
@@ -52,8 +51,8 @@ export class SteamDataAggregator {
     const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
     const steamApps    = diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) return;
-    const steamAppsNotIdentified = labelAsNotIdentified(steamApps);
-    await this.#databaseClient.insertManySteamApps(steamAppsNotIdentified);
+    const enrichedSteamApps = labelAsNotIdentified(steamApps);
+    await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 }
