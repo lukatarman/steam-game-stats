@@ -49,7 +49,7 @@ export class SteamGameListProcessor {
   }
 
   async #filterSteamAppsByAppType(steamApps) {
-    //TODO: this is being returned as an array of unresolved promises - needs fixing
+
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const [games, discoveredGamePages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
@@ -71,12 +71,14 @@ export class SteamGameListProcessor {
       if (discoveredGamePages[index] === 'discovered') return;
 
       await delay(this.#options.unitDelay);
+      console.log(steamApp);
 
       try {
         await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
         return new Game(steamApp);
       } catch (error) {
-        if (error.status !== 500) throw error;
+        // TODO: think about returning null here - could be changed
+        if (error.status !== 500 && error.status !== 404) return null;
       }
     }).filter(game => !!game);
   }
