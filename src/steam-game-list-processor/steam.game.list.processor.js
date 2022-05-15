@@ -78,6 +78,7 @@ export class SteamGameListProcessor {
         return new Game(steamApp);
       } catch (error) {
         // TODO: think about returning null here - could be changed
+        // potential idea: if steamcharts returns error try other API to check for game
         if (error.status !== 500 && error.status !== 404) return null;
       }
     }).filter(game => !!game);
