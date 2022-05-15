@@ -54,9 +54,10 @@ export class DatabaseClient {
    * @TODO - implement
    */
   async getAll(collectionName, filter = {}) {
-    const getAllResults = await this.#collections
-      .get(collectionName)
-      .find(filter);
+    const cursor = await this.#collections
+                             .get(collectionName)
+                             .find(filter);
+    return await cursor.toArray();
   }
 
   async updateOne(collectionName, filter, data) {
