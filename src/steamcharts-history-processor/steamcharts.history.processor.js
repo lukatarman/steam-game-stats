@@ -1,4 +1,4 @@
-import { parsePlayerHistory } from "./services/player.history.service";
+import { parsePlayerHistory } from "./services/player.history.service.js";
 import { delay } from "../shared/time.utils.js";
 
 export class SteamchartsHistoryProcessor {
@@ -20,7 +20,7 @@ export class SteamchartsHistoryProcessor {
     let continueLoop = true;
 
     while(continueLoop) {
-      const gamesWithoutPlayerHistory = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
+      const gamesWithoutPlayerHistory = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
       if(!gamesWithoutPlayerHistory) continueLoop = false;
 
       const games = this.#collectPlayerHistory(gamesWithoutPlayerHistory);
