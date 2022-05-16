@@ -8,6 +8,8 @@ import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
 import { theSims4catsAndDogsHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { labelWithoutPlayerHistory } from "./game.service.js";
+import { Game } from "../../models/game.js";
 
 describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
@@ -250,6 +252,31 @@ describe("game.service.js", () => {
 
       it("discoveredPages array has no entry with the 'discovered' string'", () => {
         expect(discoveredPages.indexOf('discovered')).toBe(-1);
+      });
+    });
+  });
+
+  describe(".labelWithoutPlayerHistory", () => {
+    describe("if an array of objects is passed into the function", () => {
+      let results;
+
+      beforeAll(() => {
+        let games = [];
+        for(let i = 0; i < 15; i++) {
+          games.push(new Game({name: `Test Number ${i}`, appid: i}));
+        }
+        
+        results = labelWithoutPlayerHistory(games);
+      });
+
+      it("object in the first index has its 'playerHistory' property set to false", () => {
+        expect(results[0].playerHistory).toBeFalse();
+      });
+      it("object in the 15th index has its 'playerHistory' property set to false", () => {
+        expect(results[7].playerHistory).toBeFalse();
+      });
+      it("object in the last index has its 'playerHistory' property set to false", () => {
+        expect((results[results.length - 1]).playerHistory).toBeFalse();
       });
     });
   });
