@@ -1,6 +1,7 @@
 import {
   filterSteamAppsByName,
   discoverGamesFromSteamHtmlDetailsPages,
+  labelWithoutPlayerHistory,
 } from "./services/game.service.js";
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
@@ -40,7 +41,9 @@ export class SteamGameListProcessor {
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
-      this.#databaseClient.insertMany("games", games);
+      const enrichedGames = labelWithoutPlayerHistory(games);
+      debugger;
+      this.#databaseClient.insertMany("games", enrichedGames);
     }
 
     steamApps.forEach((steamApp) =>
@@ -77,7 +80,7 @@ export class SteamGameListProcessor {
         await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
         return new Game(steamApp);
       } catch (error) {
-        // TODO: think about returning null here - could be changed
+        // TODO: think about returning undefined here - could be changed
         // potential idea: if steamcharts returns error try other API to check for game
         if (error.status !== 500 && error.status !== 404) return;
       }
