@@ -90,8 +90,8 @@ export class DatabaseClient {
 
   async getXunidentifiedSteamApps(amount) {
     const cursor = this.#collections.get("steam_apps")
-                            .find({ identified: { $eq: false }})
-                            .limit(amount);
+                                    .find({ identified: { $eq: false }})
+                                    .limit(amount);
     return await cursor.toArray();
   }
 
@@ -103,10 +103,11 @@ export class DatabaseClient {
                       );
   }
 
-  getxGamesWithoutPlayerHistory(amount) {
-    return this.#collections.get("games")
-                            .find({ playerHistory: { $eq: false }})
-                            .limit(amount);
+  async getxGamesWithoutPlayerHistory(amount) {
+    const cursor = this.#collections.get("games")
+                                    .find({ playerHistory: { $eq: false }})
+                                    .limit(amount);
+    return await cursor.toArray();
   }
 
   updatePlayerHistoryById(game) {
