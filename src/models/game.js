@@ -29,4 +29,8 @@ export class Game {
   get playerHistory() {
     return this.#playerHistory;
   }
+
+ setPlayerHistoryToFalse() {
+    this.#playerHistory = false;
+  }
 }
