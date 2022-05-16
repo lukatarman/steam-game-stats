@@ -20,7 +20,7 @@ export function filterSteamAppsByName(steamApps) {
 }
 
 export function steamAppIsGame(httpDetailsPage) {
-  const dom = new JSDOM(httpDetailsPage.data);
+  const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
   if (!breadcrumbElement) return false;
