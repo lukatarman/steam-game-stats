@@ -4,6 +4,7 @@ import { SteamClient } from "./infrastructure/steam.client.js";
 import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregator.js";
 import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor.js";
 import { hoursToMs } from "./shared/time.utils.js"
+import { SteamchartsHistoryProcessor } from "./steamcharts-history-processor/steamcharts.history.processor.js";
 
 // our entry point = main
 async function main() {
@@ -25,10 +26,12 @@ async function main() {
   };
   const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
   const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
+  const steamchartsHistoryProcessor = new SteamchartsHistoryProcessor(steamClient, databaseClient, options);
 
   // run phase
   await steamDataAggregator.run();
-  steamGameListProcessor.run();
+  await steamGameListProcessor.run();
+  steamchartsHistoryProcessor.run();
 }
 
 main();
