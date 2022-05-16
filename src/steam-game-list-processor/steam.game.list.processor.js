@@ -54,24 +54,24 @@ export class SteamGameListProcessor {
 
     const [games, discoveredGamePages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
 
-    games.push(...this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages));
+    games.push(...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages)));
 
     return games;
   }
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
-    return Promise.all(steamApps.map(async (steamApp) => {
+    return (await Promise.all(steamApps.map(async (steamApp) => {
       await delay(this.#options.unitDelay);
       return this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-    }));
+    }))).map(response => response.data);
   }
 
-  #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
-    return steamApps.map(async (steamApp, index) => {
+  async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
+    
+    return (await Promise.all(steamApps.map(async (steamApp, index) => {
       if (discoveredGamePages[index] === 'discovered') return;
 
       await delay(this.#options.unitDelay);
-      console.log(steamApp);
 
       try {
         await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
@@ -79,8 +79,9 @@ export class SteamGameListProcessor {
       } catch (error) {
         // TODO: think about returning null here - could be changed
         // potential idea: if steamcharts returns error try other API to check for game
-        if (error.status !== 500 && error.status !== 404) return null;
+        if (error.status !== 500 && error.status !== 404) return;
       }
-    }).filter(game => !!game);
+    }))).filter(games => !!games);
   }
 }
+
