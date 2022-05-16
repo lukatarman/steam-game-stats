@@ -42,7 +42,6 @@ export class SteamGameListProcessor {
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
       const enrichedGames = labelWithoutPlayerHistory(games);
-      debugger;
       this.#databaseClient.insertMany("games", enrichedGames);
     }
 
