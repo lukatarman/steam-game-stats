@@ -49,10 +49,3 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
 
   return [games, discoveredPages];
 }
-
-export function labelWithoutPlayerHistory(games) {
-    return games.map(game => {
-      game.setPlayerHistoryToFalse();
-      return game;
-    });
-}
