@@ -1,7 +1,6 @@
 import {
   filterSteamAppsByName,
   discoverGamesFromSteamHtmlDetailsPages,
-  labelWithoutPlayerHistory,
 } from "./services/game.service.js";
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
@@ -41,8 +40,7 @@ export class SteamGameListProcessor {
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
-      const enrichedGames = labelWithoutPlayerHistory(games);
-      this.#databaseClient.insertMany("games", enrichedGames);
+      this.#databaseClient.insertMany("games", games);
     }
 
     steamApps.forEach((steamApp) =>
@@ -63,7 +61,9 @@ export class SteamGameListProcessor {
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     return (await Promise.all(steamApps.map(async (steamApp) => {
+
       await delay(this.#options.unitDelay);
+      
       return this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
     }))).map(response => response.data);
   }
