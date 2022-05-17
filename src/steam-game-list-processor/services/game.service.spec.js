@@ -254,30 +254,5 @@ describe("game.service.js", () => {
         expect(discoveredPages.indexOf('discovered')).toBe(-1);
       });
     });
-  });
-
-  describe(".labelWithoutPlayerHistory", () => {
-    describe("if an array of objects is passed into the function", () => {
-      let results;
-
-      beforeAll(() => {
-        let games = [];
-        for(let i = 0; i < 15; i++) {
-          games.push(new Game({name: `Test Number ${i}`, appid: i}));
-        }
-        
-        results = labelWithoutPlayerHistory(games);
-      });
-
-      it("object in the first index has its 'playerHistory' property set to false", () => {
-        expect(results[0].playerHistory).toBeFalse();
-      });
-      it("object in the 15th index has its 'playerHistory' property set to false", () => {
-        expect(results[7].playerHistory).toBeFalse();
-      });
-      it("object in the last index has its 'playerHistory' property set to false", () => {
-        expect((results[results.length - 1]).playerHistory).toBeFalse();
-      });
-    });
-  });
+  })
 });
