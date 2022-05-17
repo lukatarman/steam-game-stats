@@ -13,7 +13,7 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
 
         if(firstElement.textContent === "Last 30 Days") continue;
 
-        const averagePlayers = parseInt(firstElement.nextElementSibling.textContent);
+        const averagePlayers = parseFloat(firstElement.nextElementSibling.textContent).toFixed(1);
         
         const monthAndYear = firstElement.textContent;
         const date = new Date(monthAndYear);
