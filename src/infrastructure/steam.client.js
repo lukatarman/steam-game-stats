@@ -25,9 +25,9 @@ export class SteamClient {
     return this.#httpClient.get(url);
   }
 
-  async getSteamAppHtmlDetailsPageFromSteamcharts(id) {
+  async getGameHtmlDetailsPageFromSteamcharts(id) {
     const url = `https://steamcharts.com/app/${id}`;
 
-    return (await this.#httpClient.get(url)).data;
+    return this.#httpClient.get(url);
   }
 }
