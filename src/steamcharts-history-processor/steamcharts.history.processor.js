@@ -20,28 +20,37 @@ export class SteamchartsHistoryProcessor {
     let continueLoop = true;
 
     while(continueLoop) {
-      const gamesWithoutPlayerHistory = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
-      if(!gamesWithoutPlayerHistory) continueLoop = false;
+      const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
+      if(!gamesWithoutPlayerHistories) continueLoop = false;
 
-      const games = this.#collectPlayerHistory(gamesWithoutPlayerHistory);
+      const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+
+      const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
       this.#persist(games);
     }
     await delay(this.#options.batchDelay);
   }
 
-  #collectPlayerHistory(gamesWithoutPlayerHistory) {
-    const games = [...gamesWithoutPlayerHistory];
-
-    games.forEach(async (game) => {
-      const pageHttpDetails = await this.#steamClient.getAppHttpDetailsSteamcharts(game);
-
-      game.playerHistory = parsePlayerHistory(pageHttpDetails.data);
+  async #getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistory) {
+    return (await Promise.all(gamesWithoutPlayerHistory.map(async game => {
 
       await delay(this.#options.unitDelay);
+
+      try{
+        return await this.#steamClient.getGameHtmlDetailsPageFromSteamcharts(game.id)
+      } catch(error) {
+        if (error.status !== 500 && error.status !== 404) return { data: undefined};
+      }
+    }))).map(game => game.data);
+  }
+
+  #addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistory) {
+    return gamesWithoutPlayerHistory.map((game, i) => {
+      game.playerHistory = parsePlayerHistory(steamChartsHtmlDetailsPages[i]);
+      return game;
     })
 
-    return games;
   }
 
   #persist(games) {
