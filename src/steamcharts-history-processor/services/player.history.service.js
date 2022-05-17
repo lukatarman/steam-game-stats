@@ -1,6 +1,8 @@
 import { JSDOM } from "jsdom";
 
 export function parsePlayerHistory(pageHttpDetailsHtml) {
+    if(typeof pageHttpDetailsHtml === "undefined") return [];
+    
     const dom = new JSDOM(pageHttpDetailsHtml);
     const playerHistoryEntries = dom.window.document.querySelectorAll(".common-table tbody tr");
 
