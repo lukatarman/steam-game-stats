@@ -30,7 +30,7 @@ async function main() {
 
   // run phase
   await steamDataAggregator.run();
-  await steamGameListProcessor.run();
+  steamGameListProcessor.run();
   steamchartsHistoryProcessor.run();
 }
 
