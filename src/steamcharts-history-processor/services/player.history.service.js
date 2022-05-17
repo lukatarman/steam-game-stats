@@ -20,7 +20,7 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
 
         const playerHistory = {
             date,
-            players: averagePlayers,
+            players: parseFloat(averagePlayers),
         }
 
         gamePlayerHistories.push(playerHistory);
