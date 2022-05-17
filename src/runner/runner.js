@@ -1,3 +1,13 @@
+/**
+ * @todo
+ * - receives as arguments
+ *   - array of executables
+ *   - running options like delay
+ * - executes them in parallel
+ * - run executions in a loop
+ *   - number of cycles should be 1..infinity
+ */
+
 export class Runner {
   #executables;
   #options;
