@@ -8,8 +8,6 @@ import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
 import { theSims4catsAndDogsHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
-import { labelWithoutPlayerHistory } from "./game.service.js";
-import { Game } from "../../models/game.js";
 
 describe("game.service.js", () => {
   describe(".filterSteamAppsByName", () => {
