@@ -1,31 +1,25 @@
-/**
- * @todo
- * - receives as arguments
- *   - array of executables
- *   - running options like delay
- * - executes them in parallel
- * - run executions in a loop
- *   - number of cycles should be 1..infinity
- */
-
 export class Runner {
   #executables;
   #options;
 
-  constructor(executables, options) {
+  constructor(executables, options = { iterations: Number.POSITIVE_INFINITY }) {
     this.#executables = executables;
     this.#options = options;
   }
 
   async run() {
-    let results= [];
+    this.#loopThroughExecutables();
+  }
 
-    this.#executables.forEach(func => {
-      for (let i = 0; i < this.#options.iterations; i++) {
-        results.push(func());
-      }
-    })
+  #loopThroughExecutables() {
+    this.#executables.forEach((func) => {
+      this.#runForNumberOfIterations(func);
+    });
+  }
 
-    await Promise.all(results);
+  async #runForNumberOfIterations(func) {
+    for (let i = 0; i < this.#options.iterations; i++) {
+      await func();
+    }
   }
 }
