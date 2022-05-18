@@ -5,6 +5,7 @@ import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregat
 import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor.js";
 import { hoursToMs } from "./shared/time.utils.js"
 import { SteamchartsHistoryProcessor } from "./steamcharts-history-processor/steamcharts.history.processor.js";
+import { Runner } from "./runner/runner.js";
 
 // our entry point = main
 async function main() {
@@ -28,10 +29,17 @@ async function main() {
   const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
   const steamchartsHistoryProcessor = new SteamchartsHistoryProcessor(steamClient, databaseClient, options);
 
+  const allRunFunctions = [steamDataAggregator.run, 
+                           steamGameListProcessor.run, 
+                           steamchartsHistoryProcessor.run
+                          ];
+
+  const runner = new Runner(allRunFunctions);
+
   // run phase
-  await steamDataAggregator.run();
-  steamGameListProcessor.run();
-  steamchartsHistoryProcessor.run();
+  // TO DO: Might be a problem with THIS, running the functions through runner - check
+  runner.run();
+
 }
 
 main();
