@@ -1,7 +1,7 @@
 import { delay } from "../shared/time.utils.js";
 import { Runner } from "./runner.js";
 
-fdescribe("runner.js", () => {
+describe("runner.js", () => {
   describe("runs one function in a loop for one iteration", () => {
     let counter = 0;
 
@@ -34,76 +34,61 @@ fdescribe("runner.js", () => {
     });
   });
 
-  describe("runs multiple functions in parallel in a loop for one iteration", () => {
+  describe("runs multiple functions in parallel for 1600 miliseconds", () => {
     let counterOne = 0;
     let counterTwo = 0;
-    let passedTime;
 
     beforeAll(async () => {
-      const funcOne = async () => { counterOne++; await delay(500); };
-      const funcTwo = async () => { counterTwo++; await delay(500); };
-      const options = { iterations: 1 };
+      const funcOne = async () => {  await delay(500); counterOne++; };
+      const funcTwo = async () => {  await delay(500); counterTwo++; };
+      const options = { iterations: 10 };
       const runner = new Runner([funcOne, funcTwo], options);
 
-      const beforeStart = new Date();
-      await runner.run();
-      const afterStart = new Date();
-      passedTime = afterStart.getTime() - beforeStart.getTime();
+      runner.run();
+      await delay(1600);
     });
 
-    it("should increment coutner one by 1", () => {
-      expect(counterOne).toBe(1);
+    it("should increment coutner one by 3", () => {
+      expect(counterOne).toBe(3);
     });
 
-    it("should increment coutner two by 1", () => {
-      expect(counterTwo).toBe(1);
-    });
-
-    it("should run in parallel", () => {
-      expect(passedTime).toBeLessThan(1000);
+    it("should increment coutner two by 3", () => {
+      expect(counterTwo).toBe(3);
     });
   });
 
-  describe("runs multiple functions in parallel in a loop for multiple iterations", () => {
+  describe("runs multiple functions with different delays in parallel for 880 miliseconds", () => {
     let counterOne = 0;
     let counterTwo = 0;
     let counterThree = 0;
     let counterFour = 0;
 
-    let passedTime;
-
     beforeAll(async () => {
-      const funcOne = async () => { counterOne++; await delay(500); };
-      const funcTwo = async () => { counterTwo++; await delay(500); };
-      const funcThree = async () => { counterThree++; await delay(500); };
-      const funcFour = async () => { counterFour++; await delay(500); };
-      const options = { iterations: 5 };
-      const runner = new Runner([funcOne, funcTwo, funcThree, funcFour], options);
+      const funcOne = async () => { await delay(100); counterOne++; };
+      const funcTwo = async () => { await delay(200); counterTwo++; };
+      const funcThree = async () => { await delay(400); counterThree++; };
+      const funcFour = async () => { await delay(300); counterFour++; };
+      const options = { iterations: 10 };
+      const runner = new Runner([funcOne, funcTwo, funcThree,funcFour], options);
 
-      const beforeStart = new Date();
-      await runner.run();
-      const afterStart = new Date();
-      passedTime = afterStart.getTime() - beforeStart.getTime();
+      runner.run();
+      await delay(880);
     });
 
-    it("should increment coutner one by 5", () => {
-      expect(counterOne).toBe(5);
+    it("the function with the delay of 100 should increment the counter 8 times", () => {
+      expect(counterOne).toBe(8);
     });
 
-    it("should increment coutner two by 5", () => {
-      expect(counterTwo).toBe(5);
+    it("the function with the delay of 200 should increment the counter 6 times", () => {
+      expect(counterTwo).toBe(4);
     });
 
-    it("should increment coutner three by 5", () => {
-      expect(counterThree).toBe(5);
+    it("the function with the delay of 400 should increment the counter 3 times", () => {
+      expect(counterThree).toBe(2);
     });
 
-    it("should increment coutner four by 5", () => {
-      expect(counterFour).toBe(5);
-    });
-
-    it("should run in parallel", () => {
-      expect(passedTime).toBeLessThan(1000);
+    it("the function with the delay of 300 should increment the counter 4 times", () => {
+      expect(counterFour).toBe(2);
     });
   });
 });
