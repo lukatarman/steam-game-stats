@@ -11,5 +11,6 @@ export class Game {
     this.id = steamApp.appid;
     this.name = steamApp.name;
     this.imageUrl = `https://cdn.akamai.steamstatic.com/steam/apps/${this.id}/header.jpg`
+    // for games that need age verification - need to get link elsewhere possibly?
   }
 }
