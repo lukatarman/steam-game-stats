@@ -17,9 +17,15 @@ export class Runner {
     this.#options = options;
   }
 
-  run() {
-    for (let i = 0; i < this.#options.iterations; i++) {
-      this.#executables[0]();
-    }
+  async run() {
+    let results= [];
+
+    this.#executables.forEach(func => {
+      for (let i = 0; i < this.#options.iterations; i++) {
+        results.push(func());
+      }
+    })
+
+    await Promise.all(results);
   }
 }
