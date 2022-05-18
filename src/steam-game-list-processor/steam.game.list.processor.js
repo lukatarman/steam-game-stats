@@ -17,7 +17,7 @@ export class SteamGameListProcessor {
   }
 
   async run() {
-    this.#identifyGames(steamApps);
+    await this.#identifyGames(steamApps);
     
     await delay(this.#options.batchDelay);
   }
