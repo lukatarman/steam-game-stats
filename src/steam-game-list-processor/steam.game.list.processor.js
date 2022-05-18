@@ -17,17 +17,16 @@ export class SteamGameListProcessor {
   }
 
   async run() {
-    while (true) {
-      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
-      if (steamApps.length === 0) {
-        await delay(this.#options.noAppsFoundDelay);
-        continue;
-      }
-
-      this.#identifyGames(steamApps);
+    const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
+    if (!lastUpdate) {
       await delay(this.#options.batchDelay);
+      return;
     }
-  }
+
+    this.#identifyGames(steamApps);
+    
+    await delay(this.#options.batchDelay);
+    }
 
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
