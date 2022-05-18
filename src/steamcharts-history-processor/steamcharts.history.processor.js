@@ -12,7 +12,7 @@ export class SteamchartsHistoryProcessor {
     this.#options = options;
   }
 
-  run() {
+  async run() {
     await this.#addSteamchartsPlayerHistory();
 
     await delay(this.#options.batchDelay);
