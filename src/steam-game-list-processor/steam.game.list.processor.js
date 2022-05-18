@@ -17,16 +17,10 @@ export class SteamGameListProcessor {
   }
 
   async run() {
-    const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
-    if (!lastUpdate) {
-      await delay(this.#options.batchDelay);
-      return;
-    }
-
     this.#identifyGames(steamApps);
     
     await delay(this.#options.batchDelay);
-    }
+  }
 
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
