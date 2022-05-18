@@ -3,6 +3,19 @@ import { eldenRingHttpDetailsSteamcharts } from "../../../assets/http.details.pa
 
 describe("player.history.service.js", () => {
     describe(".parsePlayerHistory", () => {
+        describe("if passed argument is undefined", () => {
+            let result;
+            let undefinedArgument;
+
+            beforeAll(() => {
+                result = parsePlayerHistory(undefinedArgument);
+            })
+
+            it("the function returns an empty array", () => {
+                expect(result.length).toBeFalsy();
+            })
+        })
+
         describe("if the first entry is 'Last 30 Days', and the game is Elden Ring", () => {
             let playerHistories;
 
@@ -15,7 +28,7 @@ describe("player.history.service.js", () => {
             })
 
             it("the first entries' player amount is 211468", () => {
-                expect(playerHistories[0].players).toBe(211468);
+                expect(playerHistories[0].players).toBe(211468.9);
             })
 
             it("the first entries' month is March", () => {

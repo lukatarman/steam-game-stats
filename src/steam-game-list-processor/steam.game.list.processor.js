@@ -49,34 +49,41 @@ export class SteamGameListProcessor {
   }
 
   async #filterSteamAppsByAppType(steamApps) {
+
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const [games, discoveredGamePages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
 
-    games.push(...this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages));
+    games.push(...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages)));
 
     return games;
   }
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
-    return steamApps.map(async (steamApp) => {
+    return (await Promise.all(steamApps.map(async (steamApp) => {
+
       await delay(this.#options.unitDelay);
-      return await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-    });
+      
+      return this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
+    }))).map(response => response.data);
   }
 
-  #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
-    return steamApps.map(async (steamApp, index) => {
+  async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
+    
+    return (await Promise.all(steamApps.map(async (steamApp, index) => {
       if (discoveredGamePages[index] === 'discovered') return;
 
       await delay(this.#options.unitDelay);
 
       try {
-        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[i].appid);
+        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
         return new Game(steamApp);
       } catch (error) {
-        if (error.status !== 500) throw error;
+        // TODO: think about returning undefined here - could be changed
+        // potential idea: if steamcharts returns error try other API to check for game
+        if (error.status !== 500 && error.status !== 404) return;
       }
-    }).filter(game => !!game);
+    }))).filter(games => !!games);
   }
 }
+

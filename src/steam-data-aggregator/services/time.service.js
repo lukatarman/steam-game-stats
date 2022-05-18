@@ -6,10 +6,11 @@ export function moreThanXhoursPassedSince(x, date) {
 
 export function msPassedSince(date) {
   const now = new Date().getTime();
-  const dateInMs = date.getTime();
+  const dateInMs = date.updatedOn.getTime();
   return Math.abs(now - dateInMs);
 }
 
+//TODO: add to test
 export async function runFuncInLoopWithDelayOfXmsFromDate(func, x, date, stopAfterXiterations = Number.POSITIVE_INFINITY) {
   const ms = msPassedSince(date);
   const tillNextRun = ms > x ? 0 : x - ms;

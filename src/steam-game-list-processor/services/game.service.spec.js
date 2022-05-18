@@ -252,5 +252,5 @@ describe("game.service.js", () => {
         expect(discoveredPages.indexOf('discovered')).toBe(-1);
       });
     });
-  });
+  })
 });

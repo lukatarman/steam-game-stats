@@ -54,9 +54,10 @@ export class DatabaseClient {
    * @TODO - implement
    */
   async getAll(collectionName, filter = {}) {
-    const getAllResults = await this.#collections
-      .get(collectionName)
-      .find(filter);
+    const cursor = await this.#collections
+                             .get(collectionName)
+                             .find(filter);
+    return await cursor.toArray();
   }
 
   async updateOne(collectionName, filter, data) {
@@ -87,10 +88,11 @@ export class DatabaseClient {
       return result;
   }
 
-  getXunidentifiedSteamApps(amount) {
-    return this.#collections.get("steam_apps")
-                            .find({ identified: { $eq: false }})
-                            .limit(amount);
+  async getXunidentifiedSteamApps(amount) {
+    const cursor = this.#collections.get("steam_apps")
+                                    .find({ identified: { $eq: false }})
+                                    .limit(amount);
+    return await cursor.toArray();
   }
 
   identifySteamAppById(id) {
@@ -101,10 +103,11 @@ export class DatabaseClient {
                       );
   }
 
-  getxGamesWithoutPlayerHistory(amount) {
-    return this.#collections.get("games")
-                            .find({ playerHistory: { $eq: false }})
-                            .limit(amount);
+  async getxGamesWithoutPlayerHistory(amount) {
+    const cursor = this.#collections.get("games")
+                                    .find({ playerHistory: { $eq: null }})
+                                    .limit(amount);
+    return await cursor.toArray();
   }
 
   updatePlayerHistoryById(game) {
