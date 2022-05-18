@@ -13,23 +13,23 @@ export class SteamchartsHistoryProcessor {
   }
 
   run() {
-    this.#addSteamchartsPlayerHistory();
+    await this.#addSteamchartsPlayerHistory();
+
+    await delay(this.#options.batchDelay);
   }
 
   async #addSteamchartsPlayerHistory() {
-    let continueLoop = true;
-
-    while(continueLoop) {
-      const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
-      if(!gamesWithoutPlayerHistories) continueLoop = false;
-
-      const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
-
-      const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
-
-      this.#persist(games);
+    const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
+    if(gamesWithoutPlayerHistories.length === 0) {
+      await delay(this.#options.batchDelay)
+      return;
     }
-    await delay(this.#options.batchDelay);
+
+    const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+
+    const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
+
+    await this.#persist(games);
   }
 
   async #getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistory) {
@@ -53,7 +53,7 @@ export class SteamchartsHistoryProcessor {
 
   }
 
-  #persist(games) {
+  async #persist(games) {
     games.forEach((game) => {
       this.#databaseClient.updatePlayerHistoryById(game);
     })
