@@ -27,8 +27,24 @@ export class SteamchartsHistoryProcessor {
 
       const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
-      this.#persist(games);
+      await this.#persist(games);
     }
+    await delay(this.#options.batchDelay);
+  }
+
+  async #addSteamchartsPlayerHistoryXXX() {
+    const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
+    if(gamesWithoutPlayerHistories.length === 0) {
+      await delay(this.#options.batchDelay)
+      return;
+    }
+
+    const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+
+    const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
+
+    await this.#persist(games);
+
     await delay(this.#options.batchDelay);
   }
 
@@ -53,7 +69,7 @@ export class SteamchartsHistoryProcessor {
 
   }
 
-  #persist(games) {
+  async #persist(games) {
     games.forEach((game) => {
       this.#databaseClient.updatePlayerHistoryById(game);
     })
