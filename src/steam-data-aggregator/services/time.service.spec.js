@@ -21,7 +21,7 @@ describe("time.service.js", () => {
         const oneDayBehind = new Date().getTime() - oneDayInMs;
         const date = new Date(oneDayBehind);
 
-        result = moreThanXhoursPassedSince(threeHoursInMs, { updatedOn: date });
+        result = moreThanXhoursPassedSince(threeHoursInMs, date);
       });
 
       it("function returns true", () => {
@@ -36,7 +36,7 @@ describe("time.service.js", () => {
         const threeHoursBehind = new Date().getTime() - threeHoursInMs;
         const date = new Date(threeHoursBehind);
 
-        result = moreThanXhoursPassedSince(oneDayInMs, { updatedOn: date });
+        result = moreThanXhoursPassedSince(oneDayInMs, date);
       });
 
       it("function returns true", () => {
@@ -54,7 +54,7 @@ describe("time.service.js", () => {
         const threeHoursBehind = new Date().getTime() - threeHoursInMs;
         const date = new Date(threeHoursBehind);
 
-        result = msPassedSince({ updatedOn: date });
+        result = msPassedSince(date);
       });
 
       it("function returns 10800000", () => {
