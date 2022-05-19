@@ -40,18 +40,18 @@ export class SteamchartsHistoryProcessor {
       try{
         return await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id)
       } catch(error) {
-        if (error.status !== 500 && error.status !== 404) return { data: undefined};
+        if (error.status !== 500 && error.status !== 404) return { data: undefined };
       }
     }))).map(game => game.data);
   }
 
-  #addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistory) {
-    return gamesWithoutPlayerHistory.map((game, i) => {
-      
-      if(steamChartsHtmlDetailsPages[i] === undefined) {
+  #addPlayerHistories(pages, games) {
+    return games.map((game, i) => {
+
+      if(pages[i] === undefined) {
         game.playerHistory = [];        
       } else {
-        game.playerHistory = parsePlayerHistory(steamChartsHtmlDetailsPages[i]);
+        game.playerHistory = parsePlayerHistory(pages[i]);
       }
 
       return game;
