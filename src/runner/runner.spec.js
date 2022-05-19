@@ -34,18 +34,18 @@ describe("runner.js", () => {
     });
   });
 
-  describe("runs multiple functions in parallel for 1600 miliseconds", () => {
+  describe("runs multiple functions in parallel for 95 miliseconds", () => {
     let counterOne = 0;
     let counterTwo = 0;
 
     beforeAll(async () => {
-      const funcOne = async () => {  await delay(500); counterOne++; };
-      const funcTwo = async () => {  await delay(500); counterTwo++; };
+      const funcOne = async () => {  await delay(30); counterOne++; };
+      const funcTwo = async () => {  await delay(30); counterTwo++; };
       const options = { iterations: 10 };
       const runner = new Runner([funcOne, funcTwo], options);
 
       runner.run();
-      await delay(1600);
+      await delay(95);
     });
 
     it("should increment coutner one by 3", () => {
@@ -57,38 +57,32 @@ describe("runner.js", () => {
     });
   });
 
-  describe("runs multiple functions with different delays in parallel for 880 miliseconds", () => {
+  describe("runs multiple functions with different delays in parallel for 130 miliseconds", () => {
     let counterOne = 0;
     let counterTwo = 0;
     let counterThree = 0;
     let counterFour = 0;
+    let counterHasDuplicates = true;
 
     beforeAll(async () => {
-      const funcOne = async () => { await delay(100); counterOne++; };
-      const funcTwo = async () => { await delay(200); counterTwo++; };
-      const funcThree = async () => { await delay(400); counterThree++; };
-      const funcFour = async () => { await delay(300); counterFour++; };
+      const funcOne = async () => { await delay(10); counterOne++; };
+      const funcTwo = async () => { await delay(30); counterTwo++; };
+      const funcThree = async () => { await delay(50); counterThree++; };
+      const funcFour = async () => { await delay(90); counterFour++; };
       const options = { iterations: 10 };
       const runner = new Runner([funcOne, funcTwo, funcThree,funcFour], options);
-
+      function checkIfHasDuplicates(arr) {
+        return new Set(arr).size !== arr.length;
+      }
       runner.run();
-      await delay(880);
+      await delay(130);
+      const results = [counterOne, counterTwo, counterThree, counterFour];
+
+      counterHasDuplicates = checkIfHasDuplicates(results);
     });
 
-    it("the function with the delay of 100 should increment the counter 8 times", () => {
-      expect(counterOne).toBe(8);
-    });
-
-    it("the function with the delay of 200 should increment the counter 4 times", () => {
-      expect(counterTwo).toBe(4);
-    });
-
-    it("the function with the delay of 400 should increment the counter 2 times", () => {
-      expect(counterThree).toBe(2);
-    });
-
-    it("the function with the delay of 300 should increment the counter 2  times", () => {
-      expect(counterFour).toBe(2);
+    it("the different functions should run different amount of times", () => {
+      expect(counterHasDuplicates).toBe(false);
     });
   });
 });
