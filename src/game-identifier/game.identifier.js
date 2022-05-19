@@ -24,8 +24,6 @@ export class GameIdentifier {
     }
 
     await this.#identifyGames(steamApps);
-    
-    await delay(this.#options.batchDelay);
   }
 
   async #identifyGames(steamApps) {
