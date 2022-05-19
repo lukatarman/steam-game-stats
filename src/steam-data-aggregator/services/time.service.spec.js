@@ -58,7 +58,7 @@ describe("time.service.js", () => {
       });
 
       it("function returns 10800000", () => {
-        expect(result).toBe(108e5);
+        expect(result).toBeGreaterThan(10899995);
       });
     });
   });
