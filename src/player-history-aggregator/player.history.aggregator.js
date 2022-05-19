@@ -26,22 +26,6 @@ export class PlayerHistoryAggregator {
     await this.#persist(games);
   }
 
-  async #addSteamchartsPlayerHistoryXXX() {
-    const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
-    if(gamesWithoutPlayerHistories.length === 0) {
-      await delay(this.#options.batchDelay)
-      return;
-    }
-
-    const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
-
-    const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
-
-    await this.#persist(games);
-
-    await delay(this.#options.batchDelay);
-  }
-
   async #getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistory) {
     return (await Promise.all(gamesWithoutPlayerHistory.map(async game => {
 
