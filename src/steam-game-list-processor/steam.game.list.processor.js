@@ -60,12 +60,14 @@ export class SteamGameListProcessor {
   }
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
-    return (await Promise.all(steamApps.map(async (steamApp) => {
-
+    const detailsPages = [];
+    for(let i = 0; i < steamApps.length; i++) {
+      detailsPages.push(
+        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApps[i].appid)
+      );
       await delay(this.#options.unitDelay);
-      
-      return this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-    }))).map(response => response.data);
+    }
+    return detailsPages;
   }
 
   async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
