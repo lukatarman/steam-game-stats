@@ -5,7 +5,7 @@ import {
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
 
-export class SteamGameListProcessor {
+export class GameIdentifier {
   #steamClient;
   #databaseClient;
   #options;
