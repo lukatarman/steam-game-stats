@@ -23,18 +23,17 @@ async function main() {
     unitDelay: 800,
     noAppsFoundDelay: hoursToMs(1),
     updateIntervalDelay: hoursToMs(12),
-
+    iterationDelay: 5000,
   };
   const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
   const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
   const steamchartsHistoryProcessor = new SteamchartsHistoryProcessor(steamClient, databaseClient, options);
 
-  const allRunFunctions = [steamDataAggregator.run, 
-                           steamGameListProcessor.run, 
-                           steamchartsHistoryProcessor.run
-                          ];
-
-  const runner = new Runner(allRunFunctions);
+  const runner = new Runner([
+    steamDataAggregator.run, 
+    steamGameListProcessor.run, 
+    steamchartsHistoryProcessor.run
+   ], options);
 
   // run phase
   // TO DO: Might be a problem with THIS, running the functions through runner - check
