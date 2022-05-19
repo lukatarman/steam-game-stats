@@ -47,12 +47,9 @@ export class SteamchartsHistoryProcessor {
 
   #addPlayerHistories(pages, games) {
     return games.map((game, i) => {
-
-      if(pages[i] === undefined) {
-        game.playerHistory = [];        
-      } else {
-        game.playerHistory = parsePlayerHistory(pages[i]);
-      }
+      game.PlayerHistory = (typeof pages[i] === "undefined")
+        ? []
+        : parsePlayerHistory(pages[i]);
 
       return game;
     })
