@@ -48,8 +48,6 @@ export class PlayerHistoryAggregator {
   }
 
   async #persist(games) {
-    games.forEach((game) => {
-      this.#databaseClient.updatePlayerHistoryById(game);
-    })
+    games.forEach(game => this.#databaseClient.updatePlayerHistoryById(game));
   }
 }
