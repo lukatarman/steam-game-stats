@@ -1,7 +1,7 @@
 import { parsePlayerHistory } from "./services/player.history.service.js";
 import { delay } from "../shared/time.utils.js";
 
-export class SteamchartsHistoryProcessor {
+export class PlayerHistoryAggregator {
   #steamClient;
   #databaseClient;
   #options;
