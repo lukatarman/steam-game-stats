@@ -79,15 +79,15 @@ describe("runner.js", () => {
       expect(counterOne).toBe(8);
     });
 
-    it("the function with the delay of 200 should increment the counter 6 times", () => {
+    it("the function with the delay of 200 should increment the counter 4 times", () => {
       expect(counterTwo).toBe(4);
     });
 
-    it("the function with the delay of 400 should increment the counter 3 times", () => {
+    it("the function with the delay of 400 should increment the counter 2 times", () => {
       expect(counterThree).toBe(2);
     });
 
-    it("the function with the delay of 300 should increment the counter 4 times", () => {
+    it("the function with the delay of 300 should increment the counter 2  times", () => {
       expect(counterFour).toBe(2);
     });
   });
