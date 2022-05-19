@@ -53,7 +53,6 @@ export class SteamchartsHistoryProcessor {
 
       return game;
     })
-
   }
 
   #persist(games) {
