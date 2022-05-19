@@ -38,7 +38,7 @@ export class SteamchartsHistoryProcessor {
       await delay(this.#options.unitDelay);
 
       try{
-        return await this.#steamClient.getGameHtmlDetailsPageFromSteamcharts(game.id)
+        return await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id)
       } catch(error) {
         if (error.status !== 500 && error.status !== 404) return { data: undefined};
       }
