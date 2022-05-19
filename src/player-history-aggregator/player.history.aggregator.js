@@ -13,12 +13,6 @@ export class PlayerHistoryAggregator {
   }
 
   async run() {
-    await this.#addSteamchartsPlayerHistory();
-
-    await delay(this.#options.batchDelay);
-  }
-
-  async #addSteamchartsPlayerHistory() {
     const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
       await delay(this.#options.batchDelay)
