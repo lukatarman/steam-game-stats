@@ -49,7 +49,7 @@ export class SteamDataAggregator {
   async #updateSteamApps() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
-    // TODO - sometimes there are more apps in steamAppsDb than in steamApps API.. Something is wrong, check
+    // TODO - sometimes there are more apps in steamAppsDb than in steamApps API.. Something is wrong, check when app grows, multiple updates over days
     const steamApps    = diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) {
       await this.#databaseClient.insertOneUpdateTimestamp(new Date());
