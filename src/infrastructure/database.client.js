@@ -50,9 +50,6 @@ export class DatabaseClient {
     return this.getAll("steam_apps", filter);
   }
 
-  /**
-   * @TODO - implement
-   */
   async getAll(collectionName, filter = {}) {
             return await this.#collections
                              .get(collectionName)
