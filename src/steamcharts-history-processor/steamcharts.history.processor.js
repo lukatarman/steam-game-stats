@@ -47,7 +47,13 @@ export class SteamchartsHistoryProcessor {
 
   #addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistory) {
     return gamesWithoutPlayerHistory.map((game, i) => {
-      game.playerHistory = parsePlayerHistory(steamChartsHtmlDetailsPages[i]);
+      
+      if(steamChartsHtmlDetailsPages[i] === undefined) {
+        game.playerHistory = [];        
+      } else {
+        game.playerHistory = parsePlayerHistory(steamChartsHtmlDetailsPages[i]);
+      }
+
       return game;
     })
 
