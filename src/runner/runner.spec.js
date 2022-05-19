@@ -34,18 +34,18 @@ describe("runner.js", () => {
     });
   });
 
-  describe("runs multiple functions in parallel for 95 miliseconds", () => {
+  describe("runs multiple functions in parallel for 280 miliseconds", () => {
     let counterOne = 0;
     let counterTwo = 0;
 
     beforeAll(async () => {
-      const funcOne = async () => {  await delay(30); counterOne++; };
-      const funcTwo = async () => {  await delay(30); counterTwo++; };
+      const funcOne = async () => {  await delay(80); counterOne++; };
+      const funcTwo = async () => {  await delay(80); counterTwo++; };
       const options = { iterations: 10 };
       const runner = new Runner([funcOne, funcTwo], options);
 
       runner.run();
-      await delay(95);
+      await delay(280);
     });
 
     it("should increment coutner one by 3", () => {
