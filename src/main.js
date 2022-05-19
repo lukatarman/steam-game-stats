@@ -1,7 +1,7 @@
 import httpClient from "axios";
 import { DatabaseClient } from "./infrastructure/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
-import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregator.js";
+import { SteamAppsAggregator } from "./steam-apps-aggregator/steam.apps.aggregator.js";
 import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor.js";
 import { hoursToMs } from "./shared/time.utils.js"
 import { SteamchartsHistoryProcessor } from "./steamcharts-history-processor/steamcharts.history.processor.js";
@@ -25,12 +25,12 @@ async function main() {
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
   };
-  const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
+  const SteamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
   const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
   const steamchartsHistoryProcessor = new SteamchartsHistoryProcessor(steamClient, databaseClient, options);
 
   const runner = new Runner([
-    steamDataAggregator.run, 
+    SteamAppsAggregator.run, 
     steamGameListProcessor.run, 
     steamchartsHistoryProcessor.run
    ], options);

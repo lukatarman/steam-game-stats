@@ -5,7 +5,7 @@ import {
   moreThanXhoursPassedSince ,
 } from "./services/time.service.js";
 
-export class SteamDataAggregator {
+export class SteamAppsAggregator {
   #databaseClient;
   #steamClient;
   #options;
