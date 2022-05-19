@@ -71,7 +71,6 @@ export class SteamGameListProcessor {
   }
 
   async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
-    
     return (await Promise.all(steamApps.map(async (steamApp, index) => {
       if (discoveredGamePages[index] === 'discovered') return;
 

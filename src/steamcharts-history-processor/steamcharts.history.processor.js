@@ -32,22 +32,25 @@ export class SteamchartsHistoryProcessor {
     await delay(this.#options.batchDelay);
   }
 
-  async #getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistory) {
-    return (await Promise.all(gamesWithoutPlayerHistory.map(async game => {
-
+  async #getGameHtmlDetailsPagesFromSteamcharts(games) {
+    const pages = [];
+    for (let i = 0; i < games.length; i++) {
       await delay(this.#options.unitDelay);
 
       try{
-        return await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id)
+        pages.push(
+          await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
+        );
       } catch(error) {
-        if (error.status !== 500 && error.status !== 404) return { data: undefined };
+        if (error.status !== 500 && error.status !== 404) pages.push("");
       }
-    }))).map(game => game.data);
+    }
+    return pages;
   }
 
   #addPlayerHistories(pages, games) {
     return games.map((game, i) => {
-      game.PlayerHistory = (typeof pages[i] === "undefined")
+      game.PlayerHistory = (pages[i] === "")
         ? []
         : parsePlayerHistory(pages[i]);
 
