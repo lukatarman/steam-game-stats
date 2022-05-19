@@ -20,7 +20,7 @@ export class SteamchartsHistoryProcessor {
     let continueLoop = true;
 
     while(continueLoop) {
-      const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
+      const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
       if(!gamesWithoutPlayerHistories) continueLoop = false;
 
       const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);

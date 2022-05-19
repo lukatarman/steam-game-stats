@@ -103,7 +103,7 @@ export class DatabaseClient {
                       );
   }
 
-  async getxGamesWithoutPlayerHistory(amount) {
+  async getXgamesWithoutPlayerHistory(amount) {
       return await this.#collections.get("games")
                                     .find({ playerHistory: { $eq: null }})
                                     .limit(amount)
