@@ -52,12 +52,12 @@ export class SteamchartsHistoryProcessor {
         : parsePlayerHistory(pages[i]);
 
       return game;
-    })
+    });
   }
 
   #persist(games) {
     games.forEach((game) => {
       this.#databaseClient.updatePlayerHistoryById(game);
-    })
+    });
   }
 }
