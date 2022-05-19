@@ -17,6 +17,12 @@ export class GameIdentifier {
   }
 
   async run() {
+    const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
+    if (steamApps.length === 0) {
+      await delay(this.#options.noAppsFoundDelay);
+      return;
+    }
+
     await this.#identifyGames(steamApps);
     
     await delay(this.#options.batchDelay);
