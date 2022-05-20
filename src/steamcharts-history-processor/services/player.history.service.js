@@ -5,19 +5,14 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
   const playerHistoryEntries = dom.window.document.querySelectorAll(".common-table tbody tr");
   const myArray = Array.from(playerHistoryEntries);
 
-  return myArray.map(entry => {
-    const firstElement = entry.firstElementChild;
-  
-    if(firstElement.textContent === "Last 30 Days") return;
-  
-    const averagePlayers = parseFloat(firstElement.nextElementSibling.textContent).toFixed(1);
-      
-    const monthAndYear = firstElement.textContent;
-    const date = new Date(monthAndYear);
+  return myArray.map(entry => entry.firstElementChild)
+                .map(firstElement => firstElement.textContent === "Last 30 Days" ? undefined: firstElement)
+                .filter(element => !!element)
+                .map(element => {
+                    return {
+                        date: new Date(element.textContent),
+                        players: parseFloat(parseFloat(element.nextElementSibling.textContent).toFixed(1)),
+                    }
+                })
 
-    return {
-        date,
-        players: parseFloat(averagePlayers),
-    }
-  }).filter(history => !!history);
 }
