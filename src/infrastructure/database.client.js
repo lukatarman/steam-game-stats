@@ -50,13 +50,11 @@ export class DatabaseClient {
     return this.getAll("steam_apps", filter);
   }
 
-  /**
-   * @TODO - implement
-   */
   async getAll(collectionName, filter = {}) {
-    const getAllResults = await this.#collections
-      .get(collectionName)
-      .find(filter);
+            return await this.#collections
+                             .get(collectionName)
+                             .find(filter)
+                             .toArray();
   }
 
   async updateOne(collectionName, filter, data) {
@@ -87,10 +85,11 @@ export class DatabaseClient {
       return result;
   }
 
-  getXunidentifiedSteamApps(amount) {
-    return this.#collections.get("steam_apps")
-                            .find({ identified: { $eq: false }})
-                            .limit(amount);
+  async getXunidentifiedSteamApps(amount) {
+      return await this.#collections.get("steam_apps")
+                                    .find({ identified: { $eq: false }})
+                                    .limit(amount)
+                                    .toArray();
   }
 
   identifySteamAppById(id) {
@@ -101,17 +100,23 @@ export class DatabaseClient {
                       );
   }
 
-  getxGamesWithoutPlayerHistory(amount) {
-    return this.#collections.get("games")
-                            .find({ playerHistory: { $eq: false }})
-                            .limit(amount);
+  async getXgamesWithoutPlayerHistory(amount) {
+      return await this.#collections.get("games")
+                                    .find({ checkedSteamchartsHistory: { $eq: false }})
+                                    .limit(amount)
+                                    .toArray();
   }
 
   updatePlayerHistoryById(game) {
     this.#collections.get("games")
                      .updateOne(
                        { id: { $eq: game.id }},
-                       { $set: { playerHistory: game.playerHistory }}
+                       { $set: 
+                        {
+                          playerHistory: game.playerHistory,
+                          checkedSteamchartsHistory: game.checkedSteamchartsHistory,
+                        }
+                       }
                       );
   }
 }

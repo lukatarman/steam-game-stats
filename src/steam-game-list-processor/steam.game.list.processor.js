@@ -24,7 +24,7 @@ export class SteamGameListProcessor {
         continue;
       }
 
-      this.#identifyGames(steamApps);
+      await this.#identifyGames(steamApps);
       await delay(this.#options.batchDelay);
     }
   }
@@ -49,34 +49,46 @@ export class SteamGameListProcessor {
   }
 
   async #filterSteamAppsByAppType(steamApps) {
+
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const [games, discoveredGamePages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
 
-    games.push(...this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages));
+    games.push(...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages)));
 
     return games;
   }
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
-    return steamApps.map(async (steamApp) => {
+    const detailsPages = [];
+    for(let i = 0; i < steamApps.length; i++) {
+      detailsPages.push(
+        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApps[i].appid)
+      );
       await delay(this.#options.unitDelay);
-      return await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid);
-    });
+    }
+    return detailsPages;
   }
 
-  #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
-    return steamApps.map(async (steamApp, index) => {
+  async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
+    return (await Promise.all(steamApps.map(async (steamApp, index) => {
       if (discoveredGamePages[index] === 'discovered') return;
 
       await delay(this.#options.unitDelay);
 
       try {
-        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[i].appid);
+        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
         return new Game(steamApp);
       } catch (error) {
-        if (error.status !== 500) throw error;
+        /**
+         * @TODO - currently the steamApp will wrongfully be marked as not a game, if steam needs an age verification before
+         * showing the game info, AND there is an unexpected problem with steamcharts (either steamcharts if offline, or
+         * the game just got released. Try to find a solution to this eventually.)
+         * https://github.com/lukatarman/steam-game-stats/issues/31
+         */
+        if (error.status !== 500 && error.status !== 404) return;
       }
-    }).filter(game => !!game);
+    }))).filter(games => !!games);
   }
 }
+

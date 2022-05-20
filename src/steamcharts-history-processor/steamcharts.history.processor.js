@@ -1,4 +1,4 @@
-import { parsePlayerHistory } from "./services/player.history.service";
+import { parsePlayerHistory } from "./services/player.history.service.js";
 import { delay } from "../shared/time.utils.js";
 
 export class SteamchartsHistoryProcessor {
@@ -20,33 +20,46 @@ export class SteamchartsHistoryProcessor {
     let continueLoop = true;
 
     while(continueLoop) {
-      const gamesWithoutPlayerHistory = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
-      if(!gamesWithoutPlayerHistory) continueLoop = false;
+      const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
+      if(!gamesWithoutPlayerHistories) continueLoop = false;
 
-      const games = this.#collectPlayerHistory(gamesWithoutPlayerHistory);
+      const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+
+      const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
       this.#persist(games);
     }
     await delay(this.#options.batchDelay);
   }
 
-  #collectPlayerHistory(gamesWithoutPlayerHistory) {
-    const games = [...gamesWithoutPlayerHistory];
-
-    games.forEach(async (game) => {
-      const pageHttpDetails = await this.#steamClient.getAppHttpDetailsSteamcharts(game);
-
-      game.playerHistory = parsePlayerHistory(pageHttpDetails.data);
-
+  async #getGameHtmlDetailsPagesFromSteamcharts(games) {
+    const pages = [];
+    for (let i = 0; i < games.length; i++) {
       await delay(this.#options.unitDelay);
-    })
 
-    return games;
+      try{
+        pages.push(
+          await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
+        );
+      } catch(error) {
+        if (error.status !== 500 && error.status !== 404) pages.push("");
+      }
+    }
+    return pages;
+  }
+
+  #addPlayerHistories(pages, games) {
+    return games.map((game, i) => {
+      if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
+      game.checkedSteamchartsHistory = true;
+
+      return game;
+    });
   }
 
   #persist(games) {
     games.forEach((game) => {
       this.#databaseClient.updatePlayerHistoryById(game);
-    })
+    });
   }
 }

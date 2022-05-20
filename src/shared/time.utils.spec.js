@@ -28,7 +28,7 @@ describe("time.utils.js", () => {
 
       it("the function waits 100ms", () => {
         expect(timePassed).toBeLessThanOrEqual(130);
-        expect(timePassed).toBeGreaterThanOrEqual(100);
+        expect(timePassed).toBeGreaterThanOrEqual(95);
       });
     });
 
@@ -42,7 +42,7 @@ describe("time.utils.js", () => {
 
       it("the function waits 500ms", () => {
         expect(timePassed).toBeLessThanOrEqual(530);
-        expect(timePassed).toBeGreaterThanOrEqual(500);
+        expect(timePassed).toBeGreaterThanOrEqual(495);
       });
     });
   });
