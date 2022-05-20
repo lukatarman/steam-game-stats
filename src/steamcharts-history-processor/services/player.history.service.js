@@ -13,6 +13,5 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
                         date: new Date(element.textContent),
                         players: parseFloat(parseFloat(element.nextElementSibling.textContent).toFixed(1)),
                     }
-                })
-
+                });
 }
