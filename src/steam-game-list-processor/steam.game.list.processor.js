@@ -40,7 +40,7 @@ export class SteamGameListProcessor {
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
-      this.#databaseClient.insertMany("games", gamesWithSteamchartsStatus);
+      this.#databaseClient.insertMany("games", games);
     }
 
     steamApps.forEach((steamApp) =>
