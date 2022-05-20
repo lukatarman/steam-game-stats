@@ -32,22 +32,27 @@ export class PlayerHistoryAggregator {
     await this.#persist(games);
   }
 
-  async #getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistory) {
-    return (await Promise.all(gamesWithoutPlayerHistory.map(async game => {
-
+  async #getGameHtmlDetailsPagesFromSteamcharts(games) {
+    const pages = [];
+    for (let i = 0; i < games.length; i++) {
       await delay(this.#options.unitDelay);
 
       try{
-        return await this.#steamClient.getGameHtmlDetailsPageFromSteamcharts(game.id)
+        pages.push(
+          await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
+        );
       } catch(error) {
-        if (error.status !== 500 && error.status !== 404) return { data: undefined};
+        if (error.status !== 500 && error.status !== 404) pages.push("");
       }
-    }))).map(game => game.data);
+    }
+    return pages;
   }
 
-  #addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistory) {
-    return gamesWithoutPlayerHistory.map((game, i) => {
-      game.playerHistory = parsePlayerHistory(steamChartsHtmlDetailsPages[i]);
+  #addPlayerHistories(pages, games) {
+    return games.map((game, i) => {
+      if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
+      game.checkedSteamchartsHistory = true;
+
       return game;
     });
   }

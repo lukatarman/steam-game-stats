@@ -22,12 +22,12 @@ export class SteamClient {
   async getSteamAppHtmlDetailsPage(id) {
     const url = `https://store.steampowered.com/app/${id}`;
 
-    return this.#httpClient.get(url);
+    return (await this.#httpClient.get(url)).data;
   }
 
-  async getGameHtmlDetailsPageFromSteamcharts(id) {
+  async getSteamchartsGameHtmlDetailsPage(id) {
     const url = `https://steamcharts.com/app/${id}`;
 
-    return this.#httpClient.get(url);
+    return (await this.#httpClient.get(url)).data;
   }
 }
