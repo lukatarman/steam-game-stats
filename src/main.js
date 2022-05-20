@@ -1,10 +1,11 @@
 import httpClient from "axios";
 import { DatabaseClient } from "./infrastructure/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
-import { SteamDataAggregator } from "./steam-data-aggregator/steam.data.aggregator.js";
-import { SteamGameListProcessor } from "./steam-game-list-processor/steam.game.list.processor.js";
+import { SteamAppsAggregator } from "./steam-apps-aggregator/steam.apps.aggregator.js";
+import { GameIdentifier } from "./game-identifier/game.identifier.js";
 import { hoursToMs } from "./shared/time.utils.js"
-import { SteamchartsHistoryProcessor } from "./steamcharts-history-processor/steamcharts.history.processor.js";
+import { PlayerHistoryAggregator } from "./player-history-aggregator/player.history.aggregator.js";
+import { Runner } from "./runner/runner.js";
 
 // our entry point = main
 async function main() {
@@ -22,16 +23,21 @@ async function main() {
     unitDelay: 800,
     noAppsFoundDelay: hoursToMs(1),
     updateIntervalDelay: hoursToMs(12),
-
+    iterationDelay: 5000,
   };
-  const steamDataAggregator = new SteamDataAggregator(steamClient, databaseClient, options);
-  const steamGameListProcessor = new SteamGameListProcessor(steamClient, databaseClient, options);
-  const steamchartsHistoryProcessor = new SteamchartsHistoryProcessor(steamClient, databaseClient, options);
+  const steamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
+  const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
+  const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
+
+  const runner = new Runner([
+    steamAppsAggregator.run.bind(steamAppsAggregator), 
+    gameIdentifier.run.bind(gameIdentifier), 
+    playerHistoryAggregator.run.bind(playerHistoryAggregator),
+   ], options);
 
   // run phase
-  await steamDataAggregator.run();
-  steamGameListProcessor.run();
-  steamchartsHistoryProcessor.run();
+  runner.run();
+
 }
 
 main();
