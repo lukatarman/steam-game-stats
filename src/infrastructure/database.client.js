@@ -107,7 +107,7 @@ export class DatabaseClient {
                                     .toArray();
   }
 
-  updatePlayerHistoryById(game) {
+  async updatePlayerHistoryById(game) {
     this.#collections.get("games")
                      .updateOne(
                        { id: { $eq: game.id }},
@@ -124,5 +124,5 @@ export class DatabaseClient {
     return await this.#collections.get("games")
                                   .find({ checkedSteamchartsHistory: { $eq: true }})
                                   .toArray();
-}
+  }
 }
