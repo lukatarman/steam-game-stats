@@ -3,8 +3,8 @@ export class Players {
   players; // players=0..n
 
   constructor(date, players) {
-    this.date = date;
-    this.players = players;
+    this.date = new Date(date);
+    this.players = parseFloat(parseFloat(players).toFixed(1))
   }
 }
 
