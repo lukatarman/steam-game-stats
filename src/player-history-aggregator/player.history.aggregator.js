@@ -62,6 +62,20 @@ export class PlayerHistoryAggregator {
   }
 
   async #addCurrentPlayers() {
-    
+    const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
+
+    const players = this.#steamClient.getAllCurrentPlayersConcurrently(games);
+
+    const gamesWithCurrentPlayers = this.#addCurrentPlayersToEachGame(players, games);
+
+    await this.#databaseClient.updatePlayerHistoryById(gamesWithCurrentPlayers);
+  }
+
+  async #addCurrentPlayersToEachGame(players, games) {
+    return games.map((game, i) => {
+      game.playerHistory.date = new Date();
+      game.playerHistory.players = players[i];
+      return game;
+    });
   }
 }
