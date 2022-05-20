@@ -1,7 +1,6 @@
 import {
   filterSteamAppsByName,
   discoverGamesFromSteamHtmlDetailsPages,
-  addSteamchartsStatus,
 } from "./services/game.service.js";
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
@@ -41,7 +40,6 @@ export class SteamGameListProcessor {
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
-      const gamesWithSteamchartsStatus = addSteamchartsStatus(games);
       this.#databaseClient.insertMany("games", gamesWithSteamchartsStatus);
     }
 
