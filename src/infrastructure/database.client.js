@@ -120,10 +120,9 @@ export class DatabaseClient {
                       );
   }
 
-  async getXgamesWithCheckedSteamchartsHistory(amount) {
+  async getXgamesWithCheckedSteamchartsHistory() {
     return await this.#collections.get("games")
                                   .find({ checkedSteamchartsHistory: { $eq: true }})
-                                  .limit(amount)
                                   .toArray();
 }
 }
