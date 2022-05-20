@@ -102,7 +102,7 @@ export class DatabaseClient {
 
   async getXgamesWithoutPlayerHistory(amount) {
       return await this.#collections.get("games")
-                                    .find({ playerHistory: { $eq: null }})
+                                    .find({ steamchartsHistoryStatus: { $eq: "unchecked" }})
                                     .limit(amount)
                                     .toArray();
   }
