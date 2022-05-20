@@ -50,9 +50,8 @@ export class SteamchartsHistoryProcessor {
 
   #addPlayerHistories(pages, games) {
     return games.map((game, i) => {
-      game.playerHistory = (pages[i] === "")
-        ? []
-        : parsePlayerHistory(pages[i]);
+      if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
+      game.checkedSteamchartsHistory = true;
 
       return game;
     });
