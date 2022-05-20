@@ -111,7 +111,12 @@ export class DatabaseClient {
     this.#collections.get("games")
                      .updateOne(
                        { id: { $eq: game.id }},
-                       { $set: { playerHistory: game.playerHistory }}
+                       { $set: 
+                        {
+                          playerHistory: game.playerHistory,
+                          checkedSteamchartsHistory: game.checkedSteamchartsHistory,
+                        }
+                       }
                       );
   }
 }
