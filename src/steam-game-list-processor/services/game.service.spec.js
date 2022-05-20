@@ -1,5 +1,5 @@
 import { gamesMock } from "../../../assets/small.data.set.js";
-import { steamAppIsGame, filterSteamAppsByName, discoverGamesFromSteamHtmlDetailsPages } from "./game.service.js";
+import { steamAppIsGame, filterSteamAppsByName, discoverGamesFromSteamHtmlDetailsPages, addSteamchartsStatus } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
@@ -252,5 +252,27 @@ describe("game.service.js", () => {
         expect(discoveredPages.indexOf('discovered')).toBe(-1);
       });
     });
-  })
+  });
+
+  describe(".addSteamchartsStatus", () => {
+    describe("when an array of objects is passed into the function", () => {
+      let results = [];
+
+      beforeAll(() => {
+        results = addSteamchartsStatus(gamesMock);
+      });
+
+      it("the first object in the array will have 'steamchartsHistoryStatus' property set to 'unchecked'", () => {
+        expect(results[0].steamchartsHistoryStatus).toBe("unchecked");
+      });
+
+      it("the third object in the array will have 'steamchartsHistoryStatus' property set to 'unchecked'", () => {
+        expect(results[2].steamchartsHistoryStatus).toBe("unchecked");
+      });
+
+      it("the last object in the array will have 'steamchartsHistoryStatus' property set to 'unchecked'", () => {
+        expect(results[results.length - 1].steamchartsHistoryStatus).toBe("unchecked");
+      });
+    });
+  });
 });

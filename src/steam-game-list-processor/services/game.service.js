@@ -49,3 +49,10 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
 
   return [games, discoveredPages];
 }
+
+export function addSteamchartsStatus(games) {
+  return games.map(game => {
+    game.steamchartsHistoryStatus = "unchecked"
+    return game;
+  });
+}
