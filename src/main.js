@@ -25,7 +25,7 @@ async function main() {
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
   };
-  const SteamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
+  const steamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
   const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
 
