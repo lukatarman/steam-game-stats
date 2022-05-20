@@ -19,6 +19,15 @@ export class SteamClient {
     return (await this.#httpClient.get(url, options)).data.response.player_count;
   }
 
+  async getAllCurrentPlayersConcurrently(games) {
+    const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
+
+    return (await Promise.all(games.map(game => {
+      const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${game.id}`;
+      return this.#httpClient.get(url, options).catch(err => console.log(error));
+    }))).map(player => player.data.response.player_count);
+  }
+
   async getSteamAppHtmlDetailsPage(id) {
     const url = `https://store.steampowered.com/app/${id}`;
 
