@@ -3,10 +3,12 @@ import { delay } from "../shared/time.utils.js";
 export class Runner {
   #executables;
   #options;
+  #iterations;
 
-  constructor(executables, options = { iterations: Number.POSITIVE_INFINITY }) {
+  constructor(executables, options, iterations = Number.POSITIVE_INFINITY) {
     this.#executables = executables;
     this.#options = options;
+    this.#iterations = iterations;
   }
 
   async run() {
@@ -20,7 +22,7 @@ export class Runner {
     // the first iterations in the loop compared to using a primitive. The tests of this
     // function rely on very short iteration times. If they are slowed down some tests are
     // failing unexpextedly. Don't refactor next two lines.
-    let iterations = this.#options.iterations;
+    let iterations = this.#iterations;
     while(iterations--) {
       await func();
 

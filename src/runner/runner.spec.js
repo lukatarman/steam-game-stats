@@ -1,14 +1,15 @@
 import { delay } from "../shared/time.utils.js";
 import { Runner } from "./runner.js";
 
-describe("runner.js", () => {
+fdescribe("runner.js", () => {
   describe("runs one function in a loop for one iteration", () => {
     let counter = 0;
 
     beforeAll(() => {
       const func = () => counter++;
-      const options = { iterations: 1 };
-      const runner = new Runner([func], options);
+      const iterations = 1;
+      const options = {iterationDelay: 0};
+      const runner = new Runner([func], options, iterations);
 
       runner.run();
     });
@@ -23,8 +24,9 @@ describe("runner.js", () => {
 
     beforeAll(() => {
       const func = () => counter++;
-      const options = { iterations: 5 };
-      const runner = new Runner([func], options);
+      const iterations = 5;
+      const options = {iterationDelay: 0};
+      const runner = new Runner([func], options, iterations);
 
       runner.run();
     });
@@ -41,8 +43,9 @@ describe("runner.js", () => {
     beforeAll(async () => {
       const funcOne = async () => {  await delay(80); counterOne++; };
       const funcTwo = async () => {  await delay(80); counterTwo++; };
-      const options = { iterations: 10 };
-      const runner = new Runner([funcOne, funcTwo], options);
+      const iterations = 10;
+      const options = {iterationDelay: 0};
+      const runner = new Runner([funcOne, funcTwo], iterations, iterations);
 
       runner.run();
       await delay(280);
@@ -69,8 +72,9 @@ describe("runner.js", () => {
       const funcTwo = async () => { await delay(30); counterTwo++; };
       const funcThree = async () => { await delay(50); counterThree++; };
       const funcFour = async () => { await delay(90); counterFour++; };
-      const options = { iterations: 10 };
-      const runner = new Runner([funcOne, funcTwo, funcThree,funcFour], options);
+      const iterations = 10;
+      const options = {iterationDelay: 0};
+      const runner = new Runner([funcOne, funcTwo, funcThree,funcFour], options, iterations);
       function checkIfHasDuplicates(arr) {
         return new Set(arr).size !== arr.length;
       }
