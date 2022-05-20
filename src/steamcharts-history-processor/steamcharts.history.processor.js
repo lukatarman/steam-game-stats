@@ -50,7 +50,7 @@ export class SteamchartsHistoryProcessor {
 
   #addPlayerHistories(pages, games) {
     return games.map((game, i) => {
-      game.PlayerHistory = (pages[i] === "")
+      game.playerHistory = (pages[i] === "")
         ? []
         : parsePlayerHistory(pages[i]);
 
