@@ -24,7 +24,7 @@ export class SteamGameListProcessor {
         continue;
       }
 
-      this.#identifyGames(steamApps);
+      await this.#identifyGames(steamApps);
       await delay(this.#options.batchDelay);
     }
   }
