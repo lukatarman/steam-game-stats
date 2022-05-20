@@ -3,26 +3,21 @@ import { JSDOM } from "jsdom";
 export function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(".common-table tbody tr");
+  const myArray = Array.from(playerHistoryEntries);
 
-  const gamePlayerHistories = [];
-  
-  for(let entry of playerHistoryEntries) {
+  return myArray.map(entry => {
     const firstElement = entry.firstElementChild;
-
-    if(firstElement.textContent === "Last 30 Days") continue;
-
+  
+    if(firstElement.textContent === "Last 30 Days") return;
+  
     const averagePlayers = parseFloat(firstElement.nextElementSibling.textContent).toFixed(1);
-    
+      
     const monthAndYear = firstElement.textContent;
     const date = new Date(monthAndYear);
 
-    const playerHistory = {
+    return {
         date,
         players: parseFloat(averagePlayers),
     }
-
-      gamePlayerHistories.push(playerHistory);
-  }
-
-  return gamePlayerHistories;
+  }).filter(history => !!history);
 }
