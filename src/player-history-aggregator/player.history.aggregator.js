@@ -13,6 +13,12 @@ export class PlayerHistoryAggregator {
   }
 
   async run() {
+    this.#addSteamchartsPlayerHistory();
+
+    this.#addCurrentPlayers();
+  }
+
+  async #addSteamchartsPlayerHistory() {
     const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
       await delay(this.#options.batchDelay)
@@ -43,11 +49,14 @@ export class PlayerHistoryAggregator {
     return gamesWithoutPlayerHistory.map((game, i) => {
       game.playerHistory = parsePlayerHistory(steamChartsHtmlDetailsPages[i]);
       return game;
-    })
-
+    });
   }
 
   async #persist(games) {
     games.forEach(game => this.#databaseClient.updatePlayerHistoryById(game));
+  }
+
+  async #addCurrentPlayers() {
+    
   }
 }
