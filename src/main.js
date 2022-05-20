@@ -30,13 +30,12 @@ async function main() {
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
 
   const runner = new Runner([
-    SteamAppsAggregator.run, 
-    gameIdentifier.run, 
-    playerHistoryAggregator.run
+    steamAppsAggregator.run.bind(steamAppsAggregator), 
+    gameIdentifier.run.bind(gameIdentifier), 
+    playerHistoryAggregator.run.bind(playerHistoryAggregator),
    ], options);
 
   // run phase
-  // TO DO: Might be a problem with THIS, running the functions through runner - check
   runner.run();
 
 }
