@@ -9,5 +9,5 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
   return myArray.map(entry => entry.firstElementChild)
                 .map(firstElement => firstElement.textContent === "Last 30 Days" ? undefined : firstElement)
                 .filter(element => !!element)
-                .map(element => new Players(new Date(element.textContent), parseFloat(parseFloat(element.nextElementSibling.textContent).toFixed(1))));
+                .map(element => new Players(element, element.nextElementSibling));
 }
