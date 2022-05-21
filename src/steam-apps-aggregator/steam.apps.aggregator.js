@@ -1,11 +1,11 @@
+import { delay } from "../shared/time.utils.js";
 import { diff } from "./services/diff.service.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { 
-  runFuncInLoopWithDelayOfXmsFromDate, 
   moreThanXhoursPassedSince ,
 } from "./services/time.service.js";
 
-export class SteamDataAggregator {
+export class SteamAppsAggregator {
   #databaseClient;
   #steamClient;
   #options;
@@ -17,27 +17,16 @@ export class SteamDataAggregator {
   }
 
   async run() {
-    await this.#initialUpdate();
-
-    const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
-
-    runFuncInLoopWithDelayOfXmsFromDate(
-      this.#updateSteamApps.bind(this), 
-      this.#options.updateIntervalDelay, 
-      lastUpdate,
-    );
-  }
-
-  async #initialUpdate() {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
     if (!lastUpdate) {
       await this.#firstUpdate();
       return;
     }
 
-    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate.updatedOn)) this.#updateSteamApps();
-  }
+    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) await this.#updateSteamApps();
 
+    await delay(this.#options.updateIntervalDelay);
+  }
   
   async #firstUpdate() {
     const steamApps = await this.#steamClient.getAppList();
