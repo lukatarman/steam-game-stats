@@ -23,7 +23,7 @@ export class SteamAppsAggregator {
       return;
     }
 
-    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate.updatedOn)) this.#updateSteamApps();
+    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate.updatedOn)) await this.#updateSteamApps();
 
     await delay(this.#options.updateIntervalDelay);
   }
