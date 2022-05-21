@@ -24,8 +24,11 @@ export class SteamClient {
 
     return (await Promise.all(games.map(game => {
       const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${game.id}`;
-      return this.#httpClient.get(url, options).catch(err => console.log(error));
-    }))).map(player => player.data.response.player_count);
+      return this.#httpClient.get(url, options).catch(error => 0);
+    }))).map(player => {
+      if(player) return player.data.response.player_count;
+      return 0;
+    });
   }
 
   async getSteamAppHtmlDetailsPage(id) {
