@@ -121,9 +121,10 @@ export class DatabaseClient {
     console.log("Matched document =>", updateResults.matchedCount);
   }
 
-  async getXgamesWithCheckedSteamchartsHistory() {
+  async getXgamesWithCheckedSteamchartsHistory(amount) {
     return await this.#collections.get("games")
                                   .find({ checkedSteamchartsHistory: { $eq: true }})
+                                  .limit(amount)
                                   .toArray();
   }
 }
