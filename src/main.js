@@ -21,7 +21,7 @@ async function main() {
     batchSize: 10,
     batchDelay: 5000,
     unitDelay: 800,
-    currentPlayersUpdateIntervalDelay: hoursToMs(1),
+    currentPlayersUpdateIntervalDelay: 20000,
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
   };
