@@ -1,5 +1,6 @@
 import { parsePlayerHistory } from "./services/player.history.service.js";
 import { delay } from "../shared/time.utils.js";
+import { Players } from "../models/players.js";
 
 export class PlayerHistoryAggregator {
   #steamClient;
@@ -15,7 +16,9 @@ export class PlayerHistoryAggregator {
   async run() {
     this.#addSteamchartsPlayerHistory();
 
-    this.#addCurrentPlayers();
+    
+
+    if(moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, )) this.#addCurrentPlayers();
   }
 
   async #addSteamchartsPlayerHistory() {
@@ -62,19 +65,18 @@ export class PlayerHistoryAggregator {
   }
 
   async #addCurrentPlayers() {
-    const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
+    const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory();
 
-    const players = this.#steamClient.getAllCurrentPlayersConcurrently(games);
+    const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
     const gamesWithCurrentPlayers = this.#addCurrentPlayersToEachGame(players, games);
 
-    await this.#databaseClient.updatePlayerHistoryById(gamesWithCurrentPlayers);
+    await this.#persist(gamesWithCurrentPlayers);
   }
 
-  async #addCurrentPlayersToEachGame(players, games) {
+  #addCurrentPlayersToEachGame(players, games) {
     return games.map((game, i) => {
-      game.playerHistory.date = new Date();
-      game.playerHistory.players = players[i];
+      game.playerHistory.push(new Players(new Date(), players[i]));
       return game;
     });
   }

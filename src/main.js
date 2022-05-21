@@ -21,7 +21,7 @@ async function main() {
     batchSize: 10,
     batchDelay: 5000,
     unitDelay: 800,
-    noAppsFoundDelay: hoursToMs(1),
+    currentPlayersUpdateIntervalDelay: hoursToMs(1),
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
   };
@@ -37,7 +37,6 @@ async function main() {
 
   // run phase
   runner.run();
-
 }
 
 main();
