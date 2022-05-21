@@ -1,7 +1,7 @@
 import { parsePlayerHistory } from "./services/player.history.service.js";
 import { delay } from "../shared/time.utils.js";
 
-export class PlayerHistoryAggregator {
+export class SteamchartsHistoryProcessor {
   #steamClient;
   #databaseClient;
   #options;
@@ -12,18 +12,24 @@ export class PlayerHistoryAggregator {
     this.#options = options;
   }
 
-  async run() {
-    const gamesWithoutPlayerHistories = await this.#databaseClient.getxGamesWithoutPlayerHistory(this.#options.batchSize);
-    if(gamesWithoutPlayerHistories.length === 0) {
-      await delay(this.#options.batchDelay)
-      return;
+  run() {
+    this.#addSteamchartsPlayerHistory();
+  }
+
+  async #addSteamchartsPlayerHistory() {
+    let continueLoop = true;
+
+    while(continueLoop) {
+      const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
+      if(!gamesWithoutPlayerHistories) continueLoop = false;
+
+      const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+
+      const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
+
+      this.#persist(games);
     }
-
-    const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
-
-    const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
-
-    await this.#persist(games);
+    await delay(this.#options.batchDelay);
   }
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
@@ -51,7 +57,9 @@ export class PlayerHistoryAggregator {
     });
   }
 
-  async #persist(games) {
-    games.forEach(game => this.#databaseClient.updatePlayerHistoryById(game));
+  #persist(games) {
+    games.forEach((game) => {
+      this.#databaseClient.updatePlayerHistoryById(game);
+    });
   }
 }

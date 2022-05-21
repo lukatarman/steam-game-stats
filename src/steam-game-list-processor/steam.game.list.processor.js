@@ -5,7 +5,7 @@ import {
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
 
-export class GameIdentifier {
+export class SteamGameListProcessor {
   #steamClient;
   #databaseClient;
   #options;
@@ -17,13 +17,16 @@ export class GameIdentifier {
   }
 
   async run() {
-    const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
-    if (steamApps.length === 0) {
-      await delay(this.#options.noAppsFoundDelay);
-      return;
-    }
+    while (true) {
+      const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
+      if (steamApps.length === 0) {
+        await delay(this.#options.noAppsFoundDelay);
+        continue;
+      }
 
-    await this.#identifyGames(steamApps);
+      await this.#identifyGames(steamApps);
+      await delay(this.#options.batchDelay);
+    }
   }
 
   async #identifyGames(steamApps) {
