@@ -1,10 +1,9 @@
 export class Players {
-  date;    // date=new Date('exact time when player numbers are collected');
-  players; // players=0..n
+  date;
+  players;
 
-  constructor(date, players) {
-    this.date = new Date(date);
-    this.players = parseFloat(parseFloat(players).toFixed(1))
+  constructor(playersAsString, dateAsString = "") {
+    this.date = dateAsString === "" ? new Date() : new Date(dateAsString);
+    this.players = parseFloat(parseFloat(playersAsString).toFixed(1));
   }
 }
-

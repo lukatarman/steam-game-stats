@@ -16,15 +16,13 @@ export class PlayerHistoryAggregator {
   async run() {
     this.#addSteamchartsPlayerHistory();
 
-    
-
     if(moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, )) this.#addCurrentPlayers();
   }
 
   async #addSteamchartsPlayerHistory() {
     const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
-      await delay(this.#options.batchDelay)
+      await delay(this.#options.batchDelay);
       return;
     }
 
@@ -76,7 +74,7 @@ export class PlayerHistoryAggregator {
 
   #addCurrentPlayersToEachGame(players, games) {
     return games.map((game, i) => {
-      game.playerHistory.push(new Players(new Date(), players[i]));
+      game.playerHistory.push(new Players(players[i]));
       return game;
     });
   }
