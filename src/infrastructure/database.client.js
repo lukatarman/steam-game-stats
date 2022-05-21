@@ -108,16 +108,17 @@ export class DatabaseClient {
   }
 
   async updatePlayerHistoryById(game) {
-    this.#collections.get("games")
-                     .updateOne(
-                       { id: { $eq: game.id }},
-                       { $set: 
-                        {
-                          playerHistory: game.playerHistory,
-                          checkedSteamchartsHistory: game.checkedSteamchartsHistory,
-                        }
-                       }
-                      );
+    const updateResults = await this.#collections.get("games")
+                                          .updateOne(
+                                            { id: game.id },
+                                            { $set: 
+                                              {
+                                                playerHistory: game.playerHistory,
+                                                checkedSteamchartsHistory: game.checkedSteamchartsHistory,
+                                              }
+                                            }
+                                            );
+    console.log("Matched document =>", updateResults.matchedCount);
   }
 
   async getXgamesWithCheckedSteamchartsHistory() {
