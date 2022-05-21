@@ -3,7 +3,7 @@ import { diff } from "./services/diff.service.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { 
   moreThanXhoursPassedSince ,
-} from "./services/time.service.js";
+} from "../shared/time.utils.js";
 
 export class SteamAppsAggregator {
   #databaseClient;
