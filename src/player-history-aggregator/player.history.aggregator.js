@@ -1,5 +1,5 @@
 import { parsePlayerHistory } from "./services/player.history.service.js";
-import { delay } from "../shared/time.utils.js";
+import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
 import { Players } from "../models/players.js";
 
 export class PlayerHistoryAggregator {
@@ -14,14 +14,13 @@ export class PlayerHistoryAggregator {
   }
 
   async run() {
-    this.#addSteamchartsPlayerHistory();
+    await this.#addSteamchartsPlayerHistory();
 
-    
-
-    if(moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, )) this.#addCurrentPlayers();
+    await this.#addCurrentPlayers();
   }
 
   async #addSteamchartsPlayerHistory() {
+    console.log("adding steamcharts player history");
     const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
       await delay(this.#options.batchDelay)
@@ -65,7 +64,13 @@ export class PlayerHistoryAggregator {
   }
 
   async #addCurrentPlayers() {
+    console.log("add current players funciton ran");
     const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory();
+
+    const lastUpdate = games[games.length - 1].playerHistory.date;
+    console.log("checking if enough time passed..");
+    if(!moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, lastUpdate)) return; 
+    console.log("Enough time passed.. continuing..");
 
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
