@@ -3,6 +3,7 @@
   "spec_files": ["**/*spec.js"],
   "helpers": ["helpers/**/*.?(m)js"],
   "env": {
-    "stopSpecOnExpectationFailure": false
+    "stopSpecOnExpectationFailure": false,
+    "random": false
   }
 }
