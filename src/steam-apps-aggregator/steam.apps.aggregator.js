@@ -24,8 +24,6 @@ export class SteamAppsAggregator {
     }
 
     if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) await this.#updateSteamApps();
-
-    await delay(this.#options.updateIntervalDelay);
   }
 
   async #firstUpdate() {
