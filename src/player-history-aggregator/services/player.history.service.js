@@ -1,6 +1,15 @@
 import { JSDOM } from "jsdom";
 import { Players } from "../../models/players.js";
 
+export function addPlayerHistories(pages, games) {
+  return games.map((game, i) => {
+    if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
+    game.checkedSteamchartsHistory = true;
+
+    return game;
+  });
+}
+
 export function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(".common-table tbody tr");
