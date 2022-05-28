@@ -13,12 +13,6 @@ export class PlayerHistoryAggregator {
     this.#options = options;
   }
 
-  async run() {
-    await this.addPlayerHistoryFromSteamcharts();
-
-    this.addCurrentPlayers();
-  }
-
   async addPlayerHistoryFromSteamcharts() {
     const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
