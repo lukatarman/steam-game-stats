@@ -38,12 +38,12 @@ export class PlayerHistoryAggregator {
     for (let i = 0; i < games.length; i++) {
       await delay(this.#options.unitDelay);
 
-      try{
+      try {
         pages.push(
           await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
         );
       } catch(error) {
-        if (error.status !== 500 && error.status !== 404) pages.push("");
+        pages.push("");
       }
     }
     return pages;
