@@ -77,10 +77,7 @@ export class GameIdentifier {
         return new Game(steamApp);
       } catch (error) {
         /**
-         * @TODO - currently the steamApp will wrongfully be marked as not a game, if steam needs an age verification before
-         * showing the game info, AND there is an unexpected problem with steamcharts (either steamcharts if offline, or
-         * the game just got released. Try to find a solution to this eventually.)
-         * https://github.com/lukatarman/steam-game-stats/issues/31
+         * @TODO - https://github.com/lukatarman/steam-game-stats/issues/31
          */
         if (error.status !== 500 && error.status !== 404) return;
       }
