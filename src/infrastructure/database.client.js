@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { Game } from "../models/game";
 
 export class DatabaseClient {
   #collections;
@@ -109,7 +110,7 @@ export class DatabaseClient {
     const updateResults = await this.#collections.get("games")
                                           .updateOne(
                                             { id: game.id },
-                                            { $set: 
+                                            { $set:
                                               {
                                                 playerHistory: game.playerHistory,
                                                 checkedSteamchartsHistory: game.checkedSteamchartsHistory,
@@ -118,10 +119,21 @@ export class DatabaseClient {
                                             );
   }
 
+  /**
+   * @deprecated
+   */
   async getXgamesWithCheckedSteamchartsHistory(amount) {
     return await this.#collections.get("games")
                                   .find({ checkedSteamchartsHistory: { $eq: true }})
                                   .limit(amount)
                                   .toArray();
+  }
+
+  async XXXgetXgamesWithCheckedSteamchartsHistory(amount) {
+    return (await this.#collections.get("games")
+                                   .find({ checkedSteamchartsHistory: { $eq: true }})
+                                   .limit(amount)
+                                   .toArray())
+                                   .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 }
