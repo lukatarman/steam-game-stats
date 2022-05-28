@@ -43,7 +43,6 @@ export class DatabaseClient {
     const insertResult = await this.#collections
       .get(collectionName)
       .insertMany(data);
-    console.log("Inserted documents =>", insertResult);
   }
 
   getAllSteamApps(filter = {}) {
@@ -61,7 +60,6 @@ export class DatabaseClient {
     const updateResults = await this.#collections
       .get(collectionName)
       .updateOne(filter, data);
-    console.log("Matched document =>", updateResults.matchedCount);
   }
 
   async deleteMany(collectionName, filter) {
@@ -118,7 +116,6 @@ export class DatabaseClient {
                                               }
                                             }
                                             );
-    console.log("Matched document =>", updateResults.matchedCount);
   }
 
   async getXgamesWithCheckedSteamchartsHistory(amount) {
