@@ -1,6 +1,6 @@
 import { Players } from "./players.js";
 
-fdescribe("players.js", () => {
+describe("players.js", () => {
   describe("Players", () => {
     describe("if nothing is passed as the second parameter when instantiating", () => {
       let players;
