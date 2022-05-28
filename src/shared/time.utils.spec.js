@@ -139,7 +139,7 @@ describe("time.utils.js", () => {
       });
     });
 
-    fdescribe("when a future date is passed in", () => {
+    describe("when a future date is passed in", () => {
       let result;
       let date;
       let thrownError;
