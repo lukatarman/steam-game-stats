@@ -25,7 +25,7 @@ export class SteamClient {
 
     return (await Promise.all(games.map(game => {
       
-      return this.#httpClient.get(`${url}${game.id}`, options).catch(error => 0);
+      return this.#httpClient.get(url + game.id, options).catch(error => 0);
     }))).map(player => player ? player.data.response.player_count : 0);
   }
 
