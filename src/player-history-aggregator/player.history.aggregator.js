@@ -48,10 +48,9 @@ export class PlayerHistoryAggregator {
   }
 
   async addCurrentPlayers() {
-    const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
+    const games = await this.#databaseClient.XXXgetXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
 
-    const lastUpdate = games[0].playerHistory[games.playerhistory.length - 1].date;
-    if(!moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, lastUpdate)) return;
+    if(!moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, games[0].lastUpdate)) return;
 
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
