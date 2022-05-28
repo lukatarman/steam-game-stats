@@ -27,5 +27,17 @@ describe("player.history.service.js", () => {
         expect(playerHistories[0].date.getFullYear()).toBe(2022);
       });
     });
+
+    fdescribe("if the game has just been released and only has one history", () => {
+      let playerHistories;
+
+      beforeAll(() => {
+        playerHistories = parsePlayerHistory(sniperEliteHttpDetailsSteamcharts);
+      });
+
+      it("playerHistories has two entries", () => {
+        expect(playerHistories).toEqual([]);
+      });
+    });
   });
 });
