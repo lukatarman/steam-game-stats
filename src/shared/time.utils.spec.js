@@ -91,7 +91,7 @@ describe("time.utils.js", () => {
       threeHoursInMs = 108e5;
     });
     
-    describe("if the date value is larger than 'x' hours passed", () => {
+    describe("if more than 3 hours have passed since exactly one day ago", () => {
       let result;
 
       beforeAll(() => {
@@ -106,7 +106,7 @@ describe("time.utils.js", () => {
       });
     });
 
-    describe("if the date value is smaller than 'x' hours passed", () => {
+    describe("if more than 1 day has passed since three hours ago", () => {
       let result;
 
       beforeAll(() => {
@@ -116,7 +116,7 @@ describe("time.utils.js", () => {
         result = moreThanXhoursPassedSince(oneDayInMs, date);
       });
 
-      it("function returns true", () => {
+      it("function returns false", () => {
         expect(result).toBe(false);
       });
     });
@@ -136,6 +136,27 @@ describe("time.utils.js", () => {
 
       it("function returns 10800000", () => {
         expect(result).toBeGreaterThan(10799995);
+      });
+    });
+
+    fdescribe("when a future date is passed in", () => {
+      let result;
+      let date;
+      let thrownError;
+
+      beforeAll(() => {
+        const threeHoursInMs = 108e5;
+        const threeHoursAhead = new Date().getTime() + threeHoursInMs;
+        date = new Date(threeHoursAhead);
+        try{
+          result = msPassedSince(date);
+        } catch(err) {
+          thrownError = err;
+        }
+      });
+
+      it("function throws Error", () => {
+        expect(thrownError.message).toBe("Cannot enter future date");
       });
     });
   });
