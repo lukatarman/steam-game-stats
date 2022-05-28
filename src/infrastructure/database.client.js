@@ -32,6 +32,12 @@ export class DatabaseClient {
       .insertOne(data);
   }
 
+
+
+  async insertManyHistoryChecks(data) {
+    // to be implemented
+  }
+
   async insertManySteamApps(data) {
     await this.insertMany("steam_apps", data);
   }
@@ -107,16 +113,16 @@ export class DatabaseClient {
   }
 
   async updatePlayerHistoryById(game) {
-    const updateResults = await this.#collections.get("games")
-                                          .updateOne(
-                                            { id: game.id },
-                                            { $set:
-                                              {
-                                                playerHistory: game.playerHistory,
-                                                checkedSteamchartsHistory: game.checkedSteamchartsHistory,
-                                              }
-                                            }
-                                            );
+    await this.#collections.get("games")
+                           .updateOne(
+                             { id: game.id },
+                             { $set:
+                               {
+                                 playerHistory: game.playerHistory,
+                                 checkedSteamchartsHistory: game.checkedSteamchartsHistory,
+                               }
+                             }
+                           );
   }
 
   /**
