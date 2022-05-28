@@ -28,14 +28,14 @@ describe("player.history.service.js", () => {
       });
     });
 
-    fdescribe("if the game has just been released and only has one history", () => {
+    describe("if the game has just been released and only has one history", () => {
       let playerHistories;
 
       beforeAll(() => {
         playerHistories = parsePlayerHistory(sniperEliteHttpDetailsSteamcharts);
       });
 
-      it("playerHistories has two entries", () => {
+      it("it returns an empty array", () => {
         expect(playerHistories).toEqual([]);
       });
     });
