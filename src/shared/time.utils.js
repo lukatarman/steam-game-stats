@@ -13,5 +13,9 @@ export function moreThanXhoursPassedSince(x, date) {
 export function msPassedSince(date) {
   const now = new Date().getTime();
   const dateInMs = date.getTime();
-  return Math.abs(now - dateInMs);
+  const msPassedSince = now - dateInMs;
+
+  if(msPassedSince < 0) throw Error("Cannot enter future date");
+
+  return msPassedSince;
 }
