@@ -7,7 +7,6 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
 
   return Array.from(playerHistoryEntries)
               .map(entry => entry.firstElementChild)
-              .map(firstElement => firstElement.textContent === "Last 30 Days" ? undefined : firstElement)
-              .filter(element => !!element)
+              .filter(firstElement => firstElement.textContent !== "Last 30 Days")
               .map(element => new Players(element.nextElementSibling.textContent, element.textContent));
 }
