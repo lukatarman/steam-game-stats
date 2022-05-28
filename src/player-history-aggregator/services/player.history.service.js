@@ -14,11 +14,10 @@ export function addCurrentPlayersFromSteam(players, games) {
 /**
  * @todo add tests
  */
-export function addPlayerHistories(pages, games) {
+export function addPlayerHistoriesFromSteamcharts(pages, games) {
   return games.map((game, i) => {
     if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
     game.checkedSteamchartsHistory = true;
-
     return game;
   });
 }

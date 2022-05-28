@@ -1,4 +1,4 @@
-import { addPlayerHistories } from "./services/player.history.service.js";
+import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
 import { Players } from "../models/players.js";
 
@@ -22,7 +22,7 @@ export class PlayerHistoryAggregator {
 
     const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
 
-    const games = addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
+    const games = addPlayerHistoriesFromSteamcharts(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
     await this.#persist(games);
   }
