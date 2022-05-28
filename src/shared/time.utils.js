@@ -15,7 +15,7 @@ export function msPassedSince(date) {
   const dateInMs = date.getTime();
   const msPassedSince = now - dateInMs;
 
-  if(msPassedSince < 0) throw Error("Cannot enter future date");
+  if(msPassedSince < 0) throw new Error("Cannot enter future date");
 
   return msPassedSince;
 }
