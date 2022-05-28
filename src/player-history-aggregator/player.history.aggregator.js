@@ -1,4 +1,4 @@
-import { parsePlayerHistory } from "./services/player.history.service.js";
+import { addPlayerHistories } from "./services/player.history.service.js";
 import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
 import { Players } from "../models/players.js";
 
@@ -22,7 +22,7 @@ export class PlayerHistoryAggregator {
 
     const steamChartsHtmlDetailsPages = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
 
-    const games = this.#addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
+    const games = addPlayerHistories(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
     await this.#persist(games);
   }
@@ -41,15 +41,6 @@ export class PlayerHistoryAggregator {
       }
     }
     return pages;
-  }
-
-  #addPlayerHistories(pages, games) {
-    return games.map((game, i) => {
-      if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
-      game.checkedSteamchartsHistory = true;
-
-      return game;
-    });
   }
 
   async #persist(games) {
