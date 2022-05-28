@@ -13,4 +13,8 @@ export class Game {
     this.playerHistory = [];
     this.checkedSteamchartsHistory = false;
   }
+
+  get lastUpdate() {
+    return this.playerHistory[this.playerhistory.length - 1].date;
+  }
 }
