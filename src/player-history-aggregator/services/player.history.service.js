@@ -13,7 +13,7 @@ export function addCurrentPlayersFromSteam(players, games) {
 }
 
 /**
- * @todo add tests
+ * @deprecated
  */
 export function addPlayerHistoriesFromSteamcharts(pages, games) {
   return games.map((game, i) => {

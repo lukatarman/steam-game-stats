@@ -133,11 +133,20 @@ export class DatabaseClient {
                                   .toArray();
   }
 
+  /**
+   * @deprecated
+   */
   async XXXgetXgamesWithCheckedSteamchartsHistory(amount) {
     return (await this.#collections.get("games")
                                    .find({ checkedSteamchartsHistory: { $eq: true }})
                                    .limit(amount)
                                    .toArray())
                                    .map(dbEntry => Game.fromDbEntry(dbEntry));
+  }
+
+  async XXXXXXgetXgamesWithCheckedSteamchartsHistory(amount) {
+   // @todo - use aggregation to go through two collections and get only the "games" from the
+   //         games collection which were checked for a steamcharts history
+    return [];
   }
 }
