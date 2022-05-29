@@ -1,5 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Players } from "../../models/players.js";
+import { HistoryCheck } from "../../models/history.check.js";
 
 /**
  * @todo add tests
@@ -22,6 +23,32 @@ export function addPlayerHistoriesFromSteamcharts(pages, games) {
   });
 }
 
+/**
+ * @todo consider making a static factory on the HistoryCheck class
+ */
+export function recordSteamchartPlayerHisotryCheck(gamesPagesMap) {
+  const historyChecks = [];
+  for (const [game, page] of gamesPagesMap) {
+    historyChecks.push(new HistoryCheck(game, !!page));
+  }
+  return historyChecks;
+}
+
+/**
+ * @todo consider making a setter on the Games class
+ */
+export function XXXaddPlayerHistoriesFromSteamcharts(gamesPagesMap) {
+  const games = [];
+  for (const [game, page] of gamesPagesMap) {
+    if(page !== "") game.playerHistory = parsePlayerHistory(page);
+    games.push(game);
+  }
+  return games;
+}
+
+/**
+ * @todo consider making a static factory on the Player class
+ */
 export function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(".common-table tbody tr");
