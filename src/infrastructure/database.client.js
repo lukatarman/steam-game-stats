@@ -32,10 +32,8 @@ export class DatabaseClient {
       .insertOne(data);
   }
 
-
-
   async insertManyHistoryChecks(data) {
-    // to be implemented
+    await this.insertMany("history_checks", data);
   }
 
   async insertManySteamApps(data) {

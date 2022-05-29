@@ -13,7 +13,12 @@ async function main() {
   const databaseOptions = {
     url: "mongodb://localhost:27017",
     databaseName: "game-stats",
-    collections: ["games", "steam_apps", "update_timestamps"],
+    collections: [
+      "games",
+      "steam_apps",
+      "update_timestamps",
+      "history_checks",
+    ],
   };
   const databaseClient = await new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
