@@ -12,6 +12,9 @@ export class PlayerHistoryAggregator {
     this.#options = options;
   }
 
+  /**
+   * @deprecated
+   */
   async addPlayerHistoryFromSteamcharts() {
     const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
@@ -24,6 +27,25 @@ export class PlayerHistoryAggregator {
     const games = addPlayerHistoriesFromSteamcharts(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
     await this.#persistGames(games);
+  }
+
+  /**
+   * @deprecated
+   */
+   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
+    const pages = [];
+    for (let i = 0; i < games.length; i++) {
+      await delay(this.#options.unitDelay);
+
+      try {
+        pages.push(
+          await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
+        );
+      } catch(error) {
+        pages.push("");
+      }
+    }
+    return pages;
   }
 
   /**
@@ -80,22 +102,6 @@ export class PlayerHistoryAggregator {
     );
   }
 
-  async #getGameHtmlDetailsPagesFromSteamcharts(games) {
-    const pages = [];
-    for (let i = 0; i < games.length; i++) {
-      await delay(this.#options.unitDelay);
-
-      try {
-        pages.push(
-          await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
-        );
-      } catch(error) {
-        pages.push("");
-      }
-    }
-    return pages;
-  }
-
   async #persistGames(games) {
     await Promise.all(
       games.forEach(
@@ -105,7 +111,7 @@ export class PlayerHistoryAggregator {
   }
 
   async addCurrentPlayers() {
-    const games = await this.#databaseClient.XXXgetXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
+    const games = await this.#databaseClient.XXXXXXgetXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
 
     if(lessThanXhoursPassedSinceTheLastUpdate()) return;
 
