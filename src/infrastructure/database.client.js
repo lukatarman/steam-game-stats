@@ -111,10 +111,11 @@ export class DatabaseClient {
   }
 
   async XXXgetXgamesWithoutPlayerHistory(amount) {
-      return await this.#collections.get("games")
-                                    .find({ playerHistory: { $eq: [] }})
-                                    .limit(amount)
-                                    .toArray();
+      return (await this.#collections.get("games")
+                                     .find({ playerHistory: { $eq: [] }})
+                                     .limit(amount)
+                                     .toArray())
+                                     .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 
   async updatePlayerHistoryById(game) {

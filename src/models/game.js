@@ -12,7 +12,7 @@ export class Game {
     game.name          = steamApp.name;
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${this.id}/header.jpg`
     game.playerHistory = [];
-    checkedSteamchartsHistory = false;
+    game.checkedSteamchartsHistory = false;
     return game;
   }
 
@@ -22,7 +22,7 @@ export class Game {
     game.name          = dbEntry.name;
     game.imageUrl      = dbEntry.imageUrl;
     game.playerHistory = dbEntry.playerHistory;
-    checkedSteamchartsHistory = false;
+    game.checkedSteamchartsHistory = false;
     return game;
   }
 
