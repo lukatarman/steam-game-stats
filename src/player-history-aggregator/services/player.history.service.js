@@ -13,17 +13,6 @@ export function addCurrentPlayersFromSteam(players, games) {
 }
 
 /**
- * @deprecated
- */
-export function addPlayerHistoriesFromSteamcharts(pages, games) {
-  return games.map((game, i) => {
-    if(pages[i] !== "") game.playerHistory = parsePlayerHistory(pages[i]);
-    game.checkedSteamchartsHistory = true;
-    return game;
-  });
-}
-
-/**
  * @todo consider making a static factory on the HistoryCheck class
  */
 export function recordSteamchartPlayerHisotryCheck(gamesPagesMap) {
