@@ -26,7 +26,7 @@ export class PlayerHistoryAggregator {
 
     const games = addPlayerHistoriesFromSteamcharts(steamChartsHtmlDetailsPages, gamesWithoutPlayerHistories);
 
-    await this.#persistGames(games);
+    await this.#updateGames(games);
   }
 
   /**
@@ -62,7 +62,7 @@ export class PlayerHistoryAggregator {
    * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
    */
   async XXXaddPlayerHistoryFromSteamcharts() {
-    const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
+    const gamesWithoutPlayerHistories = await this.#databaseClient.XXXgetXgamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
       await delay(this.#options.batchDelay);
       return;
@@ -74,7 +74,7 @@ export class PlayerHistoryAggregator {
     await this.#persistHistoryChecks(historyChecks);
 
     const games = XXXaddPlayerHistoriesFromSteamcharts(gamesPagesMap);
-    await this.#persistGames(games);
+    await this.#updateGames(games);
   }
 
   async #XXXgetGameHtmlDetailsPagesFromSteamcharts(games) {
@@ -85,9 +85,9 @@ export class PlayerHistoryAggregator {
 
       try {
         const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id);
-        gamesPagesMap.set(game[i], page);
+        gamesPagesMap.set(games[i], page);
       } catch(error) {
-        gamesPagesMap.set(game[i], "");
+        gamesPagesMap.set(games[i], "");
       }
     }
 
@@ -95,14 +95,10 @@ export class PlayerHistoryAggregator {
   }
 
   async #persistHistoryChecks(historyChecks) {
-    await Promise.all(
-      historyChecks.forEach(
-        historyCheck => this.#databaseClient.insertManyHistoryChecks(historyCheck)
-      )
-    );
+    await this.#databaseClient.insertManyHistoryChecks(historyChecks);
   }
 
-  async #persistGames(games) {
+  async #updateGames(games) {
     await Promise.all(
       games.forEach(
         game => this.#databaseClient.updatePlayerHistoryById(game)
@@ -119,10 +115,10 @@ export class PlayerHistoryAggregator {
 
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
 
-    await this.#persistGames(gamesWithCurrentPlayers);
+    await this.#updateGames(gamesWithCurrentPlayers);
 
     function lessThanXhoursPassedSinceTheLastUpdate() {
-      return !moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, games[0].lastUpdate);
+      return games[0].lastUpdate && !moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, games[0].lastUpdate);
     }
   }
 }
