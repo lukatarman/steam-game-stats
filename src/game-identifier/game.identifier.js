@@ -74,7 +74,7 @@ export class GameIdentifier {
 
       try {
         await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
-        return new Game(steamApp);
+        return Game.fromSteamApp(steamApp);
       } catch (error) {
         /**
          * @TODO - https://github.com/lukatarman/steam-game-stats/issues/31

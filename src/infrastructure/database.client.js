@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { Game } from "../models/game";
+import { Game } from "../models/game.js";
 
 export class DatabaseClient {
   #collections;
@@ -147,6 +147,25 @@ export class DatabaseClient {
   async XXXXXXgetXgamesWithCheckedSteamchartsHistory(amount) {
    // @todo - use aggregation to go through two collections and get only the "games" from the
    //         games collection which were checked for a steamcharts history
-    return [];
+   // - https://stackoverflow.com/questions/47752429/mongodb-conditional-select-from-one-collection-based-on-another-collection
+   // - lookup example: https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#examples
+  //  - course in mongoDb: https://ibm-learning.udemy.com/course/the-complete-developers-guide-to-mongodb/
+   return (await this.#collections
+     .get("history_checks")
+     .aggregate([
+       {
+         $lookup: {
+           from: "games",
+           localField: "gameId",
+           foreignField: "id",
+           as: "game"
+         }
+       },
+       { $unwind: "$game" },
+       { $replaceWith: "$game"},
+      ])
+     .limit(amount)
+     .toArray())
+     .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 }
