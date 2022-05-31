@@ -45,7 +45,7 @@ export class DatabaseClient {
   }
 
   async insertMany(collectionName, data) {
-    const insertResult = await this.#collections
+    await this.#collections
       .get(collectionName)
       .insertMany(data);
   }
@@ -106,6 +106,13 @@ export class DatabaseClient {
   async getXgamesWithoutPlayerHistory(amount) {
       return await this.#collections.get("games")
                                     .find({ checkedSteamchartsHistory: { $eq: false }})
+                                    .limit(amount)
+                                    .toArray();
+  }
+
+  async XXXgetXgamesWithoutPlayerHistory(amount) {
+      return await this.#collections.get("games")
+                                    .find({ playerHistory: { $eq: [] }})
                                     .limit(amount)
                                     .toArray();
   }
