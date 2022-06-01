@@ -1,4 +1,6 @@
 import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
+import { tinyGames } from "../../assets/tiny.data.set.js"
+import { eldenRingHttpDetailsSteamcharts } from "../../assets/http.details.page.steamcharts.data.set.js"
 
 describe("PlayerHistoryAggregator", () => {
   describe("run", () => {
@@ -31,6 +33,43 @@ describe("PlayerHistoryAggregator", () => {
       it(".getSteamchartsGameHtmlDetailsPage does not run", () => {
         expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
+    });
+
+    fdescribe("when getxGamesWithoutPlayerHistory returns an array without errors",() => {
+      beforeAll(async () => {
+        steamClientMock = jasmine.createSpyObj("SteamClient", {
+          getSteamchartsGameHtmlDetailsPage: Promise.resolve(eldenRingHttpDetailsSteamcharts),
+        });
+        databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
+          getxGamesWithoutPlayerHistory: Promise.resolve(tinyGames),
+          updatePlayerHistoryById: undefined,
+        });
+
+        const agg = new PlayerHistoryAggregator(steamClientMock, databaseClientMock, { unitDelay: 30, batchDelay: 500 })
+
+        await agg.run();
+      });
+
+      it(".getxGamesWithoutPlayerHistory runs once", () => {
+        expect(databaseClientMock.getxGamesWithoutPlayerHistory).toHaveBeenCalledTimes(1);
+      });
+
+      it(".getxGamesWithoutPlayerHistory ran before .getSteamchartsGameHtmlDetailsPage", () => {
+        expect(databaseClientMock.getxGamesWithoutPlayerHistory).toHaveBeenCalledBefore(steamClientMock.getSteamchartsGameHtmlDetailsPage)
+      });
+
+      it(".getSteamchartsGameHtmlDetailsPage runs times", () => {
+        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(29);
+      });
+
+      it(".getSteamchartsGameHtmlDetailsPage ran before .updatePlayerHistoryById", () => {
+        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledBefore(databaseClientMock.updatePlayerHistoryById);
+      });
+
+      it(".updatePlayerHistoryById runs times", () => {
+        expect(databaseClientMock.updatePlayerHistoryById).toHaveBeenCalledTimes(29);
+      });
+
     });
   });
 });
