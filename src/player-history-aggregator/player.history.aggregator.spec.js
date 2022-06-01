@@ -1,5 +1,5 @@
 import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
-import { tinyGames } from "../../assets/tiny.data.set.js"
+import { tinyGames } from "../../assets/tiny.data.set.with.id.js"
 import { eldenRingHttpDetailsSteamcharts } from "../../assets/http.details.page.steamcharts.data.set.js"
 
 describe("PlayerHistoryAggregator", () => {
@@ -58,15 +58,18 @@ describe("PlayerHistoryAggregator", () => {
         expect(databaseClientMock.getxGamesWithoutPlayerHistory).toHaveBeenCalledBefore(steamClientMock.getSteamchartsGameHtmlDetailsPage)
       });
 
-      it(".getSteamchartsGameHtmlDetailsPage runs times", () => {
+      it(".getSteamchartsGameHtmlDetailsPage runs 29 times", () => {
         expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(29);
+      });
+      it(".getSteamchartsGameHtmlDetailsPage has been run with 'tinyGames[0].id' argument", () => {
+        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledWith(tinyGames[0].id)
       });
 
       it(".getSteamchartsGameHtmlDetailsPage ran before .updatePlayerHistoryById", () => {
         expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledBefore(databaseClientMock.updatePlayerHistoryById);
       });
 
-      it(".updatePlayerHistoryById runs times", () => {
+      it(".updatePlayerHistoryById runs 29 times", () => {
         expect(databaseClientMock.updatePlayerHistoryById).toHaveBeenCalledTimes(29);
       });
 
