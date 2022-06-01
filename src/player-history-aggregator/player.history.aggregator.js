@@ -36,7 +36,7 @@ export class PlayerHistoryAggregator {
           await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id)
         );
       } catch(error) {
-        if (error.status !== 500 && error.status !== 404) pages.push("");
+        pages.push("");
       }
     }
     return pages;
