@@ -35,7 +35,7 @@ describe("PlayerHistoryAggregator", () => {
       });
     });
 
-    fdescribe("when getxGamesWithoutPlayerHistory returns an array without errors",() => {
+    describe("when getxGamesWithoutPlayerHistory returns an array without errors",() => {
       beforeAll(async () => {
         steamClientMock = jasmine.createSpyObj("SteamClient", {
           getSteamchartsGameHtmlDetailsPage: Promise.resolve(eldenRingHttpDetailsSteamcharts),
@@ -73,6 +73,81 @@ describe("PlayerHistoryAggregator", () => {
         expect(databaseClientMock.updatePlayerHistoryById).toHaveBeenCalledTimes(29);
       });
 
+      it(".updatePlayerHistoryById has been run with argument tinyGames[1]", () => {
+        expect(databaseClientMock.updatePlayerHistoryById).toHaveBeenCalledWith(tinyGames[1]);
+      });
+
+      it("tinyGames now has an added checkedSteamchartsHistory property, which is set to true", () => {
+        expect(tinyGames[2].checkedSteamchartsHistory).toBeTrue();
+      });
+    });
+
+    xdescribe("when getxGamesWithoutPlayerHistory returns a full array and getSteamchartsGameHtmlDetailsPage returns 3 errors",() => {
+      let counter = 0;
+
+      beforeAll(async () => {
+        // ask stas about error handling here!
+        async function returnTwoErrors() {
+          return new Promise(resolve => {
+            console.log(counter);
+            if(counter < 2) {
+              
+              counter++;
+              console.log("Resolving with empty string..");
+              console.log(counter)
+              resolve("");
+            }
+            counter++;
+            
+            console.log("resolving normally..")
+            console.log(counter)
+            resolve(eldenRingHttpDetailsSteamcharts);
+          })
+        }
+
+        steamClientMock = jasmine.createSpyObj("SteamClient", {
+          getSteamchartsGameHtmlDetailsPage: await returnTwoErrors(),
+        });
+        databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
+          getxGamesWithoutPlayerHistory: Promise.resolve(tinyGames),
+          updatePlayerHistoryById: undefined,
+        });
+
+        const agg = new PlayerHistoryAggregator(steamClientMock, databaseClientMock, { unitDelay: 30, batchDelay: 500 })
+
+        await agg.run();
+      });
+
+      it(".getxGamesWithoutPlayerHistory runs once", () => {
+        expect(databaseClientMock.getxGamesWithoutPlayerHistory).toHaveBeenCalledTimes(1);
+      });
+
+      it(".getxGamesWithoutPlayerHistory ran before .getSteamchartsGameHtmlDetailsPage", () => {
+        expect(databaseClientMock.getxGamesWithoutPlayerHistory).toHaveBeenCalledBefore(steamClientMock.getSteamchartsGameHtmlDetailsPage)
+      });
+
+      it(".getSteamchartsGameHtmlDetailsPage runs 29 times", () => {
+        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(29);
+      });
+      it(".getSteamchartsGameHtmlDetailsPage has been run with 'tinyGames[0].id' argument", () => {
+        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledWith(tinyGames[0].id)
+      });
+
+      it(".getSteamchartsGameHtmlDetailsPage ran before .updatePlayerHistoryById", () => {
+        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledBefore(databaseClientMock.updatePlayerHistoryById);
+      });
+
+      it(".updatePlayerHistoryById runs 29 times", () => {
+        expect(databaseClientMock.updatePlayerHistoryById).toHaveBeenCalledTimes(29);
+      });
+
+      it(".updatePlayerHistoryById has been run with argument tinyGames[1]", () => {
+        expect(databaseClientMock.updatePlayerHistoryById).toHaveBeenCalledWith(tinyGames[1]);
+      });
+
+      it("tinyGames now has an added checkedSteamchartsHistory property, which is set to true", () => {
+        expect(tinyGames[2].checkedSteamchartsHistory).toBeTrue();
+      });
     });
   });
 });
