@@ -28,6 +28,7 @@ export class PlayerHistoryAggregator {
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
     const pages = [];
+
     for (let i = 0; i < games.length; i++) {
       await delay(this.#options.unitDelay);
 
