@@ -87,26 +87,34 @@ describe("PlayerHistoryAggregator", () => {
 
       beforeAll(async () => {
         // ask stas about error handling here!
-        async function returnTwoErrors() {
-          return new Promise(resolve => {
-            console.log(counter);
-            if(counter < 2) {
+        // function returnTwoErrors() {
+        //   console.log('test');
+        //   console.log(`outside cfounter:${counter}`);
+        //   counter++;
+        //   return new Promise(resolve => {
+        //     console.log("Current counter number:");
+        //     console.log(counter);
+        //     if(counter < 2) {
               
-              counter++;
-              console.log("Resolving with empty string..");
-              console.log(counter)
-              resolve("");
-            }
-            counter++;
+        //       counter++;
+        //       console.log("Resolving with empty string..");
+        //       console.log(counter)
+        //       resolve("");
+        //     }
+        //     counter++;
             
-            console.log("resolving normally..")
-            console.log(counter)
-            resolve(eldenRingHttpDetailsSteamcharts);
-          })
+        //     console.log("resolving normally..")
+        //     console.log(counter)
+        //     resolve(eldenRingHttpDetailsSteamcharts);
+        //   })
+        // }
+
+        function returnTwoErrors() {
+          console.log("test");
         }
 
         steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getSteamchartsGameHtmlDetailsPage: await returnTwoErrors(),
+          getSteamchartsGameHtmlDetailsPage: returnTwoErrors(),
         });
         databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
           getxGamesWithoutPlayerHistory: Promise.resolve(tinyGames),
