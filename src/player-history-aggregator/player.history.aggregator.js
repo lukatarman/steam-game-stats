@@ -1,7 +1,7 @@
 import {
   addCurrentPlayersFromSteam,
   recordSteamchartPlayerHisotryCheck,
-  XXXaddPlayerHistoriesFromSteamcharts
+  addPlayerHistoriesFromSteamcharts
 } from "./services/player.history.service.js";
 import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
 
@@ -29,23 +29,26 @@ export class PlayerHistoryAggregator {
    * - we record the steamcharts history checks after we got all the steamcharts details pages
    * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
    */
-  async XXXaddPlayerHistoryFromSteamcharts() {
-    const gamesWithoutPlayerHistories = await this.#databaseClient.XXXgetXgamesWithoutPlayerHistory(this.#options.batchSize);
+  async addPlayerHistoryFromSteamcharts() {
+    const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
     if(gamesWithoutPlayerHistories.length === 0) {
       await delay(this.#options.batchDelay);
       return;
     }
 
-    const gamesPagesMap = await this.#XXXgetGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+    const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
 
     const historyChecks = recordSteamchartPlayerHisotryCheck(gamesPagesMap);
     await this.#persistHistoryChecks(historyChecks);
 
-    const games = XXXaddPlayerHistoriesFromSteamcharts(gamesPagesMap);
+    const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
+    /**
+     * @continue_here update seems to fail
+     */
     await this.#updateGames(games);
   }
 
-  async #XXXgetGameHtmlDetailsPagesFromSteamcharts(games) {
+  async #getGameHtmlDetailsPagesFromSteamcharts(games) {
     const gamesPagesMap = new Map();
 
     for (let i = 0; i < games.length; i++) {
@@ -66,6 +69,9 @@ export class PlayerHistoryAggregator {
     await this.#databaseClient.insertManyHistoryChecks(historyChecks);
   }
 
+  /**
+   * @todo create db client method updatePlayerHistoriesById
+   */
   async #updateGames(games) {
     await Promise.all(
       games.forEach(
@@ -75,7 +81,7 @@ export class PlayerHistoryAggregator {
   }
 
   async addCurrentPlayers() {
-    const games = await this.#databaseClient.XXXXXXgetXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
+    const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
 
     if(lessThanXhoursPassedSinceTheLastUpdate()) return;
 

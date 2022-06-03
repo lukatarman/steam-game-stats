@@ -26,7 +26,7 @@ export function recordSteamchartPlayerHisotryCheck(gamesPagesMap) {
 /**
  * @todo consider making a setter on the Games class
  */
-export function XXXaddPlayerHistoriesFromSteamcharts(gamesPagesMap) {
+export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
     if(page !== "") game.playerHistory = parsePlayerHistory(page);

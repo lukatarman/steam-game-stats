@@ -104,13 +104,6 @@ export class DatabaseClient {
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
-      return await this.#collections.get("games")
-                                    .find({ checkedSteamchartsHistory: { $eq: false }})
-                                    .limit(amount)
-                                    .toArray();
-  }
-
-  async XXXgetXgamesWithoutPlayerHistory(amount) {
       return (await this.#collections.get("games")
                                      .find({ playerHistory: { $eq: [] }})
                                      .limit(amount)
@@ -131,33 +124,7 @@ export class DatabaseClient {
                            );
   }
 
-  /**
-   * @deprecated
-   */
   async getXgamesWithCheckedSteamchartsHistory(amount) {
-    return await this.#collections.get("games")
-                                  .find({ checkedSteamchartsHistory: { $eq: true }})
-                                  .limit(amount)
-                                  .toArray();
-  }
-
-  /**
-   * @deprecated
-   */
-  async XXXgetXgamesWithCheckedSteamchartsHistory(amount) {
-    return (await this.#collections.get("games")
-                                   .find({ checkedSteamchartsHistory: { $eq: true }})
-                                   .limit(amount)
-                                   .toArray())
-                                   .map(dbEntry => Game.fromDbEntry(dbEntry));
-  }
-
-  async XXXXXXgetXgamesWithCheckedSteamchartsHistory(amount) {
-   // @todo - use aggregation to go through two collections and get only the "games" from the
-   //         games collection which were checked for a steamcharts history
-   // - https://stackoverflow.com/questions/47752429/mongodb-conditional-select-from-one-collection-based-on-another-collection
-   // - lookup example: https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/#examples
-  //  - course in mongoDb: https://ibm-learning.udemy.com/course/the-complete-developers-guide-to-mongodb/
    return (await this.#collections
      .get("history_checks")
      .aggregate([
