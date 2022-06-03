@@ -39,19 +39,19 @@ describe("game.js", function() {
           expect(this.result).toBeInstanceOf(Game);
         });
 
-        it("has and 'id' property which equals 123", function() {
+        it("has an 'id' property which equals 123", function() {
           expect(this.result.id).toBe(this.testObject.appid);
         });
 
-        it("has and 'name' property which equals 123", function() {
+        it("has a 'name' property which equals 123", function() {
           expect(this.result.name).toBe(this.testObject.name);
         });
 
-        it("has and 'imageUrl' property which equals 123", function() {
+        it("has an 'imageUrl' property which equals 123", function() {
           expect(this.result.imageUrl).toBe(`https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`);
         });
 
-        it("has and 'playerHistory' property which equals 123", function() {
+        it("has a 'playerHistory' property which equals 123", function() {
           expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
         });
       });
@@ -78,7 +78,7 @@ describe("game.js", function() {
         });
       });
 
-      describe("is called with appropriate attributes", function() {
+      describe("is called with appropriate attributes and the returned value", function() {
         beforeEach(function() {
           this.testObject = {
             id: 123,
@@ -90,23 +90,23 @@ describe("game.js", function() {
           this.result = Game.fromDbEntry(this.testObject);
         });
 
-        it("the returned value is an instance of Game", function() {
+        it("is an instance of Game", function() {
           expect(this.result).toBeInstanceOf(Game);
         });
 
-        it("has and 'id' property which equals 123", function() {
+        it("has an 'id' property which equals 123", function() {
           expect(this.result.id).toBe(this.testObject.id);
         });
 
-        it("has and 'name' property which equals 123", function() {
+        it("has a 'name' property which equals 123", function() {
           expect(this.result.name).toBe(this.testObject.name);
         });
 
-        it("has and 'imageUrl' property which equals 123", function() {
+        it("has an 'imageUrl' property which equals 123", function() {
           expect(this.result.imageUrl).toBe(this.testObject.imageUrl);
         });
 
-        it("has and 'playerHistory' property which equals 123", function() {
+        it("has a 'playerHistory' property which equals 123", function() {
           expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
         });
       });
