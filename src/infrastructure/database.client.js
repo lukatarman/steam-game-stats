@@ -50,25 +50,25 @@ export class DatabaseClient {
       .insertMany(data);
   }
 
-  getAllSteamApps(filter = {}) {
-    return this.getAll("steam_apps", filter);
+  async getAllSteamApps(filter = {}) {
+    return await this.getAll("steam_apps", filter);
   }
 
   async getAll(collectionName, filter = {}) {
-            return await this.#collections
-                             .get(collectionName)
-                             .find(filter)
-                             .toArray();
+    return await this.#collections
+      .get(collectionName)
+      .find(filter)
+      .toArray();
   }
 
   async updateOne(collectionName, filter, data) {
-    const updateResults = await this.#collections
+    await this.#collections
       .get(collectionName)
       .updateOne(filter, data);
   }
 
   async deleteMany(collectionName, filter) {
-    const deletedResults = await this.#collections
+    await this.#collections
       .get(collectionName)
       .deleteMany(filter);
   }
@@ -78,7 +78,7 @@ export class DatabaseClient {
   }
 
   async getLast(collectionName) {
-    const result = await this.#collections
+    return await this.#collections
       .get(collectionName)
       .find()
       .limit(1)
@@ -89,10 +89,11 @@ export class DatabaseClient {
   }
 
   async getXunidentifiedSteamApps(amount) {
-      return await this.#collections.get("steam_apps")
-                                    .find({ identified: { $eq: false }})
-                                    .limit(amount)
-                                    .toArray();
+    return await this.#collections
+      .get("steam_apps")
+      .find({ identified: { $eq: false }})
+      .limit(amount)
+      .toArray();
   }
 
   async identifySteamAppsById(steamApps) {
@@ -113,11 +114,12 @@ export class DatabaseClient {
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
-      return (await this.#collections.get("games")
-                                     .find({ playerHistory: { $eq: [] }})
-                                     .limit(amount)
-                                     .toArray())
-                                     .map(dbEntry => Game.fromDbEntry(dbEntry));
+    return (await this.#collections
+      .get("games")
+      .find({ playerHistory: { $eq: [] }})
+      .limit(amount)
+      .toArray())
+      .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 
   async updatePlayerHistoriesById(games) {
@@ -129,9 +131,10 @@ export class DatabaseClient {
   }
 
   async updatePlayerHistoryById(game) {
-    await this.#collections.get("games")
-                           .updateOne(
-                             { id: game.id },
+    await this.#collections
+      .get("games")
+      .updateOne(
+        { id: game.id },
                              { $set:
                                {
                                  playerHistory: game.playerHistory,
