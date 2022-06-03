@@ -43,15 +43,15 @@ describe("game.js", function() {
           expect(this.result.id).toBe(this.testObject.appid);
         });
 
-        it("has a 'name' property which equals 123", function() {
+        it("has a 'name' property which equals 'test game'", function() {
           expect(this.result.name).toBe(this.testObject.name);
         });
 
-        it("has an 'imageUrl' property which equals 123", function() {
+        it("has an 'imageUrl' property which equals a link", function() {
           expect(this.result.imageUrl).toBe(`https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`);
         });
 
-        it("has a 'playerHistory' property which equals 123", function() {
+        it("has a 'playerHistory' property which equals an empty array", function() {
           expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
         });
       });
@@ -98,15 +98,15 @@ describe("game.js", function() {
           expect(this.result.id).toBe(this.testObject.id);
         });
 
-        it("has a 'name' property which equals 123", function() {
+        it("has a 'name' property which equals 'test game'", function() {
           expect(this.result.name).toBe(this.testObject.name);
         });
 
-        it("has an 'imageUrl' property which equals 123", function() {
+        it("has an 'imageUrl' property which equals 'test url'", function() {
           expect(this.result.imageUrl).toBe(this.testObject.imageUrl);
         });
 
-        it("has a 'playerHistory' property which equals 123", function() {
+        it("has a 'playerHistory' property which equals an empty array", function() {
           expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
         });
       });
