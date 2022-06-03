@@ -1,6 +1,6 @@
 import { Game } from "./game.js"
 
-fdescribe("game.js", function() {
+describe("game.js", function() {
   describe("Game", function() {
     describe(".fromSteamApp", function() {
       describe("is called with no arguments, ", function() {
@@ -15,40 +15,68 @@ fdescribe("game.js", function() {
           this.testObject = {
             id: 123,
             name: "test game",
-            imageUrl: "test url",
-            playerHistory: [],
           }
         });
 
         it(("an Error is thrown"), function() {
-          expect(Game.fromSteamApp.bind(null, this.testObject)).toThrowError();
+          expect(Game.fromSteamApp.bind(this.testObject)).toThrowError();
         });
       });
 
-      describe("is called with appropriate attributes", function() {
+      describe("is called with appropriate attributes and the returned value", function() {
         beforeEach(function() {
           this.testObject = {
-            id: 123,
+            appid: 123,
             name: "test game",
             imageUrl: "test url",
             playerHistory: [],
           }
 
-          this.myLittleTest = Game.fromSteamApp(this.testObject);
+          this.result = Game.fromSteamApp(this.testObject);
         });
 
-        it("the returned value is an instance of Game", function() {
-          expect(this.myLittleTest).toBeInstanceOf(Game);
-        })
+        it("is an instance of Game", function() {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has and 'id' property which equals 123", function() {
+          expect(this.result.id).toBe(this.testObject.appid);
+        });
+
+        it("has and 'name' property which equals 123", function() {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has and 'imageUrl' property which equals 123", function() {
+          expect(this.result.imageUrl).toBe(`https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`);
+        });
+
+        it("has and 'playerHistory' property which equals 123", function() {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
       });
     });
 
     describe(".fromDbEntry", function() {
-      describe("is called with incomplete arguments or no arguments, ", function() {
+      describe("is called with no arguments, ", function() {
+
         it(("an Error is thrown"), function() {
           expect(Game.fromDbEntry).toThrowError();
         });
+      });
+
+      describe("is called with incomplete arguments, ", function() {
+        beforeEach(function() {
+          this.testObject = {
+            id: 123,
+            name: "test game",
+          }
         });
+
+        it(("an Error is thrown"), function() {
+          expect(Game.fromDbEntry.bind(this.testObject)).toThrowError();
+        });
+      });
 
       describe("is called with appropriate attributes", function() {
         beforeEach(function() {
@@ -59,12 +87,28 @@ fdescribe("game.js", function() {
             playerHistory: [],
           }
 
-          this.myLittleTest = Game.fromDbEntry(this.testObject);
+          this.result = Game.fromDbEntry(this.testObject);
         });
 
         it("the returned value is an instance of Game", function() {
-          expect(this.myLittleTest).toBeInstanceOf(Game);
-        })
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has and 'id' property which equals 123", function() {
+          expect(this.result.id).toBe(this.testObject.id);
+        });
+
+        it("has and 'name' property which equals 123", function() {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has and 'imageUrl' property which equals 123", function() {
+          expect(this.result.imageUrl).toBe(this.testObject.imageUrl);
+        });
+
+        it("has and 'playerHistory' property which equals 123", function() {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
       });
     });
 
