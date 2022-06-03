@@ -4,7 +4,6 @@ export class Game {
   image;         // imgData=['D%', '7Z', 'HJ', ')I', 'LK'...'M;'];
   imageUrl;      // imageUrl=`https://cdn.akamai.steamstatic.com/steam/apps/${this.id}/header.jpg`
   playerHistory; // playerHistory=[{ date: "05.04.22", players: 122 }, { date: "04.04.22", players: 200 }, { date: "03.04.22", players: 150 }]
-  checkedSteamchartsHistory;
 
   static fromSteamApp(steamApp) {
     const game         = new Game();
@@ -12,7 +11,6 @@ export class Game {
     game.name          = steamApp.name;
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${this.id}/header.jpg`
     game.playerHistory = [];
-    game.checkedSteamchartsHistory = false;
     return game;
   }
 
@@ -22,7 +20,6 @@ export class Game {
     game.name          = dbEntry.name;
     game.imageUrl      = dbEntry.imageUrl;
     game.playerHistory = dbEntry.playerHistory;
-    game.checkedSteamchartsHistory = false;
     return game;
   }
 
