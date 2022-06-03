@@ -95,12 +95,21 @@ export class DatabaseClient {
                                     .toArray();
   }
 
-  identifySteamAppById(id) {
-    this.#collections.get("steam_apps")
-                     .updateOne(
-                       { appid: { $eq: id }},
-                       { $set: {identified: true}},
-                      );
+  async identifySteamAppsById(steamApps) {
+    await Promise.all(
+      steamApps.map(
+        async steamApp => await this.identifySteamAppById(steamApp.appid)
+      )
+    );
+  }
+
+  async identifySteamAppById(id) {
+    await this.#collections
+      .get("steam_apps")
+      .updateOne(
+        { appid: { $eq: id }},
+        { $set: { identified: true }},
+      );
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
@@ -113,8 +122,8 @@ export class DatabaseClient {
 
   async updatePlayerHistoriesById(games) {
     await Promise.all(
-      games.forEach(
-        game => this.updatePlayerHistoryById(game)
+      games.map(
+        async game => await this.updatePlayerHistoryById(game)
       )
     );
   }
