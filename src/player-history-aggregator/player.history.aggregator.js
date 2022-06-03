@@ -39,13 +39,13 @@ export class PlayerHistoryAggregator {
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
 
     const historyChecks = recordSteamchartPlayerHisotryCheck(gamesPagesMap);
-    await this.#persistHistoryChecks(historyChecks);
+    await this.#databaseClient.insertManyHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
     /**
      * @continue_here update seems to fail
      */
-    await this.#updateGames(games);
+    await this.#databaseClient.updatePlayerHistoriesById(games);
   }
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
@@ -65,21 +65,6 @@ export class PlayerHistoryAggregator {
     return gamesPagesMap;
   }
 
-  async #persistHistoryChecks(historyChecks) {
-    await this.#databaseClient.insertManyHistoryChecks(historyChecks);
-  }
-
-  /**
-   * @todo create db client method updatePlayerHistoriesById
-   */
-  async #updateGames(games) {
-    await Promise.all(
-      games.forEach(
-        game => this.#databaseClient.updatePlayerHistoryById(game)
-      )
-    );
-  }
-
   async addCurrentPlayers() {
     const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
 
@@ -89,7 +74,7 @@ export class PlayerHistoryAggregator {
 
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
 
-    await this.#updateGames(gamesWithCurrentPlayers);
+    await this.#databaseClient.updatePlayerHistoriesById(gamesWithCurrentPlayers);
 
     function lessThanXhoursPassedSinceTheLastUpdate() {
       return games[0].lastUpdate && !moreThanXhoursPassedSince(this.#options.currentPlayersUpdateIntervalDelay, games[0].lastUpdate);
