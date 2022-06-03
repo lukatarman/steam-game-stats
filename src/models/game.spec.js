@@ -23,7 +23,7 @@ describe("game.js", function() {
         });
       });
 
-      describe("is called with appropriate attributes and the returned value", function() {
+      describe("is called with appropriate attributes, the returned value", function() {
         beforeEach(function() {
           this.testObject = {
             appid: 123,
@@ -78,7 +78,7 @@ describe("game.js", function() {
         });
       });
 
-      describe("is called with appropriate attributes and the returned value", function() {
+      describe("is called with appropriate attributes, the returned value", function() {
         beforeEach(function() {
           this.testObject = {
             id: 123,
