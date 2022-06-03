@@ -111,6 +111,14 @@ export class DatabaseClient {
                                      .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 
+  async updatePlayerHistoriesById(games) {
+    await Promise.all(
+      games.forEach(
+        game => this.updatePlayerHistoryById(game)
+      )
+    );
+  }
+
   async updatePlayerHistoryById(game) {
     await this.#collections.get("games")
                            .updateOne(
