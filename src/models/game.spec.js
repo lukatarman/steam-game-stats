@@ -1,14 +1,29 @@
 import { Game } from "./game.js"
 
-describe("game.js", function() {
+fdescribe("game.js", function() {
   describe("Game", function() {
     describe(".fromSteamApp", function() {
-      describe("is called with incomplete arguments or no arguments, ", function() {
+      describe("is called with no arguments, ", function() {
 
         it(("an Error is thrown"), function() {
           expect(Game.fromSteamApp).toThrowError();
         });
+      });
+
+      describe("is called with incomplete arguments, ", function() {
+        beforeEach(function() {
+          this.testObject = {
+            id: 123,
+            name: "test game",
+            imageUrl: "test url",
+            playerHistory: [],
+          }
         });
+
+        it(("an Error is thrown"), function() {
+          expect(Game.fromSteamApp.bind(null, this.testObject)).toThrowError();
+        });
+      });
 
       describe("is called with appropriate attributes", function() {
         beforeEach(function() {
