@@ -113,7 +113,7 @@ describe("game.js", function() {
     });
 
     describe("class is instantiated,", function() {
-      describe("with object whose playerHistory property has an empty array", function() {
+      describe("with an object whose playerHistory property has an empty array", function() {
         beforeEach(function () {
           this.testObject = {
             id: 123,
@@ -132,7 +132,7 @@ describe("game.js", function() {
         });
       });
 
-      describe("with object whose playerHistory property has entries", function() {
+      describe("with an object whose playerHistory property has entries", function() {
         beforeEach(function () {
           this.testObject = {
             id: 123,
