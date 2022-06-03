@@ -4,10 +4,24 @@ export class HistoryCheck {
   found;
   source;
 
-  constructor(game, found, source = "steamcharts") {
-    this.gameId = game.id;
-    this.checked = true;
-    this.found = found;
-    this.source = source;
+  static fromSteamcharts(game, found) {
+    const check = new HistoryCheck();
+    check.gameId = game.id
+    check.checked = true;
+    check.found = found;
+    check.source = "steamcharts";
+    return check;
+  }
+
+  static manyFromGames(games) {
+    return games.map(game => HistoryCheck.fromGame(game));
+  }
+
+  static fromGame(game) {
+    const check = new HistoryCheck();
+    check.gameId = game.id
+    check.checked = false;
+    check.found = false;
+    return check;
   }
 }

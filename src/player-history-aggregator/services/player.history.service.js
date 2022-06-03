@@ -18,7 +18,7 @@ export function addCurrentPlayersFromSteam(players, games) {
 export function recordSteamchartPlayerHisotryCheck(gamesPagesMap) {
   const historyChecks = [];
   for (const [game, page] of gamesPagesMap) {
-    historyChecks.push(new HistoryCheck(game, !!page));
+    historyChecks.push(HistoryCheck.fromSteamcharts(game, !!page));
   }
   return historyChecks;
 }
