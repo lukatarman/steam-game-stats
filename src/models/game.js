@@ -9,7 +9,7 @@ export class Game {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${this.id}/header.jpg`
+    game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
   }
