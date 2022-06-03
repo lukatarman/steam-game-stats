@@ -31,7 +31,7 @@ export class Game {
    */
   get lastUpdate() {
     return (this.playerHistory.length !== 0)
-    ? this.playerHistory[this.playerhistory.length - 1].date
+    ? this.playerHistory[this.playerHistory.length - 1].date
     : undefined;
   }
 }
