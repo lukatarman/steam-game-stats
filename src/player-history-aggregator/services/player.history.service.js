@@ -15,7 +15,7 @@ export function addCurrentPlayersFromSteam(players, games) {
 /**
  * @todo consider making a static factory on the HistoryCheck class
  */
-export function recordSteamchartPlayerHisotryCheck(gamesPagesMap) {
+export function recordSteamchartPlayerHistoryCheck(gamesPagesMap) {
   const historyChecks = [];
   for (const [game, page] of gamesPagesMap) {
     historyChecks.push(new HistoryCheck(game, !!page));
