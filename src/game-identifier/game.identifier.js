@@ -28,9 +28,7 @@ export class GameIdentifier {
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     if (filteredSteamApps.length === 0) {
-      steamApps.forEach((steamApp) =>
-        this.#databaseClient.identifySteamAppById(steamApp.appid)
-      );
+      await this.#databaseClient.identifySteamAppsById(steamApps);
       return;
     }
 
@@ -39,9 +37,7 @@ export class GameIdentifier {
       this.#databaseClient.insertMany("games", games);
     }
 
-    steamApps.forEach((steamApp) =>
-      this.#databaseClient.identifySteamAppById(steamApp.appid)
-    );
+    await this.#databaseClient.identifySteamAppsById(steamApps);
   }
 
   async #filterSteamAppsByAppType(steamApps) {
