@@ -23,9 +23,6 @@ export class Game {
     return game;
   }
 
-  /**
-   * @todo add tests
-   */
   get lastUpdate() {
     return (this.playerHistory.length !== 0)
     ? this.playerHistory[this.playerHistory.length - 1].date
