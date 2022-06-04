@@ -4,6 +4,7 @@ import {
 } from "./services/game.service.js";
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
+import { HistoryCheck } from "../models/history.check.js";
 
 export class GameIdentifier {
   #steamClient;
@@ -34,7 +35,8 @@ export class GameIdentifier {
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
-      this.#databaseClient.insertMany("games", games);
+      await this.#databaseClient.insertManyGames(games);
+      await this.#databaseClient.insertManyHistoryChecks(HistoryCheck.manyFromGames(games));
     }
 
     await this.#databaseClient.identifySteamAppsById(steamApps);
