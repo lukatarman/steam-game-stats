@@ -84,8 +84,6 @@ export class DatabaseClient {
       .limit(1)
       .sort({ $natural: -1 })
       .next();
-
-      return result;
   }
 
   async getXunidentifiedSteamApps(amount) {
@@ -135,13 +133,8 @@ export class DatabaseClient {
       .get("games")
       .updateOne(
         { id: game.id },
-                             { $set:
-                               {
-                                 playerHistory: game.playerHistory,
-                                 checkedSteamchartsHistory: game.checkedSteamchartsHistory,
-                               }
-                             }
-                           );
+        { $set: { playerHistory: game.playerHistory }}
+      );
   }
 
   async getXgamesWithCheckedSteamchartsHistory(amount) {
