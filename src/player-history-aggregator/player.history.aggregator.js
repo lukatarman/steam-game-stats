@@ -1,9 +1,9 @@
 import {
   addCurrentPlayersFromSteam,
-  recordSteamchartPlayerHistoryCheck,
   addPlayerHistoriesFromSteamcharts
 } from "./services/player.history.service.js";
 import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
+import { HistoryCheck } from "../models/history.check.js";
 
 export class PlayerHistoryAggregator {
   #steamClient;
@@ -38,7 +38,7 @@ export class PlayerHistoryAggregator {
 
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(uncheckedGames);
 
-    const historyChecks = recordSteamchartPlayerHistoryCheck(gamesPagesMap);
+    const historyChecks = HistoryCheck.manyFromSteamchartsPages(gamesPagesMap);
     await this.#databaseClient.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);

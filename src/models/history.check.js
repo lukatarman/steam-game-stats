@@ -24,4 +24,12 @@ export class HistoryCheck {
     check.found = false;
     return check;
   }
+
+  static manyFromSteamchartsPages(gamesPagesMap) {
+    const checks = [];
+    for (const [game, page] of gamesPagesMap) {
+      checks.push(HistoryCheck.fromSteamcharts(game, !!page));
+    }
+    return checks;
+  }
 }
