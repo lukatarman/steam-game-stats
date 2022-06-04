@@ -126,7 +126,6 @@ export class DatabaseClient {
                              { $set:
                                {
                                  playerHistory: game.playerHistory,
-                                 checkedSteamchartsHistory: game.checkedSteamchartsHistory,
                                }
                              }
                            );
