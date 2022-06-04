@@ -168,14 +168,14 @@ export class DatabaseClient {
         },
         { $match: { checked: false }},
         { $unwind: "$game" },
-        { $replaceWith: "$game"},
+        { $replaceWith: "$game" },
         { $limit: amount },
       ])
       .toArray())
       .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 
-  async getXgamesWithCheckedSteamchartsHistory(amount) {
+  async getXgamesCheckedMoreThan24HoursAgo(amount) {
    return (await this.#collections
      .get("history_checks")
      .aggregate([
@@ -187,8 +187,21 @@ export class DatabaseClient {
            as: "game"
          }
        },
+       { $match: { checked: true }},
        { $unwind: "$game" },
-       { $replaceWith: "$game"},
+       { $replaceWith: "$game" },
+       {
+         $match: {
+           $or: [
+             { playerHistory: [] },
+             {
+               "playerHistory.date": {
+                 $lt: new Date(Date.now() - (24 * 60 * 60 * 1000)),
+               },
+             },
+           ],
+         },
+       },
        { $limit: amount },
      ])
      .toArray())

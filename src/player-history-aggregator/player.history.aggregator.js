@@ -63,14 +63,18 @@ export class PlayerHistoryAggregator {
   }
 
   async addCurrentPlayers() {
-    const games = await this.#databaseClient.getXgamesWithCheckedSteamchartsHistory(this.#options.batchSize);
+    /**
+     * @todo resolve bug
+     * - target only the last array element with the date check
+     * - now it returns always a game as long it has an entry with an playerHistory entry older than 24h
+     */
+    const games = await this.#databaseClient.getXgamesCheckedMoreThan24HoursAgo(this.#options.batchSize);
 
-    if(lessThanXhoursPassedSinceTheLastUpdate()) return;
+    if(lessThanXhoursPassedSinceTheLastUpdate.call(this)) return;
 
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
-
     await this.#databaseClient.updatePlayerHistoriesById(gamesWithCurrentPlayers);
 
     function lessThanXhoursPassedSinceTheLastUpdate() {
