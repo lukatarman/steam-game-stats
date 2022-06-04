@@ -39,7 +39,7 @@ export class PlayerHistoryAggregator {
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
 
     const historyChecks = recordSteamchartPlayerHistoryCheck(gamesPagesMap);
-    await this.#databaseClient.insertManyHistoryChecks(historyChecks);
+    await this.#databaseClient.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
 

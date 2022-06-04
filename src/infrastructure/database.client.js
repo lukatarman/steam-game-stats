@@ -94,6 +94,23 @@ export class DatabaseClient {
       .toArray();
   }
 
+  async updateHistoryChecks(historyChecks) {
+    await Promise.all(
+      historyChecks.map(
+        historyCheck => this.#collections
+          .get("history_checks")
+          .updateOne(
+            { gameId: { $eq: historyCheck.gameId }},
+            { $set: {
+              checked: historyCheck.checked,
+              found: historyCheck.found,
+              source: historyCheck.source,
+            }},
+          )
+      )
+    );
+  }
+
   async identifySteamAppsById(steamApps) {
     await Promise.all(
       steamApps.map(
