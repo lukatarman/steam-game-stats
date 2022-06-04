@@ -97,7 +97,7 @@ export class DatabaseClient {
   async identifySteamAppsById(steamApps) {
     await Promise.all(
       steamApps.map(
-        async steamApp => await this.identifySteamAppById(steamApp.appid)
+        steamApp => this.identifySteamAppById(steamApp.appid)
       )
     );
   }
@@ -123,7 +123,7 @@ export class DatabaseClient {
   async updatePlayerHistoriesById(games) {
     await Promise.all(
       games.map(
-        async game => await this.updatePlayerHistoryById(game)
+        game => this.updatePlayerHistoryById(game)
       )
     );
   }

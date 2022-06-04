@@ -1,6 +1,6 @@
 import { Game } from "./game.js"
 
-fdescribe("game.js", function() {
+describe("game.js", function() {
   describe("Game", function() {
     describe(".fromSteamApp", function() {
       describe("is called with no arguments, ", function() {
@@ -15,42 +15,70 @@ fdescribe("game.js", function() {
           this.testObject = {
             id: 123,
             name: "test game",
-            imageUrl: "test url",
-            playerHistory: [],
           }
         });
 
         it(("an Error is thrown"), function() {
-          expect(Game.fromSteamApp.bind(null, this.testObject)).toThrowError();
+          expect(Game.fromSteamApp.bind(this.testObject)).toThrowError();
         });
       });
 
-      describe("is called with appropriate attributes", function() {
+      describe("is called with appropriate attributes, the returned value", function() {
         beforeEach(function() {
           this.testObject = {
-            id: 123,
+            appid: 123,
             name: "test game",
             imageUrl: "test url",
             playerHistory: [],
           }
 
-          this.myLittleTest = Game.fromSteamApp(this.testObject);
+          this.result = Game.fromSteamApp(this.testObject);
         });
 
-        it("the returned value is an instance of Game", function() {
-          expect(this.myLittleTest).toBeInstanceOf(Game);
-        })
+        it("is an instance of Game", function() {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has an 'id' property which equals 123", function() {
+          expect(this.result.id).toBe(this.testObject.appid);
+        });
+
+        it("has a 'name' property which equals 'test game'", function() {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has an 'imageUrl' property which equals a link", function() {
+          expect(this.result.imageUrl).toBe(`https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`);
+        });
+
+        it("has a 'playerHistory' property which equals an empty array", function() {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
       });
     });
 
     describe(".fromDbEntry", function() {
-      describe("is called with incomplete arguments or no arguments, ", function() {
+      describe("is called with no arguments, ", function() {
+
         it(("an Error is thrown"), function() {
           expect(Game.fromDbEntry).toThrowError();
         });
+      });
+
+      describe("is called with incomplete arguments, ", function() {
+        beforeEach(function() {
+          this.testObject = {
+            id: 123,
+            name: "test game",
+          }
         });
 
-      describe("is called with appropriate attributes", function() {
+        it(("an Error is thrown"), function() {
+          expect(Game.fromDbEntry.bind(this.testObject)).toThrowError();
+        });
+      });
+
+      describe("is called with appropriate attributes, the returned value", function() {
         beforeEach(function() {
           this.testObject = {
             id: 123,
@@ -59,17 +87,33 @@ fdescribe("game.js", function() {
             playerHistory: [],
           }
 
-          this.myLittleTest = Game.fromDbEntry(this.testObject);
+          this.result = Game.fromDbEntry(this.testObject);
         });
 
-        it("the returned value is an instance of Game", function() {
-          expect(this.myLittleTest).toBeInstanceOf(Game);
-        })
+        it("is an instance of Game", function() {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has an 'id' property which equals 123", function() {
+          expect(this.result.id).toBe(this.testObject.id);
+        });
+
+        it("has a 'name' property which equals 'test game'", function() {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has an 'imageUrl' property which equals 'test url'", function() {
+          expect(this.result.imageUrl).toBe(this.testObject.imageUrl);
+        });
+
+        it("has a 'playerHistory' property which equals an empty array", function() {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
       });
     });
 
     describe("class is instantiated,", function() {
-      describe("with object whose playerHistory property has an empty array", function() {
+      describe("with an object whose playerHistory property is an empty array", function() {
         beforeEach(function () {
           this.testObject = {
             id: 123,
@@ -88,7 +132,7 @@ fdescribe("game.js", function() {
         });
       });
 
-      describe("with object whose playerHistory property has entries", function() {
+      describe("with an object whose playerHistory property has entries", function() {
         beforeEach(function () {
           this.testObject = {
             id: 123,

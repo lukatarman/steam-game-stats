@@ -1,6 +1,6 @@
 import {
   addCurrentPlayersFromSteam,
-  recordSteamchartPlayerHisotryCheck,
+  recordSteamchartPlayerHistoryCheck,
   addPlayerHistoriesFromSteamcharts
 } from "./services/player.history.service.js";
 import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
@@ -38,13 +38,11 @@ export class PlayerHistoryAggregator {
 
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
 
-    const historyChecks = recordSteamchartPlayerHisotryCheck(gamesPagesMap);
+    const historyChecks = recordSteamchartPlayerHistoryCheck(gamesPagesMap);
     await this.#databaseClient.insertManyHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
-    /**
-     * @continue_here update seems to fail
-     */
+
     await this.#databaseClient.updatePlayerHistoriesById(games);
   }
 

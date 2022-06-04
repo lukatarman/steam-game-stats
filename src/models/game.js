@@ -9,7 +9,7 @@ export class Game {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${this.id}/header.jpg`
+    game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
   }
@@ -23,9 +23,6 @@ export class Game {
     return game;
   }
 
-  /**
-   * @todo add tests
-   */
   get lastUpdate() {
     return this.hasHistory
     ? this.playerHistory[this.playerHistory.length - 1].date
