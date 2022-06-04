@@ -30,19 +30,18 @@ export class PlayerHistoryAggregator {
    * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
    */
   async addPlayerHistoryFromSteamcharts() {
-    const gamesWithoutPlayerHistories = await this.#databaseClient.getXgamesWithoutPlayerHistory(this.#options.batchSize);
-    if(gamesWithoutPlayerHistories.length === 0) {
+    const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(this.#options.batchSize);
+    if(uncheckedGames.length === 0) {
       await delay(this.#options.batchDelay);
       return;
     }
 
-    const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(gamesWithoutPlayerHistories);
+    const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(uncheckedGames);
 
     const historyChecks = recordSteamchartPlayerHistoryCheck(gamesPagesMap);
     await this.#databaseClient.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
-
     await this.#databaseClient.updatePlayerHistoriesById(games);
   }
 

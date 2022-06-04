@@ -154,6 +154,27 @@ export class DatabaseClient {
       );
   }
 
+  async getXgamesWithUncheckedPlayerHistory(amount) {
+    return (await this.#collections
+      .get("history_checks")
+      .aggregate([
+        {
+          $lookup: {
+            from: "games",
+            localField: "gameId",
+            foreignField: "id",
+            as: "game"
+          }
+        },
+        { $match: { checked: false }},
+        { $unwind: "$game" },
+        { $replaceWith: "$game"},
+        { $limit: amount },
+      ])
+      .toArray())
+      .map(dbEntry => Game.fromDbEntry(dbEntry));
+  }
+
   async getXgamesWithCheckedSteamchartsHistory(amount) {
    return (await this.#collections
      .get("history_checks")
@@ -168,8 +189,8 @@ export class DatabaseClient {
        },
        { $unwind: "$game" },
        { $replaceWith: "$game"},
-      ])
-     .limit(amount)
+       { $limit: amount },
+     ])
      .toArray())
      .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
