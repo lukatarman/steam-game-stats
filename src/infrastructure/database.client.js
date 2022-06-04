@@ -112,11 +112,9 @@ export class DatabaseClient {
   }
 
   async updatePlayerHistoriesById(games) {
-    await Promise.all(
       games.forEach(
         game => this.updatePlayerHistoryById(game)
-      )
-    );
+      );
   }
 
   async updatePlayerHistoryById(game) {

@@ -42,9 +42,7 @@ export class PlayerHistoryAggregator {
     await this.#databaseClient.insertManyHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
-    /**
-     * @continue_here update seems to fail
-     */
+
     await this.#databaseClient.updatePlayerHistoriesById(games);
   }
 
