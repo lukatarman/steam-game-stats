@@ -12,12 +12,12 @@ export class Runner {
   }
 
   async run() {
-    this.#executables.forEach((func) => {
-      this.#runForNumberOfIterations(func);
-    });
+    await Promise.all([
+      this.#executables.map(func => this.#runFuncForNumberOfIterations(func))
+    ]);
   }
 
-  async #runForNumberOfIterations(func) {
+  async #runFuncForNumberOfIterations(func) {
     let counter = 0;
     // Counting down from a property of an object increases the time needed to perform
     // the first iterations in the loop compared to using a primitive. The tests of this
