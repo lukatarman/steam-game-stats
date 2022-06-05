@@ -68,7 +68,7 @@ export class PlayerHistoryAggregator {
       this.#options.currentPlayersUpdateIntervalDelay,
     );
 
-    if(games === []) return;
+    if (games.length === 0) return;
 
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
