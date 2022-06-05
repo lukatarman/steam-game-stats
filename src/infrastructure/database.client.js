@@ -175,7 +175,7 @@ export class DatabaseClient {
       .map(dbEntry => Game.fromDbEntry(dbEntry));
   }
 
-  async getXgamesCheckedMoreThan24HoursAgo(amount) {
+  async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
    return (await this.#collections
      .get("history_checks")
      .aggregate([
@@ -191,7 +191,7 @@ export class DatabaseClient {
       { $unwind: "$game" },
       { $replaceWith: "$game" },
       { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
-      { $match: { lastUpdateDate: { $lt: new Date(Date.now() - (24 * 60 * 60 * 1000)) } } },
+      { $match: { lastUpdateDate: { $lt: new Date(Date.now() - ms) } } },
       { $unset: "lastUpdateDate" },
       { $limit: amount },
      ])
