@@ -18,6 +18,7 @@ export class Runner {
   }
 
   async #runForNumberOfIterations(func) {
+    let counter = 0;
     // Counting down from a property of an object increases the time needed to perform
     // the first iterations in the loop compared to using a primitive. The tests of this
     // function rely on very short iteration times. If they are slowed down some tests are
@@ -25,6 +26,11 @@ export class Runner {
     let iterations = this.#iterations;
     while(iterations--) {
       await func();
+
+      /**
+       * @todo https://github.com/lukatarman/steam-game-stats/issues/39
+       */
+      console.info(`${func.name}: Finished iteration ${counter++} ...`);
 
       if (this.#options.iterationDelay) await delay(this.#options.iterationDelay);
     }
