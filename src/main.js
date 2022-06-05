@@ -13,15 +13,20 @@ async function main() {
   const databaseOptions = {
     url: "mongodb://localhost:27017",
     databaseName: "game-stats",
-    collections: ["games", "steam_apps", "update_timestamps"],
+    collections: [
+      "games",
+      "steam_apps",
+      "update_timestamps",
+      "history_checks",
+    ],
   };
   const databaseClient = await new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
   const options = {
-    batchSize: 10,
+    batchSize: 5,
     batchDelay: 5000,
     unitDelay: 800,
-    noAppsFoundDelay: hoursToMs(1),
+    currentPlayersUpdateIntervalDelay: hoursToMs(2),
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
   };
@@ -30,14 +35,25 @@ async function main() {
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
 
   const runner = new Runner([
-    steamAppsAggregator.run.bind(steamAppsAggregator), 
-    gameIdentifier.run.bind(gameIdentifier), 
-    playerHistoryAggregator.run.bind(playerHistoryAggregator),
+    steamAppsAggregator.run.bind(steamAppsAggregator),
+    gameIdentifier.run.bind(gameIdentifier),
+    playerHistoryAggregator.addPlayerHistoryFromSteamcharts.bind(playerHistoryAggregator),
+    playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
    ], options);
 
-  // run phase
-  runner.run();
+  try {
+    /**
+     * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
+     */
+    await runner.run();
+  } catch (error) {
+    console.error(error);
+  }
 
+  /**
+   * @todo https://github.com/lukatarman/steam-game-stats/issues/39
+   */
+  console.info("done...");
 }
 
-main();
+main().catch(error => console.log(error));

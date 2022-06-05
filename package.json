@@ -2,9 +2,10 @@
   "name": "steam-game-stats",
   "version": "0.0.1",
   "description": "Application for steam games statistics.",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
-    "test": "jasmine --config=jasmine.json"
+    "test": "jasmine --config=jasmine.json",
+    "start": "node src/main.js"
   },
   "repository": {
     "type": "git",

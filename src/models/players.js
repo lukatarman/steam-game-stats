@@ -2,8 +2,8 @@ export class Players {
   date;
   players;
 
-  constructor(dateAsString, playersAsString) {
-    this.date = new Date(dateAsString);
+  constructor(playersAsString, dateAsString = "") {
+    this.date = dateAsString === "" ? new Date() : new Date(dateAsString);
     this.players = parseFloat(parseFloat(playersAsString).toFixed(1));
   }
 }

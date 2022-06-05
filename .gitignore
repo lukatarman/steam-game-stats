@@ -3,3 +3,4 @@ db/
 todo.md
 .vscode
 src/infrastructure/steam.client.spec.js
+.mongodb

@@ -42,7 +42,7 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
   const games = steamApps.map((steamApp, index) => {
     if (steamAppIsGame(discoveredPages[index])) {
       discoveredPages[index] = 'discovered';
-      return new Game(steamApp);
+      return Game.fromSteamApp(steamApp);
     }
     return;
   }).filter(game => !!game);
