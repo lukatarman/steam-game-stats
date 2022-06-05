@@ -179,30 +179,21 @@ export class DatabaseClient {
    return (await this.#collections
      .get("history_checks")
      .aggregate([
-       {
-         $lookup: {
-           from: "games",
-           localField: "gameId",
-           foreignField: "id",
-           as: "game"
-         }
-       },
-       { $match: { checked: true }},
-       { $unwind: "$game" },
-       { $replaceWith: "$game" },
-       {
-         $match: {
-           $or: [
-             { playerHistory: [] },
-             {
-               "playerHistory.date": {
-                 $lt: new Date(Date.now() - (24 * 60 * 60 * 1000)),
-               },
-             },
-           ],
-         },
-       },
-       { $limit: amount },
+      {
+        $lookup: {
+          from: "games",
+          localField: "gameId",
+          foreignField: "id",
+          as: "game"
+        }
+      },
+      { $match: { checked: true } },
+      { $unwind: "$game" },
+      { $replaceWith: "$game" },
+      { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
+      { $match: { lastUpdateDate: { $lt: new Date(Date.now() - (24 * 60 * 60 * 1000)) } } },
+      { $unset: "lastUpdateDate" },
+      { $limit: amount },
      ])
      .toArray())
      .map(dbEntry => Game.fromDbEntry(dbEntry));

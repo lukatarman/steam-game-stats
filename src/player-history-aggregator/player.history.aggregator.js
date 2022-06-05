@@ -63,11 +63,6 @@ export class PlayerHistoryAggregator {
   }
 
   async addCurrentPlayers() {
-    /**
-     * @todo resolve bug
-     * - target only the last array element with the date check
-     * - now it returns always a game as long it has an entry with an playerHistory entry older than 24h
-     */
     const games = await this.#databaseClient.getXgamesCheckedMoreThan24HoursAgo(this.#options.batchSize);
 
     if(lessThanXhoursPassedSinceTheLastUpdate.call(this)) return;
