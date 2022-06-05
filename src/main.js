@@ -23,10 +23,10 @@ async function main() {
   const databaseClient = await new DatabaseClient().init(databaseOptions);
   const steamClient = new SteamClient(httpClient);
   const options = {
-    batchSize: 10,
+    batchSize: 5,
     batchDelay: 5000,
     unitDelay: 800,
-    currentPlayersUpdateIntervalDelay: 20000,
+    currentPlayersUpdateIntervalDelay: hoursToMs(2),
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
   };
@@ -41,8 +41,16 @@ async function main() {
     playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
    ], options);
 
-  // run phase
-  runner.run();
+  try {
+    await runner.run();
+  } catch (error) {
+    console.error(error);
+  }
+
+  /**
+   * @todo https://github.com/lukatarman/steam-game-stats/issues/39
+   */
+  console.info("done...");
 }
 
-main();
+main().catch(error => console.log(error));
