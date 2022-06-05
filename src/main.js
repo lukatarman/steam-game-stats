@@ -42,6 +42,9 @@ async function main() {
    ], options);
 
   try {
+    /**
+     * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
+     */
     await runner.run();
   } catch (error) {
     console.error(error);
