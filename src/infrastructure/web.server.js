@@ -4,6 +4,10 @@ export class WebServer{
   }
 
   start() {
+
+  }
+
+  stop() {
     
   }
 }
