@@ -6,6 +6,7 @@ import { GameIdentifier } from "./game-identifier/game.identifier.js";
 import { hoursToMs } from "./shared/time.utils.js"
 import { PlayerHistoryAggregator } from "./player-history-aggregator/player.history.aggregator.js";
 import { Runner } from "./runner/runner.js";
+import { WebServer } from "./infrastructure/web.server.js";
 
 // our entry point = main
 async function main() {
@@ -33,6 +34,7 @@ async function main() {
   const steamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
   const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
+  const webServer = new WebServer();
 
   const runner = new Runner([
     steamAppsAggregator.run.bind(steamAppsAggregator),
