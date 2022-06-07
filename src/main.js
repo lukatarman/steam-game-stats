@@ -7,6 +7,8 @@ import { hoursToMs } from "./shared/time.utils.js"
 import { PlayerHistoryAggregator } from "./player-history-aggregator/player.history.aggregator.js";
 import { Runner } from "./runner/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
+import { GameQueriesController } from "./game-queries/game.queries.controller.js";
+import { GameQueriesRouter } from "./game-queries/game.queries.router.js";
 
 // our entry point = main
 async function main() {
@@ -34,7 +36,10 @@ async function main() {
   const steamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
   const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
-  const webServer = new WebServer();
+  const gameQueriesController = new GameQueriesController(databaseClient);
+  const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
+  const webServer = new WebServer(gameQueriesRouter);
+  webServer.start();
 
   const runner = new Runner([
     steamAppsAggregator.run.bind(steamAppsAggregator),
@@ -43,14 +48,14 @@ async function main() {
     playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
    ], options);
 
-  try {
-    /**
-     * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
-     */
-    await runner.run();
-  } catch (error) {
-    console.error(error);
-  }
+  // try {
+  //   /**
+  //    * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
+  //    */
+  //   await runner.run();
+  // } catch (error) {
+  //   console.error(error);
+  // }
 
   /**
    * @todo https://github.com/lukatarman/steam-game-stats/issues/39
