@@ -44,8 +44,8 @@ export class SteamAppsAggregator {
     const steamApps = diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) {
       await this.#databaseClient.insertOneUpdateTimestamp(new Date());
-      return
-    };
+      return;
+    }
     const enrichedSteamApps = labelAsNotIdentified(steamApps);
     await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());

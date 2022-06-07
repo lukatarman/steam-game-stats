@@ -2,7 +2,7 @@ import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts
 } from "./services/player.history.service.js";
-import { delay, moreThanXhoursPassedSince } from "../shared/time.utils.js";
+import { delay } from "../shared/time.utils.js";
 import { HistoryCheck } from "../models/history.check.js";
 
 export class PlayerHistoryAggregator {
