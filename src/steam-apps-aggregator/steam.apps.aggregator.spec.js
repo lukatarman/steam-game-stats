@@ -4,7 +4,7 @@ import { gamesMock } from "../../assets/small.data.set.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { diff } from "./services/diff.service.js";
 
-describe("SteamAppsAggregator", () => {
+xdescribe("SteamAppsAggregator", () => {
   describe(".run()", () => {
     let steamClientMock;
     let databaseClientMock;
@@ -78,11 +78,11 @@ describe("SteamAppsAggregator", () => {
             insertOneUpdateTimestamp: Promise.resolve(undefined),
             getAllSteamApps: Promise.resolve(smallestGamesMock),
           });
-  
+
           const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: 100 });
 
           steamAppsDifference = diff(gamesMock, smallestGamesMock);
-  
+
           await agg.run();
         });
 
@@ -145,11 +145,11 @@ describe("SteamAppsAggregator", () => {
             insertOneUpdateTimestamp: Promise.resolve(undefined),
             getAllSteamApps: Promise.resolve(smallestGamesMock),
           });
-  
+
           const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: 100 });
 
           steamAppsDifference = diff(smallestGamesMock, smallestGamesMock);
-  
+
           await agg.run();
         });
 
