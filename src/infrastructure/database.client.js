@@ -50,6 +50,12 @@ export class DatabaseClient {
       .insertMany(data);
   }
 
+  async getOneGameById(id) {
+    return await this.#collections
+      .get("games")
+      .findOne({ id: id });
+  }
+
   async getAllSteamApps(filter = {}) {
     return await this.getAll("steam_apps", filter);
   }
