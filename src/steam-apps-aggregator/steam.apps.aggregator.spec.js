@@ -10,11 +10,13 @@ describe("SteamAppsAggregator", () => {
     let databaseClientMock;
     let updateTimestamp;
 
+    beforeEach(() => {
+      updateTimestamp = { updatedOn: new Date("2020") };
+    });
+
     describe("collects steam apps for the first time and finishes", () => {
-      beforeAll(async () => {
-        steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getAppList: Promise.resolve(smallestGamesMock),
-        });
+      beforeEach(async () => {
+        steamClientMock = createSteamMock(smallestGamesMock);
 
         databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
           getLastUpdateTimestamp: Promise.resolve(null),
@@ -68,12 +70,8 @@ describe("SteamAppsAggregator", () => {
       let steamAppsDifference;
 
       describe("while finding new games and finishes", () => {
-        beforeAll(async () => {
-          updateTimestamp = { updatedOn: new Date("2020") };
-
-          steamClientMock = jasmine.createSpyObj("SteamClient", {
-            getAppList: Promise.resolve(gamesMock),
-          });
+        beforeEach(async () => {
+          steamClientMock = createSteamMock(gamesMock);
 
           databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
             getLastUpdateTimestamp: Promise.resolve(updateTimestamp),
@@ -135,12 +133,8 @@ describe("SteamAppsAggregator", () => {
       });
 
       describe("without new games and finishes", () => {
-        beforeAll(async () => {
-          updateTimestamp = { updatedOn: new Date("2020") };
-
-          steamClientMock = jasmine.createSpyObj("SteamClient", {
-            getAppList: Promise.resolve(smallestGamesMock),
-          });
+        beforeEach(async () => {
+          steamClientMock = createSteamMock(smallestGamesMock);
 
           databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
             getLastUpdateTimestamp: Promise.resolve(updateTimestamp),
@@ -195,12 +189,8 @@ describe("SteamAppsAggregator", () => {
     });
 
     describe("executes successfully by not performing any updates", () => {
-      beforeAll(async () => {
-        updateTimestamp = { updatedOn: new Date("2020") };
-
-        steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getAppList: Promise.resolve(smallestGamesMock),
-        });
+      beforeEach(async () => {
+        steamClientMock = createSteamMock(smallestGamesMock);
 
         databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
           getLastUpdateTimestamp: Promise.resolve(updateTimestamp),
@@ -236,3 +226,9 @@ describe("SteamAppsAggregator", () => {
     });
   });
 });
+
+function createSteamMock(ret) {
+  return jasmine.createSpyObj("SteamClient", {
+    getAppList: Promise.resolve(ret),
+  });
+}
