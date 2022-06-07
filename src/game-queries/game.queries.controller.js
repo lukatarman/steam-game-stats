@@ -9,6 +9,7 @@ export class GameQueriesController{
     return await this.#databaseClient.getOneGameById(id);
   }
 
-  async 
-
+  async getAllGames() {
+    return await this.#databaseClient.getAllGames();
+  }
 }
