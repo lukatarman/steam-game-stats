@@ -14,6 +14,7 @@ xdescribe("SteamAppsAggregator", () => {
         steamClientMock = jasmine.createSpyObj("SteamClient", {
           getAppList: Promise.resolve(smallestGamesMock),
         });
+
         databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
           getLastUpdateTimestamp: Promise.resolve(undefined),
           insertManySteamApps: Promise.resolve(undefined),
@@ -22,7 +23,7 @@ xdescribe("SteamAppsAggregator", () => {
 
         const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, {});
 
-        await agg.run();
+        await agg.collectSteamApps();
       });
 
       it("calls .getLastUpdateTimestamp once", () => {
@@ -83,7 +84,7 @@ xdescribe("SteamAppsAggregator", () => {
 
           steamAppsDifference = diff(gamesMock, smallestGamesMock);
 
-          await agg.run();
+          await agg.collectSteamApps();
         });
 
         it("calls .getLastUpdateTimestamp once", () => {
@@ -150,7 +151,7 @@ xdescribe("SteamAppsAggregator", () => {
 
           steamAppsDifference = diff(smallestGamesMock, smallestGamesMock);
 
-          await agg.run();
+          await agg.collectSteamApps();
         });
 
         it("calls .getLastUpdateTimestamp once", () => {
@@ -207,7 +208,7 @@ xdescribe("SteamAppsAggregator", () => {
 
         const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: Number.POSITIVE_INFINITY });
 
-        await agg.run();
+        await agg.collectSteamApps();
       });
 
       it("calls .getLastUpdateTimestamp once", () => {

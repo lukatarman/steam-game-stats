@@ -35,7 +35,7 @@ async function main() {
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
 
   const runner = new Runner([
-    steamAppsAggregator.updateSteamApps,
+    steamAppsAggregator.collectSteamApps,
     gameIdentifier.run.bind(gameIdentifier),
     playerHistoryAggregator.addPlayerHistoryFromSteamcharts.bind(playerHistoryAggregator),
     playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
