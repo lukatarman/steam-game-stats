@@ -8,7 +8,7 @@ export class WebServer {
       logger: true,
     });
 
-    this.#server.register(gameQueriesRouter);
+    this.#server.register(gameQueriesRouter.routes);
   }
 
   async start() {
