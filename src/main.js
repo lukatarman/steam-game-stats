@@ -37,6 +37,9 @@ async function main() {
   const runner = new Runner([
     steamAppsAggregator.run.bind(steamAppsAggregator),
     gameIdentifier.run.bind(gameIdentifier),
+    /**
+     * @todo batch delay must be performed by runner
+     */
     playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
     playerHistoryAggregator.addCurrentPlayers,
    ], options);

@@ -31,10 +31,7 @@ export class PlayerHistoryAggregator {
    */
   addPlayerHistoryFromSteamcharts = async () => {
     const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(this.#options.batchSize);
-    if(uncheckedGames.length === 0) {
-      await delay(this.#options.batchDelay);
-      return;
-    }
+    if(uncheckedGames.length === 0) return;
 
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(uncheckedGames);
 
