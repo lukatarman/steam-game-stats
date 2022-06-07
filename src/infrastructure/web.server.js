@@ -8,21 +8,29 @@ export class WebServer{
       logger: true,
     });
     
-    this.#server.get('/', function (request, reply) {
-      reply.send({ hello: 'world' })
+    this.#server.get('/games/:id', async (request, reply) => {
+      const id = parseInt(request.params.id);
+      const response = await dbClient.getOneGameById(id);
+      return response;
     })
   }
 
-  start() {
-    this.#server.listen(3000, function (err, address) {
-      if (err) {
-        this.#server.log.error(err)
-        process.exit(1)
-      }
-    })
+  async start() {
+    console.log("Starting server...");
+    try {
+      await this.#server.listen(3000)
+    } catch (err) {
+      this.#server.log.error(err)
+      process.exit(1)
+    }
   }
 
-  stop() {
-    
+  async stop() {
+    console.log("Stopping server...");
+    try {
+      this.#server.close();
+    } catch(err) {
+      console.log("Caught error while attempting to stop server.")
+    }
   }
 }
