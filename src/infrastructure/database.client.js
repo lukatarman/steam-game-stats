@@ -53,7 +53,11 @@ export class DatabaseClient {
   async getOneGameById(id) {
     return await this.#collections
       .get("games")
-      .findOne({ id: id });
+      .findOne({ id });
+  }
+
+  async getAllGames(filter = {}) {
+    return await this.getAll("games", filter);
   }
 
   async getAllSteamApps(filter = {}) {
