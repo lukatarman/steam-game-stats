@@ -1,9 +1,9 @@
 import { delay } from "../shared/time.utils.js";
 import { diff } from "./services/diff.service.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
-import { 
+import {
   moreThanXhoursPassedSince ,
-} from "./services/time.service.js";
+} from "../shared/time.utils.js";
 
 export class SteamAppsAggregator {
   #databaseClient;
@@ -23,7 +23,9 @@ export class SteamAppsAggregator {
       return;
     }
 
-    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate)) await this.#updateSteamApps();
+    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate.updatedOn)) await this.#updateSteamApps();
+
+    await delay(this.#options.updateIntervalDelay);
   }
 
   async #firstUpdate() {
@@ -36,9 +38,9 @@ export class SteamAppsAggregator {
   async #updateSteamApps() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
-    //TODO - sometimes there are more apps in steamAppsDb than in steamApps API.. Something is wrong, check when app grows, multiple updates over days
-    // https://github.com/lukatarman/steam-game-stats/issues/32
-
+    /**
+     * @TODO https://github.com/lukatarman/steam-game-stats/issues/32
+     */
     const steamApps = diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) {
       await this.#databaseClient.insertOneUpdateTimestamp(new Date());

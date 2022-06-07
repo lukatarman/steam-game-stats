@@ -4,6 +4,7 @@ import {
 } from "./services/game.service.js";
 import { Game } from "../models/game.js";
 import { delay } from "../shared/time.utils.js";
+import { HistoryCheck } from "../models/history.check.js";
 
 export class GameIdentifier {
   #steamClient;
@@ -19,7 +20,6 @@ export class GameIdentifier {
   async run() {
     const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
     if (steamApps.length === 0) {
-      await delay(this.#options.noAppsFoundDelay);
       return;
     }
 
@@ -29,20 +29,17 @@ export class GameIdentifier {
   async #identifyGames(steamApps) {
     const filteredSteamApps = filterSteamAppsByName(steamApps);
     if (filteredSteamApps.length === 0) {
-      steamApps.forEach((steamApp) =>
-        this.#databaseClient.identifySteamAppById(steamApp.appid)
-      );
+      await this.#databaseClient.identifySteamAppsById(steamApps);
       return;
     }
 
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
-      this.#databaseClient.insertMany("games", games);
+      await this.#databaseClient.insertManyGames(games);
+      await this.#databaseClient.insertManyHistoryChecks(HistoryCheck.manyFromGames(games));
     }
 
-    steamApps.forEach((steamApp) =>
-      this.#databaseClient.identifySteamAppById(steamApp.appid)
-    );
+    await this.#databaseClient.identifySteamAppsById(steamApps);
   }
 
   async #filterSteamAppsByAppType(steamApps) {
@@ -75,13 +72,10 @@ export class GameIdentifier {
 
       try {
         await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
-        return new Game(steamApp);
+        return Game.fromSteamApp(steamApp);
       } catch (error) {
         /**
-         * @TODO - currently the steamApp will wrongfully be marked as not a game, if steam needs an age verification before
-         * showing the game info, AND there is an unexpected problem with steamcharts (either steamcharts if offline, or
-         * the game just got released. Try to find a solution to this eventually.)
-         * https://github.com/lukatarman/steam-game-stats/issues/31
+         * @TODO - https://github.com/lukatarman/steam-game-stats/issues/31
          */
         if (error.status !== 500 && error.status !== 404) return;
       }

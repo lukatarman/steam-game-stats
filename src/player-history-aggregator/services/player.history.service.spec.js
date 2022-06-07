@@ -1,9 +1,10 @@
 import { parsePlayerHistory } from "./player.history.service.js";
-import { eldenRingHttpDetailsSteamcharts } from "../../../assets/http.details.page.steamcharts.data.set.js";
+import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
+import { sniperEliteHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/sniper.elite.just.released.html.details.page.js"
 
 describe("player.history.service.js", () => {
   describe(".parsePlayerHistory", () => {
-    describe("if the first entry is 'Last 30 Days', and the game is Elden Ring", () => {
+    describe("if the game has multiple histories", () => {
       let playerHistories;
 
       beforeAll(() => {
@@ -24,6 +25,18 @@ describe("player.history.service.js", () => {
 
       it("the first entries' year is 2022", () => {
         expect(playerHistories[0].date.getFullYear()).toBe(2022);
+      });
+    });
+
+    describe("if the game has just been released and only has one history", () => {
+      let playerHistories;
+
+      beforeAll(() => {
+        playerHistories = parsePlayerHistory(sniperEliteHttpDetailsSteamcharts);
+      });
+
+      it("it returns an empty array", () => {
+        expect(playerHistories).toEqual([]);
       });
     });
   });
