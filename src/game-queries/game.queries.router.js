@@ -7,11 +7,8 @@ export class GameQueriesRouter{
 
   routes() {
     this.#server.get("/games", async (request, reply) => {
-      
 
-      return request?.query?.name ? 
-      request.query.name :
-      "all games";
+      return await this.#controller.getAllGames()
     });
 
     this.#server.get("/games/:id", async (request, reply) => {
