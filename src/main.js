@@ -39,7 +39,7 @@ async function main() {
   const gameQueriesController = new GameQueriesController(databaseClient);
   const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
   const webServer = new WebServer(gameQueriesRouter);
-  webServer.start();
+  await webServer.start();
 
   const runner = new Runner([
     steamAppsAggregator.run.bind(steamAppsAggregator),
