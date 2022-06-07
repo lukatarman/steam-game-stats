@@ -2,16 +2,17 @@ import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
 import { tinyGames } from "../../assets/tiny.data.set.with.id.js"
 import { eldenRingHttpDetailsSteamcharts } from "../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
-xdescribe("PlayerHistoryAggregator", () => {
-  describe("run", () => {
-    let steamClientMock;
-    let databaseClientMock;
+fdescribe("PlayerHistoryAggregator", () => {
+  let steamClientMock;
+  let databaseClientMock;
+  describe(".addPlayerHistoryFromSteamcharts()", () => {
 
-    describe("getxGamesWithoutPlayerHistory returns an empty array and the function finishes",() => {
+    xdescribe("getxGamesWithoutPlayerHistory returns an empty array and the function finishes",() => {
       beforeAll(() => {
         steamClientMock = jasmine.createSpyObj("SteamClient", {
           getSteamchartsGameHtmlDetailsPage: Promise.resolve(undefined),
         });
+
         databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
           getxGamesWithoutPlayerHistory: Promise.resolve([]),
           updatePlayerHistoryById: undefined,
@@ -35,7 +36,7 @@ xdescribe("PlayerHistoryAggregator", () => {
       });
     });
 
-    describe("when getxGamesWithoutPlayerHistory returns an array without errors",() => {
+    xdescribe("when getxGamesWithoutPlayerHistory returns an array without errors",() => {
       beforeAll(async () => {
         steamClientMock = jasmine.createSpyObj("SteamClient", {
           getSteamchartsGameHtmlDetailsPage: Promise.resolve(eldenRingHttpDetailsSteamcharts),
@@ -157,5 +158,16 @@ xdescribe("PlayerHistoryAggregator", () => {
         expect(tinyGames[2].checkedSteamchartsHistory).toBeTrue();
       });
     });
+  });
+
+  describe(".addCurrentPlayers()", () => {
+    describe("does not have any games to check for current player numbers", () => {
+      it("calls .getXgamesCheckedMoreThanYmsAgo once");
+      it("does not call .getAllCurrentPlayersConcurrently ever");
+      it("does not call .updatePlayerHistoriesById ever");
+    });
+    /**
+     * @TODO please add a test for the other case
+     */
   });
 });
