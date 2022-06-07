@@ -1,18 +1,14 @@
 import Fastify from "fastify";
 
-export class WebServer{
+export class WebServer {
   #server;
 
-  constructor(dbClient) {
+  constructor(gameQueriesRouter) {
     this.#server = Fastify({
       logger: true,
     });
-    
-    this.#server.get('/games/:id', async (request, reply) => {
-      const id = parseInt(request.params.id);
-      const response = await dbClient.getOneGameById(id);
-      return response;
-    })
+
+    this.#server.register(gameQueriesRouter);
   }
 
   async start() {
