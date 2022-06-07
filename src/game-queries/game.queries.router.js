@@ -1,17 +1,17 @@
 export class GameQueriesRouter{
-  #controller
+  #controller;
 
   constructor(gameQueriesController) {
     this.#controller = gameQueriesController;
   }
 
-  routes() {
-    this.#server.get("/games", async (request, reply) => {
+  routes = async (server, options) => {
+    server.get("/games", async (request, reply) => {
 
       return await this.#controller.getAllGames()
     });
 
-    this.#server.get("/games/:id", async (request, reply) => {
+    server.get("/games/:id", async (request, reply) => {
       const id = parseInt(request.params.id);
 
       return await this.#controller.getOneGameById(id);
