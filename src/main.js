@@ -37,8 +37,8 @@ async function main() {
   const runner = new Runner([
     steamAppsAggregator.run.bind(steamAppsAggregator),
     gameIdentifier.run.bind(gameIdentifier),
-    playerHistoryAggregator.addPlayerHistoryFromSteamcharts.bind(playerHistoryAggregator),
-    playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
+    playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
+    playerHistoryAggregator.addCurrentPlayers,
    ], options);
 
   try {

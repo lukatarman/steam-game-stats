@@ -29,7 +29,7 @@ export class PlayerHistoryAggregator {
    * - we record the steamcharts history checks after we got all the steamcharts details pages
    * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
    */
-  async addPlayerHistoryFromSteamcharts() {
+  addPlayerHistoryFromSteamcharts = async () => {
     const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(this.#options.batchSize);
     if(uncheckedGames.length === 0) {
       await delay(this.#options.batchDelay);
@@ -62,7 +62,7 @@ export class PlayerHistoryAggregator {
     return gamesPagesMap;
   }
 
-  async addCurrentPlayers() {
+  addCurrentPlayers = async () => {
     const games = await this.#databaseClient.getXgamesCheckedMoreThanYmsAgo(
       this.#options.batchSize,
       this.#options.currentPlayersUpdateIntervalDelay,
