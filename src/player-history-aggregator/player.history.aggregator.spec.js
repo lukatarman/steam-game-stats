@@ -1,6 +1,8 @@
 import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 import { oneGameWithUncheckedPlayerHistory } from "../../assets/db-responses/one.game.unchecked.history.js";
+import { HistoryCheck } from "../models/history.check.js";
+import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 
 describe("PlayerHistoryAggregator", function() {
   describe(".addPlayerHistoryFromSteamcharts()", function() {
@@ -15,6 +17,13 @@ describe("PlayerHistoryAggregator", function() {
           updateHistoryChecks: Promise.resolve(undefined),
           updatePlayerHistoriesById: Promise.resolve(undefined),
         });
+
+        this.gamesPagesMap = new Map();
+        this.gamesPagesMap.set(oneGameWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts);
+
+        this.historyChecks = HistoryCheck.manyFromSteamchartsPages(this.gamesPagesMap);
+
+        this.games = addPlayerHistoriesFromSteamcharts(this.gamesPagesMap);
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
@@ -45,12 +54,20 @@ describe("PlayerHistoryAggregator", function() {
         expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledTimes(1);
       });
 
+      it("calls .updateHistoryChecks with historyChecks", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.historyChecks);
+      });
+
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
         expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledBefore(this.databaseClientMock.updatePlayerHistoriesById);
       });
 
       it("calls .updatePlayerHistoriesById once", function() {
         expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .updatePlayerHistoriesById with games", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.games);
       });
     });
 
