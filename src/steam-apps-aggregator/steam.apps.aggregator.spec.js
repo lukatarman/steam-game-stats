@@ -4,7 +4,7 @@ import { gamesMock } from "../../assets/small.data.set.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { diff } from "./services/diff.service.js";
 
-xdescribe("SteamAppsAggregator", () => {
+describe("SteamAppsAggregator", () => {
   describe(".run()", () => {
     let steamClientMock;
     let databaseClientMock;
