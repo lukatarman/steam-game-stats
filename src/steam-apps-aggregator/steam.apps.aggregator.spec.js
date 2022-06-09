@@ -3,26 +3,27 @@ import { smallestGamesMock } from "../../assets/smallest.data.set.js";
 import { gamesMock } from "../../assets/small.data.set.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { diff } from "./services/diff.service.js";
+import { hoursToMs } from "../shared/time.utils.js";
 
-xdescribe("SteamAppsAggregator", () => {
-  describe(".run()", () => {
+describe("SteamAppsAggregator", () => {
+  describe(".collectSteamApps()", () => {
     let steamClientMock;
     let databaseClientMock;
+    let updateTimestamp;
 
-    describe("executes successfully by performing a first update and then finishes", () => {
-      beforeAll(async () => {
-        steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getAppList: Promise.resolve(smallestGamesMock),
-        });
-        databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-          getLastUpdateTimestamp: Promise.resolve(undefined),
-          insertManySteamApps: Promise.resolve(undefined),
-          insertOneUpdateTimestamp: Promise.resolve(undefined),
-        });
+    beforeEach(() => {
+      updateTimestamp = { updatedOn: new Date("2020") };
+    });
+
+    describe("collects steam apps for the first time and finishes", () => {
+      beforeEach(async () => {
+        steamClientMock = createSteamMock(smallestGamesMock);
+
+        databaseClientMock = createDbMock(null, undefined);
 
         const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, {});
 
-        await agg.run();
+        await agg.collectSteamApps();
       });
 
       it("calls .getLastUpdateTimestamp once", () => {
@@ -62,28 +63,20 @@ xdescribe("SteamAppsAggregator", () => {
       });
     });
 
-    describe("executes successfully by performing a regular update", () => {
+    describe("collects steam apps for the n-th (n > 1) time", () => {
       let steamAppsDifference;
 
-      describe("with new games", () => {
-        beforeAll(async () => {
-          const dateThatPasses = new Date("2020");
+      describe("while finding new games and finishes", () => {
+        beforeEach(async () => {
+          steamClientMock = createSteamMock(gamesMock);
 
-          steamClientMock = jasmine.createSpyObj("SteamClient", {
-            getAppList: Promise.resolve(gamesMock),
-          });
-          databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-            getLastUpdateTimestamp: Promise.resolve(dateThatPasses),
-            insertManySteamApps: Promise.resolve(undefined),
-            insertOneUpdateTimestamp: Promise.resolve(undefined),
-            getAllSteamApps: Promise.resolve(smallestGamesMock),
-          });
+          databaseClientMock = createDbMock(updateTimestamp, smallestGamesMock);
 
           const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: 100 });
 
           steamAppsDifference = diff(gamesMock, smallestGamesMock);
 
-          await agg.run();
+          await agg.collectSteamApps();
         });
 
         it("calls .getLastUpdateTimestamp once", () => {
@@ -129,28 +122,19 @@ xdescribe("SteamAppsAggregator", () => {
         it("calls .insertOneUpdateTimestamp with a new date", () => {
           expect(databaseClientMock.insertOneUpdateTimestamp.calls.argsFor(0)[0]).toBeInstanceOf(Date);
         });
-
-
       });
-      describe("without new games", () => {
-        beforeAll(async () => {
-          const dateThatPasses = new Date("2020");
 
-          steamClientMock = jasmine.createSpyObj("SteamClient", {
-            getAppList: Promise.resolve(smallestGamesMock),
-          });
-          databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-            getLastUpdateTimestamp: Promise.resolve(dateThatPasses),
-            insertManySteamApps: Promise.resolve(undefined),
-            insertOneUpdateTimestamp: Promise.resolve(undefined),
-            getAllSteamApps: Promise.resolve(smallestGamesMock),
-          });
+      describe("without new games and finishes", () => {
+        beforeEach(async () => {
+          steamClientMock = createSteamMock(smallestGamesMock);
+
+          databaseClientMock = createDbMock(updateTimestamp, smallestGamesMock);
 
           const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: 100 });
 
           steamAppsDifference = diff(smallestGamesMock, smallestGamesMock);
 
-          await agg.run();
+          await agg.collectSteamApps();
         });
 
         it("calls .getLastUpdateTimestamp once", () => {
@@ -191,23 +175,17 @@ xdescribe("SteamAppsAggregator", () => {
       });
     });
 
-    describe("executes successfully by not performing a any updates", () => {
-      beforeAll(async () => {
-        const dateDoesntPass = new Date("2020");
+    describe("executes successfully by not performing any updates", () => {
+      beforeEach(async () => {
+        steamClientMock = createSteamMock(smallestGamesMock);
 
-        steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getAppList: Promise.resolve(smallestGamesMock),
-        });
-        databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-          getLastUpdateTimestamp: Promise.resolve(dateDoesntPass),
-          insertManySteamApps: Promise.resolve(undefined),
-          insertOneUpdateTimestamp: Promise.resolve(undefined),
-          getAllSteamApps: Promise.resolve(smallestGamesMock),
-        });
+        databaseClientMock = createDbMock(updateTimestamp, smallestGamesMock);
 
-        const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: Number.POSITIVE_INFINITY });
+        jasmine.clock().mockDate(new Date("2020"))
 
-        await agg.run();
+        const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: hoursToMs(12) });
+
+        await agg.collectSteamApps();
       });
 
       it("calls .getLastUpdateTimestamp once", () => {
@@ -232,3 +210,18 @@ xdescribe("SteamAppsAggregator", () => {
     });
   });
 });
+
+function createSteamMock(ret) {
+  return jasmine.createSpyObj("SteamClient", {
+    getAppList: Promise.resolve(ret),
+  });
+}
+
+function createDbMock(updateTs, steamApps) {
+  return jasmine.createSpyObj("DatabaseClient", {
+    getLastUpdateTimestamp: Promise.resolve(updateTs),
+    insertManySteamApps: Promise.resolve(undefined),
+    insertOneUpdateTimestamp: Promise.resolve(undefined),
+    getAllSteamApps: Promise.resolve(steamApps),
+  });
+}
