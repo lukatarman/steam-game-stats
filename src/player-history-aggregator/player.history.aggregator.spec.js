@@ -2,58 +2,55 @@ import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 import { oneGameWithUncheckedPlayerHistory } from "../../assets/db-responses/one.game.unchecked.history.js";
 
-describe("PlayerHistoryAggregator", () => {
-  let steamClientMock;
-  let databaseClientMock;
-
-  describe(".addPlayerHistoryFromSteamcharts()", () => {
-    describe("finds the player history for one game in a batch of one and updates the game data", () => {
-      beforeEach(async () => {
-        steamClientMock = jasmine.createSpyObj("SteamClient", {
+describe("PlayerHistoryAggregator", function() {
+  describe(".addPlayerHistoryFromSteamcharts()", function() {
+    fdescribe("finds the player history for one game in a batch of one and updates the game data", function() {
+      beforeEach(async function() {
+        this.steamClientMock = jasmine.createSpyObj("SteamClient", {
           getSteamchartsGameHtmlDetailsPage: Promise.resolve(crushTheCastleHtmlDetailsSteamcharts),
         });
 
-        databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
+        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
           getXgamesWithUncheckedPlayerHistory: Promise.resolve(oneGameWithUncheckedPlayerHistory),
           updateHistoryChecks: Promise.resolve(undefined),
           updatePlayerHistoriesById: Promise.resolve(undefined),
         });
 
-        const agg = new PlayerHistoryAggregator(
-          steamClientMock,
-          databaseClientMock,
+        this.agg = new PlayerHistoryAggregator(
+          this.steamClientMock,
+          this.databaseClientMock,
           { unitDelay: 0, batchSize: 1 },
         );
 
-        await agg.addPlayerHistoryFromSteamcharts();
+        await this.agg.addPlayerHistoryFromSteamcharts();
       });
 
-      it("calls .getXgamesWithUncheckedPlayerHistory once", () => {
-        expect(databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledTimes(1);
+      it("calls .getXgamesWithUncheckedPlayerHistory once", function() {
+        expect(this.databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", () => {
-        expect(databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledBefore(steamClientMock.getSteamchartsGameHtmlDetailsPage);
+      it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", function() {
+        expect(this.databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledBefore(this.steamClientMock.getSteamchartsGameHtmlDetailsPage);
       });
 
-      it("calls .getSteamchartsGameHtmlDetailsPage once", () => {
-        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(1);
+      it("calls .getSteamchartsGameHtmlDetailsPage once", function() {
+        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .getSteamchartsGameHtmlDetailsPage before .updateHistoryChecks", () => {
-        expect(steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledBefore(databaseClientMock.updateHistoryChecks);
+      it("calls .getSteamchartsGameHtmlDetailsPage before .updateHistoryChecks", function() {
+        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledBefore(this.databaseClientMock.updateHistoryChecks);
       });
 
-      it("calls .updateHistoryChecks once", () => {
-        expect(databaseClientMock.updateHistoryChecks).toHaveBeenCalledTimes(1);
+      it("calls .updateHistoryChecks once", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .updateHistoryChecks before .updatePlayerHistoriesById", () => {
-        expect(databaseClientMock.updateHistoryChecks).toHaveBeenCalledBefore(databaseClientMock.updatePlayerHistoriesById);
+      it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledBefore(this.databaseClientMock.updatePlayerHistoriesById);
       });
 
-      it("calls .updatePlayerHistoriesById once", () => {
-        expect(databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(1);
+      it("calls .updatePlayerHistoriesById once", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(1);
       });
     });
 
