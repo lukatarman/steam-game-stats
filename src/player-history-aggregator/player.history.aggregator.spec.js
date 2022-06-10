@@ -3,10 +3,11 @@ import { crushTheCastleHtmlDetailsSteamcharts } from "../../assets/steamcharts-d
 import { oneGameWithUncheckedPlayerHistory } from "../../assets/db-responses/one.game.unchecked.history.js";
 import { HistoryCheck } from "../models/history.check.js";
 import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
+import { twoGamesWithUncheckedPlayerHistory } from "../../assets/db-responses/two.games.unchecked.history.js";
 
 describe("PlayerHistoryAggregator", function() {
   describe(".addPlayerHistoryFromSteamcharts()", function() {
-    fdescribe("finds the player history for one game in a batch of one and updates the game data", function() {
+    describe("finds the player history for one game in a batch of one and updates the game data", function() { 
       beforeEach(async function() {
         this.steamClientMock = jasmine.createSpyObj("SteamClient", {
           getSteamchartsGameHtmlDetailsPage: Promise.resolve(crushTheCastleHtmlDetailsSteamcharts),
@@ -71,19 +72,96 @@ describe("PlayerHistoryAggregator", function() {
       });
     });
 
-    describe("finds the player history for one game in a batch of two and updates the game data", () => {
-      it("calls .getXgamesWithUncheckedPlayerHistory once");
-      it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage");
-      it("calls .getSteamchartsGameHtmlDetailsPage twice");
-      it("calls .getSteamchartsGameHtmlDetailsPage before .updateHistoryChecks");
-      it("calls .updateHistoryChecks once");
-      it("calls .updateHistoryChecks before .updatePlayerHistoriesById");
-      it("calls .updatePlayerHistoriesById once");
+    describe("finds the player history for one game in a batch of two and updates the game data", () => {     
+      beforeEach(async function() {
+        this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getSteamchartsGameHtmlDetailsPage"]);
+        this.steamClientMock.getSteamchartsGameHtmlDetailsPage.and.returnValues(crushTheCastleHtmlDetailsSteamcharts, "");
+
+        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
+          getXgamesWithUncheckedPlayerHistory: Promise.resolve(twoGamesWithUncheckedPlayerHistory),
+          updateHistoryChecks: Promise.resolve(undefined),
+          updatePlayerHistoriesById: Promise.resolve(undefined),
+        });
+
+        this.gamesPagesMap = new Map();
+        this.gamesPagesMap.set(twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts);
+        this.gamesPagesMap.set(twoGamesWithUncheckedPlayerHistory[1], "");
+
+        this.historyChecks = HistoryCheck.manyFromSteamchartsPages(this.gamesPagesMap);
+
+        this.games = addPlayerHistoriesFromSteamcharts(this.gamesPagesMap);
+
+        this.agg = new PlayerHistoryAggregator(
+          this.steamClientMock,
+          this.databaseClientMock,
+          { unitDelay: 0, batchSize: 1 },
+        );
+
+        await this.agg.addPlayerHistoryFromSteamcharts();
+      });
+
+      it("calls .getXgamesWithUncheckedPlayerHistory once", function() {
+        expect(this.databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", function() {
+        expect(this.databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledBefore(this.steamClientMock.getSteamchartsGameHtmlDetailsPage);
+      });
+
+      it("calls .getSteamchartsGameHtmlDetailsPage twice", function() {
+        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(2);
+      });
+
+      it("calls .getSteamchartsGameHtmlDetailsPage before .updateHistoryChecks", function() {
+        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledBefore(this.databaseClientMock.updateHistoryChecks);
+      });
+
+      it("calls .updateHistoryChecks once", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .updateHistoryChecks with historyChecks", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.historyChecks);
+      });
+
+      it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledBefore(this.databaseClientMock.updatePlayerHistoriesById);
+      });
+
+      it("calls .updatePlayerHistoriesById once", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .updatePlayerHistoriesById with games", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.games);
+      });
     });
 
-    /**
-     * @TODO add last test case for .addPlayerHistoryFromSteamcharts
-     */
+    describe("finds no games in the database and finishes", () => {
+      beforeEach(async function() {
+        this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getSteamchartsGameHtmlDetailsPage"]);
+
+        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
+          getXgamesWithUncheckedPlayerHistory: Promise.resolve([]),
+        });
+
+        this.agg = new PlayerHistoryAggregator(
+          "",
+          this.databaseClientMock,
+          { unitDelay: 0, batchSize: 1 },
+        );
+
+        await this.agg.addPlayerHistoryFromSteamcharts();
+      });
+
+      it("calls .getXgamesWithUncheckedPlayerHistory once", function() {
+        expect(this.databaseClientMock.getXgamesWithUncheckedPlayerHistory).toHaveBeenCalledTimes(1);
+      });
+
+      it("does not call .getSteamchartsGameHtmlDetailsPage", function() {
+        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(0);
+      })
+    });
   });
 
   describe(".addCurrentPlayers()", () => {
