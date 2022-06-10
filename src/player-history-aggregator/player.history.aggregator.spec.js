@@ -234,3 +234,20 @@ describe("PlayerHistoryAggregator", function() {
     });
   });
 });
+
+const createSteamMock = function(htmlPage, currentPlayers) {
+  return jasmine.createSpyObj("SteamClient", {
+    getSteamchartsGameHtmlDetailsPage: Promise.resolve(htmlPage),
+    getAllCurrentPlayersConcurrently: Promise.resolve(currentPlayers)
+  });
+}
+
+const createDatabaseMock = function(uncheckedGames, checkedGames) {
+  return jasmine.createSpyObj("DatabaseClient", {
+    getXgamesWithUncheckedPlayerHistory: Promise.resolve(uncheckedGames),
+    updateHistoryChecks: Promise.resolve(undefined),
+    updatePlayerHistoriesById: Promise.resolve(undefined),
+    getXgamesCheckedMoreThanYmsAgo: Promise.resolve(checkedGames),
+    updatePlayerHistoriesById: Promise.resolve(undefined),
+  });
+}
