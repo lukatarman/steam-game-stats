@@ -133,7 +133,7 @@ describe("PlayerHistoryAggregator", function() {
         this.databaseClientMock = createDatabaseMock([]);
 
         this.agg = new PlayerHistoryAggregator(
-          "",
+          this.steamClientMock,
           this.databaseClientMock,
           { unitDelay: 0, batchSize: 1 },
         );
