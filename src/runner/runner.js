@@ -30,7 +30,6 @@ export class Runner {
       /**
        * @todo https://github.com/lukatarman/steam-game-stats/issues/39
        */
-      console.info(`${func.name}: Finished iteration ${counter++} ...`);
 
       if (this.#options.iterationDelay) await delay(this.#options.iterationDelay);
     }
