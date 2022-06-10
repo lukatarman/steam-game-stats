@@ -83,7 +83,7 @@ describe("PlayerHistoryAggregator", function() {
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
           this.databaseClientMock,
-          { unitDelay: 0, batchSize: 1 },
+          { unitDelay: 0, batchSize: 2 },
         );
 
         await this.agg.addPlayerHistoryFromSteamcharts();
