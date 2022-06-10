@@ -148,6 +148,14 @@ describe("PlayerHistoryAggregator", function() {
       it("does not call .getSteamchartsGameHtmlDetailsPage", function() {
         expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
+
+      it("does not call .updateHistoryChecks", function() {
+        expect(this.databaseClientMock.updateHistoryChecks).not.toHaveBeenCalled();
+      });
+
+      it("does not call .updatePlayerHistoriesById", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).not.toHaveBeenCalled();
+      });
     });
   });
 
