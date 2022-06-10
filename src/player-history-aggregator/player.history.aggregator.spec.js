@@ -9,15 +9,8 @@ describe("PlayerHistoryAggregator", function() {
   describe(".addPlayerHistoryFromSteamcharts()", function() {
     describe("finds the player history for one game in a batch of one and updates the game data", function() { 
       beforeEach(async function() {
-        this.steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getSteamchartsGameHtmlDetailsPage: Promise.resolve(crushTheCastleHtmlDetailsSteamcharts),
-        });
-
-        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-          getXgamesWithUncheckedPlayerHistory: Promise.resolve(oneGameWithUncheckedPlayerHistory),
-          updateHistoryChecks: Promise.resolve(undefined),
-          updatePlayerHistoriesById: Promise.resolve(undefined),
-        });
+        this.steamClientMock = createSteamMock(crushTheCastleHtmlDetailsSteamcharts);
+        this.databaseClientMock = createDatabaseMock(oneGameWithUncheckedPlayerHistory);
 
         this.gamesPagesMap = new Map();
         this.gamesPagesMap.set(oneGameWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts);
@@ -77,11 +70,7 @@ describe("PlayerHistoryAggregator", function() {
         this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getSteamchartsGameHtmlDetailsPage"]);
         this.steamClientMock.getSteamchartsGameHtmlDetailsPage.and.returnValues(crushTheCastleHtmlDetailsSteamcharts, "");
 
-        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-          getXgamesWithUncheckedPlayerHistory: Promise.resolve(twoGamesWithUncheckedPlayerHistory),
-          updateHistoryChecks: Promise.resolve(undefined),
-          updatePlayerHistoriesById: Promise.resolve(undefined),
-        });
+        this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
 
         this.gamesPagesMap = new Map();
         this.gamesPagesMap.set(twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts);
@@ -139,11 +128,9 @@ describe("PlayerHistoryAggregator", function() {
 
     describe("finds no games in the database and finishes", () => {
       beforeEach(async function() {
-        this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getSteamchartsGameHtmlDetailsPage"]);
+        this.steamClientMock = createSteamMock("");
 
-        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-          getXgamesWithUncheckedPlayerHistory: Promise.resolve([]),
-        });
+        this.databaseClientMock = createDatabaseMock([]);
 
         this.agg = new PlayerHistoryAggregator(
           "",
@@ -167,12 +154,9 @@ describe("PlayerHistoryAggregator", function() {
   describe(".addCurrentPlayers()", () => {
     describe("does not have any games to check for current player numbers", function() {
       beforeEach(async function() {
-        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", ["getXgamesCheckedMoreThanYmsAgo", "updatePlayerHistoriesById"]);
-        this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo.and.returnValue([]);
+        this.databaseClientMock = createDatabaseMock("", []);
 
-        this.steamClientMock = jasmine.createSpyObj("SteamClient", {
-          getAllCurrentPlayersConcurrently: "",
-        });
+        this.steamClientMock = createSteamMock([], "");
 
         const agg = new PlayerHistoryAggregator(
           this.steamClientMock, 
@@ -197,13 +181,9 @@ describe("PlayerHistoryAggregator", function() {
 
     describe("gets current players for one game in a batch of one, and adds the players", function() {
       beforeEach(async function() {
-        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
-          getXgamesCheckedMoreThanYmsAgo: Promise.resolve(oneGameWithUncheckedPlayerHistory),
-          updatePlayerHistoriesById: Promise.resolve(undefined),
-        });
+        this.databaseClientMock = createDatabaseMock("", oneGameWithUncheckedPlayerHistory);
 
-        this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getAllCurrentPlayersConcurrently"]);
-        this.steamClientMock.getAllCurrentPlayersConcurrently.and.returnValue([285]);
+        this.steamClientMock = createSteamMock("", [285]);
 
         this.gamesWithCurrentPlayers = addCurrentPlayersFromSteam([285], oneGameWithUncheckedPlayerHistory);
 
