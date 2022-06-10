@@ -2,7 +2,7 @@ import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 import { oneGameWithUncheckedPlayerHistory } from "../../assets/db-responses/one.game.unchecked.history.js";
 import { HistoryCheck } from "../models/history.check.js";
-import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
+import { addCurrentPlayersFromSteam, addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 import { twoGamesWithUncheckedPlayerHistory } from "../../assets/db-responses/two.games.unchecked.history.js";
 
 describe("PlayerHistoryAggregator", function() {
@@ -160,21 +160,89 @@ describe("PlayerHistoryAggregator", function() {
 
       it("does not call .getSteamchartsGameHtmlDetailsPage", function() {
         expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(0);
-      })
+      });
     });
   });
 
   describe(".addCurrentPlayers()", () => {
-    describe("does not have any games to check for current player numbers", () => {
-      it("calls .getXgamesCheckedMoreThanYmsAgo once");
-      it("does not call .getAllCurrentPlayersConcurrently ever");
-      it("does not call .updatePlayerHistoriesById ever");
-    /**
-     * @TODO please add the rest of the specs
-     */
+    describe("does not have any games to check for current player numbers", function() {
+      beforeEach(async function() {
+        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", ["getXgamesCheckedMoreThanYmsAgo", "updatePlayerHistoriesById"]);
+        this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo.and.returnValue([]);
+
+        this.steamClientMock = jasmine.createSpyObj("SteamClient", {
+          getAllCurrentPlayersConcurrently: "",
+        });
+
+        const agg = new PlayerHistoryAggregator(
+          this.steamClientMock, 
+          this.databaseClientMock, 
+          { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
+        );
+
+        await agg.addCurrentPlayers();
+      });
+
+      it("calls .getXgamesCheckedMoreThanYmsAgo once", function() {
+        expect(this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo).toHaveBeenCalledTimes(1);
+      });
+
+      it("does not call .getAllCurrentPlayersConcurrently ever", function() {
+        expect(this.steamClientMock.getAllCurrentPlayersConcurrently).not.toHaveBeenCalled();
+      });
+      it("does not call .updatePlayerHistoriesById ever", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).not.toHaveBeenCalled();
+      });
     });
-    /**
-     * @TODO please add a test for the other case
-     */
+
+    describe("gets current players for one game in a batch of one, and adds the players", function() {
+      beforeEach(async function() {
+        this.databaseClientMock = jasmine.createSpyObj("DatabaseClient", {
+          getXgamesCheckedMoreThanYmsAgo: Promise.resolve(oneGameWithUncheckedPlayerHistory),
+          updatePlayerHistoriesById: Promise.resolve(undefined),
+        });
+
+        this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getAllCurrentPlayersConcurrently"]);
+        this.steamClientMock.getAllCurrentPlayersConcurrently.and.returnValue([285]);
+
+        this.gamesWithCurrentPlayers = addCurrentPlayersFromSteam([285], oneGameWithUncheckedPlayerHistory);
+
+        const agg = new PlayerHistoryAggregator(
+          this.steamClientMock, 
+          this.databaseClientMock, 
+          { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
+        );
+
+       await agg.addCurrentPlayers();
+      });
+
+      it("calls .getXgamesCheckedMoreThanYmsAgo once", function() {
+        expect(this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .getXgamesCheckedMoreThanYmsAgo  before .getAllCurrentPlayersConcurrently", function() {
+        expect(this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo).toHaveBeenCalledBefore(this.steamClientMock.getAllCurrentPlayersConcurrently);
+      });
+
+      it("calls .getAllCurrentPlayersConcurrently once", function() {
+        expect(this.steamClientMock.getAllCurrentPlayersConcurrently).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .getAllCurrentPlayersConcurrently with oneGameWithUncheckedPlayerHistory", function() {
+        expect(this.steamClientMock.getAllCurrentPlayersConcurrently).toHaveBeenCalledWith(oneGameWithUncheckedPlayerHistory);
+      });
+
+      it("calls .getAllCurrentPlayersConcurrently  before .updatePlayerHistoriesById", function() {
+        expect(this.steamClientMock.getAllCurrentPlayersConcurrently).toHaveBeenCalledBefore(this.databaseClientMock.updatePlayerHistoriesById);
+      });
+
+      it("calls .updatePlayerHistoriesById once", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .updatePlayerHistoriesById with gamesWithCurrentPlayers", function() {
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.gamesWithCurrentPlayers);
+      });
+    });
   });
 });
