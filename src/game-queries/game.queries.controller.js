@@ -1,4 +1,4 @@
-export class GameQueriesController{
+export class GameQueriesController {
   #databaseClient
 
   constructor(databaseClient) {

@@ -1,4 +1,4 @@
-export class GameQueriesRouter{
+export class GameQueriesRouter {
   #controller;
 
   constructor(gameQueriesController) {
