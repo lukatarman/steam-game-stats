@@ -48,14 +48,14 @@ async function main() {
     playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
    ], options);
 
-  // try {
-  //   /**
-  //    * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
-  //    */
-  //   await runner.run();
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  try {
+    /**
+     * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
+     */
+    await runner.run();
+  } catch (error) {
+    console.error(error);
+  }
 
   /**
    * @todo https://github.com/lukatarman/steam-game-stats/issues/39
