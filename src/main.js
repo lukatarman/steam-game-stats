@@ -35,7 +35,7 @@ async function main() {
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
 
   const runner = new Runner([
-    steamAppsAggregator.run.bind(steamAppsAggregator),
+    steamAppsAggregator.collectSteamApps,
     gameIdentifier.run.bind(gameIdentifier),
     /**
      * @todo batch delay must be performed by runner
