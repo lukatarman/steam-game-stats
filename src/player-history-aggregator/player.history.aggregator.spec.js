@@ -146,7 +146,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("does not call .getSteamchartsGameHtmlDetailsPage", function() {
-        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).toHaveBeenCalledTimes(0);
+        expect(this.steamClientMock.getSteamchartsGameHtmlDetailsPage).not.toHaveBeenCalled();
       });
 
       it("does not call .updateHistoryChecks", function() {
