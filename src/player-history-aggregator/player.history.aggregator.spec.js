@@ -67,8 +67,7 @@ describe("PlayerHistoryAggregator", function() {
 
     describe("finds the player history for one game in a batch of two and updates the game data", () => {     
       beforeEach(async function() {
-        this.steamClientMock = jasmine.createSpyObj("SteamClient", ["getSteamchartsGameHtmlDetailsPage"]);
-        this.steamClientMock.getSteamchartsGameHtmlDetailsPage.and.returnValues(crushTheCastleHtmlDetailsSteamcharts, "");
+        this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts, ""], "");
 
         this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
 
@@ -235,11 +234,14 @@ describe("PlayerHistoryAggregator", function() {
   });
 });
 
-const createSteamMock = function(htmlPage, currentPlayers) {
-  return jasmine.createSpyObj("SteamClient", {
-    getSteamchartsGameHtmlDetailsPage: Promise.resolve(htmlPage),
-    getAllCurrentPlayersConcurrently: Promise.resolve(currentPlayers)
-  });
+const createSteamMock = function([htmlPage, emptyString], currentPlayers) {
+  const spyObj = jasmine.createSpyObj("steamClient", ["getSteamchartsGameHtmlDetailsPage", "getAllCurrentPlayersConcurrently"]);
+  if(emptyString === "") spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(htmlPage, emptyString);
+  else spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValue(htmlPage);
+
+  spyObj.getAllCurrentPlayersConcurrently.and.returnValue(currentPlayers);
+
+  return spyObj;
 }
 
 const createDatabaseMock = function(uncheckedGames, checkedGames) {
