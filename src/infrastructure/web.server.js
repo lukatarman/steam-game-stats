@@ -12,7 +12,7 @@ export class WebServer {
   }
 
   async start() {
-    console.log("Starting server...");
+    this.#server.log.info("Starting server...");
     try {
       await this.#server.listen(3000)
     } catch (err) {
@@ -22,11 +22,11 @@ export class WebServer {
   }
 
   async stop() {
-    console.log("Stopping server...");
+    this.#server.log.info("Stopping server...");
     try {
       this.#server.close();
     } catch(err) {
-      console.log("Caught error while attempting to stop server.")
+      this.#server.log.info("Caught error while attempting to stop server.")
     }
   }
 }
