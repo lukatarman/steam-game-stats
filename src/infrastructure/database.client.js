@@ -56,12 +56,12 @@ export class DatabaseClient {
       .findOne({ id });
   }
 
-  async getAllGames(filter = {}) {
-    return await this.getAll("games", filter);
+  async getAllGames() {
+    return await this.getAll("games");
   }
 
-  async getAllSteamApps(filter = {}) {
-    return await this.getAll("steam_apps", filter);
+  async getAllSteamApps() {
+    return await this.getAll("steam_apps");
   }
 
   async getAll(collectionName, filter = {}) {
