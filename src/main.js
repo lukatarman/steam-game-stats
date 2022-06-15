@@ -7,8 +7,8 @@ import { hoursToMs } from "./shared/time.utils.js"
 import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";
 import { Runner } from "./runner/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
-import { GameQueriesController } from "./game-queries/game.queries.controller.js";
-import { GameQueriesRouter } from "./game-queries/game.queries.router.js";
+import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
+import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
 
 // our entry point = main
 async function main() {
