@@ -1,9 +1,9 @@
-import { delay } from "../shared/time.utils.js";
-import { diff } from "./services/diff.service.js";
-import { labelAsNotIdentified } from "./services/label.service.js";
+import { delay } from "../../shared/time.utils.js";
+import { diff } from "./service/diff.service.js";
+import { labelAsNotIdentified } from "./service/label.service.js";
 import {
   moreThanXhoursPassedSince ,
-} from "../shared/time.utils.js";
+} from "../../shared/time.utils.js";
 
 export class SteamAppsAggregator {
   #databaseClient;

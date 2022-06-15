@@ -1,7 +1,7 @@
 import httpClient from "axios";
 import { DatabaseClient } from "./infrastructure/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
-import { SteamAppsAggregator } from "./steam-apps-aggregator/steam.apps.aggregator.js";
+import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps.aggregator.js";
 import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
 import { hoursToMs } from "./shared/time.utils.js"
 import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";

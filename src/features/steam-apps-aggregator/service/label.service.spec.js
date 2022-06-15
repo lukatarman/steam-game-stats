@@ -1,5 +1,5 @@
 import { labelAsNotIdentified } from "./label.service.js";
-import { gamesMock } from "../../../assets/small.data.set.js"
+import { gamesMock } from "../../../../assets/small.data.set.js"
 
 describe("label.service.js", () => {
   describe(".labelAsNotIdentified", () => {
