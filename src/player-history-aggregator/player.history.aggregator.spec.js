@@ -236,8 +236,10 @@ describe("PlayerHistoryAggregator", function() {
 
 const createSteamMock = function([htmlPage, emptyString], currentPlayers) {
   const spyObj = jasmine.createSpyObj("steamClient", ["getSteamchartsGameHtmlDetailsPage", "getAllCurrentPlayersConcurrently"]);
-  if(emptyString === "") spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(htmlPage, emptyString);
-  else spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValue(htmlPage);
+
+  emptyString === "" ?
+  spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(htmlPage, emptyString) :
+  spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValue(htmlPage);
 
   spyObj.getAllCurrentPlayersConcurrently.and.returnValue(currentPlayers);
 
