@@ -1,9 +1,6 @@
-import { delay } from "../../shared/time.utils.js";
 import { diff } from "./service/diff.service.js";
 import { labelAsNotIdentified } from "./service/label.service.js";
-import {
-  moreThanXhoursPassedSince ,
-} from "../../shared/time.utils.js";
+import { moreThanXhoursPassedSince } from "../../shared/time.utils.js";
 
 export class SteamAppsAggregator {
   #databaseClient;
@@ -16,26 +13,25 @@ export class SteamAppsAggregator {
     this.#options = options;
   }
 
-  async run() {
+  collectSteamApps = async () => {
     const lastUpdate = await this.#databaseClient.getLastUpdateTimestamp();
     if (!lastUpdate) {
-      await this.#firstUpdate();
+      await this.#collectFirstTime();
       return;
     }
 
-    if (moreThanXhoursPassedSince(this.#options.updateIntervalDelay, lastUpdate.updatedOn)) await this.#updateSteamApps();
-
-    await delay(this.#options.updateIntervalDelay);
+    const x = this.#options.updateIntervalDelay;
+    if (moreThanXhoursPassedSince(x, lastUpdate.updatedOn)) await this.#collectSteamApps();
   }
 
-  async #firstUpdate() {
+  async #collectFirstTime() {
     const steamApps = await this.#steamClient.getAppList();
     const enrichedSteamApps = labelAsNotIdentified(steamApps);
     await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 
-  async #updateSteamApps() {
+  async #collectSteamApps() {
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
     /**
@@ -44,8 +40,8 @@ export class SteamAppsAggregator {
     const steamApps = diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) {
       await this.#databaseClient.insertOneUpdateTimestamp(new Date());
-      return
-    };
+      return;
+    }
     const enrichedSteamApps = labelAsNotIdentified(steamApps);
     await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());

@@ -42,7 +42,7 @@ async function main() {
   await webServer.start();
 
   const runner = new Runner([
-    steamAppsAggregator.run.bind(steamAppsAggregator),
+    steamAppsAggregator.collectSteamApps,
     gameIdentifier.run.bind(gameIdentifier),
     playerHistoryAggregator.addPlayerHistoryFromSteamcharts.bind(playerHistoryAggregator),
     playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
