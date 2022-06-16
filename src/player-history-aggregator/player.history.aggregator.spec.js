@@ -12,12 +12,7 @@ describe("PlayerHistoryAggregator", function() {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
         this.databaseClientMock = createDatabaseMock(oneGameWithUncheckedPlayerHistory);
 
-        this.gamesPagesMap = new Map();
-        this.gamesPagesMap.set(oneGameWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts);
-
-        this.historyChecks = HistoryCheck.manyFromSteamchartsPages(this.gamesPagesMap);
-
-        this.games = addPlayerHistoriesFromSteamcharts(this.gamesPagesMap);
+        this.mapData = createMap([[twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts]]);
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
@@ -49,7 +44,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updateHistoryChecks with historyChecks", function() {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.historyChecks);
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.mapData[0]);
       });
 
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
@@ -61,7 +56,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updatePlayerHistoriesById with games", function() {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.games);
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.mapData[1]);
       });
     });
 
@@ -71,13 +66,10 @@ describe("PlayerHistoryAggregator", function() {
 
         this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
 
-        this.gamesPagesMap = new Map();
-        this.gamesPagesMap.set(twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts);
-        this.gamesPagesMap.set(twoGamesWithUncheckedPlayerHistory[1], "");
-
-        this.historyChecks = HistoryCheck.manyFromSteamchartsPages(this.gamesPagesMap);
-
-        this.games = addPlayerHistoriesFromSteamcharts(this.gamesPagesMap);
+        this.mapData = createMap([
+          [twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts],
+          [twoGamesWithUncheckedPlayerHistory[1], ""]
+        ]);
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
@@ -109,7 +101,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updateHistoryChecks with historyChecks", function() {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.historyChecks);
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.mapData[0]);
       });
 
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
@@ -121,7 +113,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updatePlayerHistoriesById with games", function() {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.games);
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.mapData[1]);
       });
     });
 
@@ -250,4 +242,13 @@ function createDatabaseMock(uncheckedGames, checkedGames) {
     getXgamesCheckedMoreThanYmsAgo: Promise.resolve(checkedGames),
     updatePlayerHistoriesById: Promise.resolve(undefined),
   });
+}
+
+function createMap(gamesPages) {
+  const map = new Map(gamesPages);
+
+  const historyChecks = HistoryCheck.manyFromSteamchartsPages(map);
+  const games = addPlayerHistoriesFromSteamcharts(map);
+
+  return [historyChecks, games];
 }
