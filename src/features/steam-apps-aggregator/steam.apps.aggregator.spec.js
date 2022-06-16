@@ -1,9 +1,9 @@
 import { SteamAppsAggregator } from "./steam.apps.aggregator.js";
-import { smallestGamesMock } from "../../assets/smallest.data.set.js";
-import { gamesMock } from "../../assets/small.data.set.js";
+import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
+import { gamesMock } from "../../../assets/small.data.set.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { diff } from "./services/diff.service.js";
-import { hoursToMs } from "../shared/time.utils.js";
+import { hoursToMs } from "../../shared/time.utils.js";
 
 describe("SteamAppsAggregator", () => {
   describe(".collectSteamApps()", () => {

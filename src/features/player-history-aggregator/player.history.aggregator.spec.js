@@ -1,6 +1,6 @@
 import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
-import { tinyGames } from "../../assets/tiny.data.set.with.id.js"
-import { eldenRingHttpDetailsSteamcharts } from "../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
+import { tinyGames } from "../../../assets/tiny.data.set.with.id.js"
+import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
 xdescribe("PlayerHistoryAggregator", () => {
   describe("run", () => {
