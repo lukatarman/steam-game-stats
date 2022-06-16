@@ -234,7 +234,7 @@ describe("PlayerHistoryAggregator", function() {
   });
 });
 
-const createSteamMock = function([htmlPage, emptyString], currentPlayers) {
+function createSteamMock(detailsPageRet, currentPlayersRet) {
   const spyObj = jasmine.createSpyObj("steamClient", ["getSteamchartsGameHtmlDetailsPage", "getAllCurrentPlayersConcurrently"]);
   spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(...detailsPageRet);
   spyObj.getAllCurrentPlayersConcurrently.and.returnValue(currentPlayersRet);
@@ -242,7 +242,7 @@ const createSteamMock = function([htmlPage, emptyString], currentPlayers) {
   return spyObj;
 }
 
-const createDatabaseMock = function(uncheckedGames, checkedGames) {
+function createDatabaseMock(uncheckedGames, checkedGames) {
   return jasmine.createSpyObj("DatabaseClient", {
     getXgamesWithUncheckedPlayerHistory: Promise.resolve(uncheckedGames),
     updateHistoryChecks: Promise.resolve(undefined),
