@@ -12,7 +12,7 @@ describe("PlayerHistoryAggregator", function() {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
         this.databaseClientMock = createDatabaseMock(oneGameWithUncheckedPlayerHistory);
 
-        this.mapData = createMap([[twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts]]);
+        [this.historyChecks, this.games] = createMap([[twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts]]);
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
@@ -44,7 +44,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updateHistoryChecks with historyChecks", function() {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.mapData[0]);
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.historyChecks);
       });
 
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
@@ -56,7 +56,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updatePlayerHistoriesById with games", function() {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.mapData[1]);
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.games);
       });
     });
 
@@ -66,7 +66,7 @@ describe("PlayerHistoryAggregator", function() {
 
         this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
 
-        this.mapData = createMap([
+        [this.historyChecks, this.games] = createMap([
           [twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts],
           [twoGamesWithUncheckedPlayerHistory[1], ""]
         ]);
@@ -101,7 +101,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updateHistoryChecks with historyChecks", function() {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.mapData[0]);
+        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(this.historyChecks);
       });
 
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function() {
@@ -113,7 +113,7 @@ describe("PlayerHistoryAggregator", function() {
       });
 
       it("calls .updatePlayerHistoriesById with games", function() {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.mapData[1]);
+        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(this.games);
       });
     });
 
