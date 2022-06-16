@@ -67,7 +67,7 @@ describe("PlayerHistoryAggregator", function() {
 
     describe("finds the player history for one game in a batch of two and updates the game data", () => {     
       beforeEach(async function() {
-        this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts], "");
+        this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
         this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
 
