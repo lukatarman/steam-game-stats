@@ -26,7 +26,7 @@ export class WebServer {
     try {
       this.#server.close();
     } catch(err) {
-      this.#server.log.info("Caught error while attempting to stop server.")
+      this.#server.log.error(err)
     }
   }
 }
