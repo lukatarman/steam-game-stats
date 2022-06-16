@@ -2,9 +2,9 @@ import {
   filterSteamAppsByName,
   discoverGamesFromSteamHtmlDetailsPages,
 } from "./services/game.service.js";
-import { Game } from "../models/game.js";
-import { delay } from "../shared/time.utils.js";
-import { HistoryCheck } from "../models/history.check.js";
+import { Game } from "../../models/game.js";
+import { delay } from "../../utils/time.utils.js";
+import { HistoryCheck } from "../../models/history.check.js";
 
 export class GameIdentifier {
   #steamClient;

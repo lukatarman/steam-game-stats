@@ -1,4 +1,4 @@
-import { delay } from "../shared/time.utils.js";
+import { delay } from "../utils/time.utils.js";
 import { Runner } from "./runner.js";
 
 describe("runner.js", () => {
