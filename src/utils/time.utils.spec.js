@@ -1,6 +1,6 @@
 import { delay, hoursToMs, moreThanXhoursPassedSince, msPassedSince } from "./time.utils.js";
 
-xdescribe("time.utils.js", () => {
+describe("time.utils.js", () => {
   describe(".delay", () => {
     let timePassed;
 
