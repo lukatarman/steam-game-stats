@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { Game } from "../../models/game.js";
+import { Game } from "../../../models/game.js";
 
 export function filterSteamAppsByName(steamApps) {
   return steamApps.filter((steamApp) => doesNotEndWithDlcOrSoundtrack(steamApp));

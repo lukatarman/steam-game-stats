@@ -2,8 +2,8 @@ import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts
 } from "./services/player.history.service.js";
-import { delay } from "../shared/time.utils.js";
-import { HistoryCheck } from "../models/history.check.js";
+import { delay } from "../../utils/time.utils.js";
+import { HistoryCheck } from "../../models/history.check.js";
 
 export class PlayerHistoryAggregator {
   #steamClient;
