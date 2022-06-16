@@ -9,7 +9,7 @@ describe("PlayerHistoryAggregator", function() {
   describe(".addPlayerHistoryFromSteamcharts()", function() {
     describe("finds the player history for one game in a batch of one and updates the game data", function() { 
       beforeEach(async function() {
-        this.steamClientMock = createSteamMock(crushTheCastleHtmlDetailsSteamcharts);
+        this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
         this.databaseClientMock = createDatabaseMock(oneGameWithUncheckedPlayerHistory);
 
         this.gamesPagesMap = new Map();
@@ -67,7 +67,7 @@ describe("PlayerHistoryAggregator", function() {
 
     describe("finds the player history for one game in a batch of two and updates the game data", () => {     
       beforeEach(async function() {
-        this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts, ""], "");
+        this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts], "");
 
         this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
 
@@ -127,7 +127,7 @@ describe("PlayerHistoryAggregator", function() {
 
     describe("finds no games in the database and finishes", () => {
       beforeEach(async function() {
-        this.steamClientMock = createSteamMock("");
+        this.steamClientMock = createSteamMock([], "");
 
         this.databaseClientMock = createDatabaseMock([]);
 
@@ -190,7 +190,7 @@ describe("PlayerHistoryAggregator", function() {
       beforeEach(async function() {
         this.databaseClientMock = createDatabaseMock("", oneGameWithUncheckedPlayerHistory);
 
-        this.steamClientMock = createSteamMock("", [285]);
+        this.steamClientMock = createSteamMock([], [285]);
 
         this.gamesWithCurrentPlayers = addCurrentPlayersFromSteam([285], oneGameWithUncheckedPlayerHistory);
 
@@ -236,12 +236,8 @@ describe("PlayerHistoryAggregator", function() {
 
 const createSteamMock = function([htmlPage, emptyString], currentPlayers) {
   const spyObj = jasmine.createSpyObj("steamClient", ["getSteamchartsGameHtmlDetailsPage", "getAllCurrentPlayersConcurrently"]);
-
-  emptyString === "" ?
-  spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(htmlPage, emptyString) :
-  spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValue(htmlPage);
-
-  spyObj.getAllCurrentPlayersConcurrently.and.returnValue(currentPlayers);
+  spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(...detailsPageRet);
+  spyObj.getAllCurrentPlayersConcurrently.and.returnValue(currentPlayersRet);
 
   return spyObj;
 }
