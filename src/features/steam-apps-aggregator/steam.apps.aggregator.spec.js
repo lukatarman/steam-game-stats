@@ -180,12 +180,14 @@ describe("SteamAppsAggregator", () => {
         steamClientMock = createSteamMock(smallestGamesMock);
 
         databaseClientMock = createDbMock(updateTimestamp, smallestGamesMock);
-
-        jasmine.clock().mockDate(new Date("2020"))
-
+        
+        jasmine.clock().mockDate(new Date("2020"));
+        
         const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: hoursToMs(12) });
 
         await agg.collectSteamApps();
+
+        jasmine.clock().uninstall();
       });
 
       it("calls .getLastUpdateTimestamp once", () => {
