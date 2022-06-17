@@ -44,8 +44,11 @@ async function main() {
   const runner = new Runner([
     steamAppsAggregator.collectSteamApps,
     gameIdentifier.run.bind(gameIdentifier),
-    playerHistoryAggregator.addPlayerHistoryFromSteamcharts.bind(playerHistoryAggregator),
-    playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
+    /**
+     * @todo batch delay must be performed by runner
+     */
+    playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
+    playerHistoryAggregator.addCurrentPlayers,
    ], options);
 
   try {
