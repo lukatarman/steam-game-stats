@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { Players } from "../../models/players.js";
+import { Players } from "../../../models/players.js";
 
 /**
  * @todo add tests

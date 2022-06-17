@@ -26,6 +26,7 @@
   "homepage": "https://github.com/lukatarman/steam-game-stats#readme",
   "dependencies": {
     "axios": "0.26.1",
+    "fastify": "3.29.0",
     "jsdom": "19.0.0",
     "mongodb": "4.5.0"
   },

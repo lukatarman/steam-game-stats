@@ -1,5 +1,5 @@
-import { gamesMock } from "../../../assets/small.data.set.js";
-import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
+import { gamesMock } from "../../../../assets/small.data.set.js";
+import { smallestGamesMock } from "../../../../assets/smallest.data.set.js";
 import { diff } from "./diff.service.js";
 
 describe("diff.service.js", () => {
@@ -37,7 +37,7 @@ describe("diff.service.js", () => {
           appid: 21987,
           name: "Metro",
         }];
-        
+
         resultDiff = diff(appsFromApi, appsFromDb);
       });
 

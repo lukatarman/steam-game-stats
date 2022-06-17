@@ -1,9 +1,9 @@
 import { SteamAppsAggregator } from "./steam.apps.aggregator.js";
-import { smallestGamesMock } from "../../assets/smallest.data.set.js";
-import { gamesMock } from "../../assets/small.data.set.js";
+import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
+import { gamesMock } from "../../../assets/small.data.set.js";
 import { labelAsNotIdentified } from "./services/label.service.js";
 import { diff } from "./services/diff.service.js";
-import { hoursToMs } from "../shared/time.utils.js";
+import { hoursToMs } from "../../utils/time.utils.js";
 
 describe("SteamAppsAggregator", () => {
   describe(".collectSteamApps()", () => {
@@ -180,12 +180,14 @@ describe("SteamAppsAggregator", () => {
         steamClientMock = createSteamMock(smallestGamesMock);
 
         databaseClientMock = createDbMock(updateTimestamp, smallestGamesMock);
-
-        jasmine.clock().mockDate(new Date("2020"))
-
+        
+        jasmine.clock().mockDate(new Date("2020"));
+        
         const agg = new SteamAppsAggregator(steamClientMock, databaseClientMock, { updateIntervalDelay: hoursToMs(12) });
 
         await agg.collectSteamApps();
+
+        jasmine.clock().uninstall();
       });
 
       it("calls .getLastUpdateTimestamp once", () => {

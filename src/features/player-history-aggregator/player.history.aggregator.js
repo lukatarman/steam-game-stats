@@ -2,8 +2,8 @@ import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts,
 } from "./services/player.history.service.js";
-import { delay } from "../shared/time.utils.js";
-import { HistoryCheck } from "../models/history.check.js";
+import { delay } from "../../utils/time.utils.js";
+import { HistoryCheck } from "../../models/history.check.js";
 
 export class PlayerHistoryAggregator {
   #steamClient;
@@ -29,14 +29,11 @@ export class PlayerHistoryAggregator {
    * - we record the steamcharts history checks after we got all the steamcharts details pages
    * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
    */
-  async addPlayerHistoryFromSteamcharts() {
+  addPlayerHistoryFromSteamcharts = async () => {
     const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(
       this.#options.batchSize,
     );
-    if (uncheckedGames.length === 0) {
-      await delay(this.#options.batchDelay);
-      return;
-    }
+    if (uncheckedGames.length === 0) return;
 
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(
       uncheckedGames,
@@ -47,28 +44,26 @@ export class PlayerHistoryAggregator {
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
     await this.#databaseClient.updatePlayerHistoriesById(games);
-  }
+  };
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
     const gamesPagesMap = new Map();
 
-    for (let i = 0; i < games.length; i++) {
+    for (let game of games) {
       await delay(this.#options.unitDelay);
 
       try {
-        const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
-          games[i].id,
-        );
-        gamesPagesMap.set(games[i], page);
+        const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id);
+        gamesPagesMap.set(game, page);
       } catch (error) {
-        gamesPagesMap.set(games[i], "");
+        gamesPagesMap.set(game, "");
       }
     }
 
     return gamesPagesMap;
   }
 
-  async addCurrentPlayers() {
+  addCurrentPlayers = async () => {
     const games = await this.#databaseClient.getXgamesCheckedMoreThanYmsAgo(
       this.#options.batchSize,
       this.#options.currentPlayersUpdateIntervalDelay,
@@ -81,5 +76,5 @@ export class PlayerHistoryAggregator {
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
 
     await this.#databaseClient.updatePlayerHistoriesById(gamesWithCurrentPlayers);
-  }
+  };
 }

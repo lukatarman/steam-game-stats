@@ -1,11 +1,14 @@
 import httpClient from "axios";
 import { DatabaseClient } from "./infrastructure/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
-import { SteamAppsAggregator } from "./steam-apps-aggregator/steam.apps.aggregator.js";
-import { GameIdentifier } from "./game-identifier/game.identifier.js";
-import { hoursToMs } from "./shared/time.utils.js"
-import { PlayerHistoryAggregator } from "./player-history-aggregator/player.history.aggregator.js";
+import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps.aggregator.js";
+import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
+import { hoursToMs } from "./utils/time.utils.js"
+import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";
 import { Runner } from "./runner/runner.js";
+import { WebServer } from "./infrastructure/web.server.js";
+import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
+import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
 
 // our entry point = main
 async function main() {
@@ -33,12 +36,19 @@ async function main() {
   const steamAppsAggregator = new SteamAppsAggregator(steamClient, databaseClient, options);
   const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
   const playerHistoryAggregator = new PlayerHistoryAggregator(steamClient, databaseClient, options);
+  const gameQueriesController = new GameQueriesController(databaseClient);
+  const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
+  const webServer = new WebServer(gameQueriesRouter);
+  await webServer.start();
 
   const runner = new Runner([
     steamAppsAggregator.collectSteamApps,
     gameIdentifier.run.bind(gameIdentifier),
-    playerHistoryAggregator.addPlayerHistoryFromSteamcharts.bind(playerHistoryAggregator),
-    playerHistoryAggregator.addCurrentPlayers.bind(playerHistoryAggregator),
+    /**
+     * @todo batch delay must be performed by runner
+     */
+    playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
+    playerHistoryAggregator.addCurrentPlayers,
    ], options);
 
   try {
