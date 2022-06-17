@@ -71,7 +71,7 @@ export class GameIdentifier {
       await delay(this.#options.unitDelay);
 
       try {
-        await this.#steamClient.getSteamAppHtmlDetailsPageFromSteamcharts(steamApps[index].appid);
+        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(steamApps[index].appid);
         return Game.fromSteamApp(steamApp);
       } catch (error) {
         /**
