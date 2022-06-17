@@ -1,9 +1,12 @@
 import { gamesMock } from "../../../assets/small.data.set.js";
-import { steamAppIsGame, filterSteamAppsByName, discoverGamesFromSteamHtmlDetailsPages } from "./game.service.js";
+import {
+  steamAppIsGame,
+  filterSteamAppsByName,
+  discoverGamesFromSteamHtmlDetailsPages,
+} from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
-import { goAceItGameHtmlDetailsPage } from "../../../assets/steam-details-pages/go.ace.it.game.html.details.page.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
@@ -123,7 +126,7 @@ describe("game.service.js", () => {
     });
   });
 
- describe(".discoverGamesFromSteamHtmlDetailsPages", () => {
+  describe(".discoverGamesFromSteamHtmlDetailsPages", () => {
     let steamApps;
     let htmlDetailsPages;
     let games;
@@ -141,9 +144,16 @@ describe("game.service.js", () => {
             name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
           },
         ];
-        htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
 
-        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        htmlDetailsPages = [
+          mortalDarknessGameHtmlDetailsPage,
+          glitchhikersSoundtrackHtmlDetailsPage,
+        ];
+
+        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(
+          steamApps,
+          htmlDetailsPages,
+        );
       });
 
       it("returns an array of games with length 1", () => {
@@ -163,7 +173,7 @@ describe("game.service.js", () => {
       });
 
       it("the discovered game page has the string 'discovered' in its place in the array", () => {
-        expect(discoveredPages[0]).toBe('discovered');
+        expect(discoveredPages[0]).toBe("discovered");
       });
     });
 
@@ -183,13 +193,17 @@ describe("game.service.js", () => {
             name: "Animaddicts 2",
           },
         ];
+
         htmlDetailsPages = [
           mortalDarknessGameHtmlDetailsPage,
           glitchhikersSoundtrackHtmlDetailsPage,
-          animaddicts2gameHtmlDetailsPage
+          animaddicts2gameHtmlDetailsPage,
         ];
 
-        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(
+          steamApps,
+          htmlDetailsPages,
+        );
       });
 
       it("returns an array of games with length 2", () => {
@@ -217,11 +231,11 @@ describe("game.service.js", () => {
       });
 
       it("the first discovered game page has the string 'discovered' in its place in the array", () => {
-        expect(discoveredPages[0]).toBe('discovered');
+        expect(discoveredPages[0]).toBe("discovered");
       });
 
       it("the second discovered game page has the string 'discovered' in its place in the array", () => {
-        expect(discoveredPages[2]).toBe('discovered');
+        expect(discoveredPages[2]).toBe("discovered");
       });
     });
 
@@ -233,11 +247,12 @@ describe("game.service.js", () => {
             name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
           },
         ];
-        htmlDetailsPages = [
-          glitchhikersSoundtrackHtmlDetailsPage,
-        ];
+        htmlDetailsPages = [glitchhikersSoundtrackHtmlDetailsPage];
 
-        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(
+          steamApps,
+          htmlDetailsPages,
+        );
       });
 
       it("returns an empty array of games with length 0", () => {
@@ -249,7 +264,7 @@ describe("game.service.js", () => {
       });
 
       it("discoveredPages array has no entry with the 'discovered' string'", () => {
-        expect(discoveredPages.indexOf('discovered')).toBe(-1);
+        expect(discoveredPages.indexOf("discovered")).toBe(-1);
       });
     });
   });
