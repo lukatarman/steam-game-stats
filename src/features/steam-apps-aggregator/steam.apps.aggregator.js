@@ -21,8 +21,9 @@ export class SteamAppsAggregator {
     }
 
     const x = this.#options.updateIntervalDelay;
-    if (moreThanXhoursPassedSince(x, lastUpdate.updatedOn)) await this.#collectSteamApps();
-  }
+    if (moreThanXhoursPassedSince(x, lastUpdate.updatedOn))
+      await this.#collectSteamApps();
+  };
 
   async #collectFirstTime() {
     const steamApps = await this.#steamClient.getAppList();
@@ -33,7 +34,7 @@ export class SteamAppsAggregator {
 
   async #collectSteamApps() {
     const steamAppsApi = await this.#steamClient.getAppList();
-    const steamAppsDb  = await this.#databaseClient.getAllSteamApps();
+    const steamAppsDb = await this.#databaseClient.getAllSteamApps();
     /**
      * @TODO https://github.com/lukatarman/steam-game-stats/issues/32
      */

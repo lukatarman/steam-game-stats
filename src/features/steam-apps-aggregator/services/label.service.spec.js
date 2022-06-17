@@ -1,5 +1,5 @@
 import { labelAsNotIdentified } from "./label.service.js";
-import { gamesMock } from "../../../../assets/small.data.set.js"
+import { gamesMock } from "../../../../assets/small.data.set.js";
 
 describe("label.service.js", () => {
   describe(".labelAsNotIdentified", () => {
@@ -18,7 +18,7 @@ describe("label.service.js", () => {
         expect(result[15].identified).toBeFalse();
       });
       it("object in the last index has its 'identified' property set to false", () => {
-        expect((result[result.length - 1]).identified).toBeFalse();
+        expect(result[result.length - 1].identified).toBeFalse();
       });
     });
   });
