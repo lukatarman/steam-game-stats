@@ -14,7 +14,7 @@ export function addCurrentPlayersFromSteam(players, games) {
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
-    if(page !== "") game.playerHistory = parsePlayerHistory(page);
+    if (page !== "") game.playerHistory = parsePlayerHistory(page);
     games.push(game);
   }
   return games;
@@ -22,11 +22,15 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
 
 export function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
-  const playerHistoryEntries = dom.window.document.querySelectorAll(".common-table tbody tr");
+  const playerHistoryEntries = dom.window.document.querySelectorAll(
+    ".common-table tbody tr",
+  );
 
-  return Array
-    .from(playerHistoryEntries)
-    .map(entry => entry.firstElementChild)
-    .filter(firstElement => firstElement.textContent !== "Last 30 Days")
-    .map(element => new Players(element.nextElementSibling.textContent, element.textContent));
+  return Array.from(playerHistoryEntries)
+    .map((entry) => entry.firstElementChild)
+    .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
+    .map(
+      (element) =>
+        new Players(element.nextElementSibling.textContent, element.textContent),
+    );
 }
