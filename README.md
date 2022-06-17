@@ -26,9 +26,9 @@ _Detailed Wikipedia description: [link](https://en.wikipedia.org/wiki/Data_model
 
 ### Short Concept Description
 
- In our application we use JavaScript classes to represent the data model. The data model is a core piece of our application around which the application is build. I think the first sentence in Wikipedia puts it quite well:
+In our application we use JavaScript classes to represent the data model. The data model is a core piece of our application around which the application is build. I think the first sentence in Wikipedia puts it quite well:
 
- > A data model is an abstract model that organizes elements of data and standardizes how they relate to one another and to the properties of real-world entities. For instance, a data model may specify that the data element representing a car be composed of a number of other elements which, in turn, represent the color and size of the car and define its owner.
+> A data model is an abstract model that organizes elements of data and standardizes how they relate to one another and to the properties of real-world entities. For instance, a data model may specify that the data element representing a car be composed of a number of other elements which, in turn, represent the color and size of the car and define its owner.
 
 ### In Our App
 
