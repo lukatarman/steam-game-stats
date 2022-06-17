@@ -45,14 +45,14 @@ export class PlayerHistoryAggregator {
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
     const gamesPagesMap = new Map();
 
-    for (let i = 0; i < games.length; i++) {
+    for (let game of games) {
       await delay(this.#options.unitDelay);
 
       try {
-        const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id);
-        gamesPagesMap.set(games[i], page);
+        const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id);
+        gamesPagesMap.set(game, page);
       } catch(error) {
-        gamesPagesMap.set(games[i], "");
+        gamesPagesMap.set(game, "");
       }
     }
 
