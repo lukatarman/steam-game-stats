@@ -45,9 +45,7 @@ export class DatabaseClient {
   }
 
   async getOneGameById(id) {
-    return await this.#collections
-      .get("games")
-      .findOne({ id });
+    return await this.#collections.get("games").findOne({ id });
   }
 
   async getAllGames() {
