@@ -55,9 +55,9 @@ export class GameIdentifier {
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     const detailsPages = [];
-    for(let i = 0; i < steamApps.length; i++) {
+    for(let steamApp of steamApps) {
       detailsPages.push(
-        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApps[i].appid)
+        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid)
       );
       await delay(this.#options.unitDelay);
     }
