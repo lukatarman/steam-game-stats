@@ -14,9 +14,7 @@ export class DatabaseClient {
     const database = mongodb.db(options.databaseName);
 
     this.#collections = new Map();
-    options.collections.forEach((c) =>
-      this.#collections.set(c, database.collection(c))
-    );
+    options.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
 
     return this;
   }
@@ -27,9 +25,7 @@ export class DatabaseClient {
   }
 
   async insertOne(collectionName, data) {
-    await this.#collections
-      .get(collectionName)
-      .insertOne(data);
+    await this.#collections.get(collectionName).insertOne(data);
   }
 
   async insertManyHistoryChecks(data) {
@@ -45,9 +41,7 @@ export class DatabaseClient {
   }
 
   async insertMany(collectionName, data) {
-    await this.#collections
-      .get(collectionName)
-      .insertMany(data);
+    await this.#collections.get(collectionName).insertMany(data);
   }
 
   async getAllSteamApps(filter = {}) {
@@ -55,22 +49,15 @@ export class DatabaseClient {
   }
 
   async getAll(collectionName, filter = {}) {
-    return await this.#collections
-      .get(collectionName)
-      .find(filter)
-      .toArray();
+    return await this.#collections.get(collectionName).find(filter).toArray();
   }
 
   async updateOne(collectionName, filter, data) {
-    await this.#collections
-      .get(collectionName)
-      .updateOne(filter, data);
+    await this.#collections.get(collectionName).updateOne(filter, data);
   }
 
   async deleteMany(collectionName, filter) {
-    await this.#collections
-      .get(collectionName)
-      .deleteMany(filter);
+    await this.#collections.get(collectionName).deleteMany(filter);
   }
 
   async getLastUpdateTimestamp() {
@@ -89,113 +76,104 @@ export class DatabaseClient {
   async getXunidentifiedSteamApps(amount) {
     return await this.#collections
       .get("steam_apps")
-      .find({ identified: { $eq: false }})
+      .find({ identified: { $eq: false } })
       .limit(amount)
       .toArray();
   }
 
   async updateHistoryChecks(historyChecks) {
     await Promise.all(
-      historyChecks.map(
-        historyCheck => this.#collections
-          .get("history_checks")
-          .updateOne(
-            { gameId: { $eq: historyCheck.gameId }},
-            { $set: {
+      historyChecks.map((historyCheck) =>
+        this.#collections.get("history_checks").updateOne(
+          { gameId: { $eq: historyCheck.gameId } },
+          {
+            $set: {
               checked: historyCheck.checked,
               found: historyCheck.found,
               source: historyCheck.source,
-            }},
-          )
-      )
+            },
+          },
+        ),
+      ),
     );
   }
 
   async identifySteamAppsById(steamApps) {
     await Promise.all(
-      steamApps.map(
-        steamApp => this.identifySteamAppById(steamApp.appid)
-      )
+      steamApps.map((steamApp) => this.identifySteamAppById(steamApp.appid)),
     );
   }
 
   async identifySteamAppById(id) {
     await this.#collections
       .get("steam_apps")
-      .updateOne(
-        { appid: { $eq: id }},
-        { $set: { identified: true }},
-      );
+      .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
-    return (await this.#collections
-      .get("games")
-      .find({ playerHistory: { $eq: [] }})
-      .limit(amount)
-      .toArray())
-      .map(dbEntry => Game.fromDbEntry(dbEntry));
+    return (
+      await this.#collections
+        .get("games")
+        .find({ playerHistory: { $eq: [] } })
+        .limit(amount)
+        .toArray()
+    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
   async updatePlayerHistoriesById(games) {
-    await Promise.all(
-      games.map(
-        game => this.updatePlayerHistoryById(game)
-      )
-    );
+    await Promise.all(games.map((game) => this.updatePlayerHistoryById(game)));
   }
 
   async updatePlayerHistoryById(game) {
     await this.#collections
       .get("games")
-      .updateOne(
-        { id: game.id },
-        { $set: { playerHistory: game.playerHistory }}
-      );
+      .updateOne({ id: game.id }, { $set: { playerHistory: game.playerHistory } });
   }
 
   async getXgamesWithUncheckedPlayerHistory(amount) {
-    return (await this.#collections
-      .get("history_checks")
-      .aggregate([
-        {
-          $lookup: {
-            from: "games",
-            localField: "gameId",
-            foreignField: "id",
-            as: "game"
-          }
-        },
-        { $match: { checked: false }},
-        { $unwind: "$game" },
-        { $replaceWith: "$game" },
-        { $limit: amount },
-      ])
-      .toArray())
-      .map(dbEntry => Game.fromDbEntry(dbEntry));
+    return (
+      await this.#collections
+        .get("history_checks")
+        .aggregate([
+          {
+            $lookup: {
+              from: "games",
+              localField: "gameId",
+              foreignField: "id",
+              as: "game",
+            },
+          },
+          { $match: { checked: false } },
+          { $unwind: "$game" },
+          { $replaceWith: "$game" },
+          { $limit: amount },
+        ])
+        .toArray()
+    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
   async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
-   return (await this.#collections
-     .get("history_checks")
-     .aggregate([
-      {
-        $lookup: {
-          from: "games",
-          localField: "gameId",
-          foreignField: "id",
-          as: "game"
-        }
-      },
-      { $match: { checked: true } },
-      { $unwind: "$game" },
-      { $replaceWith: "$game" },
-      { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
-      { $match: { lastUpdateDate: { $lt: new Date(Date.now() - ms) } } },
-      { $unset: "lastUpdateDate" },
-      { $limit: amount },
-     ])
-     .toArray())
-     .map(dbEntry => Game.fromDbEntry(dbEntry));
+    return (
+      await this.#collections
+        .get("history_checks")
+        .aggregate([
+          {
+            $lookup: {
+              from: "games",
+              localField: "gameId",
+              foreignField: "id",
+              as: "game",
+            },
+          },
+          { $match: { checked: true } },
+          { $unwind: "$game" },
+          { $replaceWith: "$game" },
+          { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
+          { $match: { lastUpdateDate: { $lt: new Date(Date.now() - ms) } } },
+          { $unset: "lastUpdateDate" },
+          { $limit: amount },
+        ])
+        .toArray()
+    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 }

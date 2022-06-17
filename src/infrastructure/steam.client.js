@@ -25,13 +25,9 @@ export class SteamClient {
 
     return (
       await Promise.all(
-        games.map(
-          game => this.#httpClient.get(url + game.id, options).catch(() => 0)
-        )
+        games.map((game) => this.#httpClient.get(url + game.id, options).catch(() => 0)),
       )
-    ).map(
-      player => player ? player.data.response.player_count : 0
-    );
+    ).map((player) => (player ? player.data.response.player_count : 0));
   }
 
   async getSteamAppHtmlDetailsPage(id) {
