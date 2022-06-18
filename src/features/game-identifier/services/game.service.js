@@ -39,13 +39,15 @@ export function steamAppIsGame(httpDetailsPage) {
 export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
   const discoveredPages = [...htmlDetailsPages];
 
-  const games = steamApps.map((steamApp, index) => {
-    if (steamAppIsGame(discoveredPages[index])) {
-      discoveredPages[index] = 'discovered';
-      return Game.fromSteamApp(steamApp);
-    }
-    return;
-  }).filter(game => !!game);
+  const games = steamApps
+    .map((steamApp, index) => {
+      if (steamAppIsGame(discoveredPages[index])) {
+        discoveredPages[index] = "discovered";
+        return Game.fromSteamApp(steamApp);
+      }
+      return;
+    })
+    .filter((game) => !!game);
 
   return [games, discoveredPages];
 }

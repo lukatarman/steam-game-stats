@@ -14,10 +14,10 @@ export class WebServer {
   async start() {
     this.#server.log.info("Starting server...");
     try {
-      await this.#server.listen(3000)
+      await this.#server.listen(3000);
     } catch (err) {
-      this.#server.log.error(err)
-      process.exit(1)
+      this.#server.log.error(err);
+      process.exit(1);
     }
   }
 
@@ -25,8 +25,8 @@ export class WebServer {
     this.#server.log.info("Stopping server...");
     try {
       this.#server.close();
-    } catch(err) {
-      this.#server.log.error(err)
+    } catch (err) {
+      this.#server.log.error(err);
     }
   }
 }

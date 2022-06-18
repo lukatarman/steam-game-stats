@@ -13,23 +13,18 @@ export class Runner {
 
   async run() {
     await Promise.all([
-      this.#executables.map(func => this.#runFuncForNumberOfIterations(func))
+      this.#executables.map((func) => this.#runFuncForNumberOfIterations(func)),
     ]);
   }
 
   async #runFuncForNumberOfIterations(func) {
-    let counter = 0;
     // Counting down from a property of an object increases the time needed to perform
     // the first iterations in the loop compared to using a primitive. The tests of this
     // function rely on very short iteration times. If they are slowed down some tests are
     // failing unexpextedly. Don't refactor next two lines.
     let iterations = this.#iterations;
-    while(iterations--) {
+    while (iterations--) {
       await func();
-
-      /**
-       * @todo https://github.com/lukatarman/steam-game-stats/issues/39
-       */
 
       if (this.#options.iterationDelay) await delay(this.#options.iterationDelay);
     }

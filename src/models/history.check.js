@@ -4,24 +4,26 @@ export class HistoryCheck {
   found;
   source;
 
+  // prettier-ignore
   static fromSteamcharts(game, found) {
-    const check = new HistoryCheck();
-    check.gameId = game.id
+    const check   = new HistoryCheck();
+    check.gameId  = game.id
     check.checked = true;
-    check.found = found;
-    check.source = "steamcharts";
+    check.found   = found;
+    check.source  = "steamcharts";
     return check;
   }
 
   static manyFromGames(games) {
-    return games.map(game => HistoryCheck.fromGame(game));
+    return games.map((game) => HistoryCheck.fromGame(game));
   }
 
+  // prettier-ignore
   static fromGame(game) {
-    const check = new HistoryCheck();
-    check.gameId = game.id
+    const check   = new HistoryCheck();
+    check.gameId  = game.id
     check.checked = false;
-    check.found = false;
+    check.found   = false;
     return check;
   }
 

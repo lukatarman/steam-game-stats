@@ -22,21 +22,27 @@ describe("diff.service.js", () => {
       let appsFromDb;
 
       beforeAll(() => {
-        appsFromApi = [{
-          appid: 9821,
-          name: "GTA",
-        }, {
-          appid: 21987,
-          name: "Metro",
-        }, {
-          appid: 34512,
-          name: "The Sims",
-        }];
+        appsFromApi = [
+          {
+            appid: 9821,
+            name: "GTA",
+          },
+          {
+            appid: 21987,
+            name: "Metro",
+          },
+          {
+            appid: 34512,
+            name: "The Sims",
+          },
+        ];
 
-        appsFromDb = [{
-          appid: 21987,
-          name: "Metro",
-        }];
+        appsFromDb = [
+          {
+            appid: 21987,
+            name: "Metro",
+          },
+        ];
 
         resultDiff = diff(appsFromApi, appsFromDb);
       });

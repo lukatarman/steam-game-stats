@@ -1,5 +1,5 @@
 export class GameQueriesController {
-  #databaseClient
+  #databaseClient;
 
   constructor(databaseClient) {
     this.#databaseClient = databaseClient;

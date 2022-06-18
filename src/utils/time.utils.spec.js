@@ -1,4 +1,9 @@
-import { delay, hoursToMs, moreThanXhoursPassedSince, msPassedSince } from "./time.utils.js";
+import {
+  delay,
+  hoursToMs,
+  moreThanXhoursPassedSince,
+  msPassedSince,
+} from "./time.utils.js";
 
 describe("time.utils.js", () => {
   describe(".delay", () => {
@@ -49,39 +54,38 @@ describe("time.utils.js", () => {
 
   describe(".hoursToMs", () => {
     let result;
-    
+
     describe("passing a value of 12 into the function", () => {
       beforeAll(() => {
         result = hoursToMs(12);
-      })
+      });
 
       it("the function returns '43200000'", () => {
         expect(result).toBe(432e5);
-      })
-    })
+      });
+    });
 
     describe("passing a value of 0 into the function", () => {
       beforeAll(() => {
         result = hoursToMs(0);
-      })
+      });
 
       it("the function returns '43200000'", () => {
         expect(result).toBe(0);
-      })
-    })
+      });
+    });
 
     describe("passing a value of 100000 into the function", () => {
       beforeAll(() => {
         result = hoursToMs(1e5);
-      })
+      });
 
       it("the function returns '360000000000'", () => {
         expect(result).toBe(36e10);
-      })
-    })
-  })
+      });
+    });
+  });
 
-  
   describe(".moreThanXhoursPassedSince", () => {
     let oneDayInMs;
     let threeHoursInMs;
@@ -90,7 +94,7 @@ describe("time.utils.js", () => {
       oneDayInMs = 864e5;
       threeHoursInMs = 108e5;
     });
-    
+
     describe("if more than 3 hours have passed since exactly one day ago", () => {
       let result;
 
@@ -148,9 +152,9 @@ describe("time.utils.js", () => {
         const threeHoursInMs = 108e5;
         const threeHoursAhead = new Date().getTime() + threeHoursInMs;
         date = new Date(threeHoursAhead);
-        try{
+        try {
           result = msPassedSince(date);
-        } catch(err) {
+        } catch (err) {
           thrownError = err;
         }
       });
