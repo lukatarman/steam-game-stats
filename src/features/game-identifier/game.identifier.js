@@ -53,6 +53,7 @@ export class GameIdentifier {
     return games;
   }
 
+  // implement using map instead
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     const detailsPages = [];
     for(let steamApp of steamApps) {
