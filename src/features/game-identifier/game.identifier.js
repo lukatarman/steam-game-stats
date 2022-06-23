@@ -22,7 +22,7 @@ export class GameIdentifier {
     if (steamApps.length === 0) {
       return;
     }
-
+// use DB to filter through names instead
     await this.#identifyGames(steamApps);
   }
 
