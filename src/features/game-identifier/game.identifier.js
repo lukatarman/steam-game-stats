@@ -22,7 +22,7 @@ export class GameIdentifier {
     if (steamApps.length === 0) {
       return;
     }
-// use DB to filter through names instead
+//use DB to filter through names instead
     await this.#identifyGames(steamApps);
   }
 
@@ -53,7 +53,7 @@ export class GameIdentifier {
     return games;
   }
 
-  // implement using map instead
+  //implement using map instead
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     const detailsPages = [];
     for(let steamApp of steamApps) {
