@@ -18,11 +18,10 @@ export class GameIdentifier {
   }
 
   async run() {
-    const steamApps = await this.#databaseClient.getXunidentifiedSteamApps(this.#options.batchSize);
+    const steamApps = await this.#databaseClient.getXunidentifiedSteamAppsNotEndingInSoundtrackOrDlc(this.#options.batchSize);
     if (steamApps.length === 0) {
       return;
     }
-//use DB to filter through names instead
     await this.#identifyGames(steamApps);
   }
 
