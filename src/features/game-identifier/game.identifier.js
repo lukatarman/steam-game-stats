@@ -57,7 +57,6 @@ export class GameIdentifier {
     return detailsPages;
   }
 
-  //to do add tests
   async #discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps) {
     const games = [];
 
