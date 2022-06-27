@@ -44,13 +44,13 @@ export class GameIdentifier {
   async #filterSteamAppsByAppType(steamApps) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const [games, unidefinedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+    const [games, unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
       steamApps,
       htmlDetailsPages,
     );
 
     games.push(
-      ...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps)),
+      ...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(unidentifiedSteamApps)),
     );
 
     return games;
@@ -68,17 +68,17 @@ export class GameIdentifier {
     return detailsPages;
   }
 
-  async #discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps) {
+  async #discoverGamesFromSteamchartsHtmlDetailsPages(unidentifiedSteamApps) {
     const games = [];
 
     await delay(this.#options.unitDelay);
 
-    for (let unidefinedSteamApp of unidefinedSteamApps) {
+    for (let unidentifiedSteamApp of unidentifiedSteamApps) {
       try {
         await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
-          unidefinedSteamApp.appid,
+          unidentifiedSteamApp.appid,
         );
-        games.push(Game.fromSteamApp(unidefinedSteamApp));
+        games.push(Game.fromSteamApp(unidentifiedSteamApp));
       } catch (error) {
         /**
          * @TODO - https://github.com/lukatarman/steam-game-stats/issues/31
