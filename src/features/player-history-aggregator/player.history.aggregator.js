@@ -1,6 +1,6 @@
 import {
   addCurrentPlayersFromSteam,
-  addPlayerHistoriesFromSteamcharts
+  addPlayerHistoriesFromSteamcharts,
 } from "./services/player.history.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -30,29 +30,33 @@ export class PlayerHistoryAggregator {
    * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
    */
   addPlayerHistoryFromSteamcharts = async () => {
-    const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(this.#options.batchSize);
-    if(uncheckedGames.length === 0) return;
+    const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(
+      this.#options.batchSize,
+    );
+    if (uncheckedGames.length === 0) return;
 
-    const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(uncheckedGames);
+    const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(
+      uncheckedGames,
+    );
 
     const historyChecks = HistoryCheck.manyFromSteamchartsPages(gamesPagesMap);
     await this.#databaseClient.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
     await this.#databaseClient.updatePlayerHistoriesById(games);
-  }
+  };
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
     const gamesPagesMap = new Map();
 
-    for (let i = 0; i < games.length; i++) {
+    for (let game of games) {
       await delay(this.#options.unitDelay);
 
       try {
-        const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(games[i].id);
-        gamesPagesMap.set(games[i], page);
-      } catch(error) {
-        gamesPagesMap.set(games[i], "");
+        const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id);
+        gamesPagesMap.set(game, page);
+      } catch (error) {
+        gamesPagesMap.set(game, "");
       }
     }
 
@@ -72,5 +76,5 @@ export class PlayerHistoryAggregator {
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
 
     await this.#databaseClient.updatePlayerHistoriesById(gamesWithCurrentPlayers);
-  }
+  };
 }

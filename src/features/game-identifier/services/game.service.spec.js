@@ -100,6 +100,7 @@ describe("game.service.js", () => {
             name: "Glitchhikers Soundtrack 2"
           },
         ];
+
         this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
 
         [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(this.steamApps, this.htmlDetailsPages);
@@ -146,6 +147,7 @@ describe("game.service.js", () => {
             name: "GTA V"
           },
         ];
+
         this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage, mortalDarknessGameHtmlDetailsPage, gta5ageRestrictedHtmlDetailsPage];
 
         [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(this.steamApps, this.htmlDetailsPages);

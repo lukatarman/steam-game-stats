@@ -1,6 +1,6 @@
 import { parsePlayerHistory } from "./player.history.service.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
-import { sniperEliteHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/sniper.elite.just.released.html.details.page.js"
+import { sniperEliteHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/sniper.elite.just.released.html.details.page.js";
 
 describe("player.history.service.js", () => {
   describe(".parsePlayerHistory", () => {
