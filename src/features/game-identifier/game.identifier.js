@@ -39,9 +39,9 @@ export class GameIdentifier {
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const [games, discoveredGamePages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+    const [games, unidefinedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
 
-    games.push(...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages)));
+    games.push(...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps)));
 
     return games;
   }
