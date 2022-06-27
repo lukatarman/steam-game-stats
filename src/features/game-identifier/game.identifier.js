@@ -22,6 +22,7 @@ export class GameIdentifier {
     if (steamApps.length === 0) {
       return;
     }
+
     await this.#identifyGames(steamApps);
   }
 
@@ -29,14 +30,15 @@ export class GameIdentifier {
     const games = await this.#filterSteamAppsByAppType(steamApps);
     if (games.length !== 0) {
       await this.#databaseClient.insertManyGames(games);
-      await this.#databaseClient.insertManyHistoryChecks(HistoryCheck.manyFromGames(games));
+      await this.#databaseClient.insertManyHistoryChecks(
+        HistoryCheck.manyFromGames(games),
+      );
     }
 
     await this.#databaseClient.identifySteamAppsById(steamApps);
   }
 
   async #filterSteamAppsByAppType(steamApps) {
-
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const [games, unidefinedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
@@ -48,6 +50,7 @@ export class GameIdentifier {
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     const detailsPages = [];
+    
     for(let steamApp of steamApps) {
       detailsPages.push(
         await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid)

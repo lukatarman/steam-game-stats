@@ -7,8 +7,7 @@ export class GameQueriesRouter {
 
   routes = async (server, options) => {
     server.get("/games", async (request, reply) => {
-
-      return await this.#controller.getAllGames()
+      return await this.#controller.getAllGames();
     });
 
     server.get("/games/:id", async (request, reply) => {
@@ -16,5 +15,5 @@ export class GameQueriesRouter {
 
       return await this.#controller.getOneGameById(id);
     });
-  }
+  };
 }

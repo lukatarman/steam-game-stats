@@ -8,7 +8,7 @@ describe("runner.js", () => {
     beforeAll(() => {
       const func = () => counter++;
       const iterations = 1;
-      const options = {iterationDelay: 0};
+      const options = { iterationDelay: 0 };
       const runner = new Runner([func], options, iterations);
 
       runner.run();
@@ -25,7 +25,7 @@ describe("runner.js", () => {
     beforeAll(() => {
       const func = () => counter++;
       const iterations = 5;
-      const options = {iterationDelay: 0};
+      const options = { iterationDelay: 0 };
       const runner = new Runner([func], options, iterations);
 
       runner.run();
@@ -41,10 +41,16 @@ describe("runner.js", () => {
     let counterTwo = 0;
 
     beforeAll(async () => {
-      const funcOne = async () => {  await delay(80); counterOne++; };
-      const funcTwo = async () => {  await delay(80); counterTwo++; };
+      const funcOne = async () => {
+        await delay(80);
+        counterOne++;
+      };
+      const funcTwo = async () => {
+        await delay(80);
+        counterTwo++;
+      };
       const iterations = 10;
-      const options = {iterationDelay: 0};
+      const options = { iterationDelay: 0 };
       const runner = new Runner([funcOne, funcTwo], iterations, iterations);
 
       runner.run();
@@ -68,13 +74,29 @@ describe("runner.js", () => {
     let counterHasDuplicates = true;
 
     beforeAll(async () => {
-      const funcOne = async () => { await delay(10); counterOne++; };
-      const funcTwo = async () => { await delay(30); counterTwo++; };
-      const funcThree = async () => { await delay(50); counterThree++; };
-      const funcFour = async () => { await delay(90); counterFour++; };
+      const funcOne = async () => {
+        await delay(10);
+        counterOne++;
+      };
+      const funcTwo = async () => {
+        await delay(30);
+        counterTwo++;
+      };
+      const funcThree = async () => {
+        await delay(50);
+        counterThree++;
+      };
+      const funcFour = async () => {
+        await delay(90);
+        counterFour++;
+      };
       const iterations = 10;
-      const options = {iterationDelay: 0};
-      const runner = new Runner([funcOne, funcTwo, funcThree,funcFour], options, iterations);
+      const options = { iterationDelay: 0 };
+      const runner = new Runner(
+        [funcOne, funcTwo, funcThree, funcFour],
+        options,
+        iterations,
+      );
       function checkIfHasDuplicates(arr) {
         return new Set(arr).size !== arr.length;
       }
