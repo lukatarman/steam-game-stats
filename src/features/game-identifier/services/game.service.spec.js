@@ -7,6 +7,7 @@ import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-detai
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-pages/padak.video.html.details.page.js";
 import { theSims4catsAndDogsHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { Game } from "../../../models/game.js";
 
 describe("game.service.js", () => {
   describe(".steamAppIsGame", () => {
@@ -59,134 +60,154 @@ describe("game.service.js", () => {
     });
   });
 
- describe(".discoverGamesFromSteamHtmlDetailsPages", () => {
-    let steamApps;
-    let htmlDetailsPages;
-    let games;
-    let discoveredPages;
+ describe(".discoverGamesFromSteamHtmlDetailsPages", function() {
+    describe("discovers one game out of a batch of one stemApp", function() {
+      beforeEach(function() {
+        this.steamApps = [{
+          appid: 1,
+          name: "Animaddicts",
+        }];
+        this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage];
 
-    describe("discovers one game successfully", () => {
-      beforeAll(() => {
-        steamApps = [
-          {
-            appid: 1904380,
-            name: "Mortal Darkness",
-          },
-          {
-            appid: 1898200,
-            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
-          },
-        ];
-        htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
-
-        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(this.steamApps, this.htmlDetailsPages);
       });
 
-      it("returns an array of games with length 1", () => {
-        expect(games.length).toBe(1);
+      it("the length of games is 1", function() {
+        expect(this.games.length).toBe(1);
       });
 
-      it("the game has the same id as the steam app", () => {
-        expect(games[0].id).toBe(steamApps[0].appid);
+      it("the name of the first game is 'Animaddicts'", function() {
+        expect(this.games[0].name).toBe("Animaddicts");
       });
 
-      it("the game has the same name as the steam app", () => {
-        expect(games[0].name).toBe(steamApps[0].name);
+      it("the first entry in the games array is an instance of game", function() {
+        expect(this.games[0]).toBeInstanceOf(Game);
       });
 
-      it("returns an array of discoveredPages with the same length as htmlDetailsPages", () => {
-        expect(discoveredPages.length).toBe(htmlDetailsPages.length);
-      });
-
-      it("the discovered game page has the string 'discovered' in its place in the array", () => {
-        expect(discoveredPages[0]).toBe('discovered');
+      it("the length of unidentifiedSteamApps is 0", function() {
+        expect(this.unidentifiedSteamApps.length).toBe(0);
       });
     });
 
-    describe("discovers two games successfully", () => {
-      beforeAll(() => {
-        steamApps = [
+    describe("discovers one game out of a batch of two steamApps", function() {
+      beforeEach(function() {
+        this.steamApps = [
           {
-            appid: 1904380,
-            name: "Mortal Darkness",
+            appid: 1,
+            name: "Animaddicts",
           },
           {
-            appid: 1898200,
-            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
-          },
-          {
-            appid: 1904320,
-            name: "Animaddicts 2",
+            appid: 2,
+            name: "Glitchhikers Soundtrack 2"
           },
         ];
-        htmlDetailsPages = [
-          mortalDarknessGameHtmlDetailsPage,
-          glitchhikersSoundtrackHtmlDetailsPage,
-          animaddicts2gameHtmlDetailsPage
-        ];
+        this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage];
 
-        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(this.steamApps, this.htmlDetailsPages);
       });
 
-      it("returns an array of games with length 2", () => {
-        expect(games.length).toBe(2);
+      it("the length of games is 1", function() {
+        expect(this.games.length).toBe(1);
       });
 
-      it("the first game has the same id as the according steam app", () => {
-        expect(games[0].id).toBe(steamApps[0].appid);
+      it("the name of the first game is 'Animaddicts'", function() {
+        expect(this.games[0].name).toBe("Animaddicts");
       });
 
-      it("the first game has the same name as the according steam app", () => {
-        expect(games[0].name).toBe(steamApps[0].name);
+      it("the first entry in the games array is an instance of game", function() {
+        expect(this.games[0]).toBeInstanceOf(Game);
       });
 
-      it("the second game has the same id as the according steam app", () => {
-        expect(games[1].id).toBe(steamApps[2].appid);
+      it("the length of unidentifiedSteamApps is 1", function() {
+        expect(this.unidentifiedSteamApps.length).toBe(1);
       });
 
-      it("the second game has the same name as the according steam app", () => {
-        expect(games[1].name).toBe(steamApps[2].name);
-      });
-
-      it("returns an array of discoveredPages with the same length as htmlDetailsPages", () => {
-        expect(discoveredPages.length).toBe(htmlDetailsPages.length);
-      });
-
-      it("the first discovered game page has the string 'discovered' in its place in the array", () => {
-        expect(discoveredPages[0]).toBe('discovered');
-      });
-
-      it("the second discovered game page has the string 'discovered' in its place in the array", () => {
-        expect(discoveredPages[2]).toBe('discovered');
+      it("the name of the first steamApp is 'Glitchhikers Soundtrack 2'", function() {
+        expect(this.unidentifiedSteamApps[0].name).toBe("Glitchhikers Soundtrack 2");
       });
     });
 
-    describe("can not identify any games", () => {
-      beforeAll(() => {
-        steamApps = [
+    describe("discovers two games out of a batch of four steamApps,", function() {
+      beforeEach(function() {
+        this.steamApps = [
           {
-            appid: 1898200,
-            name: "Glitchhikers: The Spaces Between Deluxe Soundtrack 5-Volume Set",
+            appid: 1,
+            name: "Animaddicts",
+          },
+          {
+            appid: 2,
+            name: "Glitchhikers Soundtrack 2"
+          },
+          {
+            appid: 3,
+            name: "Mortal Darkness"
+          },
+          {
+            appid: 4,
+            name: "GTA V"
           },
         ];
-        htmlDetailsPages = [
-          glitchhikersSoundtrackHtmlDetailsPage,
-        ];
+        this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage, glitchhikersSoundtrackHtmlDetailsPage, mortalDarknessGameHtmlDetailsPage, gta5ageRestrictedHtmlDetailsPage];
 
-        [games, discoveredPages] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(this.steamApps, this.htmlDetailsPages);
       });
 
-      it("returns an empty array of games with length 0", () => {
-        expect(games.length).toBe(0);
+      it("the length of games is 2", function() {
+        expect(this.games.length).toBe(2);
       });
 
-      it("returns an array of discoveredPages with the same length as htmlDetailsPages", () => {
-        expect(discoveredPages.length).toBe(htmlDetailsPages.length);
+      it("the first entry in the games array is an instance of game", function() {
+        expect(this.games[0]).toBeInstanceOf(Game);
       });
 
-      it("discoveredPages array has no entry with the 'discovered' string'", () => {
-        expect(discoveredPages.indexOf('discovered')).toBe(-1);
+      it("the name of the first game is 'Animaddicts'", function() {
+        expect(this.games[0].name).toBe("Animaddicts");
+      });
+
+      it("the second entry in the games array is an instance of game", function() {
+        expect(this.games[1]).toBeInstanceOf(Game);
+      });
+
+      it("the name of the first game is 'Mortal Darkness'", function() {
+        expect(this.games[1].name).toBe("Mortal Darkness");
+      });
+
+      it("the length of unidentifiedSteamApps is 2", function() {
+        expect(this.unidentifiedSteamApps.length).toBe(2);
+      });
+
+      it("the name of the first steamApp is 'Glitchhikers Soundtrack 2'", function() {
+        expect(this.unidentifiedSteamApps[0].name).toBe("Glitchhikers Soundtrack 2");
+      });
+
+      it("the name of the first steamApp is 'GTA V'", function() {
+        expect(this.unidentifiedSteamApps[1].name).toBe("GTA V");
       });
     });
+
+    describe("discovers no games out of a batch of one steamApp", function() {
+      beforeEach(function() {
+        this.steamApps = [{
+          appid: 1,
+          name: "Padak",
+        }];
+        this.htmlDetailsPages = [padakVideoHtmlDetailsPage];
+
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(this.steamApps, this.htmlDetailsPages);
+      });
+
+      it("the length of games is 0", function() {
+        expect(this.games.length).toBe(0);
+      });
+
+      it("the length of unidentifiedSteamApps is 1", function() {
+        expect(this.unidentifiedSteamApps.length).toBe(1);
+      });
+
+      it("the name of the first steamApp is 'Padak'", function() {
+        expect(this.unidentifiedSteamApps[0].name).toBe("Padak");
+      });
+    });
+
   });
 });
