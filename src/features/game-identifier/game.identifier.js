@@ -57,22 +57,23 @@ export class GameIdentifier {
     return detailsPages;
   }
 
-  async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps, discoveredGamePages) {
-    return (await Promise.all(steamApps.map(async (steamApp, index) => {
-      if (discoveredGamePages[index] === 'discovered') return;
+  async #discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps) {
+    const games = [];
+    
+    await delay(this.#options.unitDelay);
 
-      await delay(this.#options.unitDelay);
-
+    for(let unidefinedSteamApp of unidefinedSteamApps) {
       try {
-        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(steamApps[index].appid);
-        return Game.fromSteamApp(steamApp);
+        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(unidefinedSteamApp.appid);
+        games.push(Game.fromSteamApp(unidefinedSteamApp));
       } catch (error) {
         /**
          * @TODO - https://github.com/lukatarman/steam-game-stats/issues/31
          */
-        if (error.status !== 500 && error.status !== 404) return;
+        continue;
       }
-    }))).filter(games => !!games);
+    }
+
+    return games;
   }
 }
-
