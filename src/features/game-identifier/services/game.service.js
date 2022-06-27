@@ -19,15 +19,14 @@ export function steamAppIsGame(httpDetailsPage) {
 }
 
 export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
-  const discoveredPages = [...htmlDetailsPages];
+  const games = [];
+  const unidentifiedSteamApps = [];
 
-  const games = steamApps.map((steamApp, index) => {
-    if (steamAppIsGame(discoveredPages[index])) {
-      discoveredPages[index] = 'discovered';
-      return Game.fromSteamApp(steamApp);
-    }
-    return;
-  }).filter(game => !!game);
+  for(let i = 0; i < steamApps.length; i++) {
+    steamAppIsGame(htmlDetailsPages[i]) ?
+    games.push(Game.fromSteamApp(steamApps[i])) :
+    unidentifiedSteamApps.push(steamApps[i]);
 
-  return [games, discoveredPages];
+    return [games, unidentifiedSteamApps];
+  }
 }
