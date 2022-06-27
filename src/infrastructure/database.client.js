@@ -81,7 +81,7 @@ export class DatabaseClient {
       .next();
   }
 
-  async getXunidentifiedSteamAppsNotEndingInSoundtrackOrDlc(amount) {
+  async getXunidentifiedFilteredSteamApps(amount) {
     return await this.#collections
       .get("steam_apps")
       .find({

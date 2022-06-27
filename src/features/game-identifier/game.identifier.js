@@ -19,7 +19,7 @@ export class GameIdentifier {
 
   async run() {
     const steamApps =
-      await this.#databaseClient.getXunidentifiedSteamAppsNotEndingInSoundtrackOrDlc(
+      await this.#databaseClient.getXunidentifiedFilteredSteamApps(
         this.#options.batchSize,
       );
     if (steamApps.length === 0) {
