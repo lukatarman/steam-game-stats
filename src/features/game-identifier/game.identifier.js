@@ -71,9 +71,9 @@ export class GameIdentifier {
   async #discoverGamesFromSteamchartsHtmlDetailsPages(unidentifiedSteamApps) {
     const games = [];
 
-    await delay(this.#options.unitDelay);
-
     for (let unidentifiedSteamApp of unidentifiedSteamApps) {
+      await delay(this.#options.unitDelay);
+      
       try {
         await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
           unidentifiedSteamApp.appid,
