@@ -1,5 +1,5 @@
 import { gamesMock } from "../../../../assets/small.data.set.js";
-import { steamAppIsGame, filterSteamAppsByName, discoverGamesFromSteamHtmlDetailsPages } from "./game.service.js";
+import { steamAppIsGame, discoverGamesFromSteamHtmlDetailsPages } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
@@ -10,69 +10,6 @@ import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-page
 import { theSims4catsAndDogsHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 
 describe("game.service.js", () => {
-  describe(".filterSteamAppsByName", () => {
-    describe("if steamApp.name string ends with 'DLC' keyword", () => {
-      let includesKeywords;
-
-      beforeAll(() => {
-        const steamApp = {
-          appid: 1234,
-          name: "Holy smokes DLC",
-        };
-        includesKeywords = filterSteamAppsByName([steamApp]);
-      });
-
-      it("function filterSteamAppsByName returns true", () => {
-        expect(includesKeywords.length).toBe(0);
-      });
-    });
-
-    describe("if steamApp.name string ends with 'soundtrack' keyword", () => {
-      let includesKeywords;
-
-      beforeAll(() => {
-        const steamApp = {
-          appid: 1235,
-          name: "The Mire Soundtrack",
-        };
-        includesKeywords = filterSteamAppsByName([steamApp]);
-      });
-
-      it("function filterSteamAppsByName returns true", () => {
-        expect(includesKeywords.length).toBe(0);
-      });
-    });
-
-    describe("if steamApp.name string does not end with dlc or soundtrack keyword", () => {
-      let includesKeywords;
-
-      beforeAll(() => {
-        const steamApp = {
-          appid: 1236,
-          name: "Fantasy Grounds - Deneb Adventure 1: The Lost Duke",
-        };
-        includesKeywords = filterSteamAppsByName([steamApp]);
-      });
-
-      it("function filterSteamAppsByName returns false", () => {
-        expect(includesKeywords.length).toBeTrue;
-      });
-    });
-
-    describe("returns array of only the games that do not contain keywords 'dlc' or 'soundtrack' at the end of their names", () => {
-      let games;
-
-      beforeAll(() => {
-        games = filterSteamAppsByName(gamesMock);
-      });
-
-      it("returns array with 15 entries", () => {
-        const isGameFalseCounter = games.length;
-        expect(isGameFalseCounter).toBe(gamesMock.length - 15);
-      });
-    });
-  });
-
   describe(".steamAppIsGame", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let isGame;
