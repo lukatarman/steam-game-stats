@@ -26,12 +26,6 @@ export class GameIdentifier {
   }
 
   async #identifyGames(steamApps) {
-    const filteredSteamApps = filterSteamAppsByName(steamApps);
-    if (filteredSteamApps.length === 0) {
-      await this.#databaseClient.identifySteamAppsById(steamApps);
-      return;
-    }
-
     const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
     if (games.length !== 0) {
       await this.#databaseClient.insertManyGames(games);
