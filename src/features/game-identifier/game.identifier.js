@@ -26,7 +26,7 @@ export class GameIdentifier {
   }
 
   async #identifyGames(steamApps) {
-    const games = await this.#filterSteamAppsByAppType(filteredSteamApps);
+    const games = await this.#filterSteamAppsByAppType(steamApps);
     if (games.length !== 0) {
       await this.#databaseClient.insertManyGames(games);
       await this.#databaseClient.insertManyHistoryChecks(HistoryCheck.manyFromGames(games));
