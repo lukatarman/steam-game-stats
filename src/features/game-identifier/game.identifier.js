@@ -18,7 +18,10 @@ export class GameIdentifier {
   }
 
   async run() {
-    const steamApps = await this.#databaseClient.getXunidentifiedSteamAppsNotEndingInSoundtrackOrDlc(this.#options.batchSize);
+    const steamApps =
+      await this.#databaseClient.getXunidentifiedSteamAppsNotEndingInSoundtrackOrDlc(
+        this.#options.batchSize,
+      );
     if (steamApps.length === 0) {
       return;
     }
@@ -41,19 +44,24 @@ export class GameIdentifier {
   async #filterSteamAppsByAppType(steamApps) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const [games, unidefinedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+    const [games, unidefinedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+      steamApps,
+      htmlDetailsPages,
+    );
 
-    games.push(...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps)));
+    games.push(
+      ...(await this.#discoverGamesFromSteamchartsHtmlDetailsPages(unidefinedSteamApps)),
+    );
 
     return games;
   }
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     const detailsPages = [];
-    
-    for(let steamApp of steamApps) {
+
+    for (let steamApp of steamApps) {
       detailsPages.push(
-        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid)
+        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid),
       );
       await delay(this.#options.unitDelay);
     }
@@ -65,9 +73,11 @@ export class GameIdentifier {
 
     await delay(this.#options.unitDelay);
 
-    for(let unidefinedSteamApp of unidefinedSteamApps) {
+    for (let unidefinedSteamApp of unidefinedSteamApps) {
       try {
-        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(unidefinedSteamApp.appid);
+        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
+          unidefinedSteamApp.appid,
+        );
         games.push(Game.fromSteamApp(unidefinedSteamApp));
       } catch (error) {
         /**

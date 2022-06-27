@@ -84,7 +84,12 @@ export class DatabaseClient {
   async getXunidentifiedSteamAppsNotEndingInSoundtrackOrDlc(amount) {
     return await this.#collections
       .get("steam_apps")
-      .find( { $and: [ { name: { $not: { $regex: /soundtrack$/, $options: "i" } } }, { name: { $not: { $regex: /dlc$/, $options: "i" } } } ] } )
+      .find({
+        $and: [
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+        ],
+      })
       .limit(amount)
       .toArray();
   }

@@ -22,11 +22,11 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
   const games = [];
   const unidentifiedSteamApps = [];
 
-  for(let i = 0; i < steamApps.length; i++) {
-    steamAppIsGame(htmlDetailsPages[i]) ?
-    games.push(Game.fromSteamApp(steamApps[i])) :
-    unidentifiedSteamApps.push(steamApps[i]);
+  for (let i = 0; i < steamApps.length; i++) {
+    steamAppIsGame(htmlDetailsPages[i])
+      ? games.push(Game.fromSteamApp(steamApps[i]))
+      : unidentifiedSteamApps.push(steamApps[i]);
   }
-  
+
   return [games, unidentifiedSteamApps];
 }
