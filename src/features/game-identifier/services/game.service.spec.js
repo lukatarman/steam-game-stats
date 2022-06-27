@@ -63,7 +63,7 @@ describe("game.service.js", () => {
   });
 
   describe(".discoverGamesFromSteamHtmlDetailsPages", function () {
-    describe("discovers one game out of a batch of one stemApp", function () {
+    describe("discovers one game out of a batch of one stemApp, so", function () {
       beforeEach(function () {
         this.steamApps = [
           {
@@ -83,7 +83,7 @@ describe("game.service.js", () => {
         expect(this.games.length).toBe(1);
       });
 
-      it("the name of the first game is 'Animaddicts'", function () {
+      it("the name of the first game array entry is 'Animaddicts'", function () {
         expect(this.games[0].name).toBe("Animaddicts");
       });
 
@@ -96,7 +96,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("discovers one game out of a batch of two steamApps", function () {
+    describe("discovers one game out of a batch of two steamApps, so", function () {
       beforeEach(function () {
         this.steamApps = [
           {
@@ -124,7 +124,7 @@ describe("game.service.js", () => {
         expect(this.games.length).toBe(1);
       });
 
-      it("the name of the first game is 'Animaddicts'", function () {
+      it("the name of the first game array entry is 'Animaddicts'", function () {
         expect(this.games[0].name).toBe("Animaddicts");
       });
 
@@ -136,12 +136,12 @@ describe("game.service.js", () => {
         expect(this.unidentifiedSteamApps.length).toBe(1);
       });
 
-      it("the name of the first steamApp is 'Glitchhikers Soundtrack 2'", function () {
+      it("the name of the first steamApp array entry is 'Glitchhikers Soundtrack 2'", function () {
         expect(this.unidentifiedSteamApps[0].name).toBe("Glitchhikers Soundtrack 2");
       });
     });
 
-    describe("discovers two games out of a batch of four steamApps,", function () {
+    describe("discovers two games out of a batch of four steamApps, so", function () {
       beforeEach(function () {
         this.steamApps = [
           {
@@ -183,7 +183,7 @@ describe("game.service.js", () => {
         expect(this.games[0]).toBeInstanceOf(Game);
       });
 
-      it("the name of the first game is 'Animaddicts'", function () {
+      it("the name of the first game array entry is 'Animaddicts'", function () {
         expect(this.games[0].name).toBe("Animaddicts");
       });
 
@@ -191,7 +191,7 @@ describe("game.service.js", () => {
         expect(this.games[1]).toBeInstanceOf(Game);
       });
 
-      it("the name of the first game is 'Mortal Darkness'", function () {
+      it("the name of the second game array entry is 'Mortal Darkness'", function () {
         expect(this.games[1].name).toBe("Mortal Darkness");
       });
 
@@ -199,16 +199,16 @@ describe("game.service.js", () => {
         expect(this.unidentifiedSteamApps.length).toBe(2);
       });
 
-      it("the name of the first steamApp is 'Glitchhikers Soundtrack 2'", function () {
+      it("the name of the first steamApp array entry is 'Glitchhikers Soundtrack 2'", function () {
         expect(this.unidentifiedSteamApps[0].name).toBe("Glitchhikers Soundtrack 2");
       });
 
-      it("the name of the first steamApp is 'GTA V'", function () {
+      it("the name of the second steamApp array entry is 'GTA V'", function () {
         expect(this.unidentifiedSteamApps[1].name).toBe("GTA V");
       });
     });
 
-    describe("discovers no games out of a batch of one steamApp", function () {
+    describe("discovers no games out of a batch of one steamApp, so", function () {
       beforeEach(function () {
         this.steamApps = [
           {
@@ -232,7 +232,7 @@ describe("game.service.js", () => {
         expect(this.unidentifiedSteamApps.length).toBe(1);
       });
 
-      it("the name of the first steamApp is 'Padak'", function () {
+      it("the name of the first steamApp array entry is 'Padak'", function () {
         expect(this.unidentifiedSteamApps[0].name).toBe("Padak");
       });
     });
