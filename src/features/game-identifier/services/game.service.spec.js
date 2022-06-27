@@ -1,4 +1,3 @@
-import { gamesMock } from "../../../../assets/small.data.set.js";
 import { steamAppIsGame, discoverGamesFromSteamHtmlDetailsPages } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
