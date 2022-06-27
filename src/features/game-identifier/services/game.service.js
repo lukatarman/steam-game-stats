@@ -26,7 +26,7 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
     steamAppIsGame(htmlDetailsPages[i]) ?
     games.push(Game.fromSteamApp(steamApps[i])) :
     unidentifiedSteamApps.push(steamApps[i]);
-
-    return [games, unidentifiedSteamApps];
   }
+  
+  return [games, unidentifiedSteamApps];
 }
