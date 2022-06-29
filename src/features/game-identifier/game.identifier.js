@@ -1,7 +1,4 @@
-import {
-  filterSteamAppsByName,
-  discoverGamesFromSteamHtmlDetailsPages,
-} from "./services/game.service.js";
+import { discoverGamesFromSteamHtmlDetailsPages } from "./services/game.service.js";
 import { Game } from "../../models/game.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -16,6 +13,19 @@ export class GameIdentifier {
     this.#databaseClient = databaseClient;
     this.#options = options;
   }
+
+  identifyViaSteamWeb = async () => {
+    // get a batch of steamApps
+    // identify all you can via steam web
+    // store the identified games
+    // store steamApps and
+    //   - update the identified propertiy where the game was identified
+    //   - update the triedVia array property with "steamWeb"
+  };
+
+  identifyViaSteamchartsWeb = async () => {
+    // get a batch of steamApps which are unidentified and tried via steamWeb
+  };
 
   async run() {
     const steamApps = await this.#databaseClient.getXunidentifiedFilteredSteamApps(
