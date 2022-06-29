@@ -21,9 +21,8 @@ export class GameIdentifier {
     const steamApps = await this.#databaseClient.getXunidentifiedFilteredSteamApps(
       this.#options.batchSize,
     );
-    if (steamApps.length === 0) {
-      return;
-    }
+
+    if (steamApps.length === 0) return;
 
     await this.#identifyGames(steamApps);
   }
