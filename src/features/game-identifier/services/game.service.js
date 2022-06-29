@@ -1,24 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
 
-export function filterSteamAppsByName(steamApps) {
-  return steamApps.filter((steamApp) => doesNotEndWithDlcOrSoundtrack(steamApp));
-
-  function doesNotEndWithDlcOrSoundtrack(steamApp) {
-    const lowercaseGameName = steamApp.name.toLowerCase();
-    const endsWithDlc = /dlc$/;
-    const endsWithSoundtrack = /soundtrack$/;
-
-    if (
-      !lowercaseGameName.match(endsWithDlc) &&
-      !lowercaseGameName.match(endsWithSoundtrack)
-    )
-      return true;
-
-    return false;
-  }
-}
-
 export function steamAppIsGame(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
@@ -37,17 +19,14 @@ export function steamAppIsGame(httpDetailsPage) {
 }
 
 export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
-  const discoveredPages = [...htmlDetailsPages];
+  const games = [];
+  const unidentifiedSteamApps = [];
 
-  const games = steamApps
-    .map((steamApp, index) => {
-      if (steamAppIsGame(discoveredPages[index])) {
-        discoveredPages[index] = "discovered";
-        return Game.fromSteamApp(steamApp);
-      }
-      return;
-    })
-    .filter((game) => !!game);
+  for (let i = 0; i < steamApps.length; i++) {
+    steamAppIsGame(htmlDetailsPages[i])
+      ? games.push(Game.fromSteamApp(steamApps[i]))
+      : unidentifiedSteamApps.push(steamApps[i]);
+  }
 
-  return [games, discoveredPages];
+  return [games, unidentifiedSteamApps];
 }
