@@ -12,7 +12,7 @@ export class SteamClient {
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
     const response = await this.#httpClient.get(url, options).data.applist.apps;
 
-    return SteamApp.oneFromSteamApi(response);
+    return SteamApp.manyFromSteamApi(response);
   }
 
   async getCurrentPlayers(game) {
