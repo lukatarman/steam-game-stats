@@ -18,16 +18,24 @@ export class SteamApp {
     return steamApp;
   }
 
+  static manyFromDbEntries(dbEntries) {
+    return dbEntries.map((dbEntry) => SteamApp.oneFromDbEntry(dbEntry));
+  }
+
   // prettier-ignore
-  static fromDbEntry(dbEntry) {
+  static oneFromDbEntry(dbEntry) {
     const steamApp      = new SteamApp();
     steamApp.appid      = dbEntry.appid;
     steamApp.name       = dbEntry.name;
     steamApp.identified = dbEntry.identified;
-    steamApp.triedVia   = dbEntry.triedVia;
+    steamApp.triedVia   = dbEntry.triedVia.slice();
     return steamApp;
   }
 
+  //remove services folder
+  //add steam.app.js tests (check if oneFromDbEntry makes copy of property)
+  //check that code is working
+  //adjust tests for steam.apps.aggregator
   static diff(steamAppsSource, steamAppsTarget) {
     const targetAppIds = steamAppsTarget.map((app) => app.appid);
 
