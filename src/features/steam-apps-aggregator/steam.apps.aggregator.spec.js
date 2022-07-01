@@ -1,8 +1,8 @@
 import { SteamAppsAggregator } from "./steam.apps.aggregator.js";
 import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
 import { gamesMock } from "../../../assets/small.data.set.js";
-import { diff } from "./services/diff.service.js";
 import { hoursToMs } from "../../utils/time.utils.js";
+import { SteamApp } from "../../models/steam.app.js";
 
 describe("SteamAppsAggregator", () => {
   describe(".collectSteamApps()", () => {
@@ -85,7 +85,7 @@ describe("SteamAppsAggregator", () => {
             updateIntervalDelay: 100,
           });
 
-          steamAppsDifference = diff(gamesMock, smallestGamesMock);
+          steamAppsDifference = SteamApp.diff(gamesMock, smallestGamesMock);
 
           await agg.collectSteamApps();
         });
@@ -126,7 +126,7 @@ describe("SteamAppsAggregator", () => {
 
         it("calls .insertManySteamApps with enrichedSteamApps parameter", () => {
           expect(databaseClientMock.insertManySteamApps).toHaveBeenCalledOnceWith(
-            smallestGamesMock,
+            steamAppsDifference,
           );
         });
 
@@ -157,7 +157,7 @@ describe("SteamAppsAggregator", () => {
             updateIntervalDelay: 100,
           });
 
-          steamAppsDifference = diff(smallestGamesMock, smallestGamesMock);
+          steamAppsDifference = SteamApp.diff(smallestGamesMock, smallestGamesMock);
 
           await agg.collectSteamApps();
         });
