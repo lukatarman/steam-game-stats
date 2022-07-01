@@ -92,7 +92,7 @@ describe("steam.app.spec.js", function () {
         this.result = SteamApp.manyFromDbEntries(this.apps);
       });
 
-      it("the array length is 2", function () {
+      it("the returned array length is 2", function () {
         expect(this.result.length).toBe(2);
       });
 
