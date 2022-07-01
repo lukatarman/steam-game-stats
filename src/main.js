@@ -5,7 +5,7 @@ import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps
 import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
 import { hoursToMs } from "./utils/time.utils.js";
 import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";
-import { Runner } from "./runner/runner.js";
+import { Runner } from "./utils/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
 import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
 import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
