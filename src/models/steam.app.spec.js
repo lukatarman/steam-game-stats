@@ -141,7 +141,7 @@ describe("steam.app.spec.js", function () {
         expect(this.result.triedVia.length).toBe(1);
       });
 
-      it("has a property called 'tiredVia'. It has the value of 'steam', which is a shallow copy.", function () {
+      it("has a property called 'tiredVia'. It has the value of 'steam'.", function () {
         expect(this.result.triedVia[0]).toBe("steam");
       });
 
