@@ -10,9 +10,9 @@ export class SteamClient {
   async getAppList() {
     const url = "https://api.steampowered.com/ISteamApps/GetAppList/v2";
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
-    const response = await this.#httpClient.get(url, options).data.applist.apps;
+    const response = await this.#httpClient.get(url, options);
 
-    return SteamApp.manyFromSteamApi(response);
+    return SteamApp.manyFromSteamApi(response.data.applist.apps);
   }
 
   async getCurrentPlayers(game) {
