@@ -47,7 +47,7 @@ describe("steam.app.spec.js", function () {
   });
 
   describe(".oneFromSteamApi returns a variable.", function () {
-    describe("When an app variable is passed in, this app, ", function () {
+    describe("When an 'app' object is passed in, 'app' ", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
