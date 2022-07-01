@@ -32,8 +32,6 @@ export class SteamApp {
     return steamApp;
   }
 
-  //add steam.app.js tests (check if oneFromDbEntry makes copy of property)
-  //check that code is working
   static diff(steamAppsSource, steamAppsTarget) {
     const targetAppIds = steamAppsTarget.map((app) => app.appid);
 
