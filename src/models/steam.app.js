@@ -32,10 +32,8 @@ export class SteamApp {
     return steamApp;
   }
 
-  //remove services folder
   //add steam.app.js tests (check if oneFromDbEntry makes copy of property)
   //check that code is working
-  //adjust tests for steam.apps.aggregator
   static diff(steamAppsSource, steamAppsTarget) {
     const targetAppIds = steamAppsTarget.map((app) => app.appid);
 
