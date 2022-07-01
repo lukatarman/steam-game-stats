@@ -1,10 +1,14 @@
+import { gamesMock } from "../../assets/small.data.set.js";
+import { smallestGamesMock } from "../../assets/smallest.data.set.js";
+import { SteamApp } from "./steam.app.js";
+
 describe("steam.app.spec.js", function () {
   describe(".diff", () => {
     describe("finds the diff of two arrays of steam apps successfully in a big data set", () => {
       let array;
 
       beforeAll(() => {
-        array = diff(gamesMock, smallestGamesMock);
+        array = SteamApp.diff(gamesMock, smallestGamesMock);
       });
 
       it("returns an array with the differences between the arrays", () => {
@@ -40,7 +44,7 @@ describe("steam.app.spec.js", function () {
           },
         ];
 
-        resultDiff = diff(appsFromApi, appsFromDb);
+        resultDiff = SteamApp.diff(appsFromApi, appsFromDb);
       });
 
       it("returns an array with the differences between the arrays", () => {
