@@ -119,7 +119,7 @@ describe("steam.app.spec.js", function () {
   });
 
   describe(".oneFromDbEntry returns a variable.", function () {
-    describe("When an app that has been identified via steam is passed in, this app ", function () {
+    describe("When an 'app' object that has been identified via steam is passed in, 'app' ", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
