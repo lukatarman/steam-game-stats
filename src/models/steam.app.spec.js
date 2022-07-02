@@ -2,7 +2,7 @@ import { gamesMock } from "../../assets/small.data.set.js";
 import { smallestGamesMock } from "../../assets/smallest.data.set.js";
 import { SteamApp } from "./steam.app.js";
 
-describe("steam.app.spec.js", function () {
+describe("SteamApp", function () {
   describe(".manyFromSteamApi returns an array of apps.", function () {
     describe("When two apps are passed into it,", function () {
       beforeEach(function () {
