@@ -74,7 +74,7 @@ describe("SteamApp", function () {
   describe(".manyFromDbEntries returns an array of apps.", function () {
     describe("When two apps are passed into it,", function () {
       beforeEach(function () {
-        this.apps = [
+        this.dbEntries = [
           {
             name: "Castlevania",
             appid: 1,
@@ -89,7 +89,7 @@ describe("SteamApp", function () {
           },
         ];
 
-        this.result = SteamApp.manyFromDbEntries(this.apps);
+        this.result = SteamApp.manyFromDbEntries(this.dbEntries);
       });
 
       it("the returned array length is 2", function () {
