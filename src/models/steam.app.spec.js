@@ -40,7 +40,7 @@ describe("SteamApp", function () {
 
       it("throws an error", function () {
         expect(function () {
-          SteamApp.manyFromSteamApi(this.apps);
+          SteamApp.app.manyFromSteamApi(this.apps);
         }).toThrowError();
       });
     });
