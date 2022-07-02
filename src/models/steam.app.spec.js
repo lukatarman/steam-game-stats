@@ -117,16 +117,16 @@ describe("SteamApp", function () {
   describe(".oneFromDbEntry returns an object.", function () {
     describe("When an 'app' object is passed in, the returned object", function () {
       beforeEach(function () {
-        this.app = {
+        this.dbEntry = {
           name: "Castlevania",
           appid: 1,
           identified: true,
           triedVia: ["steam"],
         };
 
-        this.result = SteamApp.oneFromDbEntry(this.app);
+        this.result = SteamApp.oneFromDbEntry(this.dbEntry);
 
-        this.app.triedVia = ["steamcharts"];
+        this.dbEntry.triedVia = ["steamcharts"];
       });
 
       it("is an instance of SteamApp", function () {
