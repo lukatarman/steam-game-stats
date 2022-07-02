@@ -46,8 +46,8 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".oneFromSteamApi returns a variable.", function () {
-    describe("When an 'app' object is passed in, 'app' ", function () {
+  describe(".oneFromSteamApi returns an object.", function () {
+    describe("When an 'app' object is passed in, the returned object ", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
