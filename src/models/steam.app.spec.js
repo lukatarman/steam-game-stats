@@ -118,8 +118,8 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".oneFromDbEntry returns a variable.", function () {
-    describe("When an 'app' object that has been identified via steam is passed in, 'app' ", function () {
+  describe(".oneFromDbEntry returns an object.", function () {
+    describe("When an 'app' object is passed in, the returned object", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
