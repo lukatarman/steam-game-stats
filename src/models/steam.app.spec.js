@@ -141,7 +141,7 @@ describe("SteamApp", function () {
         expect(this.result.triedVia[0]).toBe("steam");
       });
 
-      it("Changing the original array value doesn't change the new instantiated value", function () {
+      it("contains a copy of the dbEntry.triedVia property", function () {
         expect(this.app.triedVia[0]).not.toBe(this.result.triedVia[0]);
       });
     });
