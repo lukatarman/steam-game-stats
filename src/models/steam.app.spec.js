@@ -110,7 +110,7 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".oneFromDbEntry returns an object.", function () {
+  describe(".oneFromDbEntry returns an instance of SteamApp.", function () {
     describe("When an 'app' object is passed in, the returned object", function () {
       beforeEach(function () {
         this.dbEntry = {
