@@ -133,11 +133,11 @@ describe("SteamApp", function () {
         expect(this.result).toBeInstanceOf(SteamApp);
       });
 
-      it("has a property called 'triedVia with a single array", function () {
+      it("has a property called 'triedVia with a single entry", function () {
         expect(this.result.triedVia.length).toBe(1);
       });
 
-      it("has a property called 'triedVia'. It has the value of 'steam'.", function () {
+      it("has the entry 'steam' in the 'triedVia' array", function () {
         expect(this.result.triedVia[0]).toBe("steam");
       });
 
