@@ -150,7 +150,7 @@ describe("SteamApp", function () {
       });
 
       it("contains a copy of the dbEntry.triedVia property. All of values of this property are strings", function () {
-        expect(this.areValuesStrings).toBe(true);
+        expect(this.areValuesStrings).toBeTrue();
       });
     });
   });
