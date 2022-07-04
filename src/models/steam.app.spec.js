@@ -111,7 +111,7 @@ describe("SteamApp", function () {
   });
 
   describe(".oneFromDbEntry returns an instance of SteamApp.", function () {
-    describe("When an 'app' object is passed in, the returned object", function () {
+    describe("When a dbEntry is passed in, the resulting SteamApp instance", function () {
       beforeEach(function () {
         this.dbEntry = {
           name: "Castlevania",
