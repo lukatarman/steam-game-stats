@@ -155,26 +155,20 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".diff", () => {
-    describe("finds the diff of two arrays of steam apps successfully in a big data set", () => {
-      let array;
-
-      beforeAll(() => {
-        array = SteamApp.diff(gamesMock, smallestGamesMock);
+  describe(".diff", function () {
+    describe("finds the diff of two arrays of steam apps successfully in a big data set", function () {
+      beforeEach(function () {
+        this.array = SteamApp.diff(gamesMock, smallestGamesMock);
       });
 
-      it("returns an array with the differences between the arrays", () => {
-        expect(array.length).toBe(205);
+      it("returns an array with the differences between the arrays", function () {
+        expect(this.array.length).toBe(205);
       });
     });
 
-    describe("finds the diff of two arrays of steam apps in a tiny data set", () => {
-      let resultDiff;
-      let appsFromApi;
-      let appsFromDb;
-
-      beforeAll(() => {
-        appsFromApi = [
+    describe("finds the diff of two arrays of steam apps in a tiny data set", function () {
+      beforeEach(function () {
+        this.appsFromApi = [
           {
             appid: 9821,
             name: "GTA",
@@ -189,26 +183,26 @@ describe("SteamApp", function () {
           },
         ];
 
-        appsFromDb = [
+        this.appsFromDb = [
           {
             appid: 21987,
             name: "Metro",
           },
         ];
 
-        resultDiff = SteamApp.diff(appsFromApi, appsFromDb);
+        this.resultDiff = SteamApp.diff(this.appsFromApi, this.appsFromDb);
       });
 
-      it("returns an array with the differences between the arrays", () => {
-        expect(resultDiff.length).toBe(2);
+      it("returns an array with the differences between the arrays", function () {
+        expect(this.resultDiff.length).toBe(2);
       });
 
-      it("first entry is GTA", () => {
-        expect(resultDiff[0].appid).toBe(appsFromApi[0].appid);
+      it("first entry is GTA", function () {
+        expect(this.resultDiff[0].appid).toBe(this.appsFromApi[0].appid);
       });
 
-      it("second entry is The sims", () => {
-        expect(resultDiff[1].appid).toBe(appsFromApi[2].appid);
+      it("second entry is The sims", function () {
+        expect(this.resultDiff[1].appid).toBe(this.appsFromApi[2].appid);
       });
     });
   });
