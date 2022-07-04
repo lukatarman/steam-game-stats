@@ -142,7 +142,7 @@ describe("SteamApp", function () {
       });
 
       it("contains a copy of the dbEntry.triedVia property", function () {
-        expect(this.app.triedVia[0]).not.toBe(this.result.triedVia[0]);
+        expect(this.dbEntry.triedVia[0]).not.toBe(this.result.triedVia[0]);
       });
     });
   });
