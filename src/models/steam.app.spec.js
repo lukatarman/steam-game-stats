@@ -61,7 +61,7 @@ describe("SteamApp", function () {
         expect(this.result.identified).toBe(false);
       });
 
-      it("has a property called 'tiredVia'. It is an empty array.", function () {
+      it("has a property called 'triedVia'. It is an empty array.", function () {
         expect(this.result.triedVia).toEqual([]);
       });
     });
@@ -137,11 +137,11 @@ describe("SteamApp", function () {
         expect(this.result).toBeInstanceOf(SteamApp);
       });
 
-      it("has a property called 'tiredVia with a single array", function () {
+      it("has a property called 'triedVia with a single array", function () {
         expect(this.result.triedVia.length).toBe(1);
       });
 
-      it("has a property called 'tiredVia'. It has the value of 'steam'.", function () {
+      it("has a property called 'triedVia'. It has the value of 'steam'.", function () {
         expect(this.result.triedVia[0]).toBe("steam");
       });
 
