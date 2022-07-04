@@ -58,7 +58,7 @@ describe("SteamApp", function () {
       });
 
       it("has a property called 'identified'. It is false", function () {
-        expect(this.result.identified).toBe(false);
+        expect(this.result.identified).toBeFalse();
       });
 
       it("has a property called 'triedVia'. It is an empty array.", function () {
@@ -68,7 +68,7 @@ describe("SteamApp", function () {
   });
 
   describe(".manyFromDbEntries returns an array of SteamApp instances.", function () {
-    describe("When dbEntries are passed into it,", function () {
+    describe("When dbEntries is passed into it,", function () {
       beforeEach(function () {
         this.dbEntries = [
           {
