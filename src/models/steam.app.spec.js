@@ -3,7 +3,7 @@ import { smallestGamesMock } from "../../assets/smallest.data.set.js";
 import { SteamApp } from "./steam.app.js";
 
 describe("SteamApp", function () {
-  describe(".manyFromSteamApi returns an array of apps.", function () {
+  describe(".manyFromSteamApi returns an array of SteamApp instances.", function () {
     describe("When two apps are passed into it,", function () {
       beforeEach(function () {
         this.apps = [
