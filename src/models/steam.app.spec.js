@@ -67,7 +67,7 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".manyFromDbEntries returns an array of apps.", function () {
+  describe(".manyFromDbEntries returns an array of SteamApp instances.", function () {
     describe("When two apps are passed into it,", function () {
       beforeEach(function () {
         this.dbEntries = [
