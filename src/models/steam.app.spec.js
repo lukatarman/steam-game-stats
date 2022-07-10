@@ -36,7 +36,7 @@ describe("SteamApp", function () {
     describe("When an invalid value is passed into it,", function () {
       it("throws an error", function () {
         expect(function () {
-          SteamApp.app.manyFromSteamApi(this.apps);
+          SteamApp.manyFromSteamApi(this.apps);
         }).toThrowError();
       });
     });
