@@ -145,6 +145,10 @@ describe("SteamApp", function () {
       });
 
       it("contains a copy of the dbEntry.triedVia property. All of values of this property are strings", function () {
+        this.areValuesStrings = this.result.triedVia.every(
+          (value) => typeof value === "string",
+        );
+
         expect(this.areValuesStrings).toBeTrue();
       });
     });
