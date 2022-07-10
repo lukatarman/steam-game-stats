@@ -122,8 +122,6 @@ describe("SteamApp", function () {
 
         this.result = SteamApp.oneFromDbEntry(this.dbEntry);
 
-        this.dbEntry.triedVia = ["steamcharts"];
-
         this.areValuesStrings = this.result.triedVia.every(
           (value) => typeof value === "string",
         );
@@ -142,6 +140,7 @@ describe("SteamApp", function () {
       });
 
       it("contains a copy of the dbEntry.triedVia property", function () {
+        this.dbEntry.triedVia = ["steamcharts"];
         expect(this.dbEntry.triedVia[0]).not.toBe(this.result.triedVia[0]);
       });
 
