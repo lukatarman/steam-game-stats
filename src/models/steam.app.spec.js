@@ -104,7 +104,7 @@ describe("SteamApp", function () {
     describe("When an invalid value is passed into it,", function () {
       it("throws an error", function () {
         expect(function () {
-          SteamApp.app.manyFromDbEntries(this.apps);
+          SteamApp.manyFromDbEntries(this.apps);
         }).toThrowError();
       });
     });
