@@ -33,10 +33,10 @@ describe("SteamApp", function () {
       });
     });
 
-    describe("When an invalid value is passed into it,", function () {
+    describe("When an undefined value is passed into it,", function () {
       it("throws an error", function () {
         expect(function () {
-          SteamApp.manyFromSteamApi(this.apps);
+          SteamApp.manyFromSteamApi(undefined);
         }).toThrowError();
       });
     });
@@ -101,10 +101,10 @@ describe("SteamApp", function () {
       });
     });
 
-    describe("When an invalid value is passed into it,", function () {
+    describe("When an undefined value is passed into it,", function () {
       it("throws an error", function () {
         expect(function () {
-          SteamApp.manyFromDbEntries(this.apps);
+          SteamApp.manyFromDbEntries(undefined);
         }).toThrowError();
       });
     });
