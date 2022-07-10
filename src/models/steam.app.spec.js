@@ -121,10 +121,6 @@ describe("SteamApp", function () {
         };
 
         this.result = SteamApp.oneFromDbEntry(this.dbEntry);
-
-        this.areValuesStrings = this.result.triedVia.every(
-          (value) => typeof value === "string",
-        );
       });
 
       it("is an instance of SteamApp", function () {
