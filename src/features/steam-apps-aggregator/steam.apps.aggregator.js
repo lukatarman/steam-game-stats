@@ -1,5 +1,4 @@
-import { diff } from "./services/diff.service.js";
-import { labelAsNotIdentified } from "./services/label.service.js";
+import { SteamApp } from "../../models/steam.app.js";
 import { moreThanXhoursPassedSince } from "../../utils/time.utils.js";
 
 export class SteamAppsAggregator {
@@ -27,8 +26,8 @@ export class SteamAppsAggregator {
 
   async #collectFirstTime() {
     const steamApps = await this.#steamClient.getAppList();
-    const enrichedSteamApps = labelAsNotIdentified(steamApps);
-    await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
+
+    await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 
@@ -38,13 +37,12 @@ export class SteamAppsAggregator {
     /**
      * @TODO https://github.com/lukatarman/steam-game-stats/issues/32
      */
-    const steamApps = diff(steamAppsApi, steamAppsDb);
+    const steamApps = SteamApp.diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) {
       await this.#databaseClient.insertOneUpdateTimestamp(new Date());
       return;
     }
-    const enrichedSteamApps = labelAsNotIdentified(steamApps);
-    await this.#databaseClient.insertManySteamApps(enrichedSteamApps);
+    await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 }
