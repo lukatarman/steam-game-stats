@@ -1,6 +1,5 @@
 import { MongoClient } from "mongodb";
 import { Game } from "../models/game.js";
-import { SteamApp } from "../models/steam.app.js";
 
 export class DatabaseClient {
   #collections;
@@ -54,8 +53,7 @@ export class DatabaseClient {
   }
 
   async getAllSteamApps() {
-    const response = await this.getAll("steam_apps");
-    return SteamApp.manyFromDbEntries(response);
+    return await this.getAll("steam_apps");
   }
 
   async getAll(collectionName, filter = {}) {
