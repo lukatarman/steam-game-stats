@@ -57,7 +57,7 @@ export class GameIdentifier {
       htmlDetailsPages,
     );
 
-    return games;
+    return [games, unidentifiedSteamApps];
   }
 
   async run() {
