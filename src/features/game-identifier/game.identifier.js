@@ -28,6 +28,7 @@ export class GameIdentifier {
   };
 
   identifyViaSteamWebXXX = async () => {
+    //todo: change database query to look for steamapps without a triedvia property
     const steamApps = await this.#databaseClient.getXunidentifiedFilteredSteamApps(
       this.#options.batchSize,
     );
