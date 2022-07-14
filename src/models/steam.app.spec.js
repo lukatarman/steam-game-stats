@@ -43,22 +43,16 @@ describe("SteamApp", function () {
   });
 
   describe(".oneFromSteamApi returns an instance of steamApp.", function () {
-    describe("When an 'app' object is passed in, the returned instance", function () {
+    fdescribe("When an 'app' object is passed in, the returned instance", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
           appid: 1,
         };
 
-        this.isIdentified = true;
-
         this.wasTriedVia = ["steamWeb", "steamchartsWeb"];
 
-        this.result = SteamApp.oneFromSteamApi(
-          this.app,
-          this.isIdentified,
-          this.wasTriedVia,
-        );
+        this.result = SteamApp.oneFromSteamApi(this.app, this.wasTriedVia);
       });
 
       it("is an instance of SteamApp", function () {
@@ -66,7 +60,7 @@ describe("SteamApp", function () {
       });
 
       it("has a property called 'identified'. It is false", function () {
-        expect(this.result.identified).toBeTrue();
+        expect(this.result.identified).toBeFalse();
       });
 
       it("has a property called 'triedVia'. It has two values", function () {
