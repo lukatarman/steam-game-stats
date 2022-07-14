@@ -30,3 +30,13 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
 
   return [games, unidentifiedSteamApps];
 }
+
+export function discoverGamesFromSteamHtmlDetailsPagesXXX(steamApps, htmlDetailsPages) {
+  const games = [];
+
+  for (let i = 0; i < steamApps.length; i++) {
+    if (steamAppIsGame(htmlDetailsPages[i])) games.push(Game.fromSteamApp(steamApps[i]));
+  }
+
+  return games;
+}
