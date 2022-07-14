@@ -50,7 +50,9 @@ export class GameIdentifier {
       );
     }
 
-    await this.#databaseClient.identifySteamAppsById(steamApps);
+    if (unidentifiedSteamApps.length !== 0) {
+      await this.#databaseClient.updateSteamAppsById(unidentifiedSteamApps);
+    }
   }
 
   async #filterSteamAppsByAppTypeXXX(steamApps) {
