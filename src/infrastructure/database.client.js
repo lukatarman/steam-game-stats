@@ -113,11 +113,11 @@ export class DatabaseClient {
     );
   }
 
-  async identifySteamAppsById(steamApps) {
-    await Promise.all(steamApps.map((steamApp) => this.identifySteamAppById(steamApp)));
+  async updateSteamAppsById(steamApps) {
+    await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
   }
 
-  async identifySteamAppById({ appid, identified, triedVia }) {
+  async updateSteamAppById({ appid, identified, triedVia }) {
     await this.#collections
       .get("steam_apps")
       .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified } });
