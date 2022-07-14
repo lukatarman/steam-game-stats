@@ -52,7 +52,10 @@ export class GameIdentifier {
   async #filterSteamAppsByAppTypeXXX(steamApps) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const games = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+    const [games, unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+      steamApps,
+      htmlDetailsPages,
+    );
 
     return games;
   }
