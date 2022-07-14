@@ -33,13 +33,14 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
 }
 
 export function discoverGamesFromSteamHtmlDetailsPagesXXX(steamApps, htmlDetailsPages) {
-  const triedSteamApps = [];
+  const games = [];
+  const unidentifiedSteamApps = [];
 
   for (let i = 0; i < steamApps.length; i++) {
     steamAppIsGame(htmlDetailsPages[i])
-      ? triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]))
-      : triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]));
+      ? games.push(Game.fromSteamApp(steamApps[i]))
+      : unidentifiedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]));
   }
 
-  return triedSteamApps;
+  return [games, unidentifiedSteamApps];
 }
