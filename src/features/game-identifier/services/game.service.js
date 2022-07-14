@@ -1,5 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
+import { SteamApp } from "../../../models/steam.app.js";
 
 export function steamAppIsGame(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
@@ -32,11 +33,13 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
 }
 
 export function discoverGamesFromSteamHtmlDetailsPagesXXX(steamApps, htmlDetailsPages) {
-  const games = [];
+  const triedSteamApps = [];
 
   for (let i = 0; i < steamApps.length; i++) {
-    if (steamAppIsGame(htmlDetailsPages[i])) games.push(Game.fromSteamApp(steamApps[i]));
+    steamAppIsGame(htmlDetailsPages[i])
+      ? triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], true, ["steamWeb"]))
+      : triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], false, ["steamWeb"]));
   }
 
-  return games;
+  return triedSteamApps;
 }
