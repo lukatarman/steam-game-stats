@@ -50,7 +50,9 @@ describe("SteamApp", function () {
           appid: 1,
         };
 
-        this.result = SteamApp.oneFromSteamApi(this.app);
+        this.isIdentified = false;
+
+        this.result = SteamApp.oneFromSteamApi(this.app, this.isIdentified);
       });
 
       it("is an instance of SteamApp", function () {
