@@ -9,7 +9,7 @@ export class SteamApp {
   }
 
   // prettier-ignore
-  static oneFromSteamApi(data, wasTriedVia) {
+  static oneFromSteamApi(data, wasTriedVia = []) {
     const steamApp      = new SteamApp();
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
