@@ -43,7 +43,7 @@ describe("SteamApp", function () {
   });
 
   describe(".oneFromSteamApi returns an instance of steamApp.", function () {
-    fdescribe("When an 'app' object is passed in, the returned instance", function () {
+    describe("When an 'app' object is passed in, the returned instance", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
