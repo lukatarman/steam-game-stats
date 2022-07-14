@@ -32,7 +32,7 @@ export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPag
   return [games, unidentifiedSteamApps];
 }
 
-export function discoverGamesFromSteamHtmlDetailsPagesXXX(steamApps, htmlDetailsPages) {
+export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   const games = [];
   const unidentifiedSteamApps = [];
 
