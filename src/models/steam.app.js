@@ -9,12 +9,12 @@ export class SteamApp {
   }
 
   // prettier-ignore
-  static oneFromSteamApi(data, isIdentified) {
+  static oneFromSteamApi(data, isIdentified, wasTriedVia) {
     const steamApp      = new SteamApp();
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
     steamApp.identified = isIdentified;
-    steamApp.triedVia   = [];
+    steamApp.triedVia   = [...wasTriedVia];
     return steamApp;
   }
 
