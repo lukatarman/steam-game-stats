@@ -27,6 +27,28 @@ export class GameIdentifier {
     // get a batch of steamApps which are unidentified and tried via steamWeb
   };
 
+  identifyViaSteamWebXXX = async () => {
+    const steamApps = await this.#databaseClient.getXunidentifiedFilteredSteamApps(
+      this.#options.batchSize,
+    );
+
+    if (steamApps.length === 0) return;
+
+    await this.#identifyGames(steamApps);
+  };
+
+  async #identifyGamesXXX(steamApps) {
+    const games = await this.#filterSteamAppsByAppType(steamApps);
+    if (games.length !== 0) {
+      await this.#databaseClient.insertManyGames(games);
+      await this.#databaseClient.insertManyHistoryChecks(
+        HistoryCheck.manyFromGames(games),
+      );
+    }
+
+    await this.#databaseClient.identifySteamAppsById(steamApps);
+  }
+
   async run() {
     const steamApps = await this.#databaseClient.getXunidentifiedFilteredSteamApps(
       this.#options.batchSize,
