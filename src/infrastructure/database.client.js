@@ -114,15 +114,13 @@ export class DatabaseClient {
   }
 
   async identifySteamAppsById(steamApps) {
-    await Promise.all(
-      steamApps.map((steamApp) => this.identifySteamAppById(steamApp.appid)),
-    );
+    await Promise.all(steamApps.map((steamApp) => this.identifySteamAppById(steamApp)));
   }
 
-  async identifySteamAppById(id) {
+  async identifySteamAppById({ appid, identified, triedVia }) {
     await this.#collections
       .get("steam_apps")
-      .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified } });
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
