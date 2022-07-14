@@ -37,8 +37,8 @@ export function discoverGamesFromSteamHtmlDetailsPagesXXX(steamApps, htmlDetails
 
   for (let i = 0; i < steamApps.length; i++) {
     steamAppIsGame(htmlDetailsPages[i])
-      ? triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], true, ["steamWeb"]))
-      : triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], false, ["steamWeb"]));
+      ? triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]))
+      : triedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]));
   }
 
   return triedSteamApps;
