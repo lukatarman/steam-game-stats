@@ -49,6 +49,14 @@ export class GameIdentifier {
     await this.#databaseClient.identifySteamAppsById(steamApps);
   }
 
+  async #filterSteamAppsByAppTypeXXX(steamApps) {
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
+
+    const games = discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages);
+
+    return games;
+  }
+
   async run() {
     const steamApps = await this.#databaseClient.getXunidentifiedFilteredSteamApps(
       this.#options.batchSize,
