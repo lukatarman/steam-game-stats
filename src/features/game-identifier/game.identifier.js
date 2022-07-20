@@ -1,8 +1,10 @@
-import { discoverGamesFromSteamWeb } from "./services/game.service.js";
+import {
+  discoverGamesFromSteamWeb,
+  XXXdiscoverGamesFromSteamWeb,
+} from "./services/game.service.js";
 import { Game } from "../../models/game.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
-import { SteamApp } from "../../models/steam.app.js";
 
 export class GameIdentifier {
   #steamClient;
@@ -40,6 +42,33 @@ export class GameIdentifier {
     if (unidentifiedSteamApps.length !== 0) {
       await this.#databaseClient.updateSteamAppsById(unidentifiedSteamApps);
     }
+  }
+
+  XXXidentifyViaSteamWeb = async () => {
+    const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
+      this.#options.batchSize,
+    );
+    if (steamApps.length === 0) return;
+
+    const [games, updatedSteamApps] = this.#identify(steamApps);
+
+    this.#persist(games, updatedSteamApps);
+  };
+
+  async #identify(steamApps) {
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
+
+    return XXXdiscoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
+  }
+
+  async #persist(games, steamApps) {
+    if (games.length !== 0) {
+      await this.#databaseClient.insertManyGames(games);
+      await this.#databaseClient.insertManyHistoryChecks(
+        HistoryCheck.manyFromGames(games),
+      );
+    }
+    await this.#databaseClient.updateSteamAppsById(updatedSteamApps);
   }
 
   async #filterSteamAppsByAppType(steamApps) {
