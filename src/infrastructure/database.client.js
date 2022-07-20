@@ -97,6 +97,16 @@ export class DatabaseClient {
       .toArray();
   }
 
+  async getSteamchartsUntriedFilteredSteamApps(amount) {
+    return await this.#collections
+      .get("steam_apps")
+      .find({
+        $and: [{ triedVia: { $ne: "steamcharts" } }, { triedVia: "steamWeb" }],
+      })
+      .limit(amount)
+      .toArray();
+  }
+
   async updateHistoryChecks(historyChecks) {
     await Promise.all(
       historyChecks.map((historyCheck) =>
