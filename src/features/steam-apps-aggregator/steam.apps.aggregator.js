@@ -27,7 +27,7 @@ export class SteamAppsAggregator {
   async #collectFirstTime() {
     const steamApps = await this.#steamClient.getAppList();
 
-    await this.#databaseClient.insertManySteamApps(SteamApp.manyFromSteamApi(steamApps));
+    await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 
@@ -42,7 +42,7 @@ export class SteamAppsAggregator {
       await this.#databaseClient.insertOneUpdateTimestamp(new Date());
       return;
     }
-    await this.#databaseClient.insertManySteamApps(SteamApp.manyFromSteamApi(steamApps));
+    await this.#databaseClient.insertManySteamApps(steamApps);
     await this.#databaseClient.insertOneUpdateTimestamp(new Date());
   }
 }
