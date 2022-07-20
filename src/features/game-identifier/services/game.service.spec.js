@@ -1,7 +1,4 @@
-import {
-  steamAppIsGame,
-  discoverGamesFromSteamHtmlDetailsPages,
-} from "./game.service.js";
+import { steamAppIsGame, discoverGamesFromSteamWeb } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
@@ -62,7 +59,7 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".discoverGamesFromSteamHtmlDetailsPages", function () {
+  describe(".discoverGamesFromSteamWeb", function () {
     describe("discovers one game out of a batch of one stemApp, so", function () {
       beforeEach(function () {
         this.steamApps = [
@@ -73,7 +70,7 @@ describe("game.service.js", () => {
         ];
         this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage];
 
-        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamWeb(
           this.steamApps,
           this.htmlDetailsPages,
         );
@@ -114,7 +111,7 @@ describe("game.service.js", () => {
           glitchhikersSoundtrackHtmlDetailsPage,
         ];
 
-        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamWeb(
           this.steamApps,
           this.htmlDetailsPages,
         );
@@ -169,7 +166,7 @@ describe("game.service.js", () => {
           gta5ageRestrictedHtmlDetailsPage,
         ];
 
-        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamWeb(
           this.steamApps,
           this.htmlDetailsPages,
         );
@@ -218,7 +215,7 @@ describe("game.service.js", () => {
         ];
         this.htmlDetailsPages = [padakVideoHtmlDetailsPage];
 
-        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamHtmlDetailsPages(
+        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamWeb(
           this.steamApps,
           this.htmlDetailsPages,
         );
