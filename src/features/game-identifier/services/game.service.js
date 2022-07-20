@@ -26,8 +26,26 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   for (let i = 0; i < steamApps.length; i++) {
     steamAppIsGame(htmlDetailsPages[i])
       ? games.push(Game.fromSteamApp(steamApps[i]))
-      : unidentifiedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]));
+      : unidentifiedSteamApps.push(steamApps[i]);
   }
 
   return [games, unidentifiedSteamApps];
+}
+
+export function XXXdiscoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
+  const games = htmlDetailsPages
+    .filter((page) => steamAppIsGame(page))
+    .map((_, i) => Game.fromSteamApp(steamApps[i]));
+
+  const updatedSteamApps = htmlDetailsPages.map((page, i) => {
+    const copy = steamApps[i].copy();
+
+    copy.triedViaSteamWeb();
+
+    if (steamAppIsGame(page[i])) copy.identify();
+
+    return copy;
+  });
+
+  return [games, updatedSteamApps];
 }
