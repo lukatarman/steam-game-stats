@@ -26,8 +26,7 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   for (let i = 0; i < steamApps.length; i++) {
     steamAppIsGame(htmlDetailsPages[i])
       ? games.push(Game.fromSteamApp(steamApps[i]))
-      : unidentifiedSteamApps.push(steamApps[i].triedVia.push("steamWeb"));
-    // change code on line 29 - doesn't work
+      : unidentifiedSteamApps.push(SteamApp.oneFromSteamApi(steamApps[i], ["steamWeb"]));
   }
 
   return [games, unidentifiedSteamApps];
