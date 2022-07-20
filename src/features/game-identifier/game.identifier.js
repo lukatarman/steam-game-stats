@@ -66,6 +66,8 @@ export class GameIdentifier {
   }
 
   //todo: remove instantiation in game.service.js - just push to array on object
+  //change updateSteamAppsById db method
+  //add to documentation - new best practice: transform data into appropriate format as soon as you get it
 
   identifyViaSteamchartsWeb = async () => {
     const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
