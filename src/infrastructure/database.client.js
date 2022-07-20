@@ -90,6 +90,7 @@ export class DatabaseClient {
         $and: [
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { triedVia: { $not: { $eq: ["steamWeb"] } } },
         ],
       })
       .limit(amount)
