@@ -50,9 +50,7 @@ describe("SteamApp", function () {
           appid: 1,
         };
 
-        this.wasTriedVia = ["steamWeb", "steamchartsWeb"];
-
-        this.result = SteamApp.oneFromSteamApi(this.app, this.wasTriedVia);
+        this.result = SteamApp.oneFromSteamApi(this.app);
       });
 
       it("is an instance of SteamApp", function () {
@@ -63,8 +61,8 @@ describe("SteamApp", function () {
         expect(this.result.identified).toBeFalse();
       });
 
-      it("has a property called 'triedVia'. It has two values", function () {
-        expect(this.result.triedVia.length).toEqual(2);
+      it("has a property called 'triedVia'. It is an empty array", function () {
+        expect(this.result.triedVia).toEqual([]);
       });
     });
   });
