@@ -15,7 +15,6 @@ export class GameIdentifier {
   }
 
   identifyViaSteamWeb = async () => {
-    //todo: change database query to look for steamapps without a "steamWeb" value in it's triedVia property
     const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
