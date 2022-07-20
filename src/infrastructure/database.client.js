@@ -83,14 +83,14 @@ export class DatabaseClient {
       .next();
   }
 
-  async getXunidentifiedFilteredSteamApps(amount) {
+  async getSteamWebUntriedFilteredSteamApps(amount) {
     return await this.#collections
       .get("steam_apps")
       .find({
         $and: [
+          { triedVia: { $ne: "steamWeb" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
-          { triedVia: { $not: { $eq: ["steamWeb"] } } },
         ],
       })
       .limit(amount)
