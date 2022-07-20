@@ -19,19 +19,6 @@ export function steamAppIsGame(httpDetailsPage) {
   return true;
 }
 
-export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
-  const games = [];
-  const unidentifiedSteamApps = [];
-
-  for (let i = 0; i < steamApps.length; i++) {
-    steamAppIsGame(htmlDetailsPages[i])
-      ? games.push(Game.fromSteamApp(steamApps[i]))
-      : unidentifiedSteamApps.push(steamApps[i]);
-  }
-
-  return [games, unidentifiedSteamApps];
-}
-
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   const games = [];
   const unidentifiedSteamApps = [];
