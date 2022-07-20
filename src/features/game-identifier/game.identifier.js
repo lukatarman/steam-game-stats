@@ -73,10 +73,10 @@ export class GameIdentifier {
     if (steamApps.length === 0) return;
   };
 
-  async #discoverGamesFromSteamchartsHtmlDetailsPages(unidentifiedSteamApps) {
+  async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps) {
     const games = [];
 
-    for (let unidentifiedSteamApp of unidentifiedSteamApps) {
+    for (let unidentifiedSteamApp of steamApps) {
       await delay(this.#options.unitDelay);
 
       try {
