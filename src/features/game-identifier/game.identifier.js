@@ -66,6 +66,11 @@ export class GameIdentifier {
 
   identifyViaSteamchartsWeb = async () => {
     // get a batch of steamApps which are unidentified and tried via steamWeb
+    const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
+      this.#options.batchSize,
+    );
+
+    if (steamApps.length === 0) return;
   };
 
   async #discoverGamesFromSteamchartsHtmlDetailsPages(unidentifiedSteamApps) {
