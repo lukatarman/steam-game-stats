@@ -49,3 +49,21 @@ export function XXXdiscoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
 
   return [games, updatedSteamApps];
 }
+
+export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
+  return htmlDetailsPages
+    .filter((page) => steamAppIsGame(page))
+    .map((_, i) => Game.fromSteamApp(steamApps[i]));
+}
+
+export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
+  return htmlDetailsPages.map((page, i) => {
+    const copy = steamApps[i].copy();
+
+    copy.triedViaSteamWeb();
+
+    if (steamAppIsGame(page[i])) copy.identify();
+
+    return copy;
+  });
+}
