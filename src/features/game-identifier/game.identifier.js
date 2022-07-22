@@ -21,33 +21,6 @@ export class GameIdentifier {
     const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
-
-    if (steamApps.length === 0) return;
-
-    await this.#identifyGames(steamApps);
-  };
-
-  async #identifyGames(steamApps) {
-    const [games, unidentifiedSteamApps] = await this.#filterSteamAppsByAppType(
-      steamApps,
-    );
-
-    if (games.length !== 0) {
-      await this.#databaseClient.insertManyGames(games);
-      await this.#databaseClient.insertManyHistoryChecks(
-        HistoryCheck.manyFromGames(games),
-      );
-    }
-
-    if (unidentifiedSteamApps.length !== 0) {
-      await this.#databaseClient.updateSteamAppsById(unidentifiedSteamApps);
-    }
-  }
-
-  XXXidentifyViaSteamWeb = async () => {
-    const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
-      this.#options.batchSize,
-    );
     if (steamApps.length === 0) return;
 
     const [games, updatedSteamApps] = this.#identify(steamApps);
@@ -58,7 +31,7 @@ export class GameIdentifier {
   async #identify(steamApps) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    return XXXdiscoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
+    return discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
   }
 
   async #persist(games, steamApps) {
@@ -69,29 +42,6 @@ export class GameIdentifier {
       );
     }
     await this.#databaseClient.updateSteamAppsById(updatedSteamApps);
-  }
-
-  async #filterSteamAppsByAppType(steamApps) {
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
-
-    const [games, unidentifiedSteamApps] = discoverGamesFromSteamWeb(
-      steamApps,
-      htmlDetailsPages,
-    );
-
-    return [games, unidentifiedSteamApps];
-  }
-
-  async #getSteamAppsHtmlDetailsPages(steamApps) {
-    const detailsPages = [];
-
-    for (let steamApp of steamApps) {
-      detailsPages.push(
-        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid),
-      );
-      await delay(this.#options.unitDelay);
-    }
-    return detailsPages;
   }
 
   //todo: remove instantiation in game.service.js - just push to array on object
