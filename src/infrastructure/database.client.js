@@ -84,7 +84,7 @@ export class DatabaseClient {
   }
 
   async getSteamWebUntriedFilteredSteamApps(amount) {
-    return await this.#collections
+    const response = await this.#collections
       .get("steam_apps")
       .find({
         $and: [
@@ -95,6 +95,8 @@ export class DatabaseClient {
       })
       .limit(amount)
       .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
   }
 
   async getSteamchartsUntriedFilteredSteamApps(amount) {
