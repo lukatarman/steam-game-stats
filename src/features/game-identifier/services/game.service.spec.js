@@ -71,10 +71,7 @@ describe("game.service.js", () => {
         ];
         this.htmlDetailsPages = [animaddicts2gameHtmlDetailsPage];
 
-        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamWeb(
-          this.steamApps,
-          this.htmlDetailsPages,
-        );
+        this.games = discoverGamesFromSteamWeb(this.steamApps, this.htmlDetailsPages);
       });
 
       it("the length of games is 1", function () {
@@ -87,10 +84,6 @@ describe("game.service.js", () => {
 
       it("the first entry in the games array is an instance of game", function () {
         expect(this.games[0]).toBeInstanceOf(Game);
-      });
-
-      it("the length of unidentifiedSteamApps is 0", function () {
-        expect(this.unidentifiedSteamApps.length).toBe(0);
       });
     });
 
@@ -112,10 +105,7 @@ describe("game.service.js", () => {
           glitchhikersSoundtrackHtmlDetailsPage,
         ];
 
-        [this.games, this.unidentifiedSteamApps] = discoverGamesFromSteamWeb(
-          this.steamApps,
-          this.htmlDetailsPages,
-        );
+        this.games = discoverGamesFromSteamWeb(this.steamApps, this.htmlDetailsPages);
       });
 
       it("the length of games is 1", function () {
@@ -136,8 +126,8 @@ describe("game.service.js", () => {
 
       it("the name of the first steamApp array entry is 'Glitchhikers Soundtrack 2'", function () {
         expect(this.unidentifiedSteamApps[0].name).toBe("Glitchhikers Soundtrack 2");
-      });
     });
+  });
 
     describe("discovers two games out of a batch of four steamApps, so", function () {
       beforeEach(function () {
