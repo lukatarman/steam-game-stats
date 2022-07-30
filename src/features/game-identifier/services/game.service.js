@@ -24,23 +24,11 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
     .map((_, i) => Game.fromSteamApp(steamApps[i]));
 }
 
-export function updateSteamWebIdentificationStatus(steamApps, htmlDetailsPages) {
+export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
   return htmlDetailsPages.map((page, i) => {
     const copy = steamApps[i].copy();
 
     copy.triedViaSteamWeb();
-
-    if (steamAppIsGame(page)) copy.identify();
-
-    return copy;
-  });
-}
-
-export function updateSteamchartsIdentificationStatus(steamApps, htmlDetailsPages) {
-  return htmlDetailsPages.map((page, i) => {
-    const copy = steamApps[i].copy();
-
-    copy.triedViaSteamcharts();
 
     if (steamAppIsGame(page)) copy.identify();
 
