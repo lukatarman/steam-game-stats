@@ -35,10 +35,12 @@ export class GameIdentifier {
     this.#persist(games, updatedSteamApps);
   };
 
-  XXXidentifyViaSteamWeb = async () => {
-    const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
-      this.#options.batchSize,
-    );
+  async #getSteamAppsHtmlDetailsPages(steamApps) {
+    const detailsPages = [];
+    for (let steamApp of steamApps) {
+      detailsPages.push(
+        await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid),
+      );
     if (steamApps.length === 0) return;
 
     const games = discoverGamesFromSteamWeb(steamApps);
