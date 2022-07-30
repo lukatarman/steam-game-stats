@@ -103,7 +103,12 @@ export class DatabaseClient {
     return await this.#collections
       .get("steam_apps")
       .find({
-        $and: [{ triedVia: { $ne: "steamcharts" } }, { triedVia: "steamWeb" }],
+        $and: [
+          { triedVia: { $ne: "steamcharts" } },
+          { triedVia: "steamWeb" },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+        ],
       })
       .limit(amount)
       .toArray();
