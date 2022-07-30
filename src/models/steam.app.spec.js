@@ -61,7 +61,7 @@ describe("SteamApp", function () {
         expect(this.result.identified).toBeFalse();
       });
 
-      it("has a property called 'triedVia'. It is an empty array", function () {
+      it("has a property called 'triedVia'. It is an empty array.", function () {
         expect(this.result.triedVia).toEqual([]);
       });
     });
