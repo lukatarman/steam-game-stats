@@ -1,7 +1,7 @@
 import {
   steamAppIsGame,
   discoverGamesFromSteamWeb,
-  updateSteamWebIdentificationStatus,
+  updateIdentificationStatusSideEffectFree,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -140,7 +140,7 @@ describe("game.service.js", () => {
 
         this.htmlDetailsPages = [glitchhikersSoundtrackHtmlDetailsPage];
 
-        this.unidentifiedSteamApps = updateSteamWebIdentificationStatus(
+        this.unidentifiedSteamApps = updateIdentificationStatusSideEffectFree(
           this.steamApps,
           this.htmlDetailsPages,
         );
@@ -187,7 +187,7 @@ describe("game.service.js", () => {
           animaddicts2gameHtmlDetailsPage,
         ];
 
-        this.unidentifiedSteamApps = updateSteamWebIdentificationStatus(
+        this.unidentifiedSteamApps = updateIdentificationStatusSideEffectFree(
           this.steamApps,
           this.htmlDetailsPages,
         );
