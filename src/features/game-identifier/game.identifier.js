@@ -62,8 +62,6 @@ export class GameIdentifier {
     await this.#databaseClient.updateSteamAppsById(updatedSteamApps);
   }
 
-  //todo: refactor identifyviaSteamchartsWeb
-
   tryViaSteamchartsWeb = async () => {
     const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
       this.#options.batchSize,
