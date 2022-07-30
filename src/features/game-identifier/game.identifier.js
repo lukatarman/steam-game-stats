@@ -1,6 +1,6 @@
 import {
   discoverGamesFromSteamWeb,
-  updateIdentificationStatusSideEffectFree,
+  updateSteamWebIdentificationStatus,
 } from "./services/game.service.js";
 import { Game } from "../../models/game.js";
 import { delay } from "../../utils/time.utils.js";
@@ -31,9 +31,9 @@ export class GameIdentifier {
   async #identifyViaSteamWeb(steamApps) {
     const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const games = this.#discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
+    const games = discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
 
-    const updatedSteamApps = updateIdentificationStatusSideEffectFree(
+    const updatedSteamApps = updateSteamWebIdentificationStatus(
       steamApps,
       htmlDetailsPages,
     );
