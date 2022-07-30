@@ -1,6 +1,5 @@
 import {
   discoverGamesFromSteamWeb,
-  XXXdiscoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
 } from "./services/game.service.js";
 import { Game } from "../../models/game.js";
