@@ -36,15 +36,11 @@ export function updateSteamWebIdentificationStatus(steamApps, htmlDetailsPages) 
   });
 }
 
-function updateIdentificationStatusSideEffectFree(
-  steamApps,
-  htmlDetailsPages,
-  triedPlatformFunc,
-) {
+export function updateSteamchartsIdentificationStatus(steamApps, htmlDetailsPages) {
   return htmlDetailsPages.map((page, i) => {
     const copy = steamApps[i].copy();
 
-    triedPlatformFunc();
+    copy.triedViaSteamcharts();
 
     if (steamAppIsGame(page)) copy.identify();
 
