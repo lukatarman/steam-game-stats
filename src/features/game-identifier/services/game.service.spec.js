@@ -7,6 +7,7 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-pages/padak.video.html.details.page.js";
 import { theSims4catsAndDogsHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { Game } from "../../../models/game.js";
+import { steamApp } from "../../../models/steam.app.js";
 
 describe("game.service.js", () => {
   describe(".steamAppIsGame", () => {
