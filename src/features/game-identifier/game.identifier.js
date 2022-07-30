@@ -70,33 +70,30 @@ export class GameIdentifier {
     );
     if (steamApps.length === 0) return;
 
-    const games = await this.#identifyViaSteamchartsWeb(steamApps);
+    const [games, updatedSteamApps] = await this.#identifyViaSteamchartsWeb(steamApps);
 
-    if (games.length !== 0) {
-      await this.#databaseClient.insertManyGames(games);
-      await this.#databaseClient.insertManyHistoryChecks(
-        HistoryCheck.manyFromGames(games),
-      );
-    }
+    this.#persist(games, updatedSteamApps);
   };
 
   async #identifyViaSteamchartsWeb(steamApps) {
     const games = [];
-    const unidentifiedSteamApps = [];
+    const updatedSteamApps = [];
 
-    for (let unidentifiedSteamApp of steamApps) {
+    for (let steamApp of steamApps) {
       await delay(this.#options.unitDelay);
 
+      const copy = steamApp.copy();
+
       try {
-        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
-          unidentifiedSteamApp.appid,
-        );
-        games.push(Game.fromSteamApp(unidentifiedSteamApp));
+        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(steamApp.appid);
+        games.push(Game.fromSteamApp(steamApp));
+        copy.identify();
       } catch (error) {
-        unidentifiedSteamApps.push(unidentifiedSteamApp.triedVia.push("steamcharts"));
+        copy.tryViaSteamchartsWeb;
+        updatedSteamApps.push(copy);
       }
     }
 
-    return games;
+    return [games, updatedSteamApps];
   }
 }
