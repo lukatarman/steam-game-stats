@@ -18,7 +18,7 @@ export class SteamApp {
     this.triedVia.push("steamWeb");
   }
 
-  triedViaSteamcharts() {
+  triedViaSteamchartsWeb() {
     this.triedVia.push("steamcharts");
   }
 
