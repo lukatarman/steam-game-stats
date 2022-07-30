@@ -31,8 +31,6 @@ export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsP
 
     copy.triedViaSteamWeb();
 
-    console.log(steamAppIsGame(page));
-
     if (steamAppIsGame(page)) copy.identify();
 
     return copy;
