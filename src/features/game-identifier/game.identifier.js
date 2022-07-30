@@ -23,7 +23,14 @@ export class GameIdentifier {
     );
     if (steamApps.length === 0) return;
 
-    const [games, updatedSteamApps] = this.#identify(steamApps);
+    const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
+
+    const games = this.#identify(steamApps, htmlDetailsPages);
+
+    const updatedSteamApps = updateIdentificationStatusSideEffectFree(
+      steamApps,
+      htmlDetailsPages,
+    );
 
     this.#persist(games, updatedSteamApps);
   };
