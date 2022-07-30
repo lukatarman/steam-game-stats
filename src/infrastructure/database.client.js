@@ -105,6 +105,7 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
+          { identified: false },
           { triedVia: { $ne: "steamcharts" } },
           { triedVia: "steamWeb" },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
