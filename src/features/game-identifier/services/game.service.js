@@ -1,6 +1,5 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
-import { SteamApp } from "../../../models/steam.app.js";
 
 export function steamAppIsGame(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
