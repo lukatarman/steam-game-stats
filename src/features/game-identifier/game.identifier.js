@@ -41,12 +41,10 @@ export class GameIdentifier {
       detailsPages.push(
         await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid),
       );
-    if (steamApps.length === 0) return;
-
-    const games = discoverGamesFromSteamWeb(steamApps);
-
-    const updatedSteamApps = updateIdentificationStatusSideEffectFree(steamApps);
-  };
+      await delay(this.#options.unitDelay);
+    }
+    return detailsPages;
+  }
 
   async #identify(steamApps) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
