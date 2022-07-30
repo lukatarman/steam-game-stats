@@ -68,10 +68,9 @@ export class GameIdentifier {
     const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
-
     if (steamApps.length === 0) return;
 
-    const games = await this.#discoverGamesFromSteamchartsHtmlDetailsPages(steamApps);
+    const games = await this.#discoverGamesFromSteamchartsWeb(steamApps);
 
     if (games.length !== 0) {
       await this.#databaseClient.insertManyGames(games);
@@ -81,7 +80,7 @@ export class GameIdentifier {
     }
   };
 
-  async #discoverGamesFromSteamchartsHtmlDetailsPages(steamApps) {
+  async #discoverGamesFromSteamchartsWeb(steamApps) {
     const games = [];
     const unidentifiedSteamApps = [];
 
