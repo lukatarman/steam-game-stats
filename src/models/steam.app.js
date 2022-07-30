@@ -18,6 +18,10 @@ export class SteamApp {
     this.triedVia.push("steamWeb");
   }
 
+  triedViaSteamcharts() {
+    this.triedVia.push("steamcharts");
+  }
+
   identify() {
     this.identified = true;
   }
