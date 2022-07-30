@@ -52,7 +52,7 @@ export class GameIdentifier {
     return discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
   }
 
-  async #persist(games, steamApps) {
+  async #persist(games, updatedSteamApps) {
     if (games.length !== 0) {
       await this.#databaseClient.insertManyGames(games);
       await this.#databaseClient.insertManyHistoryChecks(
