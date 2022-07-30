@@ -23,17 +23,23 @@ export class GameIdentifier {
     );
     if (steamApps.length === 0) return;
 
+    const [games, updatedSteamApps] = this.#identify(steamApps);
+
+    this.#persist(games, updatedSteamApps);
+  };
+
+  async #identify(steamApps) {
     const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
 
-    const games = this.#identify(steamApps, htmlDetailsPages);
+    const games = this.#discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
 
     const updatedSteamApps = updateIdentificationStatusSideEffectFree(
       steamApps,
       htmlDetailsPages,
     );
 
-    this.#persist(games, updatedSteamApps);
-  };
+    return [games, updatedSteamApps];
+  }
 
   async #getSteamAppsHtmlDetailsPages(steamApps) {
     const detailsPages = [];
@@ -44,12 +50,6 @@ export class GameIdentifier {
       await delay(this.#options.unitDelay);
     }
     return detailsPages;
-  }
-
-  async #identify(steamApps) {
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
-
-    return discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
   }
 
   async #persist(games, updatedSteamApps) {
