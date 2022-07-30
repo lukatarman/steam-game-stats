@@ -126,7 +126,7 @@ describe("game.service.js", () => {
     });
   });
 
-  fdescribe(".updateIdentificationStatusSideEffectFree", function () {
+  describe(".updateIdentificationStatusSideEffectFree", function () {
     describe("discovers one steamApp out of a batch of one, so", function () {
       beforeEach(function () {
         this.apps = [
