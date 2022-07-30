@@ -17,18 +17,18 @@ export class GameIdentifier {
     this.#options = options;
   }
 
-  identifyViaSteamWeb = async () => {
+  tryViaSteamWeb = async () => {
     const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
     if (steamApps.length === 0) return;
 
-    const [games, updatedSteamApps] = this.#identify(steamApps);
+    const [games, updatedSteamApps] = this.#identifyViaSteamWeb(steamApps);
 
     this.#persist(games, updatedSteamApps);
   };
 
-  async #identify(steamApps) {
+  async #identifyViaSteamWeb(steamApps) {
     const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const games = this.#discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
@@ -64,13 +64,13 @@ export class GameIdentifier {
 
   //todo: refactor identifyviaSteamchartsWeb
 
-  identifyViaSteamchartsWeb = async () => {
+  tryViaSteamchartsWeb = async () => {
     const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
     if (steamApps.length === 0) return;
 
-    const games = await this.#discoverGamesFromSteamchartsWeb(steamApps);
+    const games = await this.#identifyViaSteamchartsWeb(steamApps);
 
     if (games.length !== 0) {
       await this.#databaseClient.insertManyGames(games);
@@ -80,7 +80,7 @@ export class GameIdentifier {
     }
   };
 
-  async #discoverGamesFromSteamchartsWeb(steamApps) {
+  async #identifyViaSteamchartsWeb(steamApps) {
     const games = [];
     const unidentifiedSteamApps = [];
 
