@@ -1,6 +1,6 @@
 import { GameIdentifier } from "./game.identifier.js";
 
-fdescribe("game.identifier.js", function () {
+describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
     describe("gets zero steamApps from the database and stops. So, ", function () {
       beforeEach(function () {
