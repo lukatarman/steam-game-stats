@@ -44,21 +44,13 @@ describe("SteamApp", function () {
           this.result.triedViaSteamWeb();
         });
 
-        it("the copy is an instance of SteamApp", function () {
-          expect(this.result).toBeInstanceOf(SteamApp);
-        });
-
-        it("the triedVia property contains a single array", function () {
-          expect(this.result.triedVia.length).toBe(1);
-        });
-
         it("the triedVia property array value is 'steamWeb'", function () {
           expect(this.result.triedVia[0]).toBe("steamWeb");
         });
       });
     });
 
-    describe(".triedViaSteamcharts", function () {
+    describe(".triedViaSteamchartsWeb", function () {
       describe("pushes 'steamcharts' into the triedVia property. When this is done,", function () {
         beforeEach(function () {
           this.app = {
@@ -71,14 +63,6 @@ describe("SteamApp", function () {
           this.result = this.instantiatedApp.copy();
 
           this.result.triedViaSteamchartsWeb();
-        });
-
-        it("the copy is an instance of SteamApp", function () {
-          expect(this.result).toBeInstanceOf(SteamApp);
-        });
-
-        it("the triedVia property contains a single array", function () {
-          expect(this.result.triedVia.length).toBe(1);
         });
 
         it("the triedVia property array value is 'steamcharts'", function () {
