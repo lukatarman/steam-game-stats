@@ -87,9 +87,10 @@ export class GameIdentifier {
         games.push(Game.fromSteamApp(steamApp));
         copy.identify();
       } catch (error) {
-        copy.tryViaSteamchartsWeb;
         updatedSteamApps.push(copy);
       }
+
+      copy.tryViaSteamchartsWeb();
     }
 
     return [games, updatedSteamApps];
