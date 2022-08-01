@@ -85,6 +85,23 @@ export class GameIdentifier {
     this.#persist(games, updatedSteamApps);
   };
 
+  async #updateStatusViaSteamchartsWeb(steamApps) {
+    const updatedSteamApps = steamApps
+      .map((steamApp) => steamApp.copy())
+      .map((steamApp) => steamApp.triedViaSteamchartsWeb());
+
+    for (let steamApp of updatedSteamApps) {
+      await delay(this.#options.unitDelay);
+
+      try {
+        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(steamApp.appid);
+        steamApp.identify();
+      } catch (error) {}
+    }
+
+    return updatedSteamApps;
+  }
+
   #identify(updatedSteamApps) {}
 
   async #identifyViaSteamchartsWeb(steamApps) {
