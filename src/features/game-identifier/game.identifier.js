@@ -29,7 +29,7 @@ export class GameIdentifier {
   };
 
   async #identifyViaSteamWeb(steamApps) {
-    const htmlDetailsPages = this.#getSteamAppsHtmlDetailsPages(steamApps);
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps);
 
     const games = discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
 
