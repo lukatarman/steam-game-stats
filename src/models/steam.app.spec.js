@@ -58,6 +58,35 @@ describe("SteamApp", function () {
       });
     });
 
+    describe(".triedViaSteamchartsWeb", function () {
+      describe("pushes 'steamcharts' into the triedVia property. When this is done,", function () {
+        beforeEach(function () {
+          this.app = {
+            name: "Castlevania",
+            appid: 1,
+          };
+
+          this.instantiatedApp = SteamApp.oneFromSteamApi(this.app);
+
+          this.result = this.instantiatedApp.copy();
+
+          this.result.triedViaSteamchartsWeb();
+        });
+
+        it("the copy is an instance of SteamApp", function () {
+          expect(this.result).toBeInstanceOf(SteamApp);
+        });
+
+        it("the triedVia property contains a single array", function () {
+          expect(this.result.triedVia.length).toBe(1);
+        });
+
+        it("the triedVia property array value is 'steamcharts'", function () {
+          expect(this.result.triedVia[0]).toBe("steamcharts");
+        });
+      });
+    });
+
     describe(".manyFromSteamApi returns an array of SteamApp instances.", function () {
       describe("When two apps are passed into it,", function () {
         beforeEach(function () {
