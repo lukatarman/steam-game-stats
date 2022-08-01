@@ -30,7 +30,7 @@ describe("game.identifier.js", function () {
       });
     });
 
-    fdescribe("gets one game out of a batch of one steamApp, and inserts it into the database. So,", function () {
+    xdescribe("gets one game out of a batch of one steamApp, and inserts it into the database. So,", function () {
       beforeEach(function () {
         this.steamClientMock = createSteamMock("bebo");
         this.databaseClientMock = createDbMock([{ appid: 1, name: "Animaddicts" }]);
