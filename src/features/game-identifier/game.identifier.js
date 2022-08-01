@@ -73,6 +73,20 @@ export class GameIdentifier {
     this.#persist(games, updatedSteamApps);
   };
 
+  XXXtryViaSteamchartsWeb = async () => {
+    const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
+      this.#options.batchSize,
+    );
+    if (steamApps.length === 0) return;
+
+    const updatedSteamApps = await this.#updateStatusViaSteamchartsWeb(steamApps);
+    const games = this.#identify(updatedSteamApps);
+
+    this.#persist(games, updatedSteamApps);
+  };
+
+  #identify(updatedSteamApps) {}
+
   async #identifyViaSteamchartsWeb(steamApps) {
     const games = [];
     const updatedSteamApps = [];
