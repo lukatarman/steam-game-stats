@@ -102,28 +102,11 @@ export class GameIdentifier {
     return updatedSteamApps;
   }
 
-  #identify(updatedSteamApps) {}
+  #identify(updatedSteamApps) {
+    const games = updatedSteamApps
+      .filter((steamApp) => steamApp.identified)
+      .map((steamApp) => Game.fromSteamApp(steamApp));
 
-  async #identifyViaSteamchartsWeb(steamApps) {
-    const games = [];
-    const updatedSteamApps = [];
-
-    for (let steamApp of steamApps) {
-      await delay(this.#options.unitDelay);
-
-      const copy = steamApp.copy();
-
-      try {
-        await this.#steamClient.getSteamchartsGameHtmlDetailsPage(steamApp.appid);
-        games.push(Game.fromSteamApp(steamApp));
-        copy.identify();
-      } catch (error) {
-        updatedSteamApps.push(copy);
-      }
-
-      copy.tryViaSteamchartsWeb();
-    }
-
-    return [games, updatedSteamApps];
+    return games;
   }
 }
