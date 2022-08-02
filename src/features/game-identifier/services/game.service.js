@@ -20,8 +20,12 @@ export function steamAppIsGame(httpDetailsPage) {
 
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
-    .filter((page) => steamAppIsGame(page))
-    .map((_, i) => Game.fromSteamApp(steamApps[i]));
+    .map((page, i) => {
+      if (steamAppIsGame(page)) {
+        return Game.fromSteamApp(steamApps[i]);
+      }
+    })
+    .filter((game) => !!game);
 }
 
 export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
