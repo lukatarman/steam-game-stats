@@ -11,7 +11,7 @@ import { HistoryCheck } from "../../models/history.check.js";
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
-    describe("gets zero steamApps from the database and stops. So, ", function () {
+    describe("gets zero steamApps from the database and stops. So,", function () {
       beforeEach(function () {
         this.databaseClientMock = createDbMock([], undefined);
         this.steamClientMock = createSteamMock(undefined);
