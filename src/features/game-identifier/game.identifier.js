@@ -2,6 +2,7 @@ import {
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
   identifyGames,
+  setAsIdentified,
 } from "./services/game.service.js";
 import { Game } from "../../models/game.js";
 import { delay } from "../../utils/time.utils.js";
