@@ -1,4 +1,4 @@
-export const swordsAndSoldiersBeta = `
+export const swordsAndSoldiersBetaHtmlDetailsPage = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
