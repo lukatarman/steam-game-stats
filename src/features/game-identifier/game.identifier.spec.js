@@ -605,53 +605,52 @@ describe("game.identifier.js", function () {
           this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
         ).toHaveBeenCalledWith(this.instantiatedApps[2].appid);
       });
-    });
 
-    it("getSteamchartsGameHtmlDetailsPage was called before insertManyGames", function () {
-      expect(
-        this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
-      ).toHaveBeenCalledBefore(this.databaseClientMock.insertManyGames);
-    });
+      it("getSteamchartsGameHtmlDetailsPage was called before insertManyGames", function () {
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledBefore(this.databaseClientMock.insertManyGames);
+      });
 
-    it("insertManyGames was called once", function () {
-      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
-    });
+      it("insertManyGames was called once", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
+      });
 
-    it("insertManyGames was called before insertManyHistoryChecks", function () {
-      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledBefore(
-        this.databaseClientMock.insertManyHistoryChecks,
-      );
-    });
+      it("insertManyGames was called before insertManyHistoryChecks", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledBefore(
+          this.databaseClientMock.insertManyHistoryChecks,
+        );
+      });
 
-    it("insertManyGames was called with this.game", function () {
-      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game[0]);
-      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game[1]);
-    });
+      it("insertManyGames was called with this.game", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.games);
+      });
 
-    it("insertManyHistoryChecks was called once", function () {
-      expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
-    });
+      it("insertManyHistoryChecks was called once", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
+      });
 
-    it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
-      expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
-        this.databaseClientMock.updateSteamAppsById,
-      );
-    });
+      it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
+          this.databaseClientMock.updateSteamAppsById,
+        );
+      });
 
-    it("insertManyHistoryChecks was called with this.historychecks", function () {
-      expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
-        this.historychecks,
-      );
-    });
+      it("insertManyHistoryChecks was called with this.historychecks", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
+          this.historychecks,
+        );
+      });
 
-    it("updateSteamAppsById was called once", function () {
-      expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(1);
-    });
+      it("updateSteamAppsById was called once", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(1);
+      });
 
-    it("updateSteamAppsById was called with this.instantiatedApps", function () {
-      expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledWith(
-        this.instantiatedMarkedApps,
-      );
+      it("updateSteamAppsById was called with this.instantiatedApps", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledWith(
+          this.instantiatedMarkedApps,
+        );
+      });
     });
   });
 });
