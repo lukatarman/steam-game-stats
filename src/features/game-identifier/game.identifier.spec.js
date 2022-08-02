@@ -396,7 +396,7 @@ describe("game.identifier.js", function () {
     describe("gets zero steamApps from the database and stops. So,", function () {
       beforeEach(function () {
         this.databaseClientMock = createDbMock(undefined, []);
-        this.steamClientMock = createSteamMock(undefined);
+        this.steamClientMock = createSteamMock([undefined]);
 
         this.identifier = new GameIdentifier(
           this.steamClientMock,
@@ -467,12 +467,6 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("getSteamchartsUntriedFilteredSteamApps was called once", function () {
-        expect(
-          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
-        ).toHaveBeenCalledWith(1);
-      });
-
       it("getSteamchartsUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
         expect(
           this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
@@ -492,6 +486,12 @@ describe("game.identifier.js", function () {
         expect(
           this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
         ).toHaveBeenCalledWith(this.instantiatedApps[1].appid);
+      });
+
+      it("getSteamchartsGameHtmlDetailsPage was called before insertManyGames", function () {
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledBefore(this.databaseClientMock.insertManyGames);
       });
 
       it("insertManyGames was called once", function () {
@@ -534,6 +534,125 @@ describe("game.identifier.js", function () {
         );
       });
     });
+
+    describe("gets two games from a batch of three steamApps from the database and inserts them into the database. So,", function () {
+      beforeEach(async function () {
+        this.apps = [
+          { appid: 1, name: "Elden Ring" },
+          { appid: 2, name: "Swords and Soldiers Beta" },
+          { appid: 3, name: "Mortal Darkness" },
+        ];
+
+        this.htmlDetailsPages = [
+          eldenRingHttpDetailsSteamcharts,
+          swordsAndSoldiersBetaHtmlDetailsPage,
+          mortalDarknessGameHtmlDetailsPage,
+        ];
+
+        this.games = [Game.fromSteamApp(this.apps[0]), Game.fromSteamApp(this.apps[2])];
+
+        this.instantiatedApps = SteamApp.manyFromSteamApi(this.apps);
+
+        this.instantiatedMarkedApps = instantiateAndMark(this.apps);
+
+        this.historychecks = HistoryCheck.manyFromGames(this.games);
+
+        this.databaseClientMock = createDbMock(undefined, this.instantiatedApps);
+        this.steamClientMock = createSteamMock([
+          eldenRingHttpDetailsSteamcharts,
+          undefined,
+          mortalDarknessGameHtmlDetailsPage,
+        ]);
+
+        this.identifier = new GameIdentifier(
+          this.steamClientMock,
+          this.databaseClientMock,
+          {
+            batchSize: 1,
+            unitDelay: 0,
+          },
+        );
+
+        await this.identifier.tryViaSteamchartsWeb();
+      });
+
+      it("getSteamchartsUntriedFilteredSteamApps was called once", function () {
+        expect(
+          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
+        ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamchartsUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
+        expect(
+          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
+        ).toHaveBeenCalledBefore(this.steamClientMock.getSteamchartsGameHtmlDetailsPage);
+      });
+
+      it("getSteamchartsGameHtmlDetailsPage was called three times", function () {
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledTimes(3);
+      });
+
+      it("getSteamAppHtmlDetailsPage was called with each instantiated appid", function () {
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledWith(this.instantiatedApps[0].appid);
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledWith(this.instantiatedApps[1].appid);
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledWith(this.instantiatedApps[2].appid);
+      });
+    });
+
+    it("getSteamchartsGameHtmlDetailsPage was called before insertManyGames", function () {
+      expect(
+        this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+      ).toHaveBeenCalledBefore(this.databaseClientMock.insertManyGames);
+    });
+
+    it("insertManyGames was called once", function () {
+      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
+    });
+
+    it("insertManyGames was called before insertManyHistoryChecks", function () {
+      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledBefore(
+        this.databaseClientMock.insertManyHistoryChecks,
+      );
+    });
+
+    it("insertManyGames was called with this.game", function () {
+      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game[0]);
+      expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game[1]);
+    });
+
+    it("insertManyHistoryChecks was called once", function () {
+      expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
+    });
+
+    it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
+      expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
+        this.databaseClientMock.updateSteamAppsById,
+      );
+    });
+
+    it("insertManyHistoryChecks was called with this.historychecks", function () {
+      expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
+        this.historychecks,
+      );
+    });
+
+    it("updateSteamAppsById was called once", function () {
+      expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(1);
+    });
+
+    it("updateSteamAppsById was called with this.instantiatedApps", function () {
+      expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledWith(
+        this.instantiatedMarkedApps,
+      );
+    });
   });
 });
 
@@ -563,6 +682,8 @@ function instantiateAndMark(apps) {
   const instantiatedApps = SteamApp.manyFromSteamApi(apps);
 
   instantiatedApps[0].identify();
+
+  if (instantiatedApps[2]) instantiatedApps[2].identify();
 
   for (let app of instantiatedApps) {
     app.triedViaSteamchartsWeb();
