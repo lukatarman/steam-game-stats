@@ -36,6 +36,18 @@ describe("game.identifier.js", function () {
       it("getSteamAppHtmlDetailsPage was not called", function () {
         expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
+
+      it("insertManyGames was not called", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(0);
+      });
+
+      it("insertManyHistoryChecks was not called", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(0);
+      });
+
+      it("updateSteamAppsById was not called", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(0);
+      });
     });
 
     describe("gets one game out of a batch of one steamApp, and inserts it into the database. So,", function () {
