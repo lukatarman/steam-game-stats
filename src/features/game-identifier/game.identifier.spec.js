@@ -174,7 +174,10 @@ describe("game.identifier.js", function () {
           this.htmlDetailsPages,
         );
 
-        this.steamClientMock = createSteamMock(this.htmlDetailsPages);
+        this.steamClientMock = createSteamMock(
+          animaddicts2gameHtmlDetailsPage,
+          glitchhikersSoundtrackHtmlDetailsPage,
+        );
         this.databaseClientMock = createDbMock(this.instantiatedApps, undefined);
 
         this.identifier = new GameIdentifier(
