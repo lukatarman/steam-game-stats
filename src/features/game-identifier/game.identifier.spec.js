@@ -297,11 +297,11 @@ describe("game.identifier.js", function () {
           this.htmlDetailsPages,
         );
 
-        this.steamClientMock = createSteamMock(
+        this.steamClientMock = createSteamMock([
           animaddicts2gameHtmlDetailsPage,
           glitchhikersSoundtrackHtmlDetailsPage,
           mortalDarknessGameHtmlDetailsPage,
-        );
+        ]);
         this.databaseClientMock = createDbMock(this.instantiatedApps, undefined);
 
         this.identifier = new GameIdentifier(
