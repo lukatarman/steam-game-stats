@@ -123,6 +123,53 @@ describe("game.service.js", () => {
         expect(this.games[0]).toBeInstanceOf(Game);
       });
     });
+
+    fdescribe("discovers two games out of a batch of three steamApps, so", function () {
+      beforeEach(function () {
+        this.steamApps = [
+          {
+            appid: 1,
+            name: "Animaddicts",
+          },
+          {
+            appid: 2,
+            name: "Glitchhikers Soundtrack 2",
+          },
+          {
+            appid: 3,
+            name: "Feartress",
+          },
+        ];
+
+        this.htmlDetailsPages = [
+          animaddicts2gameHtmlDetailsPage,
+          glitchhikersSoundtrackHtmlDetailsPage,
+          feartressGameHtmlDetailsPage,
+        ];
+
+        this.games = discoverGamesFromSteamWeb(this.steamApps, this.htmlDetailsPages);
+      });
+
+      it("the length of games is 1", function () {
+        expect(this.games.length).toBe(2);
+      });
+
+      it("the name of the first game array entry is 'Animaddicts'", function () {
+        expect(this.games[0].name).toBe("Animaddicts");
+      });
+
+      it("the first entry in the games array is an instance of game", function () {
+        expect(this.games[0]).toBeInstanceOf(Game);
+      });
+
+      it("the name of the second game array entry is 'Feartress'", function () {
+        expect(this.games[1].name).toBe("Feartress");
+      });
+
+      it("the first entry in the games array is an instance of game", function () {
+        expect(this.games[1]).toBeInstanceOf(Game);
+      });
+    });
   });
 
   describe(".updateIdentificationStatusSideEffectFree", function () {
