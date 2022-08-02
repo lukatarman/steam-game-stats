@@ -23,7 +23,7 @@ export class GameIdentifier {
     );
     if (steamApps.length === 0) return;
 
-    const [games, updatedSteamApps] = this.#identifyViaSteamWeb(steamApps);
+    const [games, updatedSteamApps] = await this.#identifyViaSteamWeb(steamApps);
 
     this.#persist(games, updatedSteamApps);
   };
