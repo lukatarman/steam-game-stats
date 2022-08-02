@@ -47,7 +47,8 @@ async function main() {
   const runner = new Runner(
     [
       steamAppsAggregator.collectSteamApps,
-      gameIdentifier.run.bind(gameIdentifier),
+      gameIdentifier.tryViaSteamWeb,
+      gameIdentifier.tryViaSteamchartsWeb,
       /**
        * @todo batch delay must be performed by runner
        */
