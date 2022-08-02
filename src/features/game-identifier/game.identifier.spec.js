@@ -386,12 +386,47 @@ describe("game.identifier.js", function () {
       });
     });
   });
+
+  describe(".tryViaSteamchartsWeb", function () {
+    describe("gets zero steamApps from the database and stops. So,", function () {
+      beforeEach(function () {
+        this.databaseClientMock = createDbMock(undefined, []);
+        this.steamClientMock = createSteamMock(undefined);
+
+        this.identifier = new GameIdentifier(
+          this.steamClientMock,
+          this.databaseClientMock,
+          {
+            batchSize: 1,
+          },
+        );
+
+        this.identifier.tryViaSteamchartsWeb();
+      });
+
+      it("getSteamchartsUntriedFilteredSteamApps was called once", function () {
+        expect(
+          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
+        ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamAppHtmlDetailsPage was not called", function () {
+        expect(
+          this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
+        ).toHaveBeenCalledTimes(0);
+      });
+    });
+  });
 });
 
 function createSteamMock(...args) {
-  const spyObj = jasmine.createSpyObj("steamClient", ["getSteamAppHtmlDetailsPage"]);
+  const spyObj = jasmine.createSpyObj("steamClient", [
+    "getSteamAppHtmlDetailsPage",
+    "getSteamchartsGameHtmlDetailsPage",
+  ]);
 
   spyObj.getSteamAppHtmlDetailsPage.and.returnValues(...args);
+  spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(...args);
 
   return spyObj;
 }
