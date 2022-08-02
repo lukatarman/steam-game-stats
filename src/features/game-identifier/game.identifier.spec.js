@@ -1,6 +1,11 @@
 import { GameIdentifier } from "./game.identifier.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { SteamApp } from "../../models/steam.app.js";
+import {
+  discoverGamesFromSteamWeb,
+  updateIdentificationStatusSideEffectFree,
+} from "./services/game.service.js";
+import { HistoryCheck } from "../../models/history.check.js";
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
@@ -31,12 +36,25 @@ describe("game.identifier.js", function () {
       });
     });
 
-    fdescribe("gets one game out of a batch of one steamApp, and inserts it into the database. So,", function () {
+    describe("gets one game out of a batch of one steamApp, and inserts it into the database. So,", function () {
       beforeEach(async function () {
-        this.app = SteamApp.oneFromSteamApi({ appid: 1, name: "Animaddicts" });
+        this.app = [{ appid: 1, name: "Animaddicts" }];
+
+        this.games = discoverGamesFromSteamWeb(this.app, [
+          animaddicts2gameHtmlDetailsPage,
+        ]);
+
+        this.historychecks = HistoryCheck.manyFromGames(this.games);
+
+        this.instantiatedApp = SteamApp.manyFromSteamApi(this.app);
+
+        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
+          this.instantiatedApp,
+          [animaddicts2gameHtmlDetailsPage],
+        );
 
         this.steamClientMock = createSteamMock(animaddicts2gameHtmlDetailsPage);
-        this.databaseClientMock = createDbMock([this.app], undefined);
+        this.databaseClientMock = createDbMock(this.instantiatedApp, undefined);
 
         this.identifier = new GameIdentifier(
           this.steamClientMock,
@@ -74,7 +92,7 @@ describe("game.identifier.js", function () {
 
       it("getSteamAppHtmlDetailsPage was called with", function () {
         expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledWith(
-          this.app.appid,
+          this.instantiatedApp[0].appid,
         );
       });
 
@@ -88,6 +106,10 @@ describe("game.identifier.js", function () {
         );
       });
 
+      it("insertManyGames was called with this.games", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.games);
+      });
+
       it("insertManyHistoryChecks was called once", function () {
         expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
       });
@@ -98,8 +120,20 @@ describe("game.identifier.js", function () {
         );
       });
 
+      it("insertManyHistoryChecks was called with this.historychecks", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
+          this.historychecks,
+        );
+      });
+
       it("updateSteamAppsById was called once", function () {
         expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(1);
+      });
+
+      it("updateSteamAppsById was called with this.updatedSteamApps", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledWith(
+          this.updatedSteamApps,
+        );
       });
     });
   });
@@ -111,12 +145,12 @@ function createSteamMock(steamHtmlPageRes) {
   });
 }
 
-function createDbMock(steamWebRet, steamchartsWebRet) {
+function createDbMock(steamWebDbRet, steamchartsWebDbRet) {
   return jasmine.createSpyObj("databaseClient", {
-    getSteamWebUntriedFilteredSteamApps: Promise.resolve(steamWebRet),
+    getSteamWebUntriedFilteredSteamApps: Promise.resolve(steamWebDbRet),
     insertManyGames: Promise.resolve(undefined),
     insertManyHistoryChecks: Promise.resolve(undefined),
     updateSteamAppsById: Promise.resolve(undefined),
-    getSteamchartsUntriedFilteredSteamApps: Promise.resolve(steamchartsWebRet),
+    getSteamchartsUntriedFilteredSteamApps: Promise.resolve(steamchartsWebDbRet),
   });
 }
