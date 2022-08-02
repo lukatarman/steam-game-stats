@@ -124,7 +124,7 @@ describe("game.service.js", () => {
       });
     });
 
-    fdescribe("discovers two games out of a batch of three steamApps, so", function () {
+    describe("discovers two games out of a batch of three steamApps, so", function () {
       beforeEach(function () {
         this.steamApps = [
           {
