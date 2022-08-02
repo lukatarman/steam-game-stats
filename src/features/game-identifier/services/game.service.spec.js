@@ -2,6 +2,7 @@ import {
   steamAppIsGame,
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
+  identifyGames,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -273,6 +274,97 @@ describe("game.service.js", () => {
 
       it("the second entry in unidentifiedSteamApps has a property 'identified', and it's value is 'true'", function () {
         expect(this.unidentifiedSteamApps[1].identified).toBeTrue();
+      });
+    });
+  });
+
+  describe(".identifyGames", function () {
+    describe("checks which steam apps are games and instantiates them, so", function () {
+      describe("when no games out of a batch of one steamApp is passed in,", function () {
+        beforeEach(function () {
+          this.updatedSteamApps = [
+            {
+              appid: 1,
+              name: "Glitchiker Soundtrack",
+              identified: false,
+              triedVia: ["steamcharts"],
+            },
+          ];
+
+          this.result = identifyGames(this.updatedSteamApps);
+        });
+
+        it("the method returns undefined", function () {
+          expect(this.result).toEqual([]);
+        });
+      });
+
+      describe("when one game out of a batch of two steamApps is passed in,", function () {
+        beforeEach(function () {
+          this.updatedSteamApps = [
+            {
+              appid: 1,
+              name: "Glitchiker Soundtrack",
+              identified: false,
+              triedVia: ["steamcharts"],
+            },
+            {
+              appid: 2,
+              name: "Feartress",
+              identified: true,
+              triedVia: ["steamcharts"],
+            },
+          ];
+
+          this.result = identifyGames(this.updatedSteamApps);
+        });
+
+        it("the returned array length is one", function () {
+          expect(this.result.length).toBe(1);
+        });
+
+        it("the name property in the first returned array index is 'Feartress'", function () {
+          expect(this.result[0].name).toBe(this.updatedSteamApps[1].name);
+        });
+      });
+
+      describe("when two games out of a batch of three steamApps is passed in,", function () {
+        beforeEach(function () {
+          this.updatedSteamApps = [
+            {
+              appid: 1,
+              name: "Glitchiker Soundtrack",
+              identified: false,
+              triedVia: ["steamcharts"],
+            },
+            {
+              appid: 2,
+              name: "Feartress",
+              identified: true,
+              triedVia: ["steamcharts"],
+            },
+            {
+              appid: 3,
+              name: "Elden Ring",
+              identified: true,
+              triedVia: ["steamcharts"],
+            },
+          ];
+
+          this.result = identifyGames(this.updatedSteamApps);
+        });
+
+        it("the returned array length is two", function () {
+          expect(this.result.length).toBe(2);
+        });
+
+        it("the name property in the first returned array index is 'Feartress'", function () {
+          expect(this.result[0].name).toBe(this.updatedSteamApps[1].name);
+        });
+
+        it("the name property in the first returned array index is 'Elden Ring'", function () {
+          expect(this.result[1].name).toBe(this.updatedSteamApps[2].name);
+        });
       });
     });
   });
