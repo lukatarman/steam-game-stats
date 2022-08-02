@@ -370,7 +370,7 @@ describe("game.service.js", () => {
     });
   });
 
-  fdescribe(".setAsIdentified", function () {
+  describe(".setAsIdentified", function () {
     describe("checks if result contains a value. If so, identifies the steamApp. So", function () {
       describe("when result does not contain a value,", function () {
         beforeEach(function () {
