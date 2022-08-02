@@ -74,7 +74,9 @@ describe("game.identifier.js", function () {
 });
 
 function createSteamMock(steamHtmlPageRes) {
-  return jasmine.createSpyObj("steamClient", ["getSteamAppHtmlDetailsPage"]);
+  return jasmine.createSpyObj("steamClient", {
+    getSteamAppHtmlDetailsPage: Promise.resolve(steamHtmlPageRes),
+  });
 }
 
 function createDbMock(steamWebRet, steamchartsWebRet) {
