@@ -3,6 +3,7 @@ import {
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
   identifyGames,
+  setAsIdentified,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -364,6 +365,36 @@ describe("game.service.js", () => {
 
         it("the name property in the first returned array index is 'Elden Ring'", function () {
           expect(this.result[1].name).toBe(this.updatedSteamApps[2].name);
+        });
+      });
+    });
+  });
+
+  fdescribe(".setAsIdentified", function () {
+    describe("checks if result contains a value. If so, identifies the steamApp. So", function () {
+      describe("when result does not contain a value,", function () {
+        beforeEach(function () {
+          this.app = { id: 1, name: "Feartress" };
+          this.steamApp = SteamApp.oneFromSteamApi(this.app);
+
+          this.result = setAsIdentified(undefined, this.steamApp);
+        });
+
+        it("the function returns the steamApp. The identify property remains false", function () {
+          expect(this.result.identified).toBe(false);
+        });
+      });
+
+      describe("when the result contains a value,", function () {
+        beforeEach(function () {
+          this.app = { id: 1, name: "Feartress" };
+          this.steamApp = SteamApp.oneFromSteamApi(this.app);
+
+          this.result = setAsIdentified(true, this.steamApp);
+        });
+
+        it("the function returns the steamApp. The identify property is true", function () {
+          expect(this.result.identified).toBe(true);
         });
       });
     });
