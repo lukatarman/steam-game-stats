@@ -19,7 +19,7 @@ describe("game.identifier.js", function () {
     describe("gets zero steamApps from the database and stops. So,", function () {
       beforeEach(function () {
         this.databaseClientMock = createDbMock([], undefined);
-        this.steamClientMock = createSteamMock(undefined);
+        this.steamClientMock = createSteamMock([undefined]);
 
         this.identifier = new GameIdentifier(
           this.steamClientMock,
