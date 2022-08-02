@@ -10,7 +10,6 @@ import { SteamApp } from "../../models/steam.app.js";
 import {
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
-  identifyGames,
 } from "./services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
 
