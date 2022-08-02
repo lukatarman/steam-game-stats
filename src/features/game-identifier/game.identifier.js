@@ -78,7 +78,10 @@ export class GameIdentifier {
   async #updateStatusViaSteamchartsWeb(steamApps) {
     const updatedSteamApps = steamApps
       .map((steamApp) => steamApp.copy())
-      .map((steamApp) => steamApp.triedViaSteamchartsWeb());
+      .map((steamApp) => {
+        steamApp.triedViaSteamchartsWeb();
+        return steamApp;
+      });
 
     for (let steamApp of updatedSteamApps) {
       await delay(this.#options.unitDelay);
