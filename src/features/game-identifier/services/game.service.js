@@ -39,3 +39,11 @@ export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsP
     return copy;
   });
 }
+
+export function identifyGames(updatedSteamApps) {
+  const games = updatedSteamApps
+    .filter((steamApp) => steamApp.identified)
+    .map((steamApp) => Game.fromSteamApp(steamApp));
+
+  return games;
+}

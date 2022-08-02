@@ -1,6 +1,7 @@
 import {
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
+  identifyGames,
 } from "./services/game.service.js";
 import { Game } from "../../models/game.js";
 import { delay } from "../../utils/time.utils.js";
@@ -69,7 +70,7 @@ export class GameIdentifier {
     if (steamApps.length === 0) return;
 
     const updatedSteamApps = await this.#updateStatusViaSteamchartsWeb(steamApps);
-    const games = this.#identify(updatedSteamApps);
+    const games = identifyGames(updatedSteamApps);
 
     this.#persist(games, updatedSteamApps);
   };
@@ -89,13 +90,5 @@ export class GameIdentifier {
     }
 
     return updatedSteamApps;
-  }
-
-  #identify(updatedSteamApps) {
-    const games = updatedSteamApps
-      .filter((steamApp) => steamApp.identified)
-      .map((steamApp) => Game.fromSteamApp(steamApp));
-
-    return games;
   }
 }
