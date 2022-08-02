@@ -72,7 +72,7 @@ describe("game.identifier.js", function () {
           [animaddicts2gameHtmlDetailsPage],
         );
 
-        this.steamClientMock = createSteamMock(animaddicts2gameHtmlDetailsPage);
+        this.steamClientMock = createSteamMock([animaddicts2gameHtmlDetailsPage]);
         this.databaseClientMock = createDbMock(this.instantiatedApp, undefined);
 
         this.identifier = new GameIdentifier(
