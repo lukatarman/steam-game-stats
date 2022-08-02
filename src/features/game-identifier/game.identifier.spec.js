@@ -214,12 +214,134 @@ describe("game.identifier.js", function () {
         expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledTimes(2);
       });
 
-      it("getSteamAppHtmlDetailsPage was called with", function () {
+      it("getSteamAppHtmlDetailsPage was called with each instantiated id", function () {
         expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledWith(
           this.instantiatedApps[0].appid,
         );
         expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledWith(
           this.instantiatedApps[1].appid,
+        );
+      });
+
+      it("insertManyGames was called once", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
+      });
+
+      it("insertManyGames was called before insertManyHistoryChecks", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledBefore(
+          this.databaseClientMock.insertManyHistoryChecks,
+        );
+      });
+
+      it("insertManyGames was called with this.games", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.games);
+      });
+
+      it("insertManyHistoryChecks was called once", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
+      });
+
+      it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
+          this.databaseClientMock.updateSteamAppsById,
+        );
+      });
+
+      it("insertManyHistoryChecks was called with this.historychecks", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
+          this.historychecks,
+        );
+      });
+
+      it("updateSteamAppsById was called once", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(1);
+      });
+
+      it("updateSteamAppsById was called with this.updatedSteamApps", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledWith(
+          this.updatedSteamApps,
+        );
+      });
+    });
+
+    describe("gets two games out of a batch of three steamApps, and inserts them into the database. So,", function () {
+      beforeEach(async function () {
+        this.apps = [
+          { appid: 1, name: "Animaddicts" },
+          { appid: 2, name: "Glitchhikers Soundtrack" },
+          { appid: 3, name: "Mortal Darkness" },
+        ];
+
+        this.htmlDetailsPages = [
+          animaddicts2gameHtmlDetailsPage,
+          glitchhikersSoundtrackHtmlDetailsPage,
+          mortalDarknessGameHtmlDetailsPage,
+        ];
+
+        this.instantiatedApps = SteamApp.manyFromSteamApi(this.apps);
+
+        this.games = discoverGamesFromSteamWeb(
+          this.instantiatedApps,
+          this.htmlDetailsPages,
+        );
+
+        this.historychecks = HistoryCheck.manyFromGames(this.games);
+
+        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
+          this.instantiatedApps,
+          this.htmlDetailsPages,
+        );
+
+        this.steamClientMock = createSteamMock(
+          animaddicts2gameHtmlDetailsPage,
+          glitchhikersSoundtrackHtmlDetailsPage,
+          mortalDarknessGameHtmlDetailsPage,
+        );
+        this.databaseClientMock = createDbMock(this.instantiatedApps, undefined);
+
+        this.identifier = new GameIdentifier(
+          this.steamClientMock,
+          this.databaseClientMock,
+          {
+            batchSize: 1,
+            unitDelay: 0,
+          },
+        );
+
+        await this.identifier.tryViaSteamWeb();
+      });
+
+      it("getSteamWebUntriedFilteredSteamApps was called once", function () {
+        expect(
+          this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
+        ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamWebUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
+        expect(
+          this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
+        ).toHaveBeenCalledBefore(this.steamClientMock.getSteamAppHtmlDetailsPage);
+      });
+
+      it("getSteamWebUntriedFilteredSteamApps was called with '1'", function () {
+        expect(
+          this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
+        ).toHaveBeenCalledWith(1);
+      });
+
+      it("getSteamAppHtmlDetailsPage was called three times", function () {
+        expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledTimes(3);
+      });
+
+      it("getSteamAppHtmlDetailsPage was called with each instantiated appid", function () {
+        expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledWith(
+          this.instantiatedApps[0].appid,
+        );
+        expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledWith(
+          this.instantiatedApps[1].appid,
+        );
+        expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledWith(
+          this.instantiatedApps[2].appid,
         );
       });
 
