@@ -44,17 +44,17 @@ describe("players.js", () => {
       });
     });
 
-    xdescribe("if 5473,43 is passed in as the player number", () => {
+    describe("if 5473,4 is passed in as the player number", () => {
       let players;
       let currentDate;
 
       beforeAll(() => {
         currentDate = new Date();
-        players = new Players("5473,43", currentDate);
+        players = new Players("5473.4", currentDate);
       });
 
       it("the property date should be the current date", () => {
-        expect(players.players).toBe(5473);
+        expect(players.players).toBe(5473.4);
       });
     });
   });
