@@ -44,7 +44,7 @@ describe("players.js", () => {
       });
     });
 
-    describe("if 5473,4 is passed in as the player number", () => {
+    describe("if 5473.4 is passed in as the player number", () => {
       let players;
       let currentDate;
 
