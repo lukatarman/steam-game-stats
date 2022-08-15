@@ -6,7 +6,7 @@ describe("players.js", function () {
       let players;
       let currentDate;
 
-      beforeAll(function () {
+      beforeEach(function () {
         currentDate = new Date();
         players = new Players("24");
       });
@@ -20,7 +20,7 @@ describe("players.js", function () {
       let players;
       let currentDate;
 
-      beforeAll(function () {
+      beforeEach(function () {
         currentDate = new Date("September 2000");
         players = new Players("24", "September 2000");
       });
@@ -34,7 +34,7 @@ describe("players.js", function () {
       let players;
       let currentDate;
 
-      beforeAll(function () {
+      beforeEach(function () {
         currentDate = new Date();
         players = new Players("0", currentDate);
       });
@@ -48,7 +48,7 @@ describe("players.js", function () {
       let players;
       let currentDate;
 
-      beforeAll(function () {
+      beforeEach(function () {
         currentDate = new Date();
         players = new Players("5473.4", currentDate);
       });
