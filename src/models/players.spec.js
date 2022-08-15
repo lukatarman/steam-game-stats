@@ -3,58 +3,46 @@ import { Players } from "./players.js";
 describe("players.js", function () {
   describe("Players", function () {
     describe("if nothing is passed as the second parameter when instantiating", function () {
-      let players;
-      let currentDate;
-
       beforeEach(function () {
-        currentDate = new Date();
-        players = new Players("24");
+        this.currentDate = new Date();
+        this.players = new Players("24");
       });
 
       it("the property date should be the current date", function () {
-        expect(players.date).toEqual(currentDate);
+        expect(this.players.date).toEqual(this.currentDate);
       });
     });
 
     describe("if a date is passed as the second parameter when instantiating", function () {
-      let players;
-      let currentDate;
-
       beforeEach(function () {
-        currentDate = new Date("September 2000");
-        players = new Players("24", "September 2000");
+        this.currentDate = new Date("September 2000");
+        this.players = new Players("24", "September 2000");
       });
 
       it("the property date should be the current date", function () {
-        expect(players.date).toEqual(currentDate);
+        expect(this.players.date).toEqual(this.currentDate);
       });
     });
 
     describe("if zero is passed in as the player number", function () {
-      let players;
-      let currentDate;
-
       beforeEach(function () {
-        currentDate = new Date();
-        players = new Players("0", currentDate);
+        this.currentDate = new Date();
+        this.players = new Players("0", this.currentDate);
       });
 
       it("the property date should be the current date", function () {
-        expect(players.players).toBe(0);
+        expect(this.players.players).toBe(0);
       });
     });
 
     describe("if 5473.4 is passed in as the player number", function () {
-      let players;
-      let currentDate;
-
       beforeEach(function () {
-        currentDate = new Date();
-        players = new Players("5473.4", currentDate);
+        this.currentDate = new Date();
+        this.players = new Players("5473.4", this.currentDate);
       });
 
       it("the property date should be the current date", function () {
-        expect(players.players).toBe(5473.4);
+        expect(this.players.players).toBe(5473.4);
       });
     });
   });
