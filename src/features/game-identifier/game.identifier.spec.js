@@ -513,7 +513,7 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("getSteamchartsUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
+      it("getSteamchartsUntriedFilteredSteamApps was called before getSteamchartsGameHtmlDetailsPage", function () {
         expect(
           this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
         ).toHaveBeenCalledBefore(this.steamClientMock.getSteamchartsGameHtmlDetailsPage);
