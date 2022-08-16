@@ -544,14 +544,14 @@ describe("game.identifier.js", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
       });
 
+      it("insertManyGames was called with this.game", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game);
+      });
+
       it("insertManyGames was called before insertManyHistoryChecks", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledBefore(
           this.databaseClientMock.insertManyHistoryChecks,
         );
-      });
-
-      it("insertManyGames was called with this.game", function () {
-        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game);
       });
 
       it("insertManyHistoryChecks was called once", function () {
