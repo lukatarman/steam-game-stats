@@ -333,16 +333,16 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("getSteamWebUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
-        expect(
-          this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledBefore(this.steamClientMock.getSteamAppHtmlDetailsPage);
-      });
-
       it("getSteamWebUntriedFilteredSteamApps was called with '1'", function () {
         expect(
           this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
         ).toHaveBeenCalledWith(1);
+      });
+
+      it("getSteamWebUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
+        expect(
+          this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
+        ).toHaveBeenCalledBefore(this.steamClientMock.getSteamAppHtmlDetailsPage);
       });
 
       it("getSteamAppHtmlDetailsPage was called three times", function () {
