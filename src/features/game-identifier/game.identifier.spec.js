@@ -450,7 +450,7 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
-      it("getSteamAppHtmlDetailsPage was not called", function () {
+      it("getSteamchartsGameHtmlDetailsPage was not called", function () {
         expect(
           this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
         ).toHaveBeenCalledTimes(0);
