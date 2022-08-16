@@ -471,6 +471,11 @@ describe("game.identifier.js", function () {
 
     describe("gets one game from a batch of two steamApps from the database and inserts them into the database. So,", function () {
       beforeEach(async function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.apps = [
           { appid: 1, name: "Elden Ring" },
           { appid: 2, name: "Swords and Soldiers Beta" },
@@ -498,10 +503,7 @@ describe("game.identifier.js", function () {
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-            unitDelay: 0,
-          },
+          this.options,
         );
 
         await this.identifier.tryViaSteamchartsWeb();
@@ -511,6 +513,12 @@ describe("game.identifier.js", function () {
         expect(
           this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamchartsUntriedFilteredSteamApps was called with 'this.options.batchSize'", function () {
+        expect(
+          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamchartsUntriedFilteredSteamApps was called before getSteamchartsGameHtmlDetailsPage", function () {
@@ -583,6 +591,11 @@ describe("game.identifier.js", function () {
 
     describe("gets two games from a batch of three steamApps from the database and inserts them into the database. So,", function () {
       beforeEach(async function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.apps = [
           { appid: 1, name: "Elden Ring" },
           { appid: 2, name: "Swords and Soldiers Beta" },
@@ -591,7 +604,7 @@ describe("game.identifier.js", function () {
 
         this.htmlDetailsPages = [
           eldenRingHttpDetailsSteamcharts,
-          swordsAndSoldiersBetaHtmlDetailsPage,
+          swordsAndSoldiersBetaSteamcharts,
           mortalDarknessGameHtmlDetailsPage,
         ];
 
@@ -613,10 +626,7 @@ describe("game.identifier.js", function () {
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-            unitDelay: 0,
-          },
+          this.options,
         );
 
         await this.identifier.tryViaSteamchartsWeb();
@@ -626,6 +636,12 @@ describe("game.identifier.js", function () {
         expect(
           this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamchartsUntriedFilteredSteamApps was called with 'this.options.batchSize'", function () {
+        expect(
+          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamchartsUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
