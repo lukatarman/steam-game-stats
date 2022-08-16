@@ -552,7 +552,7 @@ describe("game.identifier.js", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
       });
 
-      it("insertManyGames was called with this.game", function () {
+      it("insertManyGames was called with this.games", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.game);
       });
 
