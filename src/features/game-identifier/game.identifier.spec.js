@@ -17,15 +17,18 @@ describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
     describe("gets zero steamApps from the database and stops. So,", function () {
       beforeEach(function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.databaseClientMock = createDbMock([], undefined);
         this.steamClientMock = createSteamMock([undefined]);
 
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-          },
+          this.options,
         );
 
         this.identifier.tryViaSteamWeb();
@@ -35,6 +38,12 @@ describe("game.identifier.js", function () {
         expect(
           this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamWebUntriedFilteredSteamApps was called with 'this.options.batchSize'", function () {
+        expect(
+          this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamAppHtmlDetailsPage was not called", function () {
@@ -56,6 +65,11 @@ describe("game.identifier.js", function () {
 
     describe("gets one game out of a batch of one steamApp, and inserts it into the database. So,", function () {
       beforeEach(async function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.app = [{ appid: 1, name: "Animaddicts" }];
 
         this.games = discoverGamesFromSteamWeb(this.app, [
@@ -77,10 +91,7 @@ describe("game.identifier.js", function () {
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-            unitDelay: 0,
-          },
+          this.options,
         );
 
         await this.identifier.tryViaSteamWeb();
@@ -92,10 +103,10 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("getSteamWebUntriedFilteredSteamApps was called with 'this.#options.batchSize'", function () {
+      it("getSteamWebUntriedFilteredSteamApps was called with 'this.options.batchSize'", function () {
         expect(
           this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledWith(1);
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamWebUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
@@ -163,6 +174,11 @@ describe("game.identifier.js", function () {
 
     describe("gets one game out of a batch of two steamApps, and inserts it into the database. So,", function () {
       beforeEach(async function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.apps = [
           { appid: 1, name: "Animaddicts" },
           { appid: 2, name: "Glitchhikers Soundtrack" },
@@ -193,10 +209,7 @@ describe("game.identifier.js", function () {
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-            unitDelay: 0,
-          },
+          this.options,
         );
 
         await this.identifier.tryViaSteamWeb();
@@ -211,7 +224,7 @@ describe("game.identifier.js", function () {
       it("getSteamWebUntriedFilteredSteamApps was called with 'this.#options.batchSize'", function () {
         expect(
           this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledWith(1);
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamWebUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
@@ -282,6 +295,11 @@ describe("game.identifier.js", function () {
 
     describe("gets two games out of a batch of three steamApps, and inserts them into the database. So,", function () {
       beforeEach(async function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.apps = [
           { appid: 1, name: "Animaddicts" },
           { appid: 2, name: "Glitchhikers Soundtrack" },
@@ -318,10 +336,7 @@ describe("game.identifier.js", function () {
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-            unitDelay: 0,
-          },
+          this.options,
         );
 
         await this.identifier.tryViaSteamWeb();
@@ -333,10 +348,10 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("getSteamWebUntriedFilteredSteamApps was called with '1'", function () {
+      it("getSteamWebUntriedFilteredSteamApps was called with 'this.options.batchSize'", function () {
         expect(
           this.databaseClientMock.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledWith(1);
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamWebUntriedFilteredSteamApps was called before getSteamAppHtmlDetailsPage", function () {
@@ -406,16 +421,18 @@ describe("game.identifier.js", function () {
   describe(".tryViaSteamchartsWeb", function () {
     describe("gets zero steamApps from the database and stops. So,", function () {
       beforeEach(function () {
+        this.options = {
+          batchSize: 1,
+          unitDelay: 0,
+        };
+
         this.databaseClientMock = createDbMock(undefined, []);
         this.steamClientMock = createSteamMock([undefined]);
 
         this.identifier = new GameIdentifier(
           this.steamClientMock,
           this.databaseClientMock,
-          {
-            batchSize: 1,
-            unitDelay: 0,
-          },
+          this.options,
         );
 
         this.identifier.tryViaSteamchartsWeb();
@@ -425,6 +442,12 @@ describe("game.identifier.js", function () {
         expect(
           this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("getSteamchartsUntriedFilteredSteamApps was called once", function () {
+        expect(
+          this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
+        ).toHaveBeenCalledWith(this.options.batchSize);
       });
 
       it("getSteamAppHtmlDetailsPage was not called", function () {
