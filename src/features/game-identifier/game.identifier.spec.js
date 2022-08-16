@@ -708,7 +708,7 @@ describe("game.identifier.js", function () {
         expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(1);
       });
 
-      it("updateSteamAppsById was called with this.instantiatedApps", function () {
+      it("updateSteamAppsById was called with this.instantiatedMarkedApps", function () {
         expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledWith(
           this.instantiatedMarkedApps,
         );
