@@ -243,29 +243,29 @@ describe("game.identifier.js", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
       });
 
+      it("insertManyGames was called with this.games", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.games);
+      });
+
       it("insertManyGames was called before insertManyHistoryChecks", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledBefore(
           this.databaseClientMock.insertManyHistoryChecks,
         );
       });
 
-      it("insertManyGames was called with this.games", function () {
-        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledWith(this.games);
-      });
-
       it("insertManyHistoryChecks was called once", function () {
         expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
-      });
-
-      it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
-        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
-          this.databaseClientMock.updateSteamAppsById,
-        );
       });
 
       it("insertManyHistoryChecks was called with this.historychecks", function () {
         expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
           this.historychecks,
+        );
+      });
+
+      it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
+          this.databaseClientMock.updateSteamAppsById,
         );
       });
 
