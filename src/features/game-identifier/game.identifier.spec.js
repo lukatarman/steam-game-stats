@@ -444,7 +444,7 @@ describe("game.identifier.js", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("getSteamchartsUntriedFilteredSteamApps was called once", function () {
+      it("getSteamchartsUntriedFilteredSteamApps was called with 'this.options.batchSize'", function () {
         expect(
           this.databaseClientMock.getSteamchartsUntriedFilteredSteamApps,
         ).toHaveBeenCalledWith(this.options.batchSize);
@@ -454,6 +454,18 @@ describe("game.identifier.js", function () {
         expect(
           this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
         ).toHaveBeenCalledTimes(0);
+      });
+
+      it("insertManyGames was not called", function () {
+        expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(0);
+      });
+
+      it("insertManyHistoryChecks was not called", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(0);
+      });
+
+      it("updateSteamAppsById was not called", function () {
+        expect(this.databaseClientMock.updateSteamAppsById).toHaveBeenCalledTimes(0);
       });
     });
 
