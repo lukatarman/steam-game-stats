@@ -114,6 +114,12 @@ describe("game.identifier.js", function () {
         );
       });
 
+      it("getSteamAppHtmlDetailsPage was called before insertManyGames", function () {
+        expect(this.steamClientMock.getSteamAppHtmlDetailsPage).toHaveBeenCalledBefore(
+          this.databaseClientMock.insertManyGames,
+        );
+      });
+
       it("insertManyGames was called once", function () {
         expect(this.databaseClientMock.insertManyGames).toHaveBeenCalledTimes(1);
       });
