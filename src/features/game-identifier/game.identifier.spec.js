@@ -2,7 +2,7 @@ import { GameIdentifier } from "./game.identifier.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
-import { swordsAndSoldiersBetaHtmlDetailsPage } from "../../../assets/steamcharts-details-pages/swords.and.soldiers.beta.error.html.details.page.js";
+import { swordsAndSoldiersBetaSteamcharts } from "../../../assets/steamcharts-details-pages/swords.and.soldiers.beta.error.html.details.page.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { Game } from "../../models/game.js";
 
@@ -478,7 +478,7 @@ describe("game.identifier.js", function () {
 
         this.htmlDetailsPages = [
           eldenRingHttpDetailsSteamcharts,
-          swordsAndSoldiersBetaHtmlDetailsPage,
+          swordsAndSoldiersBetaSteamcharts,
         ];
 
         this.game = [Game.fromSteamApp(this.apps[0])];
