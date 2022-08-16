@@ -138,15 +138,15 @@ describe("game.identifier.js", function () {
         expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledTimes(1);
       });
 
-      it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
-        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
-          this.databaseClientMock.updateSteamAppsById,
-        );
-      });
-
       it("insertManyHistoryChecks was called with this.historychecks", function () {
         expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledWith(
           this.historychecks,
+        );
+      });
+
+      it("insertManyHistoryChecks was called before updateSteamAppsById", function () {
+        expect(this.databaseClientMock.insertManyHistoryChecks).toHaveBeenCalledBefore(
+          this.databaseClientMock.updateSteamAppsById,
         );
       });
 
