@@ -189,14 +189,6 @@ describe("SteamApp", function () {
           expect(this.result[1]).toBeInstanceOf(SteamApp);
         });
       });
-
-      describe("When an undefined value is passed into it,", function () {
-        it("throws an error", function () {
-          expect(function () {
-            SteamApp.manyFromDbEntries(undefined);
-          }).toThrowError();
-        });
-      });
     });
 
     describe(".oneFromDbEntry returns an instance of SteamApp.", function () {
