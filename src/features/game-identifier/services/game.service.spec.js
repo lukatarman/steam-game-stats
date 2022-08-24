@@ -188,30 +188,30 @@ describe("game.service.js", () => {
 
         this.htmlDetailsPages = [glitchhikersSoundtrackHtmlDetailsPage];
 
-        this.unidentifiedSteamApps = updateIdentificationStatusSideEffectFree(
+        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
           this.steamApps,
           this.htmlDetailsPages,
         );
       });
 
-      it("the length of unidentifiedSteamApps is 1", function () {
-        expect(this.unidentifiedSteamApps.length).toBe(1);
+      it("the length of updatedSteamApps is 1", function () {
+        expect(this.updatedSteamApps.length).toBe(1);
       });
 
-      it("the first entry in the unidentifiedSteamApps array is an instance of SteamApp", function () {
-        expect(this.unidentifiedSteamApps[0]).toBeInstanceOf(SteamApp);
+      it("the first entry in the updatedSteamApps array is an instance of SteamApp", function () {
+        expect(this.updatedSteamApps[0]).toBeInstanceOf(SteamApp);
       });
 
-      it("the name of the first unidentifiedSteamApps array entry is 'Glitchhikers Soundtrack 2'", function () {
-        expect(this.unidentifiedSteamApps[0].name).toBe(this.apps[0].name);
+      it("the name of the first updatedSteamApps array entry is 'Glitchhikers Soundtrack 2'", function () {
+        expect(this.updatedSteamApps[0].name).toBe(this.apps[0].name);
       });
 
-      it("the first array entry in unidentifiedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.unidentifiedSteamApps[0].triedVia[0]).toBe("steamWeb");
+      it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
+        expect(this.updatedSteamApps[0].triedVia[0]).toBe("steamWeb");
       });
 
-      it("the first array entry in unidentifiedSteamApps has a property 'identified', and it's value is 'false'", function () {
-        expect(this.unidentifiedSteamApps[0].identified).toBeFalse();
+      it("the first array entry in updatedSteamApps has a property 'identified', and it's value is 'false'", function () {
+        expect(this.updatedSteamApps[0].identified).toBeFalse();
       });
     });
 
@@ -235,46 +235,46 @@ describe("game.service.js", () => {
           animaddicts2gameHtmlDetailsPage,
         ];
 
-        this.unidentifiedSteamApps = updateIdentificationStatusSideEffectFree(
+        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
           this.steamApps,
           this.htmlDetailsPages,
         );
       });
 
-      it("the length of unidentifiedSteamApps is 2", function () {
-        expect(this.unidentifiedSteamApps.length).toBe(2);
+      it("the length of updatedSteamApps is 2", function () {
+        expect(this.updatedSteamApps.length).toBe(2);
       });
 
-      it("the first entry in the unidentifiedSteamApps array is an instance of SteamApp", function () {
-        expect(this.unidentifiedSteamApps[0]).toBeInstanceOf(SteamApp);
+      it("the first entry in the updatedSteamApps array is an instance of SteamApp", function () {
+        expect(this.updatedSteamApps[0]).toBeInstanceOf(SteamApp);
       });
 
-      it("the second entry in the unidentifiedSteamApps array is an instance of SteamApp", function () {
-        expect(this.unidentifiedSteamApps[1]).toBeInstanceOf(SteamApp);
+      it("the second entry in the updatedSteamApps array is an instance of SteamApp", function () {
+        expect(this.updatedSteamApps[1]).toBeInstanceOf(SteamApp);
       });
 
-      it("the name of the first unidentifiedSteamApps array entry is 'Glitchhikers Soundtrack 2'", function () {
-        expect(this.unidentifiedSteamApps[0].name).toBe(this.apps[0].name);
+      it("the name of the first updatedSteamApps array entry is 'Glitchhikers Soundtrack 2'", function () {
+        expect(this.updatedSteamApps[0].name).toBe(this.apps[0].name);
       });
 
-      it("the name of the second unidentifiedSteamApps array entry is 'Animaddicts'", function () {
-        expect(this.unidentifiedSteamApps[1].name).toBe(this.apps[1].name);
+      it("the name of the second updatedSteamApps array entry is 'Animaddicts'", function () {
+        expect(this.updatedSteamApps[1].name).toBe(this.apps[1].name);
       });
 
-      it("the first array entry in unidentifiedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.unidentifiedSteamApps[0].triedVia[0]).toBe("steamWeb");
+      it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
+        expect(this.updatedSteamApps[0].triedVia[0]).toBe("steamWeb");
       });
 
-      it("the second array entry in unidentifiedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.unidentifiedSteamApps[1].triedVia[0]).toBe("steamWeb");
+      it("the second array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
+        expect(this.updatedSteamApps[1].triedVia[0]).toBe("steamWeb");
       });
 
-      it("the first entry in unidentifiedSteamApps has a property 'identified', and it's value is 'false'", function () {
-        expect(this.unidentifiedSteamApps[0].identified).toBeFalse();
+      it("the first entry in updatedSteamApps has a property 'identified', and it's value is 'false'", function () {
+        expect(this.updatedSteamApps[0].identified).toBeFalse();
       });
 
-      it("the second entry in unidentifiedSteamApps has a property 'identified', and it's value is 'true'", function () {
-        expect(this.unidentifiedSteamApps[1].identified).toBeTrue();
+      it("the second entry in updatedSteamApps has a property 'identified', and it's value is 'true'", function () {
+        expect(this.updatedSteamApps[1].identified).toBeTrue();
       });
     });
   });
