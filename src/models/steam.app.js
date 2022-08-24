@@ -4,6 +4,28 @@ export class SteamApp {
   identified;
   triedVia;
 
+  copy() {
+    const copy = new SteamApp();
+    copy.appid = this.appid;
+    copy.name = this.name;
+    copy.identified = this.identified;
+    copy.triedVia = this.triedVia.slice();
+
+    return copy;
+  }
+
+  triedViaSteamWeb() {
+    this.triedVia.push("steamWeb");
+  }
+
+  triedViaSteamchartsWeb() {
+    this.triedVia.push("steamcharts");
+  }
+
+  identify() {
+    this.identified = true;
+  }
+
   static manyFromSteamApi(apps) {
     return apps.map((app) => SteamApp.oneFromSteamApi(app));
   }

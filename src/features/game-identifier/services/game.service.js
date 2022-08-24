@@ -18,15 +18,37 @@ export function steamAppIsGame(httpDetailsPage) {
   return true;
 }
 
-export function discoverGamesFromSteamHtmlDetailsPages(steamApps, htmlDetailsPages) {
-  const games = [];
-  const unidentifiedSteamApps = [];
+export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
+  return htmlDetailsPages
+    .map((page, i) => {
+      if (steamAppIsGame(page)) {
+        return Game.fromSteamApp(steamApps[i]);
+      }
+    })
+    .filter((game) => !!game);
+}
 
-  for (let i = 0; i < steamApps.length; i++) {
-    steamAppIsGame(htmlDetailsPages[i])
-      ? games.push(Game.fromSteamApp(steamApps[i]))
-      : unidentifiedSteamApps.push(steamApps[i]);
-  }
+export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
+  return htmlDetailsPages.map((page, i) => {
+    const copy = steamApps[i].copy();
 
-  return [games, unidentifiedSteamApps];
+    copy.triedViaSteamWeb();
+
+    if (steamAppIsGame(page)) copy.identify();
+
+    return copy;
+  });
+}
+
+export function identifyGames(updatedSteamApps) {
+  const games = updatedSteamApps
+    .filter((steamApp) => steamApp.identified)
+    .map((steamApp) => Game.fromSteamApp(steamApp));
+
+  return games;
+}
+
+export function setAsIdentified(result, steamApp) {
+  if (result) steamApp.identify();
+  return steamApp;
 }

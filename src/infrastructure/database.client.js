@@ -83,17 +83,39 @@ export class DatabaseClient {
       .next();
   }
 
-  async getXunidentifiedFilteredSteamApps(amount) {
-    return await this.#collections
+  async getSteamWebUntriedFilteredSteamApps(amount) {
+    const response = await this.#collections
       .get("steam_apps")
       .find({
         $and: [
+          { identified: false },
+          { triedVia: { $ne: "steamWeb" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
         ],
       })
       .limit(amount)
       .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
+  }
+
+  async getSteamchartsUntriedFilteredSteamApps(amount) {
+    const response = await this.#collections
+      .get("steam_apps")
+      .find({
+        $and: [
+          { identified: false },
+          { triedVia: { $ne: "steamcharts" } },
+          { triedVia: "steamWeb" },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
   }
 
   async updateHistoryChecks(historyChecks) {
@@ -113,16 +135,14 @@ export class DatabaseClient {
     );
   }
 
-  async identifySteamAppsById(steamApps) {
-    await Promise.all(
-      steamApps.map((steamApp) => this.identifySteamAppById(steamApp.appid)),
-    );
+  async updateSteamAppsById(steamApps) {
+    await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
   }
 
-  async identifySteamAppById(id) {
+  async updateSteamAppById({ appid, identified, triedVia }) {
     await this.#collections
       .get("steam_apps")
-      .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified } });
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
