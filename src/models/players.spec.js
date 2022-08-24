@@ -1,60 +1,48 @@
 import { Players } from "./players.js";
 
-describe("players.js", () => {
-  describe("Players", () => {
-    describe("if nothing is passed as the second parameter when instantiating", () => {
-      let players;
-      let currentDate;
-
-      beforeAll(() => {
-        currentDate = new Date();
-        players = new Players("24");
+describe("players.js", function () {
+  describe("Players", function () {
+    describe("if nothing is passed as the second parameter when instantiating", function () {
+      beforeEach(function () {
+        this.currentDate = new Date();
+        this.players = new Players("24");
       });
 
-      it("the property date should be the current date", () => {
-        expect(players.date).toEqual(currentDate);
+      it("the property date should be the current date", function () {
+        expect(this.players.date).toEqual(this.currentDate);
       });
     });
 
-    describe("if a date is passed as the second parameter when instantiating", () => {
-      let players;
-      let currentDate;
-
-      beforeAll(() => {
-        currentDate = new Date("September 2000");
-        players = new Players("24", "September 2000");
+    describe("if a date is passed as the second parameter when instantiating", function () {
+      beforeEach(function () {
+        this.currentDate = new Date("September 2000");
+        this.players = new Players("24", "September 2000");
       });
 
-      it("the property date should be the current date", () => {
-        expect(players.date).toEqual(currentDate);
+      it("the property date should be the current date", function () {
+        expect(this.players.date).toEqual(this.currentDate);
       });
     });
 
-    describe("if zero is passed in as the player number", () => {
-      let players;
-      let currentDate;
-
-      beforeAll(() => {
-        currentDate = new Date();
-        players = new Players("0", currentDate);
+    describe("if zero is passed in as the player number", function () {
+      beforeEach(function () {
+        this.currentDate = new Date();
+        this.players = new Players("0", this.currentDate);
       });
 
-      it("the property date should be the current date", () => {
-        expect(players.players).toBe(0);
+      it("the property date should be the current date", function () {
+        expect(this.players.players).toBe(0);
       });
     });
 
-    xdescribe("if 5473,43 is passed in as the player number", () => {
-      let players;
-      let currentDate;
-
-      beforeAll(() => {
-        currentDate = new Date();
-        players = new Players("5473,43", currentDate);
+    describe("if 5473.4 is passed in as the player number", function () {
+      beforeEach(function () {
+        this.currentDate = new Date();
+        this.players = new Players("5473.4", this.currentDate);
       });
 
-      it("the property date should be the current date", () => {
-        expect(players.players).toBe(5473);
+      it("the property date should be the current date", function () {
+        expect(this.players.players).toBe(5473.4);
       });
     });
   });
