@@ -37,9 +37,7 @@ describe("SteamApp", function () {
             appid: 1,
           };
 
-          this.instantiatedApp = SteamApp.oneFromSteamApi(this.app);
-
-          this.result = this.instantiatedApp.copy();
+          this.result = SteamApp.oneFromSteamApi(this.app);
 
           this.result.triedViaSteamWeb();
         });
@@ -58,9 +56,7 @@ describe("SteamApp", function () {
             appid: 1,
           };
 
-          this.instantiatedApp = SteamApp.oneFromSteamApi(this.app);
-
-          this.result = this.instantiatedApp.copy();
+          this.result = SteamApp.oneFromSteamApi(this.app);
 
           this.result.triedViaSteamchartsWeb();
         });
@@ -79,9 +75,7 @@ describe("SteamApp", function () {
             appid: 1,
           };
 
-          this.instantiatedApp = SteamApp.oneFromSteamApi(this.app);
-
-          this.result = this.instantiatedApp.copy();
+          this.result = SteamApp.oneFromSteamApi(this.app);
 
           this.result.identify();
         });
