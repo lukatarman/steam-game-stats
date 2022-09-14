@@ -19,7 +19,6 @@ export class GameIdentifier {
   }
 
   tryViaSteamWeb = async () => {
-    console.log("test");
     const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
