@@ -1,7 +1,7 @@
 import "./App.css";
 
-function App() {
+const App = () => {
   return <div>Steam Game Stats</div>;
-}
+};
 
 export default App;
