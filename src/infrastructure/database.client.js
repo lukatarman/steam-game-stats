@@ -92,6 +92,7 @@ export class DatabaseClient {
           { triedVia: { $ne: "steamWeb" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
         ],
       })
       .limit(amount)
@@ -110,6 +111,7 @@ export class DatabaseClient {
           { triedVia: "steamWeb" },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
         ],
       })
       .limit(amount)
