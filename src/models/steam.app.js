@@ -9,6 +9,7 @@ export class SteamApp {
     copy.appid = this.appid;
     copy.name = this.name;
     copy.identified = this.identified;
+    copy.type = this.type;
     copy.triedVia = this.triedVia.slice();
 
     return copy;
@@ -36,6 +37,7 @@ export class SteamApp {
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
     steamApp.identified = false;
+    steamApp.type = "unknown";
     steamApp.triedVia   = [];
     return steamApp;
   }
@@ -50,6 +52,7 @@ export class SteamApp {
     steamApp.appid      = dbEntry.appid;
     steamApp.name       = dbEntry.name;
     steamApp.identified = dbEntry.identified;
+    steamApp.type       = dbEntry.type;
     steamApp.triedVia   = dbEntry.triedVia.slice();
     return steamApp;
   }
