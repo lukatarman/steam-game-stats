@@ -1,27 +1,28 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
 
-export function steamAppIsGame(httpDetailsPage) {
+export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
-  if (!breadcrumbElement) return false;
+  if (!breadcrumbElement) return "unknown";
 
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
-  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return false;
+  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
+    return "unknown";
 
   for (let child of breadcrumbElement.children) {
-    if (child.textContent === "Downloadable Content") return false;
+    if (child.textContent === "Downloadable Content") return "downloadable content";
   }
 
-  return true;
+  return "game";
 }
 
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
-      if (steamAppIsGame(page)) {
+      if (getSteamAppType(page)) {
         return Game.fromSteamApp(steamApps[i]);
       }
     })
@@ -34,7 +35,7 @@ export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsP
 
     copy.triedViaSteamWeb();
 
-    if (steamAppIsGame(page)) copy.identify();
+    if (getSteamAppType(page)) copy.identify();
 
     return copy;
   });
