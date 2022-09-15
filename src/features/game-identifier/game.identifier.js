@@ -92,9 +92,7 @@ export class GameIdentifier {
         );
 
         setAsIdentified(result, steamApp);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
 
     return updatedSteamApps;
