@@ -43,6 +43,7 @@ async function main() {
   const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
   const webServer = new WebServer(gameQueriesRouter);
   // await webServer.start();
+  console.log("change");
 
   const runner = new Runner(
     [
