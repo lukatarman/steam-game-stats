@@ -21,7 +21,7 @@ export function getSteamAppType(httpDetailsPage) {
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
-      if (getSteamAppType(page)) {
+      if (getSteamAppType(page) === "game") {
         return Game.fromSteamApp(steamApps[i]);
       }
     })
