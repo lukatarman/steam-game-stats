@@ -1,5 +1,5 @@
 import {
-  steamAppIsGame,
+  getSteamAppType,
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
   identifyGames,
@@ -15,52 +15,52 @@ import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
 describe("game.service.js", () => {
-  describe(".steamAppIsGame", () => {
+  describe(".getSteamAppType", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
-      let isGame;
+      let appType;
 
       beforeAll(async () => {
-        isGame = steamAppIsGame(gta5ageRestrictedHtmlDetailsPage);
+        appType = getSteamAppType(gta5ageRestrictedHtmlDetailsPage);
       });
 
-      it("the function returns false", () => {
-        expect(isGame).toBe(false);
+      it("the function returns 'undefined'", () => {
+        expect(appType).toBe(undefined);
       });
     });
 
     describe("if there is no 'All Software' or 'All Games' in the first breadcrumb child text", () => {
-      let isGame;
+      let appType;
 
       beforeAll(async () => {
-        isGame = steamAppIsGame(padakVideoHtmlDetailsPage);
+        appType = getSteamAppType(padakVideoHtmlDetailsPage);
       });
 
-      it("the function returns false", () => {
-        expect(isGame).toBe(false);
+      it("the function returns 'undefined'", () => {
+        expect(appType).toBe(undefined);
       });
     });
 
     describe("if the text 'Downloadable Content' is in one of the breadcrumbs", () => {
-      let isGame;
+      let appType;
 
       beforeAll(async () => {
-        isGame = steamAppIsGame(theSims4catsAndDogsHtmlDetailsPage);
+        appType = getSteamAppType(theSims4catsAndDogsHtmlDetailsPage);
       });
 
-      it("the function returns false", () => {
-        expect(isGame).toBe(false);
+      it("the function returns 'downloadable content'", () => {
+        expect(appType).toBe("downloadable content");
       });
     });
 
     describe(".blockbg class is on the page, 'All Software' or 'All Games' is in the first breadcrumb and there is no 'Downloadable Content' text in the breadcrumbs", () => {
-      let isGame;
+      let appType;
 
       beforeAll(async () => {
-        isGame = steamAppIsGame(feartressGameHtmlDetailsPage);
+        appType = getSteamAppType(feartressGameHtmlDetailsPage);
       });
 
-      it("the function returns true", () => {
-        expect(isGame).toBe(true);
+      it("the function returns 'game'", () => {
+        expect(appType).toBe("game");
       });
     });
   });
