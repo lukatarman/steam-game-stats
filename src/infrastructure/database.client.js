@@ -108,8 +108,7 @@ export class DatabaseClient {
       .find({
         $and: [
           { identified: false },
-          { triedVia: { $ne: "steamcharts" } },
-          { triedVia: "steamWeb" },
+          { $and: [{ triedVia: { $ne: "steamcharts" } }, { triedVia: "steamWeb" }] },
           { type: { $ne: "downloadable content" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
