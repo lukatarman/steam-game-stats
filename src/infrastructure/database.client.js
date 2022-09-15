@@ -144,7 +144,7 @@ export class DatabaseClient {
   async updateSteamAppById({ appid, identified, triedVia }) {
     await this.#collections
       .get("steam_apps")
-      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified, type } });
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
