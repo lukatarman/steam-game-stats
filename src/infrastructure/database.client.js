@@ -90,6 +90,7 @@ export class DatabaseClient {
         $and: [
           { identified: false },
           { triedVia: { $ne: "steamWeb" } },
+          { type: { $not: "downloadable content" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
@@ -109,6 +110,7 @@ export class DatabaseClient {
           { identified: false },
           { triedVia: { $ne: "steamcharts" } },
           { triedVia: "steamWeb" },
+          { type: { $not: "downloadable content" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
