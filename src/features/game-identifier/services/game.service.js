@@ -31,10 +31,11 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
 export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
   return htmlDetailsPages.map((page, i) => {
     const copy = steamApps[i].copy();
+    const appType = getSteamAppType(page);
 
     copy.triedViaSteamWeb();
 
-    if (getSteamAppType(page)) copy.identify();
+    if (appType) copy.identify(appType);
 
     return copy;
   });
