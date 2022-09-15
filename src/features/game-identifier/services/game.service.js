@@ -5,12 +5,11 @@ export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
-  if (!breadcrumbElement) return "unknown";
+  if (!breadcrumbElement) return;
 
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
-  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
-    return "unknown";
+  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return;
 
   for (let child of breadcrumbElement.children) {
     if (child.textContent === "Downloadable Content") return "downloadable content";
