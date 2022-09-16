@@ -101,7 +101,8 @@ export class DatabaseClient {
 
     return SteamApp.manyFromDbEntries(response);
   }
-
+  // check steam.app.js
+  // change setting appType to unidentified, even on default when it IS identified, but nothing is passed in.
   async getSteamchartsUntriedFilteredSteamApps(amount) {
     const response = await this.#collections
       .get("steam_apps")
