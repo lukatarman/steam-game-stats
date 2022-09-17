@@ -10,7 +10,7 @@ import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-p
 import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-pages/padak.video.html.details.page.js";
-import { theSims4catsAndDogsHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
@@ -44,7 +44,7 @@ describe("game.service.js", () => {
       let appType;
 
       beforeAll(async () => {
-        appType = getSteamAppType(theSims4catsAndDogsHtmlDetailsPage);
+        appType = getSteamAppType(theSims4dlcHtmlDetailsPage);
       });
 
       it("the function returns 'downloadable content'", () => {
