@@ -1,6 +1,8 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
 
+// todo: add new tests for changes
+
 export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
