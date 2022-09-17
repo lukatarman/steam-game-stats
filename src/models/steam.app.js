@@ -23,7 +23,7 @@ export class SteamApp {
     this.triedVia.push("steamcharts");
   }
 
-  identify(type = "unidentified") {
+  identify(type = "unknown") {
     this.identified = true;
     this.type = type;
   }
