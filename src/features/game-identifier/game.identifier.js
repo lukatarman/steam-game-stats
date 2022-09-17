@@ -92,7 +92,10 @@ export class GameIdentifier {
         );
 
         setAsIdentified(result, steamApp);
-      } catch (error) {}
+      } catch (error) {
+        // The catch block is empty because in some cases we are expecting the request to return an error.
+        // This just means that this app has no entry on steamcharts, so we don't do anything with it.
+      }
     }
 
     return updatedSteamApps;
