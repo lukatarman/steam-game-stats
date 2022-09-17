@@ -215,7 +215,7 @@ describe("game.service.js", () => {
       });
     });
 
-    fdescribe("discovers one game and one downloadable content out of a batch of three steamApps, so", function () {
+    describe("discovers one game and one downloadable content out of a batch of three steamApps, so", function () {
       beforeEach(function () {
         this.apps = [
           {
