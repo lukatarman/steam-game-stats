@@ -215,7 +215,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("discovers one game out of a batch of two steamApps, so", function () {
+    fdescribe("discovers one game and one downloadable content out of a batch of three steamApps, so", function () {
       beforeEach(function () {
         this.apps = [
           {
@@ -226,6 +226,10 @@ describe("game.service.js", () => {
             appid: 2,
             name: "Animaddicts",
           },
+          {
+            appid: 3,
+            name: "The Sims 4 Cats and Dogs DLC",
+          },
         ];
 
         this.steamApps = SteamApp.manyFromSteamApi(this.apps);
@@ -233,6 +237,7 @@ describe("game.service.js", () => {
         this.htmlDetailsPages = [
           glitchhikersSoundtrackHtmlDetailsPage,
           animaddicts2gameHtmlDetailsPage,
+          theSims4dlcHtmlDetailsPage,
         ];
 
         this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
@@ -241,8 +246,8 @@ describe("game.service.js", () => {
         );
       });
 
-      it("the length of updatedSteamApps is 2", function () {
-        expect(this.updatedSteamApps.length).toBe(2);
+      it("the length of updatedSteamApps is 3", function () {
+        expect(this.updatedSteamApps.length).toBe(3);
       });
 
       it("the first entry in the updatedSteamApps array is an instance of SteamApp", function () {
@@ -253,12 +258,20 @@ describe("game.service.js", () => {
         expect(this.updatedSteamApps[1]).toBeInstanceOf(SteamApp);
       });
 
+      it("the third entry in the updatedSteamApps array is an instance of SteamApp", function () {
+        expect(this.updatedSteamApps[2]).toBeInstanceOf(SteamApp);
+      });
+
       it("the name of the first updatedSteamApps array entry is 'Glitchhikers Soundtrack 2'", function () {
         expect(this.updatedSteamApps[0].name).toBe(this.apps[0].name);
       });
 
       it("the name of the second updatedSteamApps array entry is 'Animaddicts'", function () {
         expect(this.updatedSteamApps[1].name).toBe(this.apps[1].name);
+      });
+
+      it("the name of the third updatedSteamApps array entry is 'The Sims 4 Cats and Dogs DLC'", function () {
+        expect(this.updatedSteamApps[2].name).toBe(this.apps[2].name);
       });
 
       it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
@@ -269,12 +282,28 @@ describe("game.service.js", () => {
         expect(this.updatedSteamApps[1].triedVia[0]).toBe("steamWeb");
       });
 
+      it("the third array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
+        expect(this.updatedSteamApps[2].triedVia[0]).toBe("steamWeb");
+      });
+
       it("the first entry in updatedSteamApps has a property 'identified', and it's value is 'false'", function () {
         expect(this.updatedSteamApps[0].identified).toBeFalse();
       });
 
       it("the second entry in updatedSteamApps has a property 'identified', and it's value is 'true'", function () {
         expect(this.updatedSteamApps[1].identified).toBeTrue();
+      });
+
+      it("the third entry in updatedSteamApps has a property 'identified', and it's value is 'true'", function () {
+        expect(this.updatedSteamApps[2].identified).toBeTrue();
+      });
+
+      it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
+        expect(this.updatedSteamApps[1].type).toBe("game");
+      });
+
+      it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadable content'", function () {
+        expect(this.updatedSteamApps[2].type).toBe("downloadable content");
       });
     });
   });
