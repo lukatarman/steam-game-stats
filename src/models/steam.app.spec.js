@@ -75,13 +75,19 @@ describe("SteamApp", function () {
             appid: 1,
           };
 
+          this.type = "game";
+
           this.result = SteamApp.oneFromSteamApi(this.app);
 
-          this.result.identify();
+          this.result.identify(this.type);
         });
 
         it("the 'identified' property equals true", function () {
           expect(this.result.identified).toBeTrue();
+        });
+
+        it("the 'type' property equals 'game'", function () {
+          expect(this.result.type).toBe(this.type);
         });
       });
     });
