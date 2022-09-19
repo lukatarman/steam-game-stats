@@ -3,10 +3,12 @@ import "./app.css";
 
 const App = () => {
   return (
-    <div className="container main-card centered">
-      <h1 className="title">Steam Game Stats</h1>
-      <div>
-        <Search />
+    <div className="ui container">
+      <div className=" main-card centered">
+        <h1 className="title">Steam Game Stats</h1>
+        <div style={{ backgroundColor: "black" }}>
+          <Search />
+        </div>
       </div>
     </div>
   );
