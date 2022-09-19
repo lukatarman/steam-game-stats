@@ -1,0 +1,22 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.container {
+  height: 80vh;
+}
+
+.main-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.centered {
+  text-align: center;
+}
+
+.title {
+  font-size: 12rem;
+}
