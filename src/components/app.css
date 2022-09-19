@@ -3,20 +3,21 @@ body {
   color: white;
 }
 
-.container {
-  height: 80vh;
-}
-
 .main-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 80vh;
+}
+
+.main-card h1 {
+  margin: 0;
 }
 
 .centered {
-  text-align: center;
+  text-align: center !important;
 }
 
 .title {
-  font-size: 12rem;
+  font-size: 8rem;
 }
