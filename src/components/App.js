@@ -4,7 +4,7 @@ import "./app.css";
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <Navbar fixed="top" includeSearch={true} />
     </div>
   );
 };
