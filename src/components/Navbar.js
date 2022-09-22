@@ -9,7 +9,7 @@ const SgsNavbar = ({ includeSearch }) => {
     <Navbar>
       <Container>
         <Navbar.Collapse className="justify-content-center">
-          <Navbar.Text>Steam Game Stats</Navbar.Text>
+          <Navbar.Text className="navbar-item">Steam Game Stats</Navbar.Text>
           <Navbar.Text>{includeSearch && <Search />}</Navbar.Text>
         </Navbar.Collapse>
       </Container>
