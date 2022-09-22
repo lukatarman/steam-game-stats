@@ -1,4 +1,5 @@
 import Navbar from "react-bootstrap/Navbar";
+import Search from "./Search.js";
 import Container from "react-bootstrap/Container";
 
 import "./navbar.css";
@@ -9,6 +10,7 @@ const SgsNavbar = ({ includeSearch }) => {
       <Container>
         <Navbar.Collapse className="justify-content-center">
           <Navbar.Text>Steam Game Stats</Navbar.Text>
+          <Navbar.Text>{includeSearch && <Search />}</Navbar.Text>
         </Navbar.Collapse>
       </Container>
     </Navbar>
