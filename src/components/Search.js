@@ -5,6 +5,7 @@ import "./search.css";
 
 const Search = () => {
   // add fontawesome icon to whole search input bar
+  //test
   return (
     <div>
       <FontAwesomeIcon icon={faMagnifyingGlass} size="" />
