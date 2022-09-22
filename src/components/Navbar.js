@@ -1,8 +1,18 @@
-import React, { useRef, useEffect } from "react";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+
 import "./navbar.css";
 
-const Navbar = () => {
-  return <div>Navbar</div>;
+const SgsNavbar = ({ includeSearch }) => {
+  return (
+    <Navbar>
+      <Container>
+        <Navbar.Collapse className="justify-content-center">
+          <Navbar.Text>Steam Game Stats</Navbar.Text>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 };
 
-export default Navbar;
+export default SgsNavbar;
