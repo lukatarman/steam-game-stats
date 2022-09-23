@@ -53,6 +53,6 @@ export function identifyGames(updatedSteamApps) {
 }
 
 export function assignType(result, steamApp) {
-  if (result) steamApp.setType();
+  if (result) steamApp.setType("game");
   return steamApp;
 }
