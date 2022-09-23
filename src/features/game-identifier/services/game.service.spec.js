@@ -15,7 +15,9 @@ import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
 describe("game.service.js", () => {
-  describe(".getSteamAppType", () => {
+  fdescribe(".getSteamAppType", () => {
+    const results = SteamApp.createEnum(["unknown", "game", "downloadableContent"]);
+
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let appType;
 
@@ -23,8 +25,8 @@ describe("game.service.js", () => {
         appType = getSteamAppType(gta5ageRestrictedHtmlDetailsPage);
       });
 
-      it("the function returns 'undefined'", () => {
-        expect(appType).toBe(undefined);
+      it("the function returns 'unknown'", () => {
+        expect(appType).toBe(results.unknown);
       });
     });
 
@@ -35,8 +37,8 @@ describe("game.service.js", () => {
         appType = getSteamAppType(padakVideoHtmlDetailsPage);
       });
 
-      it("the function returns 'undefined'", () => {
-        expect(appType).toBe(undefined);
+      it("the function returns 'unknown'", () => {
+        expect(appType).toBe(results.unknown);
       });
     });
 
@@ -48,7 +50,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'downloadable content'", () => {
-        expect(appType).toBe("downloadable content");
+        expect(appType).toBe(results.downloadableContent);
       });
     });
 
@@ -60,7 +62,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'game'", () => {
-        expect(appType).toBe("game");
+        expect(appType).toBe(results.game);
       });
     });
   });
