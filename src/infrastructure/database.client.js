@@ -88,7 +88,7 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
-          { identified: false },
+          { type: "unknown" },
           { triedVia: { $ne: "steamWeb" } },
           { type: { $ne: "downloadable content" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
@@ -107,7 +107,7 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
-          { identified: false },
+          { type: "unknown" },
           { $and: [{ triedVia: { $ne: "steamcharts" } }, { triedVia: "steamWeb" }] },
           { type: { $ne: "downloadable content" } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
@@ -142,10 +142,10 @@ export class DatabaseClient {
     await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
   }
 
-  async updateSteamAppById({ appid, identified, triedVia, type }) {
+  async updateSteamAppById({ appid, triedVia, type }) {
     await this.#collections
       .get("steam_apps")
-      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified, type } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
