@@ -3,7 +3,7 @@ import {
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
   identifyGames,
-  setAsIdentified,
+  assignType,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -14,10 +14,10 @@ import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pag
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
-describe("game.service.js", () => {
-  fdescribe(".getSteamAppType", () => {
-    const results = SteamApp.createEnum(["unknown", "game", "downloadableContent"]);
+fdescribe("game.service.js", () => {
+  new SteamApp();
 
+  describe(".getSteamAppType", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let appType;
 
@@ -26,7 +26,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'unknown'", () => {
-        expect(appType).toBe(results.unknown);
+        expect(appType).toBe(SteamApp.type.unknown);
       });
     });
 
@@ -38,7 +38,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'unknown'", () => {
-        expect(appType).toBe(results.unknown);
+        expect(appType).toBe(SteamApp.type.unknown);
       });
     });
 
@@ -50,7 +50,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'downloadable content'", () => {
-        expect(appType).toBe(results.downloadableContent);
+        expect(appType).toBe(SteamApp.type.downloadableContent);
       });
     });
 
@@ -62,7 +62,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'game'", () => {
-        expect(appType).toBe(results.game);
+        expect(appType).toBe(SteamApp.type.game);
       });
     });
   });
@@ -212,8 +212,8 @@ describe("game.service.js", () => {
         expect(this.updatedSteamApps[0].triedVia[0]).toBe("steamWeb");
       });
 
-      it("the first array entry in updatedSteamApps has a property 'identified', and it's value is 'false'", function () {
-        expect(this.updatedSteamApps[0].identified).toBeFalse();
+      it("the first array entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
+        expect(this.updatedSteamApps[0].type).toBe("unknown");
       });
     });
 
@@ -288,16 +288,16 @@ describe("game.service.js", () => {
         expect(this.updatedSteamApps[2].triedVia[0]).toBe("steamWeb");
       });
 
-      it("the first entry in updatedSteamApps has a property 'identified', and it's value is 'false'", function () {
-        expect(this.updatedSteamApps[0].identified).toBeFalse();
+      it("the first entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
+        expect(this.updatedSteamApps[0].type).toBe("unknown");
       });
 
-      it("the second entry in updatedSteamApps has a property 'identified', and it's value is 'true'", function () {
-        expect(this.updatedSteamApps[1].identified).toBeTrue();
+      it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
+        expect(this.updatedSteamApps[1].type).toBe("game");
       });
 
-      it("the third entry in updatedSteamApps has a property 'identified', and it's value is 'true'", function () {
-        expect(this.updatedSteamApps[2].identified).toBeTrue();
+      it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadableContent'", function () {
+        expect(this.updatedSteamApps[2].type).toBe("downloadableContent");
       });
 
       it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
@@ -305,7 +305,7 @@ describe("game.service.js", () => {
       });
 
       it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadable content'", function () {
-        expect(this.updatedSteamApps[2].type).toBe("downloadable content");
+        expect(this.updatedSteamApps[2].type).toBe("downloadableContent");
       });
     });
   });
@@ -318,7 +318,7 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              identified: false,
+              type: "unknown",
               triedVia: ["steamcharts"],
             },
           ];
@@ -326,7 +326,7 @@ describe("game.service.js", () => {
           this.result = identifyGames(this.updatedSteamApps);
         });
 
-        it("the method returns undefined", function () {
+        it("the method returns an empty array", function () {
           expect(this.result).toEqual([]);
         });
       });
@@ -337,13 +337,13 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              identified: false,
+              type: "unknown",
               triedVia: ["steamcharts"],
             },
             {
               appid: 2,
               name: "Feartress",
-              identified: true,
+              type: "game",
               triedVia: ["steamcharts"],
             },
           ];
@@ -366,19 +366,19 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              identified: false,
+              type: "unknown",
               triedVia: ["steamcharts"],
             },
             {
               appid: 2,
               name: "Feartress",
-              identified: true,
+              type: "game",
               triedVia: ["steamcharts"],
             },
             {
               appid: 3,
               name: "Elden Ring",
-              identified: true,
+              type: "game",
               triedVia: ["steamcharts"],
             },
           ];
@@ -401,18 +401,18 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".setAsIdentified", function () {
+  describe(".assignType", function () {
     describe("checks if result contains a value. If so, identifies the steamApp. So", function () {
       describe("when result does not contain a value,", function () {
         beforeEach(function () {
           this.app = { id: 1, name: "Feartress" };
           this.steamApp = SteamApp.oneFromSteamApi(this.app);
 
-          this.result = setAsIdentified(undefined, this.steamApp);
+          this.result = assignType(undefined, this.steamApp);
         });
 
-        it("the function returns the steamApp. The identify property remains false", function () {
-          expect(this.result.identified).toBe(false);
+        it("the function returns the steamApp. The type property remains 'unknown'", function () {
+          expect(this.result.type).toBe("unknown");
         });
       });
 
@@ -421,11 +421,11 @@ describe("game.service.js", () => {
           this.app = { id: 1, name: "Feartress" };
           this.steamApp = SteamApp.oneFromSteamApi(this.app);
 
-          this.result = setAsIdentified(true, this.steamApp);
+          this.result = assignType(true, this.steamApp);
         });
 
-        it("the function returns the steamApp. The identify property is true", function () {
-          expect(this.result.identified).toBe(true);
+        it("the function returns the steamApp. The type property is 'game'", function () {
+          expect(this.result.type).toBe("unknown");
         });
       });
     });
