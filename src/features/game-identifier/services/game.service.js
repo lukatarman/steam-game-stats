@@ -47,7 +47,7 @@ export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsP
 
 export function identifyGames(updatedSteamApps) {
   const games = updatedSteamApps
-    .filter((steamApp) => steamApp.identified)
+    .filter((steamApp) => steamApp.type === "game")
     .map((steamApp) => Game.fromSteamApp(steamApp));
 
   return games;
