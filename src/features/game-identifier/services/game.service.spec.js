@@ -14,7 +14,7 @@ import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pag
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
-describe("game.service.js", () => {
+fdescribe("game.service.js", () => {
   new SteamApp();
 
   describe(".getSteamAppType", () => {
