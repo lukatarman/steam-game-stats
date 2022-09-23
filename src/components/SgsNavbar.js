@@ -2,7 +2,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 
-import "./navbar.css";
+import "./SgsNavbar.css";
 
 const SgsNavbar = () => {
   return (
