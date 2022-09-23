@@ -39,7 +39,7 @@ export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsP
 
     copy.triedViaSteamWeb();
 
-    if (appType) copy.identify(appType);
+    if (appType) copy.setType(appType);
 
     return copy;
   });
