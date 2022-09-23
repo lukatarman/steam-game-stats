@@ -6,7 +6,7 @@ export class SteamApp {
   static type;
 
   constructor() {
-    SteamApp.type = this.createEnum(["game", "downloadable content", "unknown"]);
+    SteamApp.type = this.createEnum(["game", "downloadableContent", "unknown"]);
   }
 
   createEnum(values) {
