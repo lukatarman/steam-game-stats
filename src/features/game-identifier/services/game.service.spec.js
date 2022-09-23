@@ -213,7 +213,7 @@ fdescribe("game.service.js", () => {
       });
 
       it("the first array entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
-        expect(this.updatedSteamApps[0].type).toBe("unknown");
+        expect(this.updatedSteamApps[0].type).toBe(SteamApp.type.unknown);
       });
     });
 
@@ -289,23 +289,23 @@ fdescribe("game.service.js", () => {
       });
 
       it("the first entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
-        expect(this.updatedSteamApps[0].type).toBe("unknown");
+        expect(this.updatedSteamApps[0].type).toBe(SteamApp.type.unknown);
       });
 
       it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
-        expect(this.updatedSteamApps[1].type).toBe("game");
+        expect(this.updatedSteamApps[1].type).toBe(SteamApp.type.game);
       });
 
       it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadableContent'", function () {
-        expect(this.updatedSteamApps[2].type).toBe("downloadableContent");
+        expect(this.updatedSteamApps[2].type).toBe(SteamApp.type.downloadableContent);
       });
 
       it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
-        expect(this.updatedSteamApps[1].type).toBe("game");
+        expect(this.updatedSteamApps[1].type).toBe(SteamApp.type.game);
       });
 
       it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadable content'", function () {
-        expect(this.updatedSteamApps[2].type).toBe("downloadableContent");
+        expect(this.updatedSteamApps[2].type).toBe(SteamApp.type.downloadableContent);
       });
     });
   });
@@ -412,7 +412,7 @@ fdescribe("game.service.js", () => {
         });
 
         it("the function returns the steamApp. The type property remains 'unknown'", function () {
-          expect(this.result.type).toBe("unknown");
+          expect(this.result.type).toBe(SteamApp.type.unknown);
         });
       });
 
@@ -425,7 +425,7 @@ fdescribe("game.service.js", () => {
         });
 
         it("the function returns the steamApp. The type property is 'game'", function () {
-          expect(this.result.type).toBe("game");
+          expect(this.result.type).toBe(SteamApp.type.game);
         });
       });
     });
