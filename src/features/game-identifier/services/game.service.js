@@ -38,7 +38,7 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
 
     copy.triedViaSteamWeb();
 
-    if (appType) copy.setType(appType);
+    copy.setType(appType);
 
     return copy;
   });
