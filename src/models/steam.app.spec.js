@@ -20,8 +20,8 @@ describe("SteamApp", function () {
         expect(this.result).toBeInstanceOf(SteamApp);
       });
 
-      it("the copy has a property 'identified', which is false", function () {
-        expect(this.result.identified).toBeFalse();
+      it("the copy has a property 'type', which is 'unknown'", function () {
+        expect(this.result.type).toBe("unknown");
       });
 
       it("the copy has a property 'triedVia', which is an empty array", function () {
@@ -67,8 +67,8 @@ describe("SteamApp", function () {
       });
     });
 
-    describe(".identify", function () {
-      describe("sets the 'identified' property to true. When this is done,", function () {
+    describe(".setType", function () {
+      describe("sets the 'type' property to whatever was passed in as an argument. When this is done,", function () {
         beforeEach(function () {
           this.app = {
             name: "Castlevania",
@@ -79,11 +79,7 @@ describe("SteamApp", function () {
 
           this.result = SteamApp.oneFromSteamApi(this.app);
 
-          this.result.identify(this.type);
-        });
-
-        it("the 'identified' property equals true", function () {
-          expect(this.result.identified).toBeTrue();
+          this.result.setType(this.type);
         });
 
         it("the 'type' property equals 'game'", function () {
@@ -138,8 +134,8 @@ describe("SteamApp", function () {
           expect(this.result).toBeInstanceOf(SteamApp);
         });
 
-        it("has a property called 'identified'. It is false", function () {
-          expect(this.result.identified).toBeFalse();
+        it("has a property called 'type'. It is 'unknown'", function () {
+          expect(this.result.type).toBe("unknown");
         });
 
         it("has a property called 'triedVia'. It is an empty array.", function () {
@@ -155,13 +151,13 @@ describe("SteamApp", function () {
             {
               name: "Castlevania",
               appid: 1,
-              identified: true,
+              type: "game",
               triedVia: ["steam", "steamcharts"],
             },
             {
               name: "Elden Ring",
               appid: 2,
-              identified: true,
+              type: "game",
               triedVia: ["steam"],
             },
           ];
@@ -189,7 +185,7 @@ describe("SteamApp", function () {
           this.dbEntry = {
             name: "Castlevania",
             appid: 1,
-            identified: true,
+            type: "game",
             triedVia: ["steam"],
           };
 
