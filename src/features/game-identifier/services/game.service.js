@@ -53,7 +53,7 @@ export function identifyGames(updatedSteamApps) {
   return games;
 }
 
-export function setAsIdentified(result, steamApp) {
-  if (result) steamApp.identify();
+export function assignType(result, steamApp) {
+  if (result) steamApp.setType();
   return steamApp;
 }

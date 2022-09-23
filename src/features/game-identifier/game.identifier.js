@@ -2,7 +2,7 @@ import {
   discoverGamesFromSteamWeb,
   updateIdentificationStatusSideEffectFree,
   identifyGames,
-  setAsIdentified,
+  assignType,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -91,7 +91,7 @@ export class GameIdentifier {
           steamApp.appid,
         );
 
-        setAsIdentified(result, steamApp);
+        assignType(result, steamApp);
       } catch (error) {
         // The catch block is empty because in some cases we are expecting the request to return an error.
         // This just means that this app has no entry on steamcharts, so we don't do anything with it.
