@@ -1,10 +1,10 @@
-import Navbar from "./Navbar.js";
+import SgsNavbar from "./SgsNavbar.js";
 import "./app.css";
 
 const App = () => {
   return (
     <div>
-      <Navbar fixed="top" includeSearch={true} />
+      <SgsNavbar fixed="top" includeSearch={true} />
     </div>
   );
 };
