@@ -1,7 +1,7 @@
 export class SteamApp {
   appid;
   name;
-  identified;
+  type;
   triedVia;
   static type;
 
@@ -13,7 +13,6 @@ export class SteamApp {
     const copy = new SteamApp();
     copy.appid = this.appid;
     copy.name = this.name;
-    copy.identified = this.identified;
     copy.type = this.type;
     copy.triedVia = this.triedVia.slice();
 
@@ -28,8 +27,7 @@ export class SteamApp {
     this.triedVia.push("steamcharts");
   }
 
-  identify(type = "unknown") {
-    this.identified = true;
+  setType(type = "unknown") {
     this.type = type;
   }
 
@@ -50,8 +48,7 @@ export class SteamApp {
     const steamApp      = new SteamApp();
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
-    steamApp.identified = false;
-    steamApp.type = "unidentified";
+    steamApp.type = SteamApp.type.unknown;
     steamApp.triedVia   = [];
     return steamApp;
   }
@@ -65,7 +62,6 @@ export class SteamApp {
     const steamApp      = new SteamApp();
     steamApp.appid      = dbEntry.appid;
     steamApp.name       = dbEntry.name;
-    steamApp.identified = dbEntry.identified;
     steamApp.type       = dbEntry.type;
     steamApp.triedVia   = dbEntry.triedVia.slice();
     return steamApp;
