@@ -6,7 +6,7 @@ import "./SgsNavbar.css";
 
 const SgsNavbar = () => {
   return (
-    <Navbar fixed="top" bg="light" expand="lg">
+    <Navbar bg="light" expand="lg">
       <Container fluid>
         <Navbar.Brand href="#">Steam Game Stats</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
