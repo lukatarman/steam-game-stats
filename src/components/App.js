@@ -4,7 +4,7 @@ import "./app.css";
 const App = () => {
   return (
     <div>
-      <SgsNavbar fixed="top" includeSearch={true} />
+      <SgsNavbar />
     </div>
   );
 };
