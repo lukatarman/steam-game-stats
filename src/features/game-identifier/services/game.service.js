@@ -1,21 +1,24 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
+import { SteamApp } from "../../../models/steam.app.js";
 
 export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
-  if (!breadcrumbElement) return;
+  if (!breadcrumbElement) return SteamApp.type.unknown;
 
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
-  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return;
+  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
+    return SteamApp.type.unknown;
 
   for (let child of breadcrumbElement.children) {
-    if (child.textContent === "Downloadable Content") return "downloadable content";
+    if (child.textContent === "Downloadable Content")
+      return SteamApp.type.downloadableContent;
   }
 
-  return "game";
+  return SteamApp.type.game;
 }
 
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
