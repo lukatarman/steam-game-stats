@@ -9,7 +9,7 @@ import { Game } from "../../models/game.js";
 import { SteamApp } from "../../models/steam.app.js";
 import {
   discoverGamesFromSteamWeb,
-  updateIdentificationStatusSideEffectFree,
+  updateTypeSideEffectFree,
 } from "./services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
 
@@ -80,10 +80,9 @@ describe("game.identifier.js", function () {
 
         this.instantiatedApp = SteamApp.manyFromSteamApi(this.app);
 
-        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
-          this.instantiatedApp,
-          [animaddicts2gameHtmlDetailsPage],
-        );
+        this.updatedSteamApps = updateTypeSideEffectFree(this.instantiatedApp, [
+          animaddicts2gameHtmlDetailsPage,
+        ]);
 
         this.steamClientMock = createSteamMock([animaddicts2gameHtmlDetailsPage]);
         this.databaseClientMock = createDbMock(this.instantiatedApp, undefined);
@@ -195,7 +194,7 @@ describe("game.identifier.js", function () {
 
         this.instantiatedApps = SteamApp.manyFromSteamApi(this.apps);
 
-        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
+        this.updatedSteamApps = updateTypeSideEffectFree(
           this.instantiatedApps,
           this.htmlDetailsPages,
         );
@@ -321,7 +320,7 @@ describe("game.identifier.js", function () {
 
         this.historychecks = HistoryCheck.manyFromGames(this.games);
 
-        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
+        this.updatedSteamApps = updateTypeSideEffectFree(
           this.instantiatedApps,
           this.htmlDetailsPages,
         );

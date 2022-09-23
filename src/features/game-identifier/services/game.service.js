@@ -31,7 +31,7 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
     .filter((game) => !!game);
 }
 
-export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
+export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
   return htmlDetailsPages.map((page, i) => {
     const copy = steamApps[i].copy();
     const appType = getSteamAppType(page);

@@ -1,7 +1,7 @@
 import {
   getSteamAppType,
   discoverGamesFromSteamWeb,
-  updateIdentificationStatusSideEffectFree,
+  updateTypeSideEffectFree,
   identifyGames,
   assignType,
 } from "./game.service.js";
@@ -176,7 +176,7 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".updateIdentificationStatusSideEffectFree", function () {
+  describe(".updateTypeSideEffectFree", function () {
     describe("discovers one steamApp out of a batch of one, so", function () {
       beforeEach(function () {
         this.apps = [
@@ -190,7 +190,7 @@ describe("game.service.js", () => {
 
         this.htmlDetailsPages = [glitchhikersSoundtrackHtmlDetailsPage];
 
-        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
+        this.updatedSteamApps = updateTypeSideEffectFree(
           this.steamApps,
           this.htmlDetailsPages,
         );
@@ -242,7 +242,7 @@ describe("game.service.js", () => {
           theSims4dlcHtmlDetailsPage,
         ];
 
-        this.updatedSteamApps = updateIdentificationStatusSideEffectFree(
+        this.updatedSteamApps = updateTypeSideEffectFree(
           this.steamApps,
           this.htmlDetailsPages,
         );

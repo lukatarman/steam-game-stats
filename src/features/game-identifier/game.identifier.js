@@ -1,6 +1,6 @@
 import {
   discoverGamesFromSteamWeb,
-  updateIdentificationStatusSideEffectFree,
+  updateTypeSideEffectFree,
   identifyGames,
   assignType,
 } from "./services/game.service.js";
@@ -34,10 +34,7 @@ export class GameIdentifier {
 
     const games = discoverGamesFromSteamWeb(steamApps, htmlDetailsPages);
 
-    const updatedSteamApps = updateIdentificationStatusSideEffectFree(
-      steamApps,
-      htmlDetailsPages,
-    );
+    const updatedSteamApps = updateTypeSideEffectFree(steamApps, htmlDetailsPages);
 
     return [games, updatedSteamApps];
   }
