@@ -425,7 +425,7 @@ describe("game.service.js", () => {
         });
 
         it("the function returns the steamApp. The type property is 'game'", function () {
-          expect(this.result.type).toBe("unknown");
+          expect(this.result.type).toBe("game");
         });
       });
     });
