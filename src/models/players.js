@@ -3,7 +3,14 @@ export class Players {
   players;
 
   constructor(playersAsString, dateAsString = "") {
-    this.date = dateAsString === "" ? new Date() : new Date(dateAsString);
+    //todo: when mongoDb stores dates into its databases, it automatically transforms them into UTC format.
+    // https://www.mongodb.com/docs/v3.2/tutorial/model-time-data/
+    //Think about changing steamcharts time to noon each day instead of midnight. Timezone differences wont mess up day
+    // as for current time just leave it as it is, it most likely ownt mess up anything
+    const currentTimeUTC = new Date();
+    const timeUTC = new Date(dateAsString);
+
+    this.date = dateAsString === "" ? currentTimeUTC : timeUTC;
     /**
      * @TODO - https://github.com/lukatarman/steam-game-stats/issues/52
      */
