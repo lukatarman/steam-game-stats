@@ -7,6 +7,8 @@ export class Players {
     // https://www.mongodb.com/docs/v3.2/tutorial/model-time-data/
     //Think about changing steamcharts time to noon each day instead of midnight. Timezone differences wont mess up day
     // as for current time just leave it as it is, it most likely ownt mess up anything
+    // add 12 hours to date, if date isnt empty string
+
     const currentTimeUTC = new Date();
     const timeUTC = new Date(dateAsString);
 
