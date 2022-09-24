@@ -26,7 +26,10 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
     ".common-table tbody tr",
   );
 
+  // Here, reverse is added so that the player history dates are put in the correct order(from first date to last)
+  // it is useful later in the database, as we push new dates onto the array
   return Array.from(playerHistoryEntries)
+    .reverse()
     .map((entry) => entry.firstElementChild)
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
     .map(
