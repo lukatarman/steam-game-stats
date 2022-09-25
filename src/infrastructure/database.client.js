@@ -212,6 +212,17 @@ export class DatabaseClient {
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
+  async getCurrentTopTenPlayedGames(amount) {
+    return await this.#collections
+      .get("games")
+      .aggregate([
+        { $match: { playerHistory: { $ne: [] } } },
+        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $sort: { currentPlayers: -1 } },
+        { $limit: amount },
+      ]);
+  }
+
   //Todo:
   // BUG - wrong months in dates from getting player histories from steamcharts
   // db.games.aggregate([
