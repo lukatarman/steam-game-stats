@@ -24,7 +24,7 @@ describe("players.js", function () {
         this.players = new Players("24", "September 2000");
       });
 
-      it("the property date should be the current date", function () {
+      it("the property date should be the current date, plus twelve hours", function () {
         expect(this.players.date).toEqual(this.currentDatePlusTwelveHours);
       });
     });
