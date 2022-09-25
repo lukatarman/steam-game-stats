@@ -13,7 +13,7 @@ export class GameQueriesController {
     return await this.#databaseClient.getAllGames();
   }
 
-  async getTopTenGames() {
-    return await this.#databaseClient.getCurrentTopTenPlayedGames();
+  async getTopTenGames(amount) {
+    return await this.#databaseClient.getCurrentTopTenPlayedGames(amount);
   }
 }
