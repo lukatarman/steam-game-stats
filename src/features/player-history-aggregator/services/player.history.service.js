@@ -27,7 +27,8 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
   );
 
   // Here, reverse is added so that the player history dates are put in the correct order(from first date to last)
-  // it is useful later in the database, as we push new dates onto the array
+  // it is useful later in the database. The dates will be sorted from oldest information to newest, as our own
+  // data current players data tracking is added at the end.
   return Array.from(playerHistoryEntries)
     .reverse()
     .map((entry) => entry.firstElementChild)
