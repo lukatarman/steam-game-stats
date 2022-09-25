@@ -15,5 +15,9 @@ export class GameQueriesRouter {
 
       return await this.#controller.getOneGameById(id);
     });
+
+    server.get("/getTopTenGames", async (request, reply) => {
+      return await this.#controller.getTopTenGames();
+    });
   };
 }
