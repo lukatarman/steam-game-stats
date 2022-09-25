@@ -222,12 +222,4 @@ export class DatabaseClient {
         { $limit: amount },
       ]);
   }
-
-  //Todo:
-  // BUG - wrong months in dates from getting player histories from steamcharts
-  // db.games.aggregate([
-  //   { $match: { playerHistory: {$ne: []} } },
-  //   { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
-  //   { $sort: { currentPlayers: -1 } }
-  // ]);
 }
