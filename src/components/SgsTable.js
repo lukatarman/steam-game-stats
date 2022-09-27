@@ -1,5 +1,4 @@
 import Table from "react-bootstrap/Table";
-import { useEffect } from "react";
 
 function SgsTable() {
   return (
