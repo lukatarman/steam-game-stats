@@ -6,19 +6,19 @@ export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
-  if (!breadcrumbElement) return SteamApp.type.unknown;
+  if (!breadcrumbElement) return SteamApp.validTypes.unknown;
 
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
   if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
-    return SteamApp.type.unknown;
+    return SteamApp.validTypes.unknown;
 
   for (let child of breadcrumbElement.children) {
     if (child.textContent === "Downloadable Content")
-      return SteamApp.type.downloadableContent;
+      return SteamApp.validTypes.downloadableContent;
   }
 
-  return SteamApp.type.game;
+  return SteamApp.validTypes.game;
 }
 
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
