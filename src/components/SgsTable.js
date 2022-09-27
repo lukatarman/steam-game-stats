@@ -6,9 +6,8 @@ function SgsTable() {
       <thead>
         <tr>
           <th>#</th>
-          <th>Game Name</th>
-          <th>Current Players</th>
-          <th>Change</th>
+          <th>{tableOptions.firstCol}</th>
+          <th>{tableOptions.secondCol}</th>
         </tr>
       </thead>
       <tbody>
