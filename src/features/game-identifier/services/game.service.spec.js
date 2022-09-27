@@ -47,7 +47,7 @@ describe("game.service.js", () => {
         appType = getSteamAppType(theSims4dlcHtmlDetailsPage);
       });
 
-      it("the function returns 'downloadable content'", () => {
+      it("the function returns 'downloadableContent'", () => {
         expect(appType).toBe(SteamApp.validTypes.downloadableContent);
       });
     });
