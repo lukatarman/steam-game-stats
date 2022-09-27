@@ -3,11 +3,11 @@ export class SteamApp {
   name;
   type;
   triedVia;
-  static type;
-
-  constructor() {
-    SteamApp.type = this.createEnum(["game", "downloadableContent", "unknown"]);
-  }
+  static validTypes = this.#createValidTypesEnum([
+    "game",
+    "downloadableContent",
+    "unknown",
+  ]);
 
   copy() {
     const copy = new SteamApp();
@@ -31,7 +31,7 @@ export class SteamApp {
     this.type = type;
   }
 
-  createEnum(values) {
+  static #createValidTypesEnum(values) {
     const enumObject = {};
     for (const val of values) {
       enumObject[val] = val;
@@ -48,7 +48,7 @@ export class SteamApp {
     const steamApp      = new SteamApp();
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
-    steamApp.type = SteamApp.type.unknown;
+    steamApp.type = SteamApp.validTypes.unknown;
     steamApp.triedVia   = [];
     return steamApp;
   }
