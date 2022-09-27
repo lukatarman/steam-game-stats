@@ -2,7 +2,7 @@ import { gamesMock } from "../../assets/small.data.set.js";
 import { smallestGamesMock } from "../../assets/smallest.data.set.js";
 import { SteamApp } from "./steam.app.js";
 
-describe("SteamApp", function () {
+fdescribe("SteamApp", function () {
   describe(".copy", function () {
     describe("creates a copy of a steamApp instance. When this is done,", function () {
       beforeEach(function () {
@@ -21,7 +21,7 @@ describe("SteamApp", function () {
       });
 
       it("the copy has a property 'type', which is 'unknown'", function () {
-        expect(this.result.type).toBe(SteamApp.type.unknown);
+        expect(this.result.type).toBe(SteamApp.validTypes.unknown);
       });
 
       it("the copy has a property 'triedVia', which is an empty array", function () {
@@ -83,7 +83,7 @@ describe("SteamApp", function () {
         });
 
         it("the 'type' property equals 'game'", function () {
-          expect(this.result.type).toBe(this.type);
+          expect(this.result.type).toBe(SteamApp.validTypes.game);
         });
       });
     });
@@ -135,7 +135,7 @@ describe("SteamApp", function () {
         });
 
         it("has a property called 'type'. It is 'unknown'", function () {
-          expect(this.result.type).toBe(SteamApp.type.unknown);
+          expect(this.result.type).toBe(SteamApp.validTypes.unknown);
         });
 
         it("has a property called 'triedVia'. It is an empty array.", function () {
