@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 
 function SgsTable({ tableData, tableOptions }) {
@@ -12,6 +13,16 @@ function SgsTable({ tableData, tableOptions }) {
     getData();
   }, []);
 
+  const renderResults = results.map((result, index) => {
+    return (
+      <tr>
+        <td>{index + 1}</td>
+        <td>{result.name}</td>
+        <td>{result.currentPlayers}</td>
+      </tr>
+    );
+  });
+
   return (
     <Table striped bordered hover>
       <thead>
@@ -21,26 +32,7 @@ function SgsTable({ tableData, tableOptions }) {
           <th>{tableOptions.secondCol}</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Game 1</td>
-          <td>2</td>
-          <td>+1</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Game 2</td>
-          <td>3</td>
-          <td>+2</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Game 3</td>
-          <td>4</td>
-          <td>+3</td>
-        </tr>
-      </tbody>
+      <tbody>{renderResults}</tbody>
     </Table>
   );
 }
