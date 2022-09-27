@@ -38,7 +38,7 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
 
     copy.triedViaSteamWeb();
 
-    copy.appType(appType);
+    copy.appType = appType;
 
     return copy;
   });
@@ -53,6 +53,6 @@ export function identifyGames(updatedSteamApps) {
 }
 
 export function assignType(result, steamApp) {
-  if (result) steamApp.appType("game");
+  if (result) steamApp.appType = "game";
   return steamApp;
 }
