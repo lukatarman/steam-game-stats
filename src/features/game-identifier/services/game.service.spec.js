@@ -320,12 +320,11 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              type: "unknown",
-              triedVia: ["steamcharts"],
             },
           ];
 
-          this.result = identifyGames(this.updatedSteamApps);
+          this.instantiatedApps = SteamApp.manyFromSteamApi(this.updatedSteamApps);
+          this.result = identifyGames(this.instantiatedApps);
         });
 
         it("the method returns an empty array", function () {
@@ -339,18 +338,17 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              type: "unknown",
-              triedVia: ["steamcharts"],
             },
             {
               appid: 2,
               name: "Feartress",
-              type: "game",
-              triedVia: ["steamcharts"],
             },
           ];
 
-          this.result = identifyGames(this.updatedSteamApps);
+          this.instantiatedApps = SteamApp.manyFromSteamApi(this.updatedSteamApps);
+          this.instantiatedApps[1].type = SteamApp.validTypes.game;
+
+          this.result = identifyGames(this.instantiatedApps);
         });
 
         it("the returned array length is one", function () {
@@ -368,24 +366,22 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              type: "unknown",
-              triedVia: ["steamcharts"],
             },
             {
               appid: 2,
               name: "Feartress",
-              type: "game",
-              triedVia: ["steamcharts"],
             },
             {
               appid: 3,
               name: "Elden Ring",
-              type: "game",
-              triedVia: ["steamcharts"],
             },
           ];
 
-          this.result = identifyGames(this.updatedSteamApps);
+          this.instantiatedApps = SteamApp.manyFromSteamApi(this.updatedSteamApps);
+          this.instantiatedApps[1].type = SteamApp.validTypes.game;
+          this.instantiatedApps[2].type = SteamApp.validTypes.game;
+
+          this.result = identifyGames(this.instantiatedApps);
         });
 
         it("the returned array length is two", function () {
