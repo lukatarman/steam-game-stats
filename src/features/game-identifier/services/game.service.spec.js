@@ -400,7 +400,7 @@ describe("game.service.js", () => {
   });
 
   describe(".assignType", function () {
-    describe("checks if result contains a value. If so, identifies the steamApp. So", function () {
+    describe("checks if result contains a value. If so, sets the type property to 'games'. So", function () {
       describe("when result does not contain a value,", function () {
         beforeEach(function () {
           this.app = { id: 1, name: "Feartress" };
