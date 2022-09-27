@@ -304,7 +304,7 @@ describe("game.service.js", () => {
         expect(this.updatedSteamApps[1].type).toBe(SteamApp.validTypes.game);
       });
 
-      it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadable content'", function () {
+      it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadableContent'", function () {
         expect(this.updatedSteamApps[2].type).toBe(
           SteamApp.validTypes.downloadableContent,
         );
