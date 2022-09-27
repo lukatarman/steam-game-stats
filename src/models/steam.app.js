@@ -52,7 +52,7 @@ export class SteamApp {
     const steamApp      = new SteamApp();
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
-    steamApp.type = SteamApp.validTypes.unknown;
+    steamApp.type       = SteamApp.validTypes.unknown;
     steamApp.triedVia   = [];
     return steamApp;
   }
