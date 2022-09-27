@@ -20,42 +20,13 @@ export class DatabaseClient {
     return this;
   }
 
-  async insertOneUpdateTimestamp(date) {
-    const updateTimestamp = { updatedOn: date };
-    await this.insertOne("update_timestamps", updateTimestamp);
-  }
-
+  // low level
   async insertOne(collectionName, data) {
     await this.#collections.get(collectionName).insertOne(data);
   }
 
-  async insertManyHistoryChecks(data) {
-    await this.insertMany("history_checks", data);
-  }
-
-  async insertManySteamApps(data) {
-    await this.insertMany("steam_apps", data);
-  }
-
-  async insertManyGames(data) {
-    await this.insertMany("games", data);
-  }
-
   async insertMany(collectionName, data) {
     await this.#collections.get(collectionName).insertMany(data);
-  }
-
-  async getOneGameById(id) {
-    return await this.#collections.get("games").findOne({ id });
-  }
-
-  async getAllGames() {
-    return await this.getAll("games");
-  }
-
-  async getAllSteamApps() {
-    const response = await this.getAll("steam_apps");
-    return SteamApp.manyFromDbEntries(response);
   }
 
   async getAll(collectionName, filter = {}) {
@@ -70,10 +41,6 @@ export class DatabaseClient {
     await this.#collections.get(collectionName).deleteMany(filter);
   }
 
-  async getLastUpdateTimestamp() {
-    return this.getLast("update_timestamps");
-  }
-
   async getLast(collectionName) {
     return await this.#collections
       .get(collectionName)
@@ -83,17 +50,19 @@ export class DatabaseClient {
       .next();
   }
 
-  async getXunidentifiedFilteredSteamApps(amount) {
-    return await this.#collections
-      .get("steam_apps")
-      .find({
-        $and: [
-          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
-          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
-        ],
-      })
-      .limit(amount)
-      .toArray();
+  // timestamp
+  async insertOneUpdateTimestamp(date) {
+    const updateTimestamp = { updatedOn: date };
+    await this.insertOne("update_timestamps", updateTimestamp);
+  }
+
+  async getLastUpdateTimestamp() {
+    return this.getLast("update_timestamps");
+  }
+
+  // history checks
+  async insertManyHistoryChecks(data) {
+    await this.insertMany("history_checks", data);
   }
 
   async updateHistoryChecks(historyChecks) {
@@ -113,6 +82,29 @@ export class DatabaseClient {
     );
   }
 
+  // steam apps
+  async insertManySteamApps(data) {
+    await this.insertMany("steam_apps", data);
+  }
+
+  async getAllSteamApps() {
+    const response = await this.getAll("steam_apps");
+    return SteamApp.manyFromDbEntries(response);
+  }
+
+  async getXunidentifiedFilteredSteamApps(amount) {
+    return await this.#collections
+      .get("steam_apps")
+      .find({
+        $and: [
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+  }
+
   async identifySteamAppsById(steamApps) {
     await Promise.all(
       steamApps.map((steamApp) => this.identifySteamAppById(steamApp.appid)),
@@ -125,6 +117,19 @@ export class DatabaseClient {
       .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
   }
 
+  // games
+  async insertManyGames(data) {
+    await this.insertMany("games", data);
+  }
+
+  async getOneGameById(id) {
+    return await this.#collections.get("games").findOne({ id });
+  }
+
+  async getAllGames() {
+    return await this.getAll("games");
+  }
+
   async getXgamesWithoutPlayerHistory(amount) {
     return (
       await this.#collections
@@ -133,16 +138,6 @@ export class DatabaseClient {
         .limit(amount)
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
-  }
-
-  async updatePlayerHistoriesById(games) {
-    await Promise.all(games.map((game) => this.updatePlayerHistoryById(game)));
-  }
-
-  async updatePlayerHistoryById(game) {
-    await this.#collections
-      .get("games")
-      .updateOne({ id: game.id }, { $set: { playerHistory: game.playerHistory } });
   }
 
   async getXgamesWithUncheckedPlayerHistory(amount) {
@@ -190,5 +185,16 @@ export class DatabaseClient {
         ])
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
+  }
+
+  // player history
+  async updatePlayerHistoriesById(games) {
+    await Promise.all(games.map((game) => this.updatePlayerHistoryById(game)));
+  }
+
+  async updatePlayerHistoryById(game) {
+    await this.#collections
+      .get("games")
+      .updateOne({ id: game.id }, { $set: { playerHistory: game.playerHistory } });
   }
 }
