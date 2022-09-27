@@ -14,9 +14,7 @@ import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pag
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
-describe("game.service.js", () => {
-  new SteamApp();
-
+fdescribe("game.service.js", () => {
   describe(".getSteamAppType", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let appType;
@@ -26,7 +24,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'unknown'", () => {
-        expect(appType).toBe(SteamApp.type.unknown);
+        expect(appType).toBe(SteamApp.validTypes.unknown);
       });
     });
 
@@ -38,7 +36,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'unknown'", () => {
-        expect(appType).toBe(SteamApp.type.unknown);
+        expect(appType).toBe(SteamApp.validTypes.unknown);
       });
     });
 
@@ -50,7 +48,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'downloadable content'", () => {
-        expect(appType).toBe(SteamApp.type.downloadableContent);
+        expect(appType).toBe(SteamApp.validTypes.downloadableContent);
       });
     });
 
@@ -62,7 +60,7 @@ describe("game.service.js", () => {
       });
 
       it("the function returns 'game'", () => {
-        expect(appType).toBe(SteamApp.type.game);
+        expect(appType).toBe(SteamApp.validTypes.game);
       });
     });
   });
@@ -213,7 +211,7 @@ describe("game.service.js", () => {
       });
 
       it("the first array entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
-        expect(this.updatedSteamApps[0].type).toBe(SteamApp.type.unknown);
+        expect(this.updatedSteamApps[0].type).toBe(SteamApp.validTypes.unknown);
       });
     });
 
@@ -289,23 +287,27 @@ describe("game.service.js", () => {
       });
 
       it("the first entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
-        expect(this.updatedSteamApps[0].type).toBe(SteamApp.type.unknown);
+        expect(this.updatedSteamApps[0].type).toBe(SteamApp.validTypes.unknown);
       });
 
       it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
-        expect(this.updatedSteamApps[1].type).toBe(SteamApp.type.game);
+        expect(this.updatedSteamApps[1].type).toBe(SteamApp.validTypes.game);
       });
 
       it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadableContent'", function () {
-        expect(this.updatedSteamApps[2].type).toBe(SteamApp.type.downloadableContent);
+        expect(this.updatedSteamApps[2].type).toBe(
+          SteamApp.validTypes.downloadableContent,
+        );
       });
 
       it("the second entry in updatedSteamApps has a property 'type', and it's value is 'game'", function () {
-        expect(this.updatedSteamApps[1].type).toBe(SteamApp.type.game);
+        expect(this.updatedSteamApps[1].type).toBe(SteamApp.validTypes.game);
       });
 
       it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadable content'", function () {
-        expect(this.updatedSteamApps[2].type).toBe(SteamApp.type.downloadableContent);
+        expect(this.updatedSteamApps[2].type).toBe(
+          SteamApp.validTypes.downloadableContent,
+        );
       });
     });
   });
@@ -412,7 +414,7 @@ describe("game.service.js", () => {
         });
 
         it("the function returns the steamApp. The type property remains 'unknown'", function () {
-          expect(this.result.type).toBe(SteamApp.type.unknown);
+          expect(this.result.type).toBe(SteamApp.validTypes.unknown);
         });
       });
 
@@ -425,7 +427,7 @@ describe("game.service.js", () => {
         });
 
         it("the function returns the steamApp. The type property is 'game'", function () {
-          expect(this.result.type).toBe(SteamApp.type.game);
+          expect(this.result.type).toBe(SteamApp.validTypes.game);
         });
       });
     });
