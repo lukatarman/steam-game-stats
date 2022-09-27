@@ -2,8 +2,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 
-import "./SgsNavbar.css";
-
 const SgsNavbar = () => {
   return (
     <Navbar bg="light" expand="lg">
