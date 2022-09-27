@@ -90,7 +90,6 @@ export class DatabaseClient {
         $and: [
           { type: SteamApp.validTypes.unknown },
           { triedVia: { $ne: "steamWeb" } },
-          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
