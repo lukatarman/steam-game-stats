@@ -1,6 +1,17 @@
 import Table from "react-bootstrap/Table";
 
-function SgsTable() {
+function SgsTable({ tableData, tableOptions }) {
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await tableData();
+      setResults(data);
+    };
+
+    getData();
+  }, []);
+
   return (
     <Table striped bordered hover>
       <thead>
