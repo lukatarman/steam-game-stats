@@ -27,6 +27,10 @@ export class SteamApp {
     this.triedVia.push("steamcharts");
   }
 
+  isGame() {
+    return this.type === SteamApp.validTypes.game;
+  }
+
   set appType(type) {
     this.type = type;
   }
