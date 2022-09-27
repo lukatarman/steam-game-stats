@@ -24,7 +24,7 @@ export function getSteamAppType(httpDetailsPage) {
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
-      if (getSteamAppType(page) === "game") {
+      if (getSteamAppType(page) === SteamApp.validTypes.game) {
         return Game.fromSteamApp(steamApps[i]);
       }
     })
@@ -46,13 +46,13 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
 
 export function identifyGames(updatedSteamApps) {
   const games = updatedSteamApps
-    .filter((steamApp) => steamApp.type === "game")
+    .filter((steamApp) => steamApp.type === SteamApp.validTypes.game)
     .map((steamApp) => Game.fromSteamApp(steamApp));
 
   return games;
 }
 
 export function assignType(result, steamApp) {
-  if (result) steamApp.appType = "game";
+  if (result) steamApp.appType = SteamApp.validTypes.game;
   return steamApp;
 }

@@ -75,7 +75,7 @@ describe("SteamApp", function () {
             appid: 1,
           };
 
-          this.type = "game";
+          this.type = SteamApp.validTypes.game;
 
           this.result = SteamApp.oneFromSteamApi(this.app);
 

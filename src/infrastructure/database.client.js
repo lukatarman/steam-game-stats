@@ -88,9 +88,9 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
-          { type: "unknown" },
+          { type: SteamApp.validTypes.unknown },
           { triedVia: { $ne: "steamWeb" } },
-          { type: { $ne: "downloadable content" } },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
@@ -107,9 +107,9 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
-          { type: "unknown" },
+          { type: SteamApp.validTypes.unknown },
           { $and: [{ triedVia: { $ne: "steamcharts" } }, { triedVia: "steamWeb" }] },
-          { type: { $ne: "downloadable content" } },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },

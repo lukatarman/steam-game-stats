@@ -741,9 +741,9 @@ function createDbMock(steamWebDbRet, steamchartsWebDbRet) {
 function instantiateAndMark(apps) {
   const instantiatedApps = SteamApp.manyFromSteamApi(apps);
 
-  instantiatedApps[0].appType = "game";
+  instantiatedApps[0].appType = SteamApp.validTypes.game;
 
-  if (instantiatedApps[2]) instantiatedApps[2].appType = "game";
+  if (instantiatedApps[2]) instantiatedApps[2].appType = SteamApp.validTypes.game;
 
   for (let app of instantiatedApps) {
     app.triedViaSteamchartsWeb();
