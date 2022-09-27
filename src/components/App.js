@@ -7,11 +7,16 @@ const fetchData = async () => {
   return response;
 };
 
+const tableOptions = {
+  firstCol: "Game Name",
+  secondCol: "Current Players",
+};
+
 const App = () => {
   return (
     <div>
       <SgsNavbar />
-      <SgsTable tableData={fetchData} />
+      <SgsTable tableData={fetchData} tableOptions={tableOptions} />
     </div>
   );
 };
