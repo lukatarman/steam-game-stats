@@ -2,7 +2,7 @@ import { gamesMock } from "../../assets/small.data.set.js";
 import { smallestGamesMock } from "../../assets/smallest.data.set.js";
 import { SteamApp } from "./steam.app.js";
 
-fdescribe("SteamApp", function () {
+describe("SteamApp", function () {
   describe(".copy", function () {
     describe("creates a copy of a steamApp instance. When this is done,", function () {
       beforeEach(function () {
@@ -67,7 +67,7 @@ fdescribe("SteamApp", function () {
       });
     });
 
-    describe(".setType", function () {
+    describe(".appType", function () {
       describe("sets the 'type' property to whatever was passed in as an argument. When this is done,", function () {
         beforeEach(function () {
           this.app = {
@@ -79,7 +79,7 @@ fdescribe("SteamApp", function () {
 
           this.result = SteamApp.oneFromSteamApi(this.app);
 
-          this.result.setType(this.type);
+          this.result.appType = this.type;
         });
 
         it("the 'type' property equals 'game'", function () {

@@ -14,7 +14,7 @@ import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pag
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
 
-fdescribe("game.service.js", () => {
+describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let appType;
