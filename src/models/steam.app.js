@@ -27,8 +27,8 @@ export class SteamApp {
     this.triedVia.push("steamcharts");
   }
 
-  set appType(appType) {
-    this.type = appType;
+  set appType(type) {
+    this.type = type;
   }
 
   static #createValidTypesEnum(values) {
