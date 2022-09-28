@@ -21,8 +21,9 @@ const App = () => {
         <Route
           path="/"
           element={<SgsTable tableData={fetchData} tableOptions={tableOptions} />}
-        ></Route>
-        <Route path="game/1" element={"TEST"} />
+        />
+
+        <Route path="game/:id" element={"TEST"} />
       </Routes>
     </div>
   );
