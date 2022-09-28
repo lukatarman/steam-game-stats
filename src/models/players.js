@@ -3,6 +3,9 @@ export class Players {
   players;
 
   constructor(playersAsString, dateAsString = "") {
+    // We add twelve hours to the date saved in the players class to remove any issues related to changing
+    // the timezones later on.
+
     this.date = dateAsString === "" ? new Date() : this.#addTwelveHours(dateAsString);
 
     this.players = parseFloat(parseFloat(playersAsString).toFixed(1));
