@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Routes, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 
 import SgsNavbar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
@@ -19,14 +19,15 @@ const App = () => {
   return (
     <div>
       <SgsNavbar />
-      <Routes>
-        <Route
-          path="/"
-          element={<SgsTable tableData={fetchData} tableOptions={tableOptions} />}
-        />
-
-        <Route path="game/:id" element={<GameDetails />} />
-      </Routes>
+      <Switch>
+        <Route exact path="/">
+          <SgsTable tableData={fetchData} tableOptions={tableOptions} />
+        </Route>
+        <Route path="game/:id">
+          <GameDetails />
+        </Route>
+      </Switch>
+      <Link to="/game/4">CLICK ME</Link>
     </div>
   );
 };
