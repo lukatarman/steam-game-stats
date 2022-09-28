@@ -5,11 +5,6 @@ import SgsNavbar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
 import GameDetails from "./GameDetails.js";
 
-const fetchData = async () => {
-  const response = await axios.get("http://localhost:3000/getTopTenGames");
-  return response;
-};
-
 const tableOptions = {
   firstCol: "Game Name",
   secondCol: "Current Players",
