@@ -15,7 +15,7 @@ function SgsTable({ tableData, tableOptions }) {
 
   const renderResults = results.map((result, index) => {
     return (
-      <tr>
+      <tr key={result.id}>
         <td>{index + 1}</td>
         <td>{result.name}</td>
         <td>{result.currentPlayers}</td>
