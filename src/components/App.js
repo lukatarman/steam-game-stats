@@ -1,7 +1,9 @@
-import SgsNavbar from "./SgsNavbar.js";
-import SgsTable from "./SgsTable.js";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
+
+import SgsNavbar from "./SgsNavbar.js";
+import SgsTable from "./SgsTable.js";
+import GameDetails from "./GameDetails.js";
 
 const fetchData = async () => {
   const response = await axios.get("http://localhost:3000/getTopTenGames");
@@ -23,7 +25,7 @@ const App = () => {
           element={<SgsTable tableData={fetchData} tableOptions={tableOptions} />}
         />
 
-        <Route path="game/:id" element={"TEST"} />
+        <Route path="game/:id" element={<GameDetails />} />
       </Routes>
     </div>
   );
