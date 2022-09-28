@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Switch, Route, Link } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import SgsNavbar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
 import GameDetails from "./GameDetails.js";
@@ -16,12 +16,23 @@ const tableOptions = {
 };
 
 const App = () => {
+  const [topTenData, setTopTenData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:3000/getTopTenGames");
+      setTopTenData(response.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <SgsNavbar />
       <Switch>
         <Route exact path="/">
-          <SgsTable tableData={fetchData} tableOptions={tableOptions} />
+          <SgsTable tableData={topTenData} tableOptions={tableOptions} />
         </Route>
         <Route path="/game/:id">
           <GameDetails />

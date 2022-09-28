@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 
 function SgsTable({ tableData, tableOptions }) {
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await tableData();
-      setResults(data);
-    };
-
-    getData();
-  }, []);
-
-  const renderResults = results.map((result, index) => {
+  const renderResults = tableData.map((data, index) => {
     return (
-      <tr key={result.id}>
+      <tr key={data.id}>
         <td>{index + 1}</td>
-        <td>{result.name}</td>
-        <td>{result.currentPlayers}</td>
+        <td>{data.name}</td>
+        <td>{data.currentPlayers}</td>
       </tr>
     );
   });
