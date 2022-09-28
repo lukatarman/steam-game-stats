@@ -1,9 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Players } from "../../../models/players.js";
 
-/**
- * @todo add tests
- */
 export function addCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
     game.playerHistory.push(new Players(players[i]));
