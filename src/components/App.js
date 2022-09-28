@@ -23,11 +23,11 @@ const App = () => {
         <Route exact path="/">
           <SgsTable tableData={fetchData} tableOptions={tableOptions} />
         </Route>
-        <Route path="game/:id">
+        <Route path="/game/:id">
           <GameDetails />
         </Route>
       </Switch>
-      <Link to="/game/4">CLICK ME</Link>
+      <Link to="/game/4">CLICK to go to game detail screen</Link>
     </div>
   );
 };
