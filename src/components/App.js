@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Switch, Route, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import SgsNavbar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
 import GameDetails from "./GameDetails.js";
