@@ -1,11 +1,8 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 import SgsNavbar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
-import axios from "axios";
-
-const fetchData = async () => {
-  const response = await axios.get("http://localhost:3000/getTopTenGames");
-  return response;
-};
 
 const tableOptions = {
   firstCol: "Game Name",
@@ -13,10 +10,21 @@ const tableOptions = {
 };
 
 const App = () => {
+  const [topTenData, setTopTenData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:3000/getTopTenGames");
+      setTopTenData(response.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <SgsNavbar />
-      <SgsTable tableData={fetchData} tableOptions={tableOptions} />
+      <SgsTable tableData={topTenData} tableOptions={tableOptions} />
     </div>
   );
 };
