@@ -6,7 +6,9 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
 const SgsNavbar = () => {
-  const [inputValue, setInputValue] = useState("placeholder");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResponse, setSearchResponse] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // axios.get();
