@@ -212,7 +212,7 @@ export class DatabaseClient {
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
-  async getCurrentTopTenPlayedGames(amount) {
+  async getXgamesSortedByCurrentPlayers(amount) {
     return await this.#collections
       .get("games")
       .aggregate([
