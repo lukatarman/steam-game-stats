@@ -11,8 +11,17 @@ const SgsNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // axios.get();
-  }, [inputValue]);
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:3000/getTopTenGames");
+      console.log(response);
+      setSearchResponse(response);
+    };
+
+    if (searchTerm) {
+      fetchData();
+      setIsOpen(true);
+    }
+  }, [searchTerm]);
 
   const onInputChange = (e) => {
     setInputValue(e.target.value);
