@@ -1,40 +1,44 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
+import { SteamApp } from "../../../models/steam.app.js";
 
-export function steamAppIsGame(httpDetailsPage) {
+export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
   const breadcrumbElement = dom.window.document.querySelector(".blockbg");
 
-  if (!breadcrumbElement) return false;
+  if (!breadcrumbElement) return SteamApp.validTypes.unknown;
 
   const breadcrumbText = breadcrumbElement.children[0].textContent;
 
-  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games") return false;
+  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
+    return SteamApp.validTypes.unknown;
 
   for (let child of breadcrumbElement.children) {
-    if (child.textContent === "Downloadable Content") return false;
+    if (child.textContent === "Downloadable Content")
+      return SteamApp.validTypes.downloadableContent;
   }
 
-  return true;
+  return SteamApp.validTypes.game;
 }
 
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
-      if (steamAppIsGame(page)) {
+      if (getSteamAppType(page) === SteamApp.validTypes.game) {
         return Game.fromSteamApp(steamApps[i]);
       }
     })
     .filter((game) => !!game);
 }
 
-export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsPages) {
+export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
   return htmlDetailsPages.map((page, i) => {
     const copy = steamApps[i].copy();
+    const appType = getSteamAppType(page);
 
     copy.triedViaSteamWeb();
 
-    if (steamAppIsGame(page)) copy.identify();
+    copy.appType = appType;
 
     return copy;
   });
@@ -42,13 +46,13 @@ export function updateIdentificationStatusSideEffectFree(steamApps, htmlDetailsP
 
 export function identifyGames(updatedSteamApps) {
   const games = updatedSteamApps
-    .filter((steamApp) => steamApp.identified)
+    .filter((steamApp) => steamApp.isGame())
     .map((steamApp) => Game.fromSteamApp(steamApp));
 
   return games;
 }
 
-export function setAsIdentified(result, steamApp) {
-  if (result) steamApp.identify();
+export function assignType(result, steamApp) {
+  if (result) steamApp.appType = SteamApp.validTypes.game;
   return steamApp;
 }

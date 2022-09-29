@@ -1,14 +1,19 @@
 export class SteamApp {
   appid;
   name;
-  identified;
+  type;
   triedVia;
+  static validTypes = this.#createValidTypesEnum([
+    "game",
+    "downloadableContent",
+    "unknown",
+  ]);
 
   copy() {
     const copy = new SteamApp();
     copy.appid = this.appid;
     copy.name = this.name;
-    copy.identified = this.identified;
+    copy.type = this.type;
     copy.triedVia = this.triedVia.slice();
 
     return copy;
@@ -22,8 +27,20 @@ export class SteamApp {
     this.triedVia.push("steamcharts");
   }
 
-  identify() {
-    this.identified = true;
+  isGame() {
+    return this.type === SteamApp.validTypes.game;
+  }
+
+  set appType(type) {
+    this.type = type;
+  }
+
+  static #createValidTypesEnum(values) {
+    const enumObject = {};
+    for (const val of values) {
+      enumObject[val] = val;
+    }
+    return Object.freeze(enumObject);
   }
 
   static manyFromSteamApi(apps) {
@@ -35,7 +52,7 @@ export class SteamApp {
     const steamApp      = new SteamApp();
     steamApp.appid      = data.appid;
     steamApp.name       = data.name;
-    steamApp.identified = false;
+    steamApp.type       = SteamApp.validTypes.unknown;
     steamApp.triedVia   = [];
     return steamApp;
   }
@@ -49,7 +66,7 @@ export class SteamApp {
     const steamApp      = new SteamApp();
     steamApp.appid      = dbEntry.appid;
     steamApp.name       = dbEntry.name;
-    steamApp.identified = dbEntry.identified;
+    steamApp.type       = dbEntry.type;
     steamApp.triedVia   = dbEntry.triedVia.slice();
     return steamApp;
   }
