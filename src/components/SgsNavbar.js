@@ -5,6 +5,10 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
+// todo
+// add endpoint for search to backend
+// add search results to JSX
+
 const SgsNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResponse, setSearchResponse] = useState([]);
