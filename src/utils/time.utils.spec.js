@@ -6,7 +6,7 @@ import {
   addTwelveHours,
 } from "./time.utils.js";
 
-fdescribe("time.utils.js", () => {
+describe("time.utils.js", () => {
   describe(".delay", () => {
     let timePassed;
 
