@@ -19,3 +19,10 @@ export function msPassedSince(date) {
 
   return msPassedSince;
 }
+
+export function addTwelveHours(date) {
+  const dateInMs = Date.parse(date);
+  const twelveHoursInMs = 12 * 60 * 60 * 1000;
+
+  return new Date(dateInMs + twelveHoursInMs);
+}
