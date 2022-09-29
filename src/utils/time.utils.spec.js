@@ -3,9 +3,10 @@ import {
   hoursToMs,
   moreThanXhoursPassedSince,
   msPassedSince,
+  addTwelveHours,
 } from "./time.utils.js";
 
-describe("time.utils.js", () => {
+fdescribe("time.utils.js", () => {
   describe(".delay", () => {
     let timePassed;
 
@@ -161,6 +162,23 @@ describe("time.utils.js", () => {
 
       it("function throws Error", () => {
         expect(thrownError.message).toBe("Cannot enter future date");
+      });
+    });
+  });
+
+  describe(".addTwelveHours", function () {
+    describe("adds twelve hours to whatever date is passed in. So,", function () {
+      describe("if we pass in 'September 2000'", function () {
+        beforeEach(function () {
+          this.date = new Date("September 2000");
+          this.twelveHoursAheadOfDate = new Date("2000-09-01T12:00:00");
+
+          this.result = addTwelveHours(this.date);
+        });
+
+        it("function returns 'September 1st, 2000, 12:00 PM", function () {
+          expect(this.result).toEqual(this.twelveHoursAheadOfDate);
+        });
       });
     });
   });
