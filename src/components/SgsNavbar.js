@@ -17,6 +17,8 @@ const SgsNavbar = () => {
             placeholder="Search"
             className="me-2"
             aria-label="Search"
+            onChange={testFunc}
+            value={inputValue}
           />
         </Form>
       </Container>
