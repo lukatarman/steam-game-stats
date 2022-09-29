@@ -24,28 +24,31 @@ const SgsNavbar = () => {
   }, [searchTerm]);
 
   const onInputChange = (e) => {
-    setInputValue(e.target.value);
+    setSearchTerm(e.target.value);
   };
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Container fluid>
-        <Link style={{ textDecoration: "none" }} to="/">
-          <Navbar.Brand>Steam Game Stats</Navbar.Brand>
-        </Link>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Form className="d-flex">
-          <Form.Control
-            type="search"
-            placeholder="Search"
-            className="me-2"
-            aria-label="Search"
-            onChange={onInputChange}
-            value={inputValue}
-          />
-        </Form>
-      </Container>
-    </Navbar>
+    <div>
+      <Navbar bg="light" expand="lg">
+        <Container fluid>
+          <Link style={{ textDecoration: "none" }} to="/">
+            <Navbar.Brand>Steam Game Stats</Navbar.Brand>
+          </Link>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Form className="d-flex">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              onChange={onInputChange}
+              value={searchTerm}
+            />
+          </Form>
+        </Container>
+      </Navbar>
+      <div>SEARCH RESULTS</div>
+    </div>
   );
 };
 
