@@ -12,7 +12,7 @@ const SgsNavbar = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3000/getTopTenGames");
+      const response = await axios.get("http://localhost:3000/games/1504980");
       console.log(response);
       setSearchResponse(response);
     };
