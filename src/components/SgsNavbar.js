@@ -1,9 +1,21 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
 const SgsNavbar = () => {
+  const [inputValue, setInputValue] = useState("placeholder");
+
+  useEffect(() => {
+    // axios.get();
+  }, [inputValue]);
+
+  const onInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -17,7 +29,7 @@ const SgsNavbar = () => {
             placeholder="Search"
             className="me-2"
             aria-label="Search"
-            onChange={testFunc}
+            onChange={onInputChange}
             value={inputValue}
           />
         </Form>
