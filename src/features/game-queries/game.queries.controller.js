@@ -18,6 +18,6 @@ export class GameQueriesController {
   }
 
   async getGamesBySearchTerm(term) {
-    return await this.#databaseClient.getGameBySearchTerm(term);
+    return await this.#databaseClient.getGamesBySearchTerm(term);
   }
 }
