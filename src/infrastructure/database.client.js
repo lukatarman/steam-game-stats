@@ -219,4 +219,16 @@ export class DatabaseClient {
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
+
+  async getXgamesSortedByCurrentPlayers(amount) {
+    return await this.#collections
+      .get("games")
+      .aggregate([
+        { $match: { playerHistory: { $ne: [] } } },
+        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $sort: { currentPlayers: -1 } },
+        { $limit: amount },
+      ])
+      .toArray();
+  }
 }
