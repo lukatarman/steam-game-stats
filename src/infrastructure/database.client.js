@@ -50,7 +50,7 @@ export class DatabaseClient {
       .next();
   }
 
-  // timestamp
+  // [x] timestamp
   async insertOneUpdateTimestamp(date) {
     const updateTimestamp = { updatedOn: date };
     await this.insertOne("update_timestamps", updateTimestamp);
