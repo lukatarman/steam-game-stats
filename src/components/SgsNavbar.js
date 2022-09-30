@@ -24,6 +24,8 @@ const SgsNavbar = () => {
       fetchData();
       setIsOpen(true);
     }
+
+    if (!searchTerm) setIsOpen(false);
   }, [searchTerm]);
 
   const onInputChange = (e) => {
