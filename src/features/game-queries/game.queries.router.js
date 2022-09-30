@@ -19,11 +19,5 @@ export class GameQueriesRouter {
 
       return await this.#controller.getOneGameById(id);
     });
-
-    server.get("/games/topTen", async (request, reply) => {
-      const limit = 10;
-
-      return await this.#controller.getTopTenGames(limit);
-    });
   };
 }
