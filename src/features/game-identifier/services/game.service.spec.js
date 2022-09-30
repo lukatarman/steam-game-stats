@@ -207,7 +207,9 @@ describe("game.service.js", () => {
       });
 
       it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.updatedSteamApps[0].triedVia[0]).toBe("steamWeb");
+        expect(this.updatedSteamApps[0].triedVia[0]).toBe(
+          SteamApp.validDataSources.steamWeb,
+        );
       });
 
       it("the first array entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {
@@ -275,15 +277,21 @@ describe("game.service.js", () => {
       });
 
       it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.updatedSteamApps[0].triedVia[0]).toBe("steamWeb");
+        expect(this.updatedSteamApps[0].triedVia[0]).toBe(
+          SteamApp.validDataSources.steamWeb,
+        );
       });
 
       it("the second array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.updatedSteamApps[1].triedVia[0]).toBe("steamWeb");
+        expect(this.updatedSteamApps[1].triedVia[0]).toBe(
+          SteamApp.validDataSources.steamWeb,
+        );
       });
 
       it("the third array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.updatedSteamApps[2].triedVia[0]).toBe("steamWeb");
+        expect(this.updatedSteamApps[2].triedVia[0]).toBe(
+          SteamApp.validDataSources.steamWeb,
+        );
       });
 
       it("the first entry in updatedSteamApps has a property 'type', and it's value is 'unknown'", function () {

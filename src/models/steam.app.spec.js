@@ -44,7 +44,7 @@ describe("SteamApp", function () {
       });
 
       it("the triedVia property array value is 'steamWeb'", function () {
-        expect(this.result.triedVia[0]).toBe("steamWeb");
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamWeb);
       });
     });
   });
@@ -63,7 +63,7 @@ describe("SteamApp", function () {
       });
 
       it("the triedVia property array value is 'steamcharts'", function () {
-        expect(this.result.triedVia[0]).toBe("steamcharts");
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamCharts);
       });
     });
   });
