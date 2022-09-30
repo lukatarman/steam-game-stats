@@ -17,8 +17,7 @@ const SgsNavbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`http://localhost:3000/search?q=${searchTerm}`);
-      console.log(response);
-      setSearchResponse(response);
+      setSearchResponse(response.data);
     };
 
     if (searchTerm) {
@@ -30,6 +29,15 @@ const SgsNavbar = () => {
   const onInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  const searchList = searchResponse.map((result) => {
+    return (
+      <div key={result.id}>
+        <strong>Game name</strong>: {result.name}, <strong>Current players</strong>:{" "}
+        {result.currentPlayers}
+      </div>
+    );
+  });
 
   return (
     <div>
@@ -51,7 +59,7 @@ const SgsNavbar = () => {
           </Form>
         </Container>
       </Navbar>
-      <div>SEARCH RESULTS</div>
+      <div>{isOpen ? searchList : null}</div>
     </div>
   );
 };
