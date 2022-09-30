@@ -7,6 +7,10 @@ export class GameQueriesRouter {
 
   routes = async (server, options) => {
     server.get("/games", async (request, reply) => {
+      const limit = request.query.limit ? request.query.limit : 10;
+
+      if (request.query.sort) return await this.#controller.getTopXgames(parseInt(limit));
+
       return await this.#controller.getAllGames();
     });
 
