@@ -16,11 +16,16 @@ describe("players.js", function () {
     describe("if a date is passed as the second parameter when instantiating", function () {
       beforeEach(function () {
         this.currentDate = new Date("September 2000");
+        this.twelveHoursInMs = 12 * 60 * 60 * 1000;
+        this.datePlusTwelveHoursInMs =
+          Date.parse(this.currentDate) + this.twelveHoursInMs;
+
+        this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
         this.players = new Players("24", "September 2000");
       });
 
-      it("the property date should be the current date", function () {
-        expect(this.players.date).toEqual(this.currentDate);
+      it("the property date should be the current date, plus twelve hours", function () {
+        expect(this.players.date).toEqual(this.currentDatePlusTwelveHours);
       });
     });
 

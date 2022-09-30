@@ -47,7 +47,7 @@ describe("game.service.js", () => {
         appType = getSteamAppType(theSims4dlcHtmlDetailsPage);
       });
 
-      it("the function returns 'downloadable content'", () => {
+      it("the function returns 'downloadableContent'", () => {
         expect(appType).toBe(SteamApp.validTypes.downloadableContent);
       });
     });
@@ -312,7 +312,7 @@ describe("game.service.js", () => {
         expect(this.updatedSteamApps[1].type).toBe(SteamApp.validTypes.game);
       });
 
-      it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadable content'", function () {
+      it("the third entry in updatedSteamApps has a property 'type', and it's value is 'downloadableContent'", function () {
         expect(this.updatedSteamApps[2].type).toBe(
           SteamApp.validTypes.downloadableContent,
         );
@@ -328,12 +328,11 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              type: "unknown",
-              triedVia: ["steamcharts"],
             },
           ];
 
-          this.result = identifyGames(this.updatedSteamApps);
+          this.instantiatedApps = SteamApp.manyFromSteamApi(this.updatedSteamApps);
+          this.result = identifyGames(this.instantiatedApps);
         });
 
         it("the method returns an empty array", function () {
@@ -347,18 +346,17 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              type: "unknown",
-              triedVia: ["steamcharts"],
             },
             {
               appid: 2,
               name: "Feartress",
-              type: "game",
-              triedVia: ["steamcharts"],
             },
           ];
 
-          this.result = identifyGames(this.updatedSteamApps);
+          this.instantiatedApps = SteamApp.manyFromSteamApi(this.updatedSteamApps);
+          this.instantiatedApps[1].type = SteamApp.validTypes.game;
+
+          this.result = identifyGames(this.instantiatedApps);
         });
 
         it("the returned array length is one", function () {
@@ -376,24 +374,22 @@ describe("game.service.js", () => {
             {
               appid: 1,
               name: "Glitchiker Soundtrack",
-              type: "unknown",
-              triedVia: ["steamcharts"],
             },
             {
               appid: 2,
               name: "Feartress",
-              type: "game",
-              triedVia: ["steamcharts"],
             },
             {
               appid: 3,
               name: "Elden Ring",
-              type: "game",
-              triedVia: ["steamcharts"],
             },
           ];
 
-          this.result = identifyGames(this.updatedSteamApps);
+          this.instantiatedApps = SteamApp.manyFromSteamApi(this.updatedSteamApps);
+          this.instantiatedApps[1].type = SteamApp.validTypes.game;
+          this.instantiatedApps[2].type = SteamApp.validTypes.game;
+
+          this.result = identifyGames(this.instantiatedApps);
         });
 
         it("the returned array length is two", function () {
@@ -412,7 +408,7 @@ describe("game.service.js", () => {
   });
 
   describe(".assignType", function () {
-    describe("checks if result contains a value. If so, identifies the steamApp. So", function () {
+    describe("checks if result contains a value. If so, sets the type property to 'games'. So", function () {
       describe("when result does not contain a value,", function () {
         beforeEach(function () {
           this.app = { id: 1, name: "Feartress" };

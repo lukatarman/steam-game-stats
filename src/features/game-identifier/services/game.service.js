@@ -46,7 +46,7 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
 
 export function identifyGames(updatedSteamApps) {
   const games = updatedSteamApps
-    .filter((steamApp) => steamApp.type === SteamApp.validTypes.game)
+    .filter((steamApp) => steamApp.isGame())
     .map((steamApp) => Game.fromSteamApp(steamApp));
 
   return games;

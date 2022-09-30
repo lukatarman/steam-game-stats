@@ -69,19 +69,37 @@ describe("SteamApp", function () {
   });
 
   describe(".isGame", function () {
-    describe("Checks if the type property of the class instance equals 'games'. So, ", function () {
-      beforeEach(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
+    describe("checks if the type property of the class instance equals 'games'. So, ", function () {
+      describe("if an app's type property equals 'game'", function () {
+        beforeEach(function () {
+          this.app = {
+            name: "Castlevania",
+            appid: 1,
+          };
 
-        this.steamApp = SteamApp.oneFromSteamApi(this.app);
-        this.steamApp.type = SteamApp.validTypes.game;
+          this.steamApp = SteamApp.oneFromSteamApi(this.app);
+          this.steamApp.type = SteamApp.validTypes.game;
+        });
+
+        it("the method returns true", function () {
+          expect(this.steamApp.isGame()).toBeTrue();
+        });
       });
 
-      it("the method returns true", function () {
-        expect(this.steamApp.isGame()).toBeTrue();
+      describe("if an app's type property does not equal 'game'", function () {
+        beforeEach(function () {
+          this.app = {
+            name: "Castlevania",
+            appid: 1,
+          };
+
+          this.steamApp = SteamApp.oneFromSteamApi(this.app);
+          this.steamApp.type = SteamApp.validTypes.unknown;
+        });
+
+        it("the method returns false", function () {
+          expect(this.steamApp.isGame()).toBeFalse();
+        });
       });
     });
   });
