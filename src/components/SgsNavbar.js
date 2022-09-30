@@ -16,7 +16,7 @@ const SgsNavbar = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3000/games/1504980");
+      const response = await axios.get(`http://localhost:3000/search?q=${searchTerm}`);
       console.log(response);
       setSearchResponse(response);
     };
