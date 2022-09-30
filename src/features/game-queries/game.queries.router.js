@@ -19,5 +19,11 @@ export class GameQueriesRouter {
 
       return await this.#controller.getOneGameById(id);
     });
+
+    server.get("/search", async (request, reply) => {
+      const term = request.query.q;
+
+      return await this.#controller.getGameBySearchTerm(term);
+    });
   };
 }
