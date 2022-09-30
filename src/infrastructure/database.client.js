@@ -231,4 +231,22 @@ export class DatabaseClient {
       ])
       .toArray();
   }
+
+  async getGameBySearchTerm(term) {
+    return await this.#collections
+      .get("games")
+      .aggregate([
+        {
+          $match: {
+            $and: [
+              { playerHistory: { $ne: [] } },
+              { name: { $regex: ".*" + term + ".*", $options: "i" } },
+            ],
+          },
+        },
+        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $sort: { currentPlayers: -1 } },
+      ])
+      .toArray();
+  }
 }
