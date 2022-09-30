@@ -9,13 +9,6 @@ export class SteamApp {
     "unknown",
   ]);
 
-  // todo:
-  // Now we could also use an array of enums for triedVia, but lets not do it in this PR.
-  // Create a new PR for that where the task is to create another enum for the triedVia property.
-  // To explain a bit. Now we have it like that: triedVia = ["steamWeb", "steamcharts"];.
-  // After the refactoring it should be: triedVia = [SteamAppDataSource.steamWeb, SteamAppDataSource.steamcharts];.
-  // The database client should then be updated also and all occurrences where the plain strings were used.
-
   copy() {
     const copy = new SteamApp();
     copy.appid = this.appid;
