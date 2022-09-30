@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3000/getTopTenGames");
+      const response = await axios.get("http://localhost:3000/games?sort=desc&limit=10");
       setTopTenData(response.data);
     };
 
