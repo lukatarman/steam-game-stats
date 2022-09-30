@@ -44,13 +44,13 @@ describe("SteamApp", function () {
       });
 
       it("the triedVia property array value is 'steamWeb'", function () {
-        expect(this.result.triedVia[0]).toBe("steamWeb");
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamWeb);
       });
     });
   });
 
   describe(".triedViaSteamchartsWeb", function () {
-    describe("pushes 'steamcharts' into the triedVia property. When this is done,", function () {
+    describe("pushes 'steamCharts' into the triedVia property. When this is done,", function () {
       beforeEach(function () {
         this.app = {
           name: "Castlevania",
@@ -62,8 +62,8 @@ describe("SteamApp", function () {
         this.result.triedViaSteamchartsWeb();
       });
 
-      it("the triedVia property array value is 'steamcharts'", function () {
-        expect(this.result.triedVia[0]).toBe("steamcharts");
+      it("the triedVia property array value is 'steamCharts'", function () {
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamCharts);
       });
     });
   });

@@ -8,6 +8,7 @@ export class SteamApp {
     "downloadableContent",
     "unknown",
   ]);
+  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamCharts"]);
 
   copy() {
     const copy = new SteamApp();
@@ -20,11 +21,11 @@ export class SteamApp {
   }
 
   triedViaSteamWeb() {
-    this.triedVia.push("steamWeb");
+    this.triedVia.push(SteamApp.validDataSources.steamWeb);
   }
 
   triedViaSteamchartsWeb() {
-    this.triedVia.push("steamcharts");
+    this.triedVia.push(SteamApp.validDataSources.steamCharts);
   }
 
   isGame() {
@@ -36,6 +37,14 @@ export class SteamApp {
   }
 
   static #createValidTypesEnum(values) {
+    const enumObject = {};
+    for (const val of values) {
+      enumObject[val] = val;
+    }
+    return Object.freeze(enumObject);
+  }
+
+  static #createValidDataSourcesEnum(values) {
     const enumObject = {};
     for (const val of values) {
       enumObject[val] = val;
