@@ -21,11 +21,11 @@ export class SteamApp {
   }
 
   triedViaSteamWeb() {
-    this.triedVia.push("steamWeb");
+    this.triedVia.push(SteamApp.validDataSources.steamWeb);
   }
 
   triedViaSteamchartsWeb() {
-    this.triedVia.push("steamcharts");
+    this.triedVia.push(SteamApp.validDataSources.steamCharts);
   }
 
   isGame() {
