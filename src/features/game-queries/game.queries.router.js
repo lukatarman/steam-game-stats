@@ -23,7 +23,7 @@ export class GameQueriesRouter {
     server.get("/search", async (request, reply) => {
       const term = request.query.q;
 
-      return await this.#controller.getGameBySearchTerm(term);
+      return await this.#controller.getGamesBySearchTerm(term);
     });
   };
 }

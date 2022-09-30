@@ -17,7 +17,7 @@ export class GameQueriesController {
     return await this.#databaseClient.getXgamesSortedByCurrentPlayers(amount);
   }
 
-  async getGameBySearchTerm(term) {
+  async getGamesBySearchTerm(term) {
     return await this.#databaseClient.getGameBySearchTerm(term);
   }
 }

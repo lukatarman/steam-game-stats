@@ -232,7 +232,7 @@ export class DatabaseClient {
       .toArray();
   }
 
-  async getGameBySearchTerm(term) {
+  async getGamesBySearchTerm(term) {
     return await this.#collections
       .get("games")
       .aggregate([
