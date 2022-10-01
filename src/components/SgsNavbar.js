@@ -45,7 +45,7 @@ const SgsNavbar = () => {
     <div>
       <Navbar bg="light" expand="lg">
         <Container fluid>
-          <Link style={{ textDecoration: "none" }} to="/">
+          <Link to="/">
             <Navbar.Brand>Steam Game Stats</Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls="navbarScroll" />
