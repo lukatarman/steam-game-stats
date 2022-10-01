@@ -1,5 +1,4 @@
-import businessLogic from "./bl.js";
-
+import businessLogic from "./buisness-logic.js";
 import SearchBar from "../SearchBar";
 import SearchResultsTable from "../SearchResultsTable";
 

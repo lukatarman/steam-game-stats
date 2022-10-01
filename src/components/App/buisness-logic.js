@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getTopTenGamesData } from "../../adapters/axios";
 
-const AppBl = () => {
+const AppBuisnessLogic = () => {
   const [topTenGames, setTopTenGames] = useState([]);
 
   const tableOptions = {
@@ -21,4 +21,4 @@ const AppBl = () => {
   return [topTenGames, tableOptions];
 };
 
-export default AppBl;
+export default AppBuisnessLogic;
