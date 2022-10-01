@@ -1,5 +1,5 @@
 import axios from "axios";
 
-export async function get(url) {
-  return axios.get(url);
+export async function getTopTenGamesData(url) {
+  return axios.get("http://localhost:3000/games?sort=desc&limit=10");
 }
