@@ -109,3 +109,7 @@ transform data into appropriate format as soon as you receive it.
 **Infrastructure**: code which interfaces to everything external like databases, external APIs like steamAPI and code which creates an interface for other external things to interact with us like the web-server
 **Utils**: reusable code which has no dependencies on any layer but is or can be used everywhere in the project
 **Models**: representation of data goes here, instantiation also mutation/transformation and querying of this data goes here; models can depend on other models or utils but nothing more
+
+### New Technologies
+
+Always take some time to research some "best practices" when using a new technology, package, method, etc.
