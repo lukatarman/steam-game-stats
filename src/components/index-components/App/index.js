@@ -8,7 +8,6 @@ const App = () => {
 
   return (
     <div>
-      TEST
       <SearchBar />
       <SearchResultsTable tableData={topTenGames} tableOptions={tableOptions} />
     </div>
