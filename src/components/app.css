@@ -1,9 +1,14 @@
-* {
+/* * {
   border: 1px blue solid;
+} */
+
+a {
+  text-decoration: none !important;
+  color: black !important;
 }
 
-body {
+/* body {
   background-color: black;
   color: white;
   height: 3000px;
-}
+} */
