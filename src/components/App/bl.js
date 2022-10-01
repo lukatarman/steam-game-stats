@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getTopTenGamesData } from "../../../adapters/index-adapter/";
+import { getTopTenGamesData } from "../../adapters/axios";
 
 const AppBl = () => {
   const [topTenGames, setTopTenGames] = useState([]);
@@ -12,7 +12,6 @@ const AppBl = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getTopTenGamesData();
-      console.log(data);
       setTopTenGames(data);
     };
 
