@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import SearchBar from "../SearchBar/SearchBar.js";
-import SearchResultsTable from "../SearchResultsTable/SearchResultsTable.js";
+import SearchBar from "../SearchBar/index.js";
+import SearchResultsTable from "../SearchResultsTable/index.js";
 
 const tableOptions = {
   firstCol: "Game Name",
