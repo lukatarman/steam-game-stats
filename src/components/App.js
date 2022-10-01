@@ -1,10 +1,10 @@
-import SgsNavbar from "./SgsNavbar.js";
+import SearchBar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
 
 const App = () => {
   return (
     <div>
-      <SgsNavbar />
+      <SearchBar />
       <SgsTable />
     </div>
   );

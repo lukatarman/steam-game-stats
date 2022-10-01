@@ -2,7 +2,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 
-const SgsNavbar = () => {
+const SearchBar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -21,4 +21,4 @@ const SgsNavbar = () => {
   );
 };
 
-export default SgsNavbar;
+export default SearchBar;
