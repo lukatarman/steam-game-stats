@@ -98,16 +98,22 @@ The database client: `main.js`.
 
 ### Best practice
 
-transform data into appropriate format as soon as you receive it.
+Transform data into appropriate format as soon as you receive it.
 
 ### Application Layers
 
 **Instantiation**: entry point code i.e. setup and configuration, instantiation of all other components and wiring them together
+
 **Features**::Orchestration: feature related code which orchestrates infrastructure classes, model classes, its own services and if needed utils to implement feature logic
+
 **Features**::Services: feature related code with uses model classes and utils to perform a feature related task without using any infrastructure
+
 **Features**::API: routes, controllers and later also services which provide feature functionality which we are making available to the outside world (we use the web-server for that)...so far not much here except game-queries
+
 **Infrastructure**: code which interfaces to everything external like databases, external APIs like steamAPI and code which creates an interface for other external things to interact with us like the web-server
+
 **Utils**: reusable code which has no dependencies on any layer but is or can be used everywhere in the project
+
 **Models**: representation of data goes here, instantiation also mutation/transformation and querying of this data goes here; models can depend on other models or utils but nothing more
 
 ### New Technologies
