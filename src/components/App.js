@@ -1,11 +1,11 @@
-import SearchBar from "./SgsNavbar.js";
-import SgsTable from "./SgsTable.js";
+import SearchBar from "./SearchBar.js";
+import SearchResultsTable from "./SearchResultsTable.js";
 
 const App = () => {
   return (
     <div>
       <SearchBar />
-      <SgsTable />
+      <SearchResultsTable />
     </div>
   );
 };

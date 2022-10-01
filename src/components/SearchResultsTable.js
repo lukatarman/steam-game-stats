@@ -1,6 +1,6 @@
 import Table from "react-bootstrap/Table";
 
-function SgsTable() {
+function SearchResultsTable() {
   return (
     <Table striped bordered hover>
       <thead>
@@ -35,4 +35,4 @@ function SgsTable() {
   );
 }
 
-export default SgsTable;
+export default SearchResultsTable;
