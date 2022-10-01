@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
+import businessLogic from "./bl.js";
 
 import SearchBar from "../SearchBar";
 import SearchResultsTable from "../SearchResultsTable";
 
-const tableOptions = {
-  firstCol: "Game Name",
-  secondCol: "Current Players",
-};
-
 const App = () => {
-  const [topTenData, setTopTenData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await get("http://localhost:3000/games?sort=desc&limit=10");
-      console.log(response);
-      setTopTenData(response);
-    };
-
-    fetchData();
-  }, []);
+  const [topTenGames, tableOptions] = businessLogic();
 
   return (
     <div>
+      TEST
       <SearchBar />
-      <SearchResultsTable tableData={topTenData} tableOptions={tableOptions} />
+      <SearchResultsTable tableData={topTenGames} tableOptions={tableOptions} />
     </div>
   );
 };
