@@ -1,15 +1,8 @@
 import Table from "react-bootstrap/Table";
+import businessLogic from "./business-logic.js";
 
 function SearchResultsTable({ tableData, tableOptions }) {
-  const renderResults = tableData.map((data, index) => {
-    return (
-      <tr key={data.id}>
-        <td>{index + 1}</td>
-        <td>{data.name}</td>
-        <td>{data.currentPlayers}</td>
-      </tr>
-    );
-  });
+  const renderResults = businessLogic(tableData);
 
   return (
     <Table striped bordered hover>
