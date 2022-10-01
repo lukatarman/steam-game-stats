@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import SgsNavbar from "./SgsNavbar.js";
-import SgsTable from "./SgsTable.js";
+import SearchBar from "../SearchBar.js";
+import SearchResultsTable from "../SearchResultsTable/SearchResultsTable.js";
 
 const tableOptions = {
   firstCol: "Game Name",
@@ -23,8 +23,8 @@ const App = () => {
 
   return (
     <div>
-      <SgsNavbar />
-      <SgsTable tableData={topTenData} tableOptions={tableOptions} />
+      <SearchBar />
+      <SearchResultsTable tableData={topTenData} tableOptions={tableOptions} />
     </div>
   );
 };

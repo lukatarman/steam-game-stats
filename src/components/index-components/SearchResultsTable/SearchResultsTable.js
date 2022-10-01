@@ -1,6 +1,6 @@
 import Table from "react-bootstrap/Table";
 
-function SgsTable({ tableData, tableOptions }) {
+function SearchResultsTable({ tableData, tableOptions }) {
   const renderResults = tableData.map((data, index) => {
     return (
       <tr key={data.id}>
@@ -25,4 +25,4 @@ function SgsTable({ tableData, tableOptions }) {
   );
 }
 
-export default SgsTable;
+export default SearchResultsTable;
