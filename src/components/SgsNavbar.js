@@ -33,10 +33,13 @@ const SgsNavbar = () => {
   };
 
   const searchList = searchResponse.map((result) => {
+    console.log(result.id);
     return (
       <div key={result.id}>
-        <strong>Game name</strong>: {result.name}, <strong>Current players</strong>:{" "}
-        {result.currentPlayers}
+        <img src={result.imageUrl}></img>
+        <Link to={"/games/" + result.id} style={{ textDecoration: "none" }}>
+          <strong>Game name</strong>: {result.name}
+        </Link>
       </div>
     );
   });
