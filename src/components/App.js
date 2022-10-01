@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SgsNavbar from "./SgsNavbar.js";
 import SgsTable from "./SgsTable.js";
 import GameDetails from "./GameDetails.js";
+import "./app.css";
 
 const tableOptions = {
   firstCol: "Game Name",
