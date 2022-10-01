@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 import SgsNavbar from "./SgsNavbar.js";
@@ -14,8 +13,9 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:3000/getTopTenGames");
-      setTopTenData(response.data);
+      const response = await get("http://localhost:3000/games?sort=desc&limit=10");
+      console.log(response);
+      setTopTenData(response);
     };
 
     fetchData();
