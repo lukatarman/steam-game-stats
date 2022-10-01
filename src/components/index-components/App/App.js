@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import SearchBar from "../SearchBar.js";
+import SearchBar from "../SearchBar/SearchBar.js";
 import SearchResultsTable from "../SearchResultsTable/SearchResultsTable.js";
 
 const tableOptions = {
