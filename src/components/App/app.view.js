@@ -1,6 +1,6 @@
 import AppBehavior from "./app.behavoir.js";
-import SearchBar from "../SearchBar";
-import SearchResultsTable from "../SearchResultsTable/search.results.table.view";
+import SearchBar from "../SearchBar/search.bar.view.js";
+import SearchResultsTable from "../SearchResultsTable/search.results.table.view.js";
 
 const AppView = () => {
   const [topTenGames, tableOptions] = AppBehavior();
