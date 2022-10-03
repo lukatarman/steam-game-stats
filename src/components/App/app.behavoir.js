@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getTopTenGamesData } from "../../adapters/axios";
+import { getTopTenGamesData } from "../../adapters/http-client/http.client.adapter.js";
 
 const AppBehavior = () => {
   const [topTenGames, setTopTenGames] = useState([]);
