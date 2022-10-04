@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -5,7 +6,8 @@ import { Link } from "react-router-dom";
 import SearchBarBehavior from "./search.bar.behavior.js";
 
 const SearchBar = () => {
-  const [searchTerm, isOpen, searchResultsList, onInputChange] = SearchBarBehavior();
+  const searchResultElement = useRef();
+  const [searchTerm, isOpen, searchResultsList, onInputChange] = SearchBarBehavior(ref);
 
   return (
     <div>
@@ -27,7 +29,7 @@ const SearchBar = () => {
           </Form>
         </Container>
       </Navbar>
-      <div>{isOpen ? searchResultsList : null}</div>
+      <div ref={searchResultElement}>{isOpen ? searchResultsList : null}</div>
     </div>
   );
 };
