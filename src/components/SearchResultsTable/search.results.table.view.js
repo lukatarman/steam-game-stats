@@ -1,8 +1,8 @@
 import Table from "react-bootstrap/Table";
-import businessLogic from "./search.results.table.behavoir.js";
+import SearchResultsTableBehavior from "./search.results.table.behavior.js";
 
-function SearchResultsTable({ tableData, tableOptions }) {
-  const renderResults = businessLogic(tableData);
+function SearchResultsTableView({ tableData, tableOptions }) {
+  const renderResults = SearchResultsTableBehavior(tableData);
 
   return (
     <Table striped bordered hover>
@@ -18,4 +18,4 @@ function SearchResultsTable({ tableData, tableOptions }) {
   );
 }
 
-export default SearchResultsTable;
+export default SearchResultsTableView;
