@@ -64,4 +64,4 @@ const SgsNavbar = () => {
   );
 };
 
-export default SgsNavbar;
+export default SearchBar;

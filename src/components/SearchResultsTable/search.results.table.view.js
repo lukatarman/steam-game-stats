@@ -1,15 +1,8 @@
 import Table from "react-bootstrap/Table";
+import SearchResultsTableBehavior from "./search.results.table.behavior.js";
 
-function SgsTable({ tableData, tableOptions }) {
-  const renderResults = tableData.map((data, index) => {
-    return (
-      <tr key={data.id}>
-        <td>{index + 1}</td>
-        <td>{data.name}</td>
-        <td>{data.currentPlayers}</td>
-      </tr>
-    );
-  });
+function SearchResultsTable({ tableData, tableOptions }) {
+  const renderResults = SearchResultsTableBehavior(tableData);
 
   return (
     <Table striped bordered hover>
@@ -25,4 +18,4 @@ function SgsTable({ tableData, tableOptions }) {
   );
 }
 
-export default SgsTable;
+export default SearchResultsTable;

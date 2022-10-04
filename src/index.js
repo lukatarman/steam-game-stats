@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./components/App";
+import App from "./components/App/app.view.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
 
@@ -10,3 +10,4 @@ root.render(
     <App />
   </BrowserRouter>
 );
+
