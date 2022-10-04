@@ -1,12 +1,15 @@
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
 
 const SearchBar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Steam Game Stats</Navbar.Brand>
+        <Link style={{ textDecoration: "none" }} to="/">
+          <Navbar.Brand>Steam Game Stats</Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Form className="d-flex">
           <Form.Control
