@@ -9,6 +9,9 @@ export class GameQueriesRouter {
     server.get("/games", async (request, reply) => {
       const limit = request.query.limit ? request.query.limit : 10;
 
+      if (request.query.q)
+        return await this.#controller.getGamesBySearchTerm(request.query.q);
+
       if (request.query.sort) return await this.#controller.getTopXgames(parseInt(limit));
 
       return await this.#controller.getAllGames();
@@ -18,12 +21,6 @@ export class GameQueriesRouter {
       const id = parseInt(request.params.id);
 
       return await this.#controller.getOneGameById(id);
-    });
-
-    server.get("/search", async (request, reply) => {
-      const term = request.query.q;
-
-      return await this.#controller.getGamesBySearchTerm(term);
     });
   };
 }
