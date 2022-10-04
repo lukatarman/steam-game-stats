@@ -4,7 +4,7 @@ import GameDetails from "../GameDetails/game.details.view.js";
 import SearchBar from "../SearchBar/search.bar.view.js";
 import SearchResultsTable from "../SearchResultsTable/search.results.table.view.js";
 
-const AppView = () => {
+const App = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
   return (
@@ -23,4 +23,4 @@ const AppView = () => {
   );
 };
 
-export default AppView;
+export default App;
