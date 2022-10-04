@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
-const SearchBarView = () => {
+const SearchBar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -24,4 +24,4 @@ const SearchBarView = () => {
   );
 };
 
-export default SearchBarView;
+export default SearchBar;
