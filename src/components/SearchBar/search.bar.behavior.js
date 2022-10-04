@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSearchResults } from "../../adapters/http-client/http.client.adapter.js";
 
-const SearchBarBehavior = () => {
+const SearchBarBehavior = (searchResultElement) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResponse, setSearchResponse] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +12,12 @@ const SearchBarBehavior = () => {
       const response = await getSearchResults(searchTerm);
       setSearchResponse(response);
     };
+
+    const onBodyClick = (e) => {
+      if (!searchResultElement.current.contains(e.target)) setIsOpen(false);
+    };
+
+    document.body.addEventListener("click", onBodyClick);
 
     if (searchTerm) {
       fetchData();
@@ -28,7 +34,7 @@ const SearchBarBehavior = () => {
   const searchResultsList = searchResponse.map((result) => {
     return (
       <div key={result.id}>
-        <img src={result.imageUrl}></img>
+        <img src={result.imageUrl} alt="Not found"></img>
         <Link to={"/games/" + result.id} style={{ textDecoration: "none" }}>
           <strong>Game name</strong>: {result.name}
         </Link>
