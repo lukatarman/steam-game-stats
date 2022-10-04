@@ -8,7 +8,7 @@ const SearchBarView = () => {
     <Navbar bg="light" expand="lg">
       <Container fluid>
         <Link style={{ textDecoration: "none" }} to="/">
-          <Navbar.Brand href="#">Steam Game Stats</Navbar.Brand>
+          <Navbar.Brand>Steam Game Stats</Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Form className="d-flex">
