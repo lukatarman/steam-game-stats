@@ -1,7 +1,7 @@
 import Table from "react-bootstrap/Table";
 import SearchResultsTableBehavior from "./search.results.table.behavior.js";
 
-function SearchResultsTableView({ tableData, tableOptions }) {
+function SearchResultsTable({ tableData, tableOptions }) {
   const renderResults = SearchResultsTableBehavior(tableData);
 
   return (
@@ -18,4 +18,4 @@ function SearchResultsTableView({ tableData, tableOptions }) {
   );
 }
 
-export default SearchResultsTableView;
+export default SearchResultsTable;
