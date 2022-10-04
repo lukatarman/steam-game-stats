@@ -1,5 +1,6 @@
 import { Switch, Route, Link } from "react-router-dom";
 import AppBehavior from "./app.behavior.js";
+import GameDetails from "../GameDetails/game.details.view.js";
 import SearchBarView from "../SearchBar/search.bar.view.js";
 import SearchResultsTableView from "../SearchResultsTable/search.results.table.view.js";
 
