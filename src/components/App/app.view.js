@@ -1,4 +1,4 @@
-import AppBehavior from "./app.behavoir.js";
+import AppBehavior from "./app.behavior.js";
 import SearchBarView from "../SearchBar/search.bar.view.js";
 import SearchResultsTableView from "../SearchResultsTable/search.results.table.view.js";
 
