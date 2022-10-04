@@ -1,14 +1,14 @@
 import AppBehavior from "./app.behavoir.js";
-import SearchBar from "../SearchBar/search.bar.view.js";
-import SearchResultsTable from "../SearchResultsTable/search.results.table.view.js";
+import SearchBarView from "../SearchBar/search.bar.view.js";
+import SearchResultsTableView from "../SearchResultsTable/search.results.table.view.js";
 
 const AppView = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
   return (
     <div>
-      <SearchBar />
-      <SearchResultsTable tableData={topTenGames} tableOptions={tableOptions} />
+      <SearchBarView />
+      <SearchResultsTableView tableData={topTenGames} tableOptions={tableOptions} />
     </div>
   );
 };
