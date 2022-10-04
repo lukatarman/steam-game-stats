@@ -3,12 +3,12 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
-const SgsNavbar = () => {
+const SearchBarView = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
         <Link style={{ textDecoration: "none" }} to="/">
-          <Navbar.Brand>Steam Game Stats</Navbar.Brand>
+          <Navbar.Brand href="#">Steam Game Stats</Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Form className="d-flex">
@@ -24,4 +24,4 @@ const SgsNavbar = () => {
   );
 };
 
-export default SgsNavbar;
+export default SearchBarView;
