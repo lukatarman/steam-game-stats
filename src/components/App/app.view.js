@@ -1,21 +1,21 @@
 import { Switch, Route, Link } from "react-router-dom";
 import AppBehavior from "./app.behavior.js";
-import GameDetailsView from "../GameDetails/game.details.view.js";
-import SearchBarView from "../SearchBar/search.bar.view.js";
-import SearchResultsTableView from "../SearchResultsTable/search.results.table.view.js";
+import GameDetails from "../GameDetails/game.details.view.js";
+import SearchBar from "../SearchBar/search.bar.view.js";
+import SearchResultsTable from "../SearchResultsTable/search.results.table.view.js";
 
 const AppView = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
   return (
     <div>
-      <SearchBarView />
+      <SearchBar />
       <Switch>
         <Route exact path="/">
-          <SearchResultsTableView tableData={topTenGames} tableOptions={tableOptions} />
+          <SearchResultsTable tableData={topTenGames} tableOptions={tableOptions} />
         </Route>
         <Route path="/game/:id">
-          <GameDetailsView />
+          <GameDetails />
         </Route>
       </Switch>
       <Link to="/game/4">CLICK to go to game detail screen</Link>
