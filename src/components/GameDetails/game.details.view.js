@@ -1,6 +1,6 @@
 import { useParams, useRouteMatch } from "react-router-dom";
 
-const GameDetails = () => {
+const GameDetailsView = () => {
   let { url } = useRouteMatch();
   let { id } = useParams();
 
@@ -13,4 +13,4 @@ const GameDetails = () => {
   );
 };
 
-export default GameDetails;
+export default GameDetailsView;
