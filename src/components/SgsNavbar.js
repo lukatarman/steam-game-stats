@@ -12,7 +12,7 @@ const SgsNavbar = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`http://localhost:3000/search?q=${searchTerm}`);
+      const response = await axios.get(`http://localhost:3000/games?q=${searchTerm}`);
       setSearchResponse(response.data);
     };
 
@@ -29,7 +29,6 @@ const SgsNavbar = () => {
   };
 
   const searchList = searchResponse.map((result) => {
-    console.log(result.id);
     return (
       <div key={result.id}>
         <img src={result.imageUrl}></img>
