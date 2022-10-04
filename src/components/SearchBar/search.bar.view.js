@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -7,7 +7,8 @@ import SearchBarBehavior from "./search.bar.behavior.js";
 
 const SearchBar = () => {
   const searchResultElement = useRef();
-  const [searchTerm, isOpen, searchResultsList, onInputChange] = SearchBarBehavior(ref);
+  const [searchTerm, isOpen, searchResultsList, onInputChange] =
+    SearchBarBehavior(searchResultElement);
 
   return (
     <div>
