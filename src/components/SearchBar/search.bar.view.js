@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import SearchBarBehavior from "./search.bar.behavior.js";
 
 const SearchBar = () => {
-  const searchResultElement = useRef();
+  const searchResultDOMelement = useRef();
   const [searchTerm, isOpen, searchResultsList, onInputChange] =
-    SearchBarBehavior(searchResultElement);
+    SearchBarBehavior(searchResultDOMelement);
 
   return (
     <div>
@@ -30,7 +30,7 @@ const SearchBar = () => {
           </Form>
         </Container>
       </Navbar>
-      <div ref={searchResultElement}>{isOpen ? searchResultsList : null}</div>
+      <div ref={searchResultDOMelement}>{isOpen ? searchResultsList : null}</div>
     </div>
   );
 };

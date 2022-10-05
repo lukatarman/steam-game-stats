@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSearchResults } from "../../adapters/http-client/http.client.adapter.js";
 
-const SearchBarBehavior = (searchResultElement) => {
+const SearchBarBehavior = (searchResultDOMelement) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResponse, setSearchResponse] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -13,18 +13,17 @@ const SearchBarBehavior = (searchResultElement) => {
       setSearchResponse(response);
     };
 
-    const onBodyClick = (e) => {
-      if (!searchResultElement.current.contains(e.target)) setIsOpen(false);
-    };
-
-    document.body.addEventListener("click", onBodyClick);
-
     if (searchTerm) {
       fetchData();
       setIsOpen(true);
     }
 
     if (!searchTerm) setIsOpen(false);
+
+    const onBodyClick = (e) => {
+      if (!searchResultDOMelement.current.contains(e.target)) setIsOpen(false);
+    };
+    document.body.addEventListener("click", onBodyClick);
   }, [searchTerm]);
 
   const onInputChange = (e) => {
