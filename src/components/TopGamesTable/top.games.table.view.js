@@ -1,8 +1,8 @@
 import Table from "react-bootstrap/Table";
-import SearchResultsTableBehavior from "./search.results.table.behavior.js";
+import TopGamesTableBehavior from "./top.games.table.behavior.js";
 
-function SearchResultsTable({ tableData, tableOptions }) {
-  const renderResults = SearchResultsTableBehavior(tableData);
+function TopGamesTable({ tableData, tableOptions }) {
+  const renderResults = TopGamesTableBehavior(tableData);
 
   return (
     <Table striped bordered hover>
@@ -18,4 +18,4 @@ function SearchResultsTable({ tableData, tableOptions }) {
   );
 }
 
-export default SearchResultsTable;
+export default TopGamesTable;

@@ -2,7 +2,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import AppBehavior from "./app.behavior.js";
 import GameDetails from "../GameDetails/game.details.view.js";
 import SearchBar from "../SearchBar/search.bar.view.js";
-import SearchResultsTable from "../SearchResultsTable/search.results.table.view.js";
+import TopGamesTable from "../TopGamesTable/top.games.table.view.js";
 
 const App = () => {
   const [topTenGames, tableOptions] = AppBehavior();
@@ -12,7 +12,7 @@ const App = () => {
       <SearchBar />
       <Switch>
         <Route exact path="/">
-          <SearchResultsTable tableData={topTenGames} tableOptions={tableOptions} />
+          <TopGamesTable tableData={topTenGames} tableOptions={tableOptions} />
         </Route>
         <Route path="/game/:id">
           <GameDetails />

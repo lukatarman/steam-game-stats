@@ -1,4 +1,4 @@
-const SearchResultsTableBehavior = (tableData) => {
+const TopGamesTableBehavior = (tableData) => {
   const renderResults = tableData.map((data, index) => {
     return (
       <tr key={data.id}>
@@ -12,4 +12,4 @@ const SearchResultsTableBehavior = (tableData) => {
   return renderResults;
 };
 
-export default SearchResultsTableBehavior;
+export default TopGamesTableBehavior;
