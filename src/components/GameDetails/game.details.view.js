@@ -6,7 +6,7 @@ const GameDetails = () => {
 
   return (
     <div>
-      <div>{url}</div>
+      <div>Game Name</div>
       <div>{id}</div>
       <div>{id.name}</div>
     </div>
