@@ -33,16 +33,21 @@ const SearchBarBehavior = (searchResultElement) => {
 
   const searchResultsList = searchResponse.map((result) => {
     return (
-      <div key={result.id}>
-        <img src={result.imageUrl} alt="Not found"></img>
-        <Link to={"/game/" + result.id} style={{ textDecoration: "none" }}>
+      <Link to={"/game/" + result.id} style={{ textDecoration: "none" }}>
+        <div
+          onClick={() => {
+            setIsOpen(false);
+          }}
+          key={result.id}
+        >
+          <img src={result.imageUrl} alt="Not found"></img>
           <strong>Game name</strong>: {result.name}
-        </Link>
-      </div>
+        </div>
+      </Link>
     );
   });
 
-  return [searchTerm, isOpen, searchResultsList, onInputChange];
+  return [searchTerm, isOpen, setIsOpen, searchResultsList, onInputChange];
 };
 
 export default SearchBarBehavior;
