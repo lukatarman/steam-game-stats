@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
 import { getGameById } from "../../adapters/http-client/http.client.adapter.js";
 import { useParams } from "react-router-dom";
 
