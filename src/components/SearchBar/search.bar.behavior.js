@@ -32,12 +32,11 @@ const SearchBarBehavior = (searchResultDOMelement) => {
 
   const searchResultsList = searchResponse.map((result) => {
     return (
-      <Link to={"/game/" + result.id} style={{ textDecoration: "none" }}>
+      <Link to={"/game/" + result.id} style={{ textDecoration: "none" }} key={result.id}>
         <div
           onClick={() => {
             setIsOpen(false);
           }}
-          key={result.id}
         >
           <img src={result.imageUrl} alt="Not found"></img>
           <strong>Game name</strong>: {result.name}
