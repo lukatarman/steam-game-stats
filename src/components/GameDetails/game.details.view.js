@@ -1,28 +1,26 @@
-import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getGameById } from "../../adapters/http-client/http.client.adapter.js";
-import { useParams } from "react-router-dom";
+import GameDetailsBehavior from "./game.details.behavior.js";
 
 const GameDetails = () => {
-  const [gameData, setGameData] = useState({});
-  let { id: gameId } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getGameById(gameId);
-      console.log(response);
-      setGameData(response);
-    };
-
-    fetchData();
-  }, [gameId]);
+  const [gameData, tableContent] = GameDetailsBehavior();
 
   return (
     <div>
       <div>
         <div>{gameData.name}</div>
         <img src={gameData.imageUrl} alt="Not found" />
+        <div>Current Players: ${gameData.currentPlayers}</div>
       </div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Players</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody>{tableContent}</tbody>
+      </Table>
     </div>
   );
 };
