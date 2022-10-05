@@ -47,7 +47,7 @@ const SearchBarBehavior = (searchResultElement) => {
     );
   });
 
-  return [searchTerm, isOpen, setIsOpen, searchResultsList, onInputChange];
+  return [searchTerm, isOpen, searchResultsList, onInputChange];
 };
 
 export default SearchBarBehavior;
