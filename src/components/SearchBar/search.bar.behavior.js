@@ -35,7 +35,7 @@ const SearchBarBehavior = (searchResultElement) => {
     return (
       <div key={result.id}>
         <img src={result.imageUrl} alt="Not found"></img>
-        <Link to={"/games/" + result.id} style={{ textDecoration: "none" }}>
+        <Link to={"/game/" + result.id} style={{ textDecoration: "none" }}>
           <strong>Game name</strong>: {result.name}
         </Link>
       </div>
