@@ -24,7 +24,7 @@ const SearchBarBehavior = (searchResultDOMelement) => {
       if (!searchResultDOMelement.current.contains(e.target)) setIsOpen(false);
     };
     document.body.addEventListener("click", onBodyClick);
-  }, [searchTerm]);
+  }, [searchTerm, searchResultDOMelement]);
 
   const onInputChange = (e) => {
     setSearchTerm(e.target.value);

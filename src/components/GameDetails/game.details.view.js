@@ -15,8 +15,7 @@ const GameDetails = () => {
     };
 
     fetchData();
-    console.log(gameData);
-  }, []);
+  }, [gameId]);
 
   return (
     <div>
