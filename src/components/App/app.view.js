@@ -18,7 +18,6 @@ const App = () => {
           <GameDetails />
         </Route>
       </Switch>
-      <Link to="/game/4">CLICK to go to game detail screen</Link>
     </div>
   );
 };
