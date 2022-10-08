@@ -24,6 +24,7 @@ const GameDetailsBehavior = () => {
         gameData.playerHistory.reverse().map((month) => {
           const date = new Date(month.date);
           const monthString = monthToString(date.getMonth());
+          const day = date.getDay();
 
           return (
             <tr key={month.date}>
