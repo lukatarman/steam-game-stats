@@ -43,3 +43,27 @@ const GameDetailsBehavior = () => {
 };
 
 export default GameDetailsBehavior;
+
+function sortHistories(playerHistory) {
+  let previousMonth = "";
+
+  return playerHistory
+    .reverse()
+    .map((history) => {
+      const date = new Date(history.date);
+      const month = date.getMonth();
+      const players = history.players;
+
+      if (previousMonth === month) {
+        return null;
+      }
+
+      previousMonth = month;
+
+      return {
+        date,
+        players,
+      };
+    })
+    .filter((history) => !!history);
+}
