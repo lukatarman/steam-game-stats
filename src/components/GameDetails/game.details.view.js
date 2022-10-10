@@ -9,7 +9,7 @@ const GameDetails = () => {
       <div>
         <div>{gameData.name}</div>
         <img src={gameData.imageUrl} alt="Not found" />
-        <div>Current Players: ${gameData.currentPlayers}</div>
+        <div>Current Players:</div>
       </div>
       <Table striped bordered hover>
         <thead>
