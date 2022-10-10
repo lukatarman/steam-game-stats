@@ -21,16 +21,17 @@ const GameDetailsBehavior = () => {
 
   useEffect(() => {
     if (gameData.playerHistory) {
+      const sortedHistories = sortHistories(gameData.playerHistory);
+
       setTableContent(
-        gameData.playerHistory.reverse().map((month) => {
-          const date = new Date(month.date);
-          const monthString = monthToString(date.getMonth());
-          const day = date.getDay();
+        sortedHistories.map((history) => {
+          const yearString = history.date.getFullYear();
+          const monthString = monthToString(history.date.getMonth());
 
           return (
-            <tr key={month.date}>
+            <tr key={history.date}>
               <td>
-                {date.getFullYear()} {monthString}
+                {yearString} {monthString}
               </td>
               <td>{history.players}</td>
             </tr>
