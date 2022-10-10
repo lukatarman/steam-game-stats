@@ -16,7 +16,6 @@ const GameDetails = () => {
           <tr>
             <th>Month</th>
             <th>Players</th>
-            <th>Change</th>
           </tr>
         </thead>
         <tbody>{tableContent}</tbody>
