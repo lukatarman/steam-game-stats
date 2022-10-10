@@ -12,7 +12,6 @@ const GameDetailsBehavior = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await getGameById(gameId);
-      console.log(response);
       setGameData(response);
     };
 
