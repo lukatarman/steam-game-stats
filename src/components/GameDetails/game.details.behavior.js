@@ -6,6 +6,7 @@ import { monthToString } from "../../utils/dates.js";
 const GameDetailsBehavior = () => {
   const [gameData, setGameData] = useState([]);
   const [tableContent, setTableContent] = useState(null);
+  const [currentPlayers, setCurrentPlayers] = useState("Unknown");
   let { id: gameId } = useParams();
 
   useEffect(() => {
