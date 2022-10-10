@@ -31,8 +31,7 @@ const GameDetailsBehavior = () => {
               <td>
                 {date.getFullYear()} {monthString}
               </td>
-              <td>{month.players}</td>
-              <td>Test3</td>
+              <td>{history.players}</td>
             </tr>
           );
         })
