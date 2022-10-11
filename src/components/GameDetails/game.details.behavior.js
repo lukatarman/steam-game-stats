@@ -6,7 +6,6 @@ import { monthToString } from "../../utils/dates.js";
 const GameDetailsBehavior = () => {
   const [gameData, setGameData] = useState([]);
   const [tableContent, setTableContent] = useState(null);
-  const [sortedHistories, setSortedHistories] = useState([]);
   let { id: gameId } = useParams();
 
   useEffect(() => {
@@ -20,7 +19,7 @@ const GameDetailsBehavior = () => {
 
   useEffect(() => {
     if (gameData.playerHistory) {
-      setSortedHistories(sortHistories(gameData.playerHistory));
+      const sortedHistories = sortHistories(gameData.playerHistory);
 
       setTableContent(
         sortedHistories.map((history) => {
@@ -38,7 +37,7 @@ const GameDetailsBehavior = () => {
         })
       );
     }
-  }, [gameData, sortedHistories]);
+  }, [gameData]);
 
   function sortHistories(playerHistory) {
     let previousMonth = "";
