@@ -9,7 +9,6 @@ const GameDetails = () => {
       <div>
         <img src={gameData.imageUrl} alt="Not found" />
         <div>{gameData.name}</div>
-        <div>Current Players:</div>
       </div>
       <Table striped bordered hover>
         <thead>
