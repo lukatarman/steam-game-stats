@@ -23,15 +23,16 @@ const GameDetailsBehavior = () => {
 
       setTableContent(
         sortedHistories.map((history) => {
-          const yearString = history.date.getFullYear();
-          const monthString = monthToString(history.date.getMonth());
+          const year = history.date.getFullYear();
+          const month = monthToString(history.date.getMonth());
+          const players = history.players;
 
           return (
             <tr key={history.date}>
               <td>
-                {yearString} {monthString}
+                {year} {month}
               </td>
-              <td>{history.players}</td>
+              <td>{players}</td>
             </tr>
           );
         })
