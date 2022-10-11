@@ -5,6 +5,7 @@ import { getSearchResults } from "../../adapters/http-client/http.client.adapter
 const SearchBarBehavior = (searchResultDOMelement) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResponse, setSearchResponse] = useState([]);
+  const [debounceTerm, setDebounceTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
