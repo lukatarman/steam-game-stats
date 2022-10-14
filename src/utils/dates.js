@@ -1,44 +1,28 @@
 export function monthToString(monthNumber) {
-  let month;
-
   switch (monthNumber) {
     case 0:
-      month = "January";
-      break;
+      return "January";
     case 1:
-      month = "February";
-      break;
+      return "February";
     case 2:
-      month = "March";
-      break;
+      return "March";
     case 3:
-      month = "April";
-      break;
+      return "April";
     case 4:
-      month = "May";
-      break;
+      return "May";
     case 5:
-      month = "June";
-      break;
+      return "June";
     case 6:
-      month = "July";
-      break;
+      return "July";
     case 7:
-      month = "August";
-      break;
+      return "August";
     case 8:
-      month = "September";
-      break;
+      return "September";
     case 9:
-      month = "October";
-      break;
+      return "October";
     case 10:
-      month = "November";
-      break;
+      return "November";
     case 11:
-      month = "December";
-      break;
+      return "December";
   }
-
-  return month;
 }
