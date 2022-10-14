@@ -22,24 +22,27 @@ const GameDetailsBehavior = () => {
 
     const sortedHistories = sortHistories(gameData.playerHistory);
 
-      setTableContent(
-        sortedHistories.map((history) => {
-          const year = history.date.getFullYear();
-          const month = monthToString(history.date.getMonth());
-          const players = history.players;
-
-          return (
-            <tr key={history.date}>
-              <td>
-                {year} {month}
-              </td>
-              <td>{players}</td>
-            </tr>
-          );
-        })
-      );
-    }
+    setTableContent(
+      sortedHistories.map((history) => {
+        return createTableRow(history);
+      })
+    );
   }, [gameData]);
+
+  function createTableRow(history) {
+    const year = history.date.getFullYear();
+    const month = monthToString(history.date.getMonth());
+    const players = history.players;
+
+    return (
+      <tr key={history.date}>
+        <td>
+          {year} {month}
+        </td>
+        <td>{players}</td>
+      </tr>
+    );
+  }
 
   function sortHistories(playerHistory) {
     let previousMonth = "";
