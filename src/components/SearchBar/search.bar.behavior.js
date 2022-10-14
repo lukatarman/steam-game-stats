@@ -50,7 +50,7 @@ const SearchBarBehavior = (searchResultDOMelement) => {
           }}
         >
           <img src={result.imageUrl} alt="Not found"></img>
-          <strong>{result.name}</strong>
+          <span className="fw-bold">{result.name}</span>
         </div>
       </Link>
     );
