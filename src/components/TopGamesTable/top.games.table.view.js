@@ -5,7 +5,7 @@ function TopGamesTable({ tableData, tableOptions }) {
   const renderResults = TopGamesTableBehavior(tableData);
 
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover style={{ marginBottom: "1000px" }}>
       <thead>
         <tr>
           <th>#</th>
