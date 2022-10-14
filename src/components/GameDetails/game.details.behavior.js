@@ -18,8 +18,9 @@ const GameDetailsBehavior = () => {
   }, [gameId]);
 
   useEffect(() => {
-    if (gameData.playerHistory) {
-      const sortedHistories = sortHistories(gameData.playerHistory);
+    if (!gameData.playerHistory) return;
+
+    const sortedHistories = sortHistories(gameData.playerHistory);
 
       setTableContent(
         sortedHistories.map((history) => {
