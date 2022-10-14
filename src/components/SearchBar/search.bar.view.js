@@ -13,7 +13,7 @@ const SearchBar = () => {
   return (
     <div>
       <Navbar bg="light" expand="lg">
-        <Container fluid>
+        <Container>
           <Link to="/">
             <Navbar.Brand>Steam Game Stats</Navbar.Brand>
           </Link>
