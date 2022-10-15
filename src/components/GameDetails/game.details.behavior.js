@@ -22,11 +22,7 @@ const GameDetailsBehavior = () => {
 
     const sortedHistories = sortHistories(gameData.playerHistory);
 
-    setTableContent(
-      sortedHistories.map((history) => {
-        return createTableRow(history);
-      })
-    );
+    setTableContent(sortedHistories.map((history) => createTableRow(history)));
   }, [gameData]);
 
   function createTableRow(history) {
