@@ -21,14 +21,14 @@ function groupHistoriesByMonth(playerHistory) {
         players: [players],
       });
     } else {
-      playerHistoryFixed[index].players.push(players);
+      playerHistoryGroupedByMonth[index].players.push(players);
     }
   });
 
-  return playerHistoryFixed;
+  return playerHistoryGroupedByMonth;
 }
 
-function existingIndexOfMonth(yearAndMonth, playerHistoryFixed) {
+function getIndexOfExistingDate(yearAndMonth, playerHistoryFixed) {
   return playerHistoryFixed.findIndex((history) => history.date === yearAndMonth);
 }
 
