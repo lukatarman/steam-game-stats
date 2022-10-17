@@ -13,15 +13,18 @@ function groupHistoriesByMonth(playerHistory) {
     const date = new Date(history.date);
     const yearAndMonth = `${monthToString(date.getMonth())} ${date.getFullYear()}`;
     const players = history.players;
-    const index = getIndexOfExistingDate(yearAndMonth, playerHistoryGroupedByMonth);
+    const indexOfExistingDate = getIndexOfExistingDate(
+      yearAndMonth,
+      playerHistoryGroupedByMonth
+    );
 
-    if (index === -1) {
+    if (indexOfExistingDate === -1) {
       playerHistoryGroupedByMonth.push({
         date: yearAndMonth,
         players: [players],
       });
     } else {
-      playerHistoryGroupedByMonth[index].players.push(players);
+      playerHistoryGroupedByMonth[indexOfExistingDate].players.push(players);
     }
   });
 
