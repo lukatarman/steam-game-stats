@@ -29,8 +29,9 @@ const GameDetailsBehavior = () => {
   }, [gameData]);
 
   function createTableRow(history) {
-    const year = history.date.getFullYear();
-    const month = monthToString(history.date.getMonth());
+    const date = new Date(history.date);
+    const year = date.getFullYear();
+    const month = monthToString(date.getMonth());
     const players = history.players;
 
     return (
