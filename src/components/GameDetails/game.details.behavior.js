@@ -21,9 +21,11 @@ const GameDetailsBehavior = () => {
   useEffect(() => {
     if (!gameData.playerHistory) return;
 
-    const sortedHistories = sortHistories(gameData.playerHistory);
+    const historiesWithAveragePlayers = fixHistories(gameData.playerHistory);
 
-    setTableContent(sortedHistories.map((history) => createTableRow(history)));
+    setTableContent(
+      historiesWithAveragePlayers.map((history) => createTableRow(history))
+    );
   }, [gameData]);
 
   function createTableRow(history) {
