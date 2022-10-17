@@ -9,8 +9,7 @@ export function fixHistories(playerHistory) {
 function grounpHistoriesByMonth(playerHistory) {
   let playerHistoryFixed = [];
 
-  playerHistory.reverse();
-  playerHistory.forEach((history) => {
+  playerHistory.reverse().forEach((history) => {
     const date = new Date(history.date);
     const yearAndMonth = `${monthToString(date.getMonth())} ${date.getFullYear()}`;
     const players = history.players;
