@@ -14,7 +14,7 @@ const GameDetails = () => {
         <thead>
           <tr>
             <th>Month</th>
-            <th>Players</th>
+            <th>Average Players</th>
           </tr>
         </thead>
         <tbody>{tableContent}</tbody>
