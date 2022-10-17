@@ -37,18 +37,9 @@ function getIndexOfExistingDate(yearAndMonth, playerHistoryFixed) {
 
 function calculateHistoriesAveragePlayers(historiesGroupedByMonth) {
   return historiesGroupedByMonth.map(({ date, players }) => {
-    if (players.length <= 1) {
-      return {
-        date,
-        players: players[0],
-      };
-    }
-
-    const averagePlayers = parseFloat(
-      (
-        players.reduce((previous, current) => previous + current) / players.length
-      ).toFixed(1)
-    );
+    const averagePlayers = (
+      players.reduce((previous, current) => previous + current) / players.length
+    ).toFixed(1);
 
     return {
       date,
