@@ -1,13 +1,13 @@
 import { monthToString } from "../../../utils/dates.js";
 
 export function fixHistories(playerHistory) {
-  const historiesGroupedByMonth = grounpHistoriesByMonth(playerHistory);
+  const historiesGroupedByMonth = groupHistoriesByMonth(playerHistory);
 
   return calculateHistoriesAveragePlayers(historiesGroupedByMonth);
 }
 
-function grounpHistoriesByMonth(playerHistory) {
-  let playerHistoryFixed = [];
+function groupHistoriesByMonth(playerHistory) {
+  let playerHistoryGroupedByMonth = [];
 
   playerHistory.reverse().forEach((history) => {
     const date = new Date(history.date);
