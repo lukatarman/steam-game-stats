@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getGameById } from "../../adapters/http-client/http.client.adapter.js";
 import { monthToString } from "../../utils/dates.js";
+import { fixHistories } from "./services/game.details.service.js";
 
 const GameDetailsBehavior = () => {
   const [gameData, setGameData] = useState([]);
