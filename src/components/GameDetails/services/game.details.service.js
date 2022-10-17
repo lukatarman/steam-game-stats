@@ -12,9 +12,7 @@ function grounpHistoriesByMonth(playerHistory) {
   playerHistory.reverse();
   playerHistory.forEach((history) => {
     const date = new Date(history.date);
-    const month = monthToString(date.getMonth());
-    const year = date.getFullYear();
-    const yearAndMonth = `${year} ${month}`;
+    const yearAndMonth = `${monthToString(date.getMonth())} ${date.getFullYear()}`;
     const players = history.players;
     const index = existingIndexOfMonth(yearAndMonth, playerHistoryFixed);
 
