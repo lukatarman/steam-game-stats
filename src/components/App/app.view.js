@@ -9,7 +9,7 @@ const App = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
   return (
-    <div>
+    <div style={{ paddingTop: "54px" }}>
       <SearchBar />
       <Switch>
         <Route exact path="/">
