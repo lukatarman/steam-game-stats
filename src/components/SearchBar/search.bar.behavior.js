@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
 import { getSearchResults } from "../../adapters/http-client/http.client.adapter.js";
 
 const SearchBarBehavior = (searchResultDOMelement) => {
@@ -43,16 +44,18 @@ const SearchBarBehavior = (searchResultDOMelement) => {
 
   const searchResultsList = searchResponse.map((result) => {
     return (
-      <Link to={"/game/" + result.id} key={result.id}>
-        <div
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        >
-          <img src={result.imageUrl} alt="Not found"></img>
-          <span className="fw-bold">{result.name}</span>
-        </div>
-      </Link>
+      <Container fluid="md">
+        <Link to={"/game/" + result.id} key={result.id}>
+          <div
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            <img src={result.imageUrl} alt="Not found"></img>
+            <span className="fw-bold">{result.name}</span>
+          </div>
+        </Link>
+      </Container>
     );
   });
 
