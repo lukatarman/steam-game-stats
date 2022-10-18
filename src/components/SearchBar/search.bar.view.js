@@ -12,8 +12,8 @@ const SearchBar = () => {
 
   return (
     <div>
-      <Navbar bg="light" expand="lg">
-        <Container fluid>
+      <Navbar fixed="top" bg="light" expand="lg">
+        <Container fluid="lg">
           <Link to="/">
             <Navbar.Brand>Steam Game Stats</Navbar.Brand>
           </Link>
@@ -30,6 +30,7 @@ const SearchBar = () => {
           </Form>
         </Container>
       </Navbar>
+
       <div ref={searchResultDOMelement}>{isOpen ? searchResultsList : null}</div>
     </div>
   );
