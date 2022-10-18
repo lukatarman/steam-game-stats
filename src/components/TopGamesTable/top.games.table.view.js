@@ -1,16 +1,17 @@
 import Table from "react-bootstrap/Table";
 import TopGamesTableBehavior from "./top.games.table.behavior.js";
 import Container from "react-bootstrap/Container";
+import "./top.games.table.css";
 
 function TopGamesTable({ tableData, tableOptions }) {
   const renderResults = TopGamesTableBehavior(tableData);
 
   return (
-    <div style={{ marginBottom: "2000px" }}>
+    <div>
       <Container fluid="lg">
-        <div style={{ backgroundColor: "#fafafa", padding: "15px 15px" }}>
-          <h3 style={{ marginBottom: "15px" }}>Top Ten Games</h3>
-          <Table striped bordered hover style={{ padding: "0px 0px" }}>
+        <div className="table-content">
+          <h3>Top Ten Games</h3>
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th>#</th>
