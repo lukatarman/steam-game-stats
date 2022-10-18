@@ -44,7 +44,7 @@ const SearchBarBehavior = (searchResultDOMelement) => {
 
   const searchResultsList = searchResponse.map((result) => {
     return (
-      <Container fluid="md">
+      <Container fluid="lg">
         <Link to={"/game/" + result.id} key={result.id}>
           <div
             onClick={() => {
