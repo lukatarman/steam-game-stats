@@ -51,8 +51,14 @@ const SearchBarBehavior = (searchResultDOMelement) => {
             setIsOpen(false);
           }}
         >
-          <img src={result.imageUrl} alt="Not found"></img>
-          <span className="fw-bold fs-1">{result.name}</span>
+          <div className="container h-100">
+            <div className="row align-items-center">
+              <img className="col-2" src={result.imageUrl} alt="Not found"></img>
+              <div className="col-10">
+                <span className="fw-bold fs-3">{result.name}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </Link>
     );
