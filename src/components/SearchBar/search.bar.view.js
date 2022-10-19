@@ -12,12 +12,11 @@ const SearchBar = () => {
 
   return (
     <div>
-      <Navbar bg="light" expand="lg">
-        <Container>
+      <Navbar fixed="top" bg="light" expand="lg">
+        <Container fluid="lg">
           <Link to="/">
             <Navbar.Brand>Steam Game Stats</Navbar.Brand>
           </Link>
-          <Navbar.Toggle aria-controls="navbarScroll" />
           <Form className="d-flex">
             <Form.Control
               type="search"
@@ -30,7 +29,11 @@ const SearchBar = () => {
           </Form>
         </Container>
       </Navbar>
-      <div ref={searchResultDOMelement}>{isOpen ? searchResultsList : null}</div>
+      <Container fluid="lg">
+        <div ref={searchResultDOMelement} className="mt-2">
+          {isOpen ? searchResultsList : null}
+        </div>
+      </Container>
     </div>
   );
 };
