@@ -11,7 +11,7 @@ const SearchBar = () => {
     SearchBarBehavior(searchResultDOMelement);
 
   return (
-    <div className="mb-2">
+    <div>
       <Navbar fixed="top" bg="light" expand="lg">
         <Container fluid="lg">
           <Link to="/">
