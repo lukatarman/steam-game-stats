@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Container from "react-bootstrap/Container";
 import { getSearchResults } from "../../adapters/http-client/http.client.adapter.js";
 
 const SearchBarBehavior = (searchResultDOMelement) => {
