@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSearchResults } from "../../adapters/http-client/http.client.adapter.js";
+import "../../assets/global.css";
 
 const SearchBarBehavior = (searchResultDOMelement) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,7 +46,7 @@ const SearchBarBehavior = (searchResultDOMelement) => {
     return (
       <Link to={"/game/" + result.id} key={result.id}>
         <div
-          className="mb-1"
+          className="py-2 list-item"
           onClick={() => {
             setIsOpen(false);
           }}
