@@ -46,6 +46,7 @@ const SearchBarBehavior = (searchResultDOMelement) => {
     return (
       <Link to={"/game/" + result.id} key={result.id}>
         <div
+          className="mb-1"
           onClick={() => {
             setIsOpen(false);
           }}
