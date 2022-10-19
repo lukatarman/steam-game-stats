@@ -29,10 +29,11 @@ const SearchBar = () => {
           </Form>
         </Container>
       </Navbar>
-
-      <div ref={searchResultDOMelement} className="mt-2">
-        {isOpen ? searchResultsList : null}
-      </div>
+      <Container fluid="lg">
+        <div ref={searchResultDOMelement} className="mt-2">
+          {isOpen ? searchResultsList : null}
+        </div>
+      </Container>
     </div>
   );
 };
