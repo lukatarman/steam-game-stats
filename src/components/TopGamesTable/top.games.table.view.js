@@ -1,7 +1,6 @@
 import Table from "react-bootstrap/Table";
 import TopGamesTableBehavior from "./top.games.table.behavior.js";
 import Container from "react-bootstrap/Container";
-import "./top.games.table.css";
 
 function TopGamesTable({ tableData, tableOptions }) {
   const renderResults = TopGamesTableBehavior(tableData);
@@ -9,9 +8,9 @@ function TopGamesTable({ tableData, tableOptions }) {
   return (
     <div>
       <Container fluid="lg">
-        <div className="table-content">
+        <div className="p-2 bg-light">
           <h3>Top Ten Games</h3>
-          <Table striped bordered hover>
+          <Table striped bordered hover className="mb-0">
             <thead>
               <tr>
                 <th>#</th>
