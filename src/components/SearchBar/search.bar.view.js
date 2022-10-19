@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import SearchBarBehavior from "./search.bar.behavior.js";
-import "./search.bar.css";
 
 const SearchBar = () => {
   const searchResultDOMelement = useRef();
@@ -12,7 +11,7 @@ const SearchBar = () => {
     SearchBarBehavior(searchResultDOMelement);
 
   return (
-    <div className="search-results-content">
+    <div className="mb-2">
       <Navbar fixed="top" bg="light" expand="lg">
         <Container fluid="lg">
           <Link to="/">
@@ -31,7 +30,7 @@ const SearchBar = () => {
         </Container>
       </Navbar>
 
-      <div ref={searchResultDOMelement} className="search-results-list">
+      <div ref={searchResultDOMelement} className="mt-2">
         {isOpen ? searchResultsList : null}
       </div>
     </div>
