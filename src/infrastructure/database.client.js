@@ -246,7 +246,7 @@ export class DatabaseClient {
         },
         { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
         { $sort: { currentPlayers: -1 } },
-        { $limit: 15 },
+        { $limit: 9 },
       ])
       .toArray();
   }
