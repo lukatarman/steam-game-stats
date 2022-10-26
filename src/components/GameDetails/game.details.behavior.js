@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getGameById } from "../../adapters/http-client/http.client.adapter.js";
 import { monthToString } from "../../utils/dates.js";
+import { fixHistories } from "./services/game.details.service.js";
 
 const GameDetailsBehavior = () => {
   const [gameData, setGameData] = useState([]);
@@ -20,14 +21,17 @@ const GameDetailsBehavior = () => {
   useEffect(() => {
     if (!gameData.playerHistory) return;
 
-    const sortedHistories = sortHistories(gameData.playerHistory);
+    const historiesWithAveragePlayers = fixHistories(gameData.playerHistory);
 
-    setTableContent(sortedHistories.map((history) => createTableRow(history)));
+    setTableContent(
+      historiesWithAveragePlayers.map((history) => createTableRow(history))
+    );
   }, [gameData]);
 
   function createTableRow(history) {
-    const year = history.date.getFullYear();
-    const month = monthToString(history.date.getMonth());
+    const date = new Date(history.date);
+    const year = date.getFullYear();
+    const month = monthToString(date.getMonth());
     const players = history.players;
 
     return (
@@ -38,30 +42,6 @@ const GameDetailsBehavior = () => {
         <td>{players}</td>
       </tr>
     );
-  }
-
-  function sortHistories(playerHistory) {
-    let previousMonth = "";
-
-    return playerHistory
-      .reverse()
-      .map((history) => {
-        const date = new Date(history.date);
-        const month = date.getMonth();
-        const players = history.players;
-
-        if (previousMonth === month) {
-          return null;
-        }
-
-        previousMonth = month;
-
-        return {
-          date,
-          players,
-        };
-      })
-      .filter((history) => !!history);
   }
 
   return [gameData, tableContent];

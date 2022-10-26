@@ -7,21 +7,19 @@ const GameDetails = () => {
 
   return (
     <div>
-      <Container fluid="lg">
-        <div>
-          <img src={gameData.imageUrl} alt="Not found" />
-          <div>{gameData.name}</div>
-        </div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Month</th>
-              <th>Players</th>
-            </tr>
-          </thead>
-          <tbody>{tableContent}</tbody>
-        </Table>
-      </Container>
+      <div>
+        <img src={gameData.imageUrl} alt="Not found" />
+        <div>{gameData.name}</div>
+      </div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Average Players</th>
+          </tr>
+        </thead>
+        <tbody>{tableContent}</tbody>
+      </Table>
     </div>
   );
 };
