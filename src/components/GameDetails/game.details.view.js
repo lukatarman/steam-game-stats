@@ -8,9 +8,9 @@ const GameDetails = () => {
   return (
     <div>
       <Container>
-        <div>
+        <div className="col align-items-center justify-content-center pb-2">
+          <p className="pb-2 h2">{gameData.name}</p>
           <img src={gameData.imageUrl} alt="Not found" />
-          <div>{gameData.name}</div>
         </div>
         <Table striped bordered hover>
           <thead>
