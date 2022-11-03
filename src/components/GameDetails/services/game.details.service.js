@@ -39,7 +39,7 @@ function calculateHistoriesAveragePlayers(historiesGroupedByMonth) {
   return historiesGroupedByMonth.map(({ date, players }) => {
     const averagePlayers = (
       players.reduce((previous, current) => previous + current) / players.length
-    ).toFixed(1);
+    ).toLocaleString("en-US");
 
     return {
       date,
