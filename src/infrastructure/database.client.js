@@ -88,10 +88,12 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
-          { identified: false },
-          { triedVia: { $ne: "steamWeb" } },
+          { type: SteamApp.validTypes.unknown },
+          { triedVia: { $ne: SteamApp.validDataSources.steamWeb } },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
         ],
       })
       .limit(amount)
@@ -105,11 +107,17 @@ export class DatabaseClient {
       .get("steam_apps")
       .find({
         $and: [
-          { identified: false },
-          { triedVia: { $ne: "steamcharts" } },
-          { triedVia: "steamWeb" },
+          { type: SteamApp.validTypes.unknown },
+          {
+            $and: [
+              { triedVia: { $ne: SteamApp.validDataSources.steamCharts } },
+              { triedVia: SteamApp.validDataSources.steamWeb },
+            ],
+          },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
         ],
       })
       .limit(amount)
@@ -139,10 +147,10 @@ export class DatabaseClient {
     await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
   }
 
-  async updateSteamAppById({ appid, identified, triedVia }) {
+  async updateSteamAppById({ appid, triedVia, type }) {
     await this.#collections
       .get("steam_apps")
-      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, identified } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
   }
 
   async getXgamesWithoutPlayerHistory(amount) {
@@ -220,6 +228,25 @@ export class DatabaseClient {
         { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
         { $sort: { currentPlayers: -1 } },
         { $limit: amount },
+      ])
+      .toArray();
+  }
+
+  async getGamesBySearchTerm(term) {
+    return await this.#collections
+      .get("games")
+      .aggregate([
+        {
+          $match: {
+            $and: [
+              { playerHistory: { $ne: [] } },
+              { name: { $regex: ".*" + term + ".*", $options: "i" } },
+            ],
+          },
+        },
+        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $sort: { currentPlayers: -1 } },
+        { $limit: 9 },
       ])
       .toArray();
   }

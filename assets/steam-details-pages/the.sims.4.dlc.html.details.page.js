@@ -3,7 +3,7 @@ const steamApp = {
 	name: "The Sims™ 4 Cats & Dogs",
 };
 
-export const theSims4catsAndDogsHtmlDetailsPage = `<!DOCTYPE html>
+export const theSims4dlcHtmlDetailsPage = `<!DOCTYPE html>
 <html class=" responsive" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

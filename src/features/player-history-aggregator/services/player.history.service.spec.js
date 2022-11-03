@@ -15,12 +15,12 @@ describe("player.history.service.js", () => {
         expect(playerHistories.length).toBe(2);
       });
 
-      it("the first entries' player amount is 211468", () => {
-        expect(playerHistories[0].players).toBe(211468.9);
+      it("the first entries' player amount is 522066.4", () => {
+        expect(playerHistories[0].players).toBe(522066.4);
       });
 
       it("the first entries' month is March", () => {
-        expect(playerHistories[0].date.getMonth()).toBe(3);
+        expect(playerHistories[0].date.getMonth()).toBe(2);
       });
 
       it("the first entries' year is 2022", () => {
