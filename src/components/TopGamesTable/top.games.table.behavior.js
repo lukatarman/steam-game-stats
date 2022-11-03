@@ -8,7 +8,7 @@ const TopGamesTableBehavior = (tableData) => {
         <td>
           <Link to={"/game/" + data.id}>{data.name}</Link>
         </td>
-        <td>{data.currentPlayers}</td>
+        <td>{data.currentPlayers.toLocaleString("en-US")}</td>
       </tr>
     );
   });
