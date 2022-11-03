@@ -41,11 +41,13 @@ function calculateHistoriesAveragePlayers(historiesGroupedByMonth) {
       (
         players.reduce((previous, current) => previous + current) / players.length
       ).toFixed(1)
-    ).toLocaleString("en-US");
+    );
+
+    const averagePlayersThousandsSeparated = averagePlayers.toLocaleString("en-US");
 
     return {
       date,
-      players: averagePlayers,
+      players: averagePlayersThousandsSeparated,
     };
   });
 }
