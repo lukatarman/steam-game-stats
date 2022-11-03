@@ -10,8 +10,6 @@ import "../../assets/global.css";
 const App = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
-  //TODO: change custom css files to premade bootstrap classes for padding and margin
-
   return (
     <div className="main-content">
       <SearchBar />
