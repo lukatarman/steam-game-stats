@@ -1,4 +1,4 @@
-import { SteamApp } from "../models/steam.app.js";
+import { SteamApp } from "../../models/steam.app.js";
 
 export class SteamAppsReposrtory {
   #dbClient;
@@ -39,5 +39,58 @@ export class SteamAppsReposrtory {
     await this.#dbClient
       .get("steam_apps")
       .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
+  }
+
+  async updateSteamAppsById(steamApps) {
+    await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
+  }
+
+  async updateSteamAppById({ appid, triedVia, type }) {
+    await this.#dbClient
+      .get("steam_apps")
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
+  }
+
+  async getSteamWebUntriedFilteredSteamApps(amount) {
+    const response = await this.#dbClient
+      .get("steam_apps")
+      .find({
+        $and: [
+          { type: SteamApp.validTypes.unknown },
+          { triedVia: { $ne: SteamApp.validDataSources.steamWeb } },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
+  }
+
+  async getSteamchartsUntriedFilteredSteamApps(amount) {
+    const response = await this.#dbClient
+      .get("steam_apps")
+      .find({
+        $and: [
+          { type: SteamApp.validTypes.unknown },
+          {
+            $and: [
+              { triedVia: { $ne: SteamApp.validDataSources.steamCharts } },
+              { triedVia: SteamApp.validDataSources.steamWeb },
+            ],
+          },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
   }
 }
