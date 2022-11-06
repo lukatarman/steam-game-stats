@@ -33,6 +33,10 @@ export class DatabaseClient {
     return await this.#collections.get(collectionName).find(filter).toArray();
   }
 
+  async get(collectionName) {
+    return await this.#collections.get(collectionName);
+  }
+
   async updateOne(collectionName, filter, data) {
     await this.#collections.get(collectionName).updateOne(filter, data);
   }
@@ -60,7 +64,7 @@ export class DatabaseClient {
     return this.getLast("update_timestamps");
   }
 
-  // history checks
+  // [x] history checks
   async insertManyHistoryChecks(data) {
     await this.insertMany("history_checks", data);
   }
