@@ -40,7 +40,8 @@ async function main() {
   };
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,
-    databaseClient,
+    updateTimestampRepository,
+    steamAppsRepository,
     options,
   );
   const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
