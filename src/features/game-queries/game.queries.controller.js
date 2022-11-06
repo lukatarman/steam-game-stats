@@ -1,23 +1,23 @@
 export class GameQueriesController {
-  #databaseClient;
+  #gamesRepository;
 
-  constructor(databaseClient) {
-    this.#databaseClient = databaseClient;
+  constructor(gamesRepository) {
+    this.#gamesRepository = gamesRepository;
   }
 
   async getOneGameById(id) {
-    return await this.#databaseClient.getOneGameById(id);
+    return await this.#gamesRepository.getOneGameById(id);
   }
 
   async getAllGames() {
-    return await this.#databaseClient.getAllGames();
+    return await this.#gamesRepository.getAllGames();
   }
 
   async getTopXgames(amount) {
-    return await this.#databaseClient.getXgamesSortedByCurrentPlayers(amount);
+    return await this.#gamesRepository.getXgamesSortedByCurrentPlayers(amount);
   }
 
   async getGamesBySearchTerm(term) {
-    return await this.#databaseClient.getGamesBySearchTerm(term);
+    return await this.#gamesRepository.getGamesBySearchTerm(term);
   }
 }

@@ -56,7 +56,7 @@ async function main() {
     databaseClient,
     options,
   );
-  const gameQueriesController = new GameQueriesController(databaseClient);
+  const gameQueriesController = new GameQueriesController(gamesRepository);
   const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
   const webServer = new WebServer(gameQueriesRouter);
   await webServer.start();
