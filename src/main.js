@@ -44,7 +44,13 @@ async function main() {
     steamAppsRepository,
     options,
   );
-  const gameIdentifier = new GameIdentifier(steamClient, databaseClient, options);
+  const gameIdentifier = new GameIdentifier(
+    steamClient,
+    steamAppsRepository,
+    gamesRepository,
+    historyChecksRepository,
+    options,
+  );
   const playerHistoryAggregator = new PlayerHistoryAggregator(
     steamClient,
     databaseClient,
