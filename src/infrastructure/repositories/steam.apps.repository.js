@@ -16,36 +16,11 @@ export class SteamAppsRepository {
     return SteamApp.manyFromDbEntries(response);
   }
 
-  async getXunidentifiedFilteredSteamApps(amount) {
-    return await this.#dbClient
-      .get("steam_apps")
-      .find({
-        $and: [
-          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
-          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
-        ],
-      })
-      .limit(amount)
-      .toArray();
-  }
-
-  async identifySteamAppsById(steamApps) {
-    await Promise.all(
-      steamApps.map((steamApp) => this.identifySteamAppById(steamApp.appid)),
-    );
-  }
-
-  async identifySteamAppById(id) {
-    await this.#dbClient
-      .get("steam_apps")
-      .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
-  }
-
   async updateSteamAppsById(steamApps) {
-    await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
+    await Promise.all(steamApps.map((steamApp) => this.#updateSteamAppById(steamApp)));
   }
 
-  async updateSteamAppById({ appid, triedVia, type }) {
+  async #updateSteamAppById({ appid, triedVia, type }) {
     await this.#dbClient
       .get("steam_apps")
       .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });

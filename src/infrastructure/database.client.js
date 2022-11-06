@@ -96,28 +96,8 @@ export class DatabaseClient {
     return SteamApp.manyFromDbEntries(response);
   }
 
-  // TODO validate if still in use
-  async getXunidentifiedFilteredSteamApps(amount) {
-    return await this.#collections
-      .get("steam_apps")
-      .find({
-        $and: [
-          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
-          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
-        ],
-      })
-      .limit(amount)
-      .toArray();
-  }
-
-  async identifySteamAppsById(steamApps) {
-    await Promise.all(
-      steamApps.map((steamApp) => this.identifySteamAppById(steamApp.appid)),
-    );
-  }
-
   async updateSteamAppsById(steamApps) {
-    await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
+    await Promise.all(steamApps.map((steamApp) => this.#updateSteamAppById(steamApp)));
   }
 
   async getSteamWebUntriedFilteredSteamApps(amount) {
@@ -163,14 +143,13 @@ export class DatabaseClient {
     return SteamApp.manyFromDbEntries(response);
   }
 
-  async updateSteamAppById({ appid, triedVia, type }) {
+  async #updateSteamAppById({ appid, triedVia, type }) {
     await this.#collections
       .get("steam_apps")
       .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
   }
 
   // [x] games
-  // TODO validate usage of all methods
   async insertManyGames(data) {
     await this.insertMany("games", data);
   }
@@ -273,10 +252,10 @@ export class DatabaseClient {
 
   // [x] player history
   async updatePlayerHistoriesById(games) {
-    await Promise.all(games.map((game) => this.updatePlayerHistoryById(game)));
+    await Promise.all(games.map((game) => this.#updatePlayerHistoryById(game)));
   }
 
-  async updatePlayerHistoryById(game) {
+  async #updatePlayerHistoryById(game) {
     await this.#collections
       .get("games")
       .updateOne({ id: game.id }, { $set: { playerHistory: game.playerHistory } });
