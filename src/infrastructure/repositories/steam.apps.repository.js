@@ -1,6 +1,6 @@
 import { SteamApp } from "../../models/steam.app.js";
 
-export class SteamAppsReposrtory {
+export class SteamAppsRepository {
   #dbClient;
 
   constructor(dbClient) {

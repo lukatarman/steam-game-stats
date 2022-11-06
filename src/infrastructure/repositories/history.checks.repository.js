@@ -1,4 +1,4 @@
-export class HistoryChecksReposrtory {
+export class HistoryChecksRepository {
   #dbClient;
 
   constructor(dbClient) {
@@ -9,7 +9,6 @@ export class HistoryChecksReposrtory {
     await this.#dbClient.insertMany("history_checks", data);
   }
 
-  // TODO fix updateOne in dbClient to take only two parameters
   async updateHistoryChecks(historyChecks) {
     await Promise.all(
       historyChecks.map((historyCheck) =>

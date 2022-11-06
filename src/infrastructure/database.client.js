@@ -86,7 +86,7 @@ export class DatabaseClient {
     );
   }
 
-  // steam apps
+  // [x] steam apps
   async insertManySteamApps(data) {
     await this.insertMany("steam_apps", data);
   }
@@ -169,7 +169,7 @@ export class DatabaseClient {
       .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
   }
 
-  // games
+  // [x] games
   // TODO validate usage of all methods
   async insertManyGames(data) {
     await this.insertMany("games", data);
@@ -271,7 +271,7 @@ export class DatabaseClient {
       .toArray();
   }
 
-  // player history
+  // [x] player history
   async updatePlayerHistoriesById(games) {
     await Promise.all(games.map((game) => this.updatePlayerHistoryById(game)));
   }

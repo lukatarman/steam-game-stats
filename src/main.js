@@ -9,6 +9,11 @@ import { Runner } from "./utils/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
 import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
 import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
+import { GamesRapository } from "./infrastructure/repositories/games.repository.js";
+import { SteamAppsRepository } from "./infrastructure/repositories/steam.apps.repository.js";
+import { UpdateTimestampsRepository } from "./infrastructure/repositories/update.timestamps.repository.js";
+import { PlayerHistoryRepository } from "./infrastructure/repositories/player.history.repository.js";
+import { HistoryChecksRepository } from "./infrastructure/repositories/history.checks.repository.js";
 
 // our entry point = main
 async function main() {
@@ -19,6 +24,11 @@ async function main() {
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
   };
   const databaseClient = await new DatabaseClient().init(databaseOptions);
+  const gamesRepository = new GamesRapository(databaseClient);
+  const steamAppsRepository = new SteamAppsRepository(databaseClient);
+  const updateTimestampRepository = new UpdateTimestampsRepository(databaseClient);
+  const playerHistoryRepository = new PlayerHistoryRepository(databaseClient);
+  const historyChecksRepository = new HistoryChecksRepository(databaseClient);
   const steamClient = new SteamClient(httpClient);
   const options = {
     batchSize: 5,
