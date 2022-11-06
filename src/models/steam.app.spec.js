@@ -3,6 +3,128 @@ import { smallestGamesMock } from "../../assets/smallest.data.set.js";
 import { SteamApp } from "./steam.app.js";
 
 describe("SteamApp", function () {
+  describe(".copy", function () {
+    describe("creates a copy of a steamApp instance. When this is done,", function () {
+      beforeEach(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.instantiatedApp = SteamApp.oneFromSteamApi(this.app);
+
+        this.result = this.instantiatedApp.copy();
+      });
+
+      it("the copy is an instance of SteamApp", function () {
+        expect(this.result).toBeInstanceOf(SteamApp);
+      });
+
+      it("the copy has a property 'type', which is 'unknown'", function () {
+        expect(this.result.type).toBe(SteamApp.validTypes.unknown);
+      });
+
+      it("the copy has a property 'triedVia', which is an empty array", function () {
+        expect(this.result.triedVia).toEqual([]);
+      });
+    });
+  });
+
+  describe(".triedViaSteamWeb", function () {
+    describe("pushes 'steamWeb' into the triedVia property. When this is done,", function () {
+      beforeEach(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.result = SteamApp.oneFromSteamApi(this.app);
+
+        this.result.triedViaSteamWeb();
+      });
+
+      it("the triedVia property array value is 'steamWeb'", function () {
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamWeb);
+      });
+    });
+  });
+
+  describe(".triedViaSteamchartsWeb", function () {
+    describe("pushes 'steamCharts' into the triedVia property. When this is done,", function () {
+      beforeEach(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.result = SteamApp.oneFromSteamApi(this.app);
+
+        this.result.triedViaSteamchartsWeb();
+      });
+
+      it("the triedVia property array value is 'steamCharts'", function () {
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamCharts);
+      });
+    });
+  });
+
+  describe(".isGame", function () {
+    describe("checks if the type property of the class instance equals 'games'. So, ", function () {
+      describe("if an app's type property equals 'game'", function () {
+        beforeEach(function () {
+          this.app = {
+            name: "Castlevania",
+            appid: 1,
+          };
+
+          this.steamApp = SteamApp.oneFromSteamApi(this.app);
+          this.steamApp.type = SteamApp.validTypes.game;
+        });
+
+        it("the method returns true", function () {
+          expect(this.steamApp.isGame()).toBeTrue();
+        });
+      });
+
+      describe("if an app's type property does not equal 'game'", function () {
+        beforeEach(function () {
+          this.app = {
+            name: "Castlevania",
+            appid: 1,
+          };
+
+          this.steamApp = SteamApp.oneFromSteamApi(this.app);
+          this.steamApp.type = SteamApp.validTypes.unknown;
+        });
+
+        it("the method returns false", function () {
+          expect(this.steamApp.isGame()).toBeFalse();
+        });
+      });
+    });
+  });
+
+  describe(".appType", function () {
+    describe("sets the 'type' property to whatever was passed in as an argument. When this is done,", function () {
+      beforeEach(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.type = SteamApp.validTypes.game;
+
+        this.result = SteamApp.oneFromSteamApi(this.app);
+
+        this.result.appType = this.type;
+      });
+
+      it("the 'type' property equals 'game'", function () {
+        expect(this.result.type).toBe(SteamApp.validTypes.game);
+      });
+    });
+  });
+
   describe(".manyFromSteamApi returns an array of SteamApp instances.", function () {
     describe("When two apps are passed into it,", function () {
       beforeEach(function () {
@@ -32,14 +154,6 @@ describe("SteamApp", function () {
         expect(this.result[1]).toBeInstanceOf(SteamApp);
       });
     });
-
-    describe("When an undefined value is passed into it,", function () {
-      it("throws an error", function () {
-        expect(function () {
-          SteamApp.manyFromSteamApi(undefined);
-        }).toThrowError();
-      });
-    });
   });
 
   describe(".oneFromSteamApi returns an instance of steamApp.", function () {
@@ -57,8 +171,8 @@ describe("SteamApp", function () {
         expect(this.result).toBeInstanceOf(SteamApp);
       });
 
-      it("has a property called 'identified'. It is false", function () {
-        expect(this.result.identified).toBeFalse();
+      it("has a property called 'type'. It is 'unknown'", function () {
+        expect(this.result.type).toBe(SteamApp.validTypes.unknown);
       });
 
       it("has a property called 'triedVia'. It is an empty array.", function () {
@@ -74,13 +188,13 @@ describe("SteamApp", function () {
           {
             name: "Castlevania",
             appid: 1,
-            identified: true,
+            type: "game",
             triedVia: ["steam", "steamcharts"],
           },
           {
             name: "Elden Ring",
             appid: 2,
-            identified: true,
+            type: "game",
             triedVia: ["steam"],
           },
         ];
@@ -100,14 +214,6 @@ describe("SteamApp", function () {
         expect(this.result[1]).toBeInstanceOf(SteamApp);
       });
     });
-
-    describe("When an undefined value is passed into it,", function () {
-      it("throws an error", function () {
-        expect(function () {
-          SteamApp.manyFromDbEntries(undefined);
-        }).toThrowError();
-      });
-    });
   });
 
   describe(".oneFromDbEntry returns an instance of SteamApp.", function () {
@@ -116,7 +222,7 @@ describe("SteamApp", function () {
         this.dbEntry = {
           name: "Castlevania",
           appid: 1,
-          identified: true,
+          type: "game",
           triedVia: ["steam"],
         };
 

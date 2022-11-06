@@ -96,6 +96,7 @@ export class DatabaseClient {
     return SteamApp.manyFromDbEntries(response);
   }
 
+  // TODO validate if still in use
   async getXunidentifiedFilteredSteamApps(amount) {
     return await this.#collections
       .get("steam_apps")
@@ -115,13 +116,61 @@ export class DatabaseClient {
     );
   }
 
-  async identifySteamAppById(id) {
+  async updateSteamAppsById(steamApps) {
+    await Promise.all(steamApps.map((steamApp) => this.updateSteamAppById(steamApp)));
+  }
+
+  async getSteamWebUntriedFilteredSteamApps(amount) {
+    const response = await this.#collections
+      .get("steam_apps")
+      .find({
+        $and: [
+          { type: SteamApp.validTypes.unknown },
+          { triedVia: { $ne: SteamApp.validDataSources.steamWeb } },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
+  }
+
+  async getSteamchartsUntriedFilteredSteamApps(amount) {
+    const response = await this.#collections
+      .get("steam_apps")
+      .find({
+        $and: [
+          { type: SteamApp.validTypes.unknown },
+          {
+            $and: [
+              { triedVia: { $ne: SteamApp.validDataSources.steamCharts } },
+              { triedVia: SteamApp.validDataSources.steamWeb },
+            ],
+          },
+          { type: { $ne: SteamApp.validTypes.downloadableContent } },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+
+    return SteamApp.manyFromDbEntries(response);
+  }
+
+  async updateSteamAppById({ appid, triedVia, type }) {
     await this.#collections
       .get("steam_apps")
-      .updateOne({ appid: { $eq: id } }, { $set: { identified: true } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
   }
 
   // games
+  // TODO validate usage of all methods
   async insertManyGames(data) {
     await this.insertMany("games", data);
   }
@@ -189,6 +238,37 @@ export class DatabaseClient {
         ])
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
+  }
+
+  async getXgamesSortedByCurrentPlayers(amount) {
+    return await this.#collections
+      .get("games")
+      .aggregate([
+        { $match: { playerHistory: { $ne: [] } } },
+        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $sort: { currentPlayers: -1 } },
+        { $limit: amount },
+      ])
+      .toArray();
+  }
+
+  async getGamesBySearchTerm(term) {
+    return await this.#collections
+      .get("games")
+      .aggregate([
+        {
+          $match: {
+            $and: [
+              { playerHistory: { $ne: [] } },
+              { name: { $regex: ".*" + term + ".*", $options: "i" } },
+            ],
+          },
+        },
+        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $sort: { currentPlayers: -1 } },
+        { $limit: 15 },
+      ])
+      .toArray();
   }
 
   // player history
