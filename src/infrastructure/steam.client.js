@@ -34,9 +34,13 @@ export class SteamClient {
   }
 
   async getSteamAppHtmlDetailsPage(id) {
-    const url = `https://store.steampowered.com/app/${id}`;
+    // We add the try catch block here to not crash the whole backend when our application comes accross
+    // errors written into the Steam API
+    try {
+      const url = `https://store.steampowered.com/app/${id}`;
 
-    return (await this.#httpClient.get(url)).data;
+      return (await this.#httpClient.get(url)).data;
+    } catch (err) {}
   }
 
   async getSteamchartsGameHtmlDetailsPage(id) {
