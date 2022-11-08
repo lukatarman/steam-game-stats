@@ -27,6 +27,7 @@ export class SteamAppsRepository {
   }
 
   async getSteamWebUntriedFilteredSteamApps(amount) {
+    console.log(await this.#dbClient.collections.get("steam_apps"));
     const response = await this.#dbClient
       .get("steam_apps")
       .find({
@@ -46,7 +47,7 @@ export class SteamAppsRepository {
   }
 
   async getSteamchartsUntriedFilteredSteamApps(amount) {
-    const response = await this.#dbClient
+    const response = await this.#dbClient.collections
       .get("steam_apps")
       .find({
         $and: [
