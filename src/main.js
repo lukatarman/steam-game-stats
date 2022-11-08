@@ -9,7 +9,7 @@ import { Runner } from "./utils/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
 import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
 import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
-import { GamesRapository as GamesRepository } from "./infrastructure/repositories/games.repository.js";
+import { GamesRepository } from "./infrastructure/repositories/games.repository.js";
 import { SteamAppsRepository } from "./infrastructure/repositories/steam.apps.repository.js";
 import { UpdateTimestampsRepository } from "./infrastructure/repositories/update.timestamps.repository.js";
 import { PlayerHistoryRepository } from "./infrastructure/repositories/player.history.repository.js";
