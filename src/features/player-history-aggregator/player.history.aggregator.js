@@ -7,12 +7,22 @@ import { HistoryCheck } from "../../models/history.check.js";
 
 export class PlayerHistoryAggregator {
   #steamClient;
-  #databaseClient;
+  #gamesRepository;
+  #historyChecksRepository;
+  #playerHistoryRepository;
   #options;
 
-  constructor(steamClient, databaseClient, options) {
-    this.#databaseClient = databaseClient;
+  constructor(
+    steamClient,
+    gamesRepository,
+    historyChecksRepository,
+    playerHistoryRepository,
+    options,
+  ) {
     this.#steamClient = steamClient;
+    this.#gamesRepository = gamesRepository;
+    this.#historyChecksRepository = historyChecksRepository;
+    this.#playerHistoryRepository = playerHistoryRepository;
     this.#options = options;
   }
 
