@@ -12,7 +12,7 @@ export class GamesRepository {
   }
 
   async getOneGameById(id) {
-    return await this.#dbClient.getCollections().get("games").findOne({ id });
+    return await this.#dbClient.get("games").findOne({ id });
   }
 
   async getAllGames() {
@@ -22,7 +22,6 @@ export class GamesRepository {
   async getXgamesWithoutPlayerHistory(amount) {
     return (
       await this.#dbClient
-        .getCollections()
         .get("games")
         .find({ playerHistory: { $eq: [] } })
         .limit(amount)
@@ -33,7 +32,6 @@ export class GamesRepository {
   async getXgamesWithUncheckedPlayerHistory(amount) {
     return (
       await this.#dbClient
-        .getCollections()
         .get("history_checks")
         .aggregate([
           {
@@ -56,7 +54,6 @@ export class GamesRepository {
   async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
     return (
       await this.#dbClient
-        .getCollections()
         .get("history_checks")
         .aggregate([
           {
@@ -81,7 +78,6 @@ export class GamesRepository {
 
   async getXgamesSortedByCurrentPlayers(amount) {
     return await this.#dbClient
-      .getCollections()
       .get("games")
       .aggregate([
         { $match: { playerHistory: { $ne: [] } } },
@@ -94,7 +90,6 @@ export class GamesRepository {
 
   async getGamesBySearchTerm(term) {
     return await this.#dbClient
-      .getCollections()
       .get("games")
       .aggregate([
         {
