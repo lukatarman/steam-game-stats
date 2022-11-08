@@ -10,7 +10,8 @@ export class PlayerHistoryRepository {
   }
 
   async #updatePlayerHistoryById(game) {
-    await this.#dbClient.collections
+    await this.#dbClient
+      .getCollections()
       .get("games")
       .updateOne({ id: game.id }, { $set: { playerHistory: game.playerHistory } });
   }
