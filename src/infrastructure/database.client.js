@@ -3,7 +3,7 @@ import { Game } from "../models/game.js";
 import { SteamApp } from "../models/steam.app.js";
 
 export class DatabaseClient {
-  collections;
+  #collections;
 
   async init(options) {
     const urlToDb = `${options.url}/${options.databaseName}`;
@@ -14,39 +14,43 @@ export class DatabaseClient {
 
     const database = mongodb.db(options.databaseName);
 
-    this.collections = new Map();
-    options.collections.forEach((c) => this.collections.set(c, database.collection(c)));
+    this.#collections = new Map();
+    options.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
 
     return this;
   }
 
+  getCollections() {
+    return this.#collections;
+  }
+
   // low level
   async insertOne(collectionName, data) {
-    await this.collections.get(collectionName).insertOne(data);
+    await this.#collections.get(collectionName).insertOne(data);
   }
 
   async insertMany(collectionName, data) {
-    await this.collections.get(collectionName).insertMany(data);
+    await this.#collections.get(collectionName).insertMany(data);
   }
 
   async getAll(collectionName, filter = {}) {
-    return await this.collections.get(collectionName).find(filter).toArray();
+    return await this.#collections.get(collectionName).find(filter).toArray();
   }
 
   async get(collectionName) {
-    return await this.collections.get(collectionName);
+    return await this.#collections.get(collectionName);
   }
 
   async updateOne(collectionName, filter, data) {
-    await this.collections.get(collectionName).updateOne(filter, data);
+    await this.#collections.get(collectionName).updateOne(filter, data);
   }
 
   async deleteMany(collectionName, filter) {
-    await this.collections.get(collectionName).deleteMany(filter);
+    await this.#collections.get(collectionName).deleteMany(filter);
   }
 
   async getLast(collectionName) {
-    return await this.collections
+    return await this.#collections
       .get(collectionName)
       .find()
       .limit(1)
