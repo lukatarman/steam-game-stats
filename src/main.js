@@ -53,7 +53,9 @@ async function main() {
   );
   const playerHistoryAggregator = new PlayerHistoryAggregator(
     steamClient,
-    databaseClient,
+    gamesRepository,
+    historyChecksRepository,
+    playerHistoryRepository,
     options,
   );
   const gameQueriesController = new GameQueriesController(gamesRepository);
