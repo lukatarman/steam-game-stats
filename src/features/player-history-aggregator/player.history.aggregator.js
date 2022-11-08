@@ -27,9 +27,10 @@ export class PlayerHistoryAggregator {
   }
 
   addPlayerHistoryFromSteamcharts = async () => {
-    const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(
-      this.#options.batchSize,
-    );
+    const uncheckedGames =
+      await this.#gamesRepository.getXgamesWithUncheckedPlayerHistory(
+        this.#options.batchSize,
+      );
     if (uncheckedGames.length === 0) return;
 
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(
@@ -37,10 +38,10 @@ export class PlayerHistoryAggregator {
     );
 
     const historyChecks = HistoryCheck.manyFromSteamchartsPages(gamesPagesMap);
-    await this.#databaseClient.updateHistoryChecks(historyChecks);
+    await this.#historyChecksRepository.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
-    await this.#databaseClient.updatePlayerHistoriesById(games);
+    await this.#playerHistoryRepository.updatePlayerHistoriesById(games);
   };
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
@@ -61,7 +62,7 @@ export class PlayerHistoryAggregator {
   }
 
   addCurrentPlayers = async () => {
-    const games = await this.#databaseClient.getXgamesCheckedMoreThanYmsAgo(
+    const games = await this.#gamesRepository.getXgamesCheckedMoreThanYmsAgo(
       this.#options.batchSize,
       this.#options.currentPlayersUpdateIntervalDelay,
     );
@@ -72,6 +73,8 @@ export class PlayerHistoryAggregator {
 
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
 
-    await this.#databaseClient.updatePlayerHistoriesById(gamesWithCurrentPlayers);
+    await this.#playerHistoryRepository.updatePlayerHistoriesById(
+      gamesWithCurrentPlayers,
+    );
   };
 }
