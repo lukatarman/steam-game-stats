@@ -1,6 +1,6 @@
 import { Game } from "../../models/game.js";
 
-export class GamesRapository {
+export class GamesRepository {
   #dbClient;
 
   constructor(dbClient) {
