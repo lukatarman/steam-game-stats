@@ -21,14 +21,13 @@ export class SteamAppsRepository {
   }
 
   async #updateSteamAppById({ appid, triedVia, type }) {
-    await this.#dbClient
+    await this.#dbClient.collections
       .get("steam_apps")
       .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
   }
 
   async getSteamWebUntriedFilteredSteamApps(amount) {
-    console.log(await this.#dbClient.collections.get("steam_apps"));
-    const response = await this.#dbClient
+    const response = await this.#dbClient.collections
       .get("steam_apps")
       .find({
         $and: [
