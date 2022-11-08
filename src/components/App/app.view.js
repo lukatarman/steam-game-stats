@@ -10,11 +10,11 @@ const App = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
   return (
-    <div className="main-content">
+    <div className="pt-5">
       <SearchBar />
       <Switch>
         <Route exact path="/">
-          <Container>
+          <Container className="p-2">
             <TopGamesTable tableData={topTenGames} tableOptions={tableOptions} />
           </Container>
         </Route>
