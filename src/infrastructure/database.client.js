@@ -20,10 +20,6 @@ export class DatabaseClient {
     return this;
   }
 
-  getCollections() {
-    return this.#collections;
-  }
-
   // low level
   async insertOne(collectionName, data) {
     await this.#collections.get(collectionName).insertOne(data);
@@ -37,8 +33,8 @@ export class DatabaseClient {
     return await this.#collections.get(collectionName).find(filter).toArray();
   }
 
-  async get(collectionName) {
-    return await this.#collections.get(collectionName);
+  get(collectionName) {
+    return this.#collections.get(collectionName);
   }
 
   async updateOne(collectionName, filter, data) {
