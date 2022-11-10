@@ -15,7 +15,7 @@ This repository contains the backend implementation of a proof of concept applic
 
 A few words about the student. My name is Luka Tarman and I am an adaptable and open minded Full Stack Software Developer with a preference for the backend layer. I started with software development due to my extensive experience with computers from a young age, and the fact that I find great joy in solving technical problems.
 
-A few words about the course instructor. The instructor is [Stanislav Jakuschevskij](https://www.linkedin.com/in/stanislav-jakuschevskij/). He is a Senior Software Engineer at IBM with a specialization in Blockchain. You can find out more about him on LinkedId. I received his permission to forward his contact in case a potential employer would like to ask questions about the course and my education.
+A few words about the course instructor. The instructor is [Stanislav Jakuschevskij](https://www.linkedin.com/in/stanislav-jakuschevskij/). He is a Senior Software Engineer at IBM with a specialization in Blockchain. You can find out more about him on LinkedIn. I received his permission to forward his contact in case a potential employer would like to ask questions about the course and my education.
 
 ## Course Details
 
