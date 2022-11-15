@@ -13,6 +13,7 @@ const GameDetailsBehavior = () => {
     const fetchData = async () => {
       const response = await getGameById(gameId);
       setGameData(response);
+      console.log("Response is:");
       console.log(response);
     };
 
