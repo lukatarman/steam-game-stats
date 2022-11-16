@@ -7,32 +7,30 @@ import { HistoryCheck } from "../../models/history.check.js";
 
 export class PlayerHistoryAggregator {
   #steamClient;
-  #databaseClient;
+  #gamesRepository;
+  #historyChecksRepository;
+  #playerHistoryRepository;
   #options;
 
-  constructor(steamClient, databaseClient, options) {
-    this.#databaseClient = databaseClient;
+  constructor(
+    steamClient,
+    gamesRepository,
+    historyChecksRepository,
+    playerHistoryRepository,
+    options,
+  ) {
     this.#steamClient = steamClient;
+    this.#gamesRepository = gamesRepository;
+    this.#historyChecksRepository = historyChecksRepository;
+    this.#playerHistoryRepository = playerHistoryRepository;
     this.#options = options;
   }
 
-  /**
-   * - we want to decouple the player history in the game class from the knowledge that we have performed a check on steamcharts and
-   *   found(or not) a player history
-   * - the game class should keep information about the game and not information about where it got its data from - the latter is a seperate
-   *   concern
-   * - keeping the check on the game class brings no additional value to if from the standpoint of the user, it is only usefull for the
-   *   application so it can perform the player history collection operatons correctly
-   * - for every game, we store in a seperate collection if we checked the player history in a specific source(steamcharts in that case) and
-   *   if we found something
-   * - for this we use the HistoryCheck class
-   * - we record the steamcharts history checks after we got all the steamcharts details pages
-   * - we persist the checks in a separate collection as mentioned above and use it later in XXXaddCurrentPlayers
-   */
   addPlayerHistoryFromSteamcharts = async () => {
-    const uncheckedGames = await this.#databaseClient.getXgamesWithUncheckedPlayerHistory(
-      this.#options.batchSize,
-    );
+    const uncheckedGames =
+      await this.#gamesRepository.getXgamesWithUncheckedPlayerHistory(
+        this.#options.batchSize,
+      );
     if (uncheckedGames.length === 0) return;
 
     const gamesPagesMap = await this.#getGameHtmlDetailsPagesFromSteamcharts(
@@ -40,10 +38,10 @@ export class PlayerHistoryAggregator {
     );
 
     const historyChecks = HistoryCheck.manyFromSteamchartsPages(gamesPagesMap);
-    await this.#databaseClient.updateHistoryChecks(historyChecks);
+    await this.#historyChecksRepository.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
-    await this.#databaseClient.updatePlayerHistoriesById(games);
+    await this.#playerHistoryRepository.updatePlayerHistoriesById(games);
   };
 
   async #getGameHtmlDetailsPagesFromSteamcharts(games) {
@@ -64,7 +62,7 @@ export class PlayerHistoryAggregator {
   }
 
   addCurrentPlayers = async () => {
-    const games = await this.#databaseClient.getXgamesCheckedMoreThanYmsAgo(
+    const games = await this.#gamesRepository.getXgamesCheckedMoreThanYmsAgo(
       this.#options.batchSize,
       this.#options.currentPlayersUpdateIntervalDelay,
     );
@@ -75,6 +73,8 @@ export class PlayerHistoryAggregator {
 
     const gamesWithCurrentPlayers = addCurrentPlayersFromSteam(players, games);
 
-    await this.#databaseClient.updatePlayerHistoriesById(gamesWithCurrentPlayers);
+    await this.#playerHistoryRepository.updatePlayerHistoriesById(
+      gamesWithCurrentPlayers,
+    );
   };
 }

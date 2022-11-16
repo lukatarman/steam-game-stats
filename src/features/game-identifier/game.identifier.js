@@ -9,17 +9,27 @@ import { HistoryCheck } from "../../models/history.check.js";
 
 export class GameIdentifier {
   #steamClient;
-  #databaseClient;
+  #steamAppsRepository;
+  #gamesRepository;
+  #historyChecksRepository;
   #options;
 
-  constructor(steamClient, databaseClient, options) {
+  constructor(
+    steamClient,
+    steamAppsRepository,
+    gamesRepository,
+    historyChecksRepository,
+    options,
+  ) {
     this.#steamClient = steamClient;
-    this.#databaseClient = databaseClient;
+    this.#steamAppsRepository = steamAppsRepository;
+    this.#gamesRepository = gamesRepository;
+    this.#historyChecksRepository = historyChecksRepository;
     this.#options = options;
   }
 
   tryViaSteamWeb = async () => {
-    const steamApps = await this.#databaseClient.getSteamWebUntriedFilteredSteamApps(
+    const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
     if (steamApps.length === 0) return;
@@ -52,18 +62,19 @@ export class GameIdentifier {
 
   async #persist(games, updatedSteamApps) {
     if (games.length !== 0) {
-      await this.#databaseClient.insertManyGames(games);
-      await this.#databaseClient.insertManyHistoryChecks(
+      await this.#gamesRepository.insertManyGames(games);
+      await this.#historyChecksRepository.insertManyHistoryChecks(
         HistoryCheck.manyFromGames(games),
       );
     }
-    await this.#databaseClient.updateSteamAppsById(updatedSteamApps);
+    await this.#steamAppsRepository.updateSteamAppsById(updatedSteamApps);
   }
 
   tryViaSteamchartsWeb = async () => {
-    const steamApps = await this.#databaseClient.getSteamchartsUntriedFilteredSteamApps(
-      this.#options.batchSize,
-    );
+    const steamApps =
+      await this.#steamAppsRepository.getSteamchartsUntriedFilteredSteamApps(
+        this.#options.batchSize,
+      );
     if (steamApps.length === 0) return;
 
     const updatedSteamApps = await this.#updateStatusViaSteamchartsWeb(steamApps);

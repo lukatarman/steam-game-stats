@@ -13,7 +13,12 @@ describe("PlayerHistoryAggregator", function () {
     describe("finds the player history for one game in a batch of one and updates the game data", function () {
       beforeEach(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
-        this.databaseClientMock = createDatabaseMock(oneGameWithUncheckedPlayerHistory);
+
+        this.gamesRepositoryMock = createGamesRepositoryMock(
+          oneGameWithUncheckedPlayerHistory,
+        );
+        this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
+        this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         [this.historyChecks, this.games] = createMap([
           [twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts],
@@ -21,7 +26,9 @@ describe("PlayerHistoryAggregator", function () {
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
-          this.databaseClientMock,
+          this.gamesRepositoryMock,
+          this.historyChecksRepositoryMock,
+          this.playerHistoryRepositoryMock,
           { unitDelay: 0, batchSize: 1 },
         );
 
@@ -30,13 +37,13 @@ describe("PlayerHistoryAggregator", function () {
 
       it("calls .getXgamesWithUncheckedPlayerHistory once", function () {
         expect(
-          this.databaseClientMock.getXgamesWithUncheckedPlayerHistory,
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", function () {
         expect(
-          this.databaseClientMock.getXgamesWithUncheckedPlayerHistory,
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledBefore(this.steamClientMock.getSteamchartsGameHtmlDetailsPage);
       });
 
@@ -49,35 +56,39 @@ describe("PlayerHistoryAggregator", function () {
       it("calls .getSteamchartsGameHtmlDetailsPage before .updateHistoryChecks", function () {
         expect(
           this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
-        ).toHaveBeenCalledBefore(this.databaseClientMock.updateHistoryChecks);
+        ).toHaveBeenCalledBefore(this.historyChecksRepositoryMock.updateHistoryChecks);
       });
 
       it("calls .updateHistoryChecks once", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledTimes(1);
+        expect(
+          this.historyChecksRepositoryMock.updateHistoryChecks,
+        ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .updateHistoryChecks with historyChecks", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(
+        expect(this.historyChecksRepositoryMock.updateHistoryChecks).toHaveBeenCalledWith(
           this.historyChecks,
         );
       });
 
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledBefore(
-          this.databaseClientMock.updatePlayerHistoriesById,
+        expect(
+          this.historyChecksRepositoryMock.updateHistoryChecks,
+        ).toHaveBeenCalledBefore(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
         );
       });
 
       it("calls .updatePlayerHistoriesById once", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(
-          1,
-        );
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .updatePlayerHistoriesById with games", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(
-          this.games,
-        );
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).toHaveBeenCalledWith(this.games);
       });
     });
 
@@ -85,7 +96,12 @@ describe("PlayerHistoryAggregator", function () {
       beforeEach(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
-        this.databaseClientMock = createDatabaseMock(twoGamesWithUncheckedPlayerHistory);
+        this.gamesRepositoryMock = createGamesRepositoryMock(
+          twoGamesWithUncheckedPlayerHistory,
+        );
+
+        this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
+        this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         [this.historyChecks, this.games] = createMap([
           [twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts],
@@ -94,7 +110,9 @@ describe("PlayerHistoryAggregator", function () {
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
-          this.databaseClientMock,
+          this.gamesRepositoryMock,
+          this.historyChecksRepositoryMock,
+          this.playerHistoryRepositoryMock,
           { unitDelay: 0, batchSize: 2 },
         );
 
@@ -103,13 +121,13 @@ describe("PlayerHistoryAggregator", function () {
 
       it("calls .getXgamesWithUncheckedPlayerHistory once", function () {
         expect(
-          this.databaseClientMock.getXgamesWithUncheckedPlayerHistory,
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", function () {
         expect(
-          this.databaseClientMock.getXgamesWithUncheckedPlayerHistory,
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledBefore(this.steamClientMock.getSteamchartsGameHtmlDetailsPage);
       });
 
@@ -122,35 +140,39 @@ describe("PlayerHistoryAggregator", function () {
       it("calls .getSteamchartsGameHtmlDetailsPage before .updateHistoryChecks", function () {
         expect(
           this.steamClientMock.getSteamchartsGameHtmlDetailsPage,
-        ).toHaveBeenCalledBefore(this.databaseClientMock.updateHistoryChecks);
+        ).toHaveBeenCalledBefore(this.historyChecksRepositoryMock.updateHistoryChecks);
       });
 
       it("calls .updateHistoryChecks once", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledTimes(1);
+        expect(
+          this.historyChecksRepositoryMock.updateHistoryChecks,
+        ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .updateHistoryChecks with historyChecks", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledWith(
+        expect(this.historyChecksRepositoryMock.updateHistoryChecks).toHaveBeenCalledWith(
           this.historyChecks,
         );
       });
 
       it("calls .updateHistoryChecks before .updatePlayerHistoriesById", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).toHaveBeenCalledBefore(
-          this.databaseClientMock.updatePlayerHistoriesById,
+        expect(
+          this.historyChecksRepositoryMock.updateHistoryChecks,
+        ).toHaveBeenCalledBefore(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
         );
       });
 
       it("calls .updatePlayerHistoriesById once", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(
-          1,
-        );
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .updatePlayerHistoriesById with games", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(
-          this.games,
-        );
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).toHaveBeenCalledWith(this.games);
       });
     });
 
@@ -158,11 +180,15 @@ describe("PlayerHistoryAggregator", function () {
       beforeEach(async function () {
         this.steamClientMock = createSteamMock([], "");
 
-        this.databaseClientMock = createDatabaseMock([]);
+        this.gamesRepositoryMock = createGamesRepositoryMock([]);
+        this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
+        this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         this.agg = new PlayerHistoryAggregator(
           this.steamClientMock,
-          this.databaseClientMock,
+          this.gamesRepositoryMock,
+          this.historyChecksRepositoryMock,
+          this.playerHistoryRepositoryMock,
           { unitDelay: 0, batchSize: 1 },
         );
 
@@ -171,7 +197,7 @@ describe("PlayerHistoryAggregator", function () {
 
       it("calls .getXgamesWithUncheckedPlayerHistory once", function () {
         expect(
-          this.databaseClientMock.getXgamesWithUncheckedPlayerHistory,
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledTimes(1);
       });
 
@@ -182,11 +208,15 @@ describe("PlayerHistoryAggregator", function () {
       });
 
       it("does not call .updateHistoryChecks", function () {
-        expect(this.databaseClientMock.updateHistoryChecks).not.toHaveBeenCalled();
+        expect(
+          this.historyChecksRepositoryMock.updateHistoryChecks,
+        ).not.toHaveBeenCalled();
       });
 
       it("does not call .updatePlayerHistoriesById", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).not.toHaveBeenCalled();
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).not.toHaveBeenCalled();
       });
     });
   });
@@ -194,13 +224,17 @@ describe("PlayerHistoryAggregator", function () {
   describe(".addCurrentPlayers()", () => {
     describe("does not have any games to check for current player numbers", function () {
       beforeEach(async function () {
-        this.databaseClientMock = createDatabaseMock("", []);
+        this.gamesRepositoryMock = createGamesRepositoryMock("", []);
+        this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
+        this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         this.steamClientMock = createSteamMock([], "");
 
         const agg = new PlayerHistoryAggregator(
           this.steamClientMock,
-          this.databaseClientMock,
+          this.gamesRepositoryMock,
+          this.historyChecksRepositoryMock,
+          this.playerHistoryRepositoryMock,
           { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
         );
 
@@ -209,7 +243,7 @@ describe("PlayerHistoryAggregator", function () {
 
       it("calls .getXgamesCheckedMoreThanYmsAgo once", function () {
         expect(
-          this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo,
+          this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
         ).toHaveBeenCalledTimes(1);
       });
 
@@ -219,16 +253,21 @@ describe("PlayerHistoryAggregator", function () {
         ).not.toHaveBeenCalled();
       });
       it("does not call .updatePlayerHistoriesById ever", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).not.toHaveBeenCalled();
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).not.toHaveBeenCalled();
       });
     });
 
     describe("gets current players for one game in a batch of one, and adds the players", function () {
       beforeEach(async function () {
-        this.databaseClientMock = createDatabaseMock(
+        this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
           oneGameWithUncheckedPlayerHistory,
         );
+
+        this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
+        this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         this.steamClientMock = createSteamMock([], [285]);
 
@@ -239,7 +278,9 @@ describe("PlayerHistoryAggregator", function () {
 
         const agg = new PlayerHistoryAggregator(
           this.steamClientMock,
-          this.databaseClientMock,
+          this.gamesRepositoryMock,
+          this.historyChecksRepositoryMock,
+          this.playerHistoryRepositoryMock,
           { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
         );
 
@@ -248,13 +289,13 @@ describe("PlayerHistoryAggregator", function () {
 
       it("calls .getXgamesCheckedMoreThanYmsAgo once", function () {
         expect(
-          this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo,
+          this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
         ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .getXgamesCheckedMoreThanYmsAgo  before .getAllCurrentPlayersConcurrently", function () {
         expect(
-          this.databaseClientMock.getXgamesCheckedMoreThanYmsAgo,
+          this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
         ).toHaveBeenCalledBefore(this.steamClientMock.getAllCurrentPlayersConcurrently);
       });
 
@@ -273,19 +314,21 @@ describe("PlayerHistoryAggregator", function () {
       it("calls .getAllCurrentPlayersConcurrently  before .updatePlayerHistoriesById", function () {
         expect(
           this.steamClientMock.getAllCurrentPlayersConcurrently,
-        ).toHaveBeenCalledBefore(this.databaseClientMock.updatePlayerHistoriesById);
+        ).toHaveBeenCalledBefore(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        );
       });
 
       it("calls .updatePlayerHistoriesById once", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledTimes(
-          1,
-        );
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).toHaveBeenCalledTimes(1);
       });
 
       it("calls .updatePlayerHistoriesById with gamesWithCurrentPlayers", function () {
-        expect(this.databaseClientMock.updatePlayerHistoriesById).toHaveBeenCalledWith(
-          this.gamesWithCurrentPlayers,
-        );
+        expect(
+          this.playerHistoryRepositoryMock.updatePlayerHistoriesById,
+        ).toHaveBeenCalledWith(this.gamesWithCurrentPlayers);
       });
     });
   });
@@ -302,12 +345,22 @@ function createSteamMock(detailsPageRet, currentPlayersRet) {
   return spyObj;
 }
 
-function createDatabaseMock(uncheckedGames, checkedGames) {
-  return jasmine.createSpyObj("DatabaseClient", {
+function createGamesRepositoryMock(uncheckedGames, checkedGames) {
+  return jasmine.createSpyObj("GamesRepository", {
     getXgamesWithUncheckedPlayerHistory: Promise.resolve(uncheckedGames),
-    updateHistoryChecks: Promise.resolve(undefined),
-    updatePlayerHistoriesById: Promise.resolve(undefined),
     getXgamesCheckedMoreThanYmsAgo: Promise.resolve(checkedGames),
+  });
+}
+
+function createHistoryChecksRepositoryMock() {
+  return jasmine.createSpyObj("HistoryChecks", {
+    updateHistoryChecks: Promise.resolve(undefined),
+  });
+}
+
+function createPlayerHistoryRepositoryMock() {
+  return jasmine.createSpyObj("PlayerHistory", {
+    updatePlayerHistoriesById: Promise.resolve(undefined),
     updatePlayerHistoriesById: Promise.resolve(undefined),
   });
 }
