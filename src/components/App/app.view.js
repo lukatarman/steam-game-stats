@@ -1,4 +1,5 @@
 import { Switch, Route } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import AppBehavior from "./app.behavior.js";
 import GameDetails from "../GameDetails/game.details.view.js";
 import SearchBar from "../SearchBar/search.bar.view.js";
@@ -9,11 +10,13 @@ const App = () => {
   const [topTenGames, tableOptions] = AppBehavior();
 
   return (
-    <div>
+    <div className="pt-5">
       <SearchBar />
       <Switch>
         <Route exact path="/">
-          <TopGamesTable tableData={topTenGames} tableOptions={tableOptions} />
+          <Container className="p-2">
+            <TopGamesTable tableData={topTenGames} tableOptions={tableOptions} />
+          </Container>
         </Route>
         <Route path="/game/:id">
           <GameDetails />

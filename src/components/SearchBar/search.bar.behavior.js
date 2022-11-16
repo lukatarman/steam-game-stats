@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSearchResults } from "../../adapters/http-client/http.client.adapter.js";
+import "../../assets/global.css";
 
 const SearchBarBehavior = (searchResultDOMelement) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,12 +46,19 @@ const SearchBarBehavior = (searchResultDOMelement) => {
     return (
       <Link to={"/game/" + result.id} key={result.id}>
         <div
+          className="py-2 list-item"
           onClick={() => {
             setIsOpen(false);
           }}
         >
-          <img src={result.imageUrl} alt="Not found"></img>
-          <span className="fw-bold">{result.name}</span>
+          <div className="container h-100">
+            <div className="row align-items-center">
+              <img className="col-2" src={result.imageUrl} alt="Not found"></img>
+              <div className="col-10">
+                <span className="fw-bold fs-3">{result.name}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </Link>
     );

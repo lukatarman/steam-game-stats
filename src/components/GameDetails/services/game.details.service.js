@@ -37,13 +37,17 @@ function getIndexOfExistingDate(yearAndMonth, playerHistoryFixed) {
 
 function calculateHistoriesAveragePlayers(historiesGroupedByMonth) {
   return historiesGroupedByMonth.map(({ date, players }) => {
-    const averagePlayers = (
-      players.reduce((previous, current) => previous + current) / players.length
-    ).toFixed(1);
+    const averagePlayers = parseFloat(
+      (
+        players.reduce((previous, current) => previous + current) / players.length
+      ).toFixed(1)
+    );
+
+    const averagePlayersThousandsSeparated = averagePlayers.toLocaleString("en-US");
 
     return {
       date,
-      players: averagePlayers,
+      players: averagePlayersThousandsSeparated,
     };
   });
 }
