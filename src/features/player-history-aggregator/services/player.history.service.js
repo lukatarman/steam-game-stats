@@ -24,6 +24,15 @@ export function XXXaddCurrentPlayersFromSteam(players, games) {
   });
 }
 
+function getExistingMonthAndYearEntry(game) {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+
+  return game.playerHistory.findIndex(
+    (history) => history.year === currentYear && history.month === currentMonth,
+  );
+}
+
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
