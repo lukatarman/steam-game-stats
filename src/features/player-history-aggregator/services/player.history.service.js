@@ -12,7 +12,19 @@ export function addCurrentPlayersFromSteam(players, games) {
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
-    if (page !== "") game.playerHistory = parsePlayerHistory(page);
+    if (page !== "") game.playerHistory.push(parsePlayerHistory(page));
+    games.push(game);
+  }
+  return games;
+}
+
+export function XXXaddPlayerHistoriesFromSteamcharts(gamesPagesMap) {
+  const games = [];
+  for (const [game, page] of gamesPagesMap) {
+    if (page !== "") {
+      const newPage = parsePlayerHistory(page);
+      game.playerHistory = Players.fromSteamcharts(newPage);
+    }
     games.push(game);
   }
   return games;
