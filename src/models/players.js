@@ -4,6 +4,7 @@ export class Players {
   averagePlayers;
   trackedPlayers;
 
+  //prettier-ignore
   static fromSteamcharts(page) {
     const players = new Players();
     players.year = page.date.getFullYear();
