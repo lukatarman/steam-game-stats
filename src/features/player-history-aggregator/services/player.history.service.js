@@ -9,6 +9,21 @@ export function addCurrentPlayersFromSteam(players, games) {
   });
 }
 
+export function XXXaddCurrentPlayersFromSteam(players, games) {
+  return games.map((game, i) => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+
+    game.playerHistory.forEach((history) => {
+      if (history.year === currentYear && history.month === currentMonth)
+        history.trackedPlayers.push(new TrackedPlayers(players));
+    });
+
+    game.playerHistory.push(new TrackedPlayers(players[i]));
+    return game;
+  });
+}
+
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
