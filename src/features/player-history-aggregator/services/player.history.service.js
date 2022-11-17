@@ -18,18 +18,6 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   return games;
 }
 
-export function XXXaddPlayerHistoriesFromSteamcharts(gamesPagesMap) {
-  const games = [];
-  for (const [game, page] of gamesPagesMap) {
-    if (page !== "") {
-      const newPage = parsePlayerHistory(page);
-      game.playerHistory = Players.fromSteamcharts(newPage);
-    }
-    games.push(game);
-  }
-  return games;
-}
-
 export function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
