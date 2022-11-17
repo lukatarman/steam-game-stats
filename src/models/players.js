@@ -21,5 +21,6 @@ export class Players {
     players.month   = new Date().getMonth();
     averagePlayers  = undefined;
     trackedPlayers  = [];
+    return players;
   }
 }
