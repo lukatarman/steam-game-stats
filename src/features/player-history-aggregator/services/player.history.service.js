@@ -44,8 +44,10 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
     .reverse()
     .map((entry) => entry.firstElementChild)
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
-    .map(
-      (element) =>
-        new TrackedPlayers(element.nextElementSibling.textContent, element.textContent),
+    .map((element) =>
+      Players.fromSteamcharts(
+        element.nextElementSibling.textContent,
+        element.textContent,
+      ),
     );
 }
