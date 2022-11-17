@@ -5,11 +5,11 @@ export class Players {
   trackedPlayers;
 
   //prettier-ignore
-  static fromSteamcharts(players, date) {
+  static fromSteamcharts(averagePlayers, date) {
     const players   = new Players();
     players.year    = date.getFullYear();
     players.month   = date.getMonth();
-    averagePlayers  = players;
+    averagePlayers  = averagePlayers;
     trackedPlayers  = [];
     return players;
   }
