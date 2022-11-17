@@ -1,4 +1,4 @@
-export class Players {
+export class TrackedPlayers {
   date;
   players;
 

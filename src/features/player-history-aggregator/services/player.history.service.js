@@ -1,9 +1,9 @@
 import { JSDOM } from "jsdom";
-import { Players } from "../../../models/tracked.players.js";
+import { TrackedPlayers } from "../../../models/tracked.players.js";
 
 export function addCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
-    game.playerHistory.push(new Players(players[i]));
+    game.playerHistory.push(new TrackedPlayers(players[i]));
     return game;
   });
 }
@@ -33,6 +33,6 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
     .map(
       (element) =>
-        new Players(element.nextElementSibling.textContent, element.textContent),
+        new TrackedPlayers(element.nextElementSibling.textContent, element.textContent),
     );
 }
