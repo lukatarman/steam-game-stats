@@ -1,5 +1,6 @@
 import { JSDOM } from "jsdom";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
+import { Players } from "../../../models/players.js";
 
 export function addCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
