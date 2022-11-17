@@ -5,7 +5,7 @@ export class Players {
   trackedPlayers;
 
   //prettier-ignore
-  static fromSteamcharts(page) {
+  static fromSteamcharts(players, date) {
     const players   = new Players();
     players.year    = page.date.getFullYear();
     players.month   = page.date.getMonth();
