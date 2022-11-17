@@ -15,7 +15,7 @@ export class Players {
   }
 
   //prettier-ignore
-  static newMonthlyEntry(date) {
+  static newMonthlyEntry() {
     const players   = new Players();
     players.year    = date.year;
     players.month   = date.month;
