@@ -11,6 +11,7 @@ export class Players {
     players.month   = date.getMonth();
     averagePlayers  = players;
     trackedPlayers  = [];
+    return players;
   }
 
   //prettier-ignore
