@@ -17,8 +17,8 @@ export class Players {
   //prettier-ignore
   static newMonthlyEntry() {
     const players   = new Players();
-    players.year    = date.year;
-    players.month   = date.month;
+    players.year    = new Date().getFullYear();
+    players.month   = new Date().getMonth();
     averagePlayers  = undefined;
     trackedPlayers  = [];
   }
