@@ -11,15 +11,17 @@ export function addCurrentPlayersFromSteam(players, games) {
 
 export function XXXaddCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth();
+    let existingMonthAndYearEntry = getExistingMonthAndYearEntry();
 
-    game.playerHistory.forEach((history) => {
-      if (history.year === currentYear && history.month === currentMonth)
-        history.trackedPlayers.push(new TrackedPlayers(players));
-    });
+    if (!existingMonthAndYearEntry) {
+      existingMonthAndYearEntry = playerHistory.length;
+      game.playerHistory[existingMonthAndYearEntry] = Players.newMonthlyEntry();
+    }
 
-    game.playerHistory.push(new TrackedPlayers(players[i]));
+    game.playerHistory[existingMonthAndYearEntry].trackedPlayers.push(
+      new TrackedPlayers(players[i]),
+    );
+
     return game;
   });
 }
