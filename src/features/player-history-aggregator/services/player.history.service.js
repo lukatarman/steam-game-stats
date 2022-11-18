@@ -11,7 +11,7 @@ export function addCurrentPlayersFromSteam(players, games) {
 
 export function XXXaddCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
-    let existingMonthAndYearIndex = getExistingMonthAndYearIndex();
+    let existingMonthAndYearIndex = getExistingMonthAndYearIndex(game);
 
     if (!existingMonthAndYearIndex) {
       game.playerHistory.push(Players.newMonthlyEntry());
