@@ -5,7 +5,7 @@ import { Players } from "../../../models/players.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { sniperEliteHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/sniper.elite.just.released.html.details.page.js";
 
-fdescribe("player.history.service.js", function () {
+xdescribe("player.history.service.js", function () {
   describe(".XXXaddCurrentPlayersFromSteam function adds the current players to the games object and calculates the average players. So,", function () {
     describe("if the game's 'playerHistory' array is empty, the first array entry in this.result[0].playerHistory'", function () {
       beforeEach(function () {
