@@ -22,6 +22,9 @@ export function XXXaddCurrentPlayersFromSteam(players, games) {
       new TrackedPlayers(players[i]),
     );
 
+    game.playerHistory[existingMonthAndYearEntry].averagePlayers =
+      calculateAveragePlayers(game, existingMonthAndYearEntry);
+
     return game;
   });
 }
@@ -33,6 +36,17 @@ function getExistingMonthAndYearEntry(game) {
   return game.playerHistory.findIndex(
     (history) => history.year === currentYear && history.month === currentMonth,
   );
+}
+
+function calculateAveragePlayers(game, existingMonthAndYearEntry) {
+  const currentTrackedHistories =
+    game.playerHistory[existingMonthAndYearEntry].trackedPlayers;
+
+  const playersSum = currentTrackedHistories.reduce((previous, current) => {
+    return { players: previous.players + current.players };
+  });
+
+  return playersSum.players / currentTrackedHistories.length;
 }
 
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
