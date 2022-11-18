@@ -11,25 +11,26 @@ export function addCurrentPlayersFromSteam(players, games) {
 
 export function XXXaddCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
-    let existingMonthAndYearEntry = getExistingMonthAndYearEntry();
+    let existingMonthAndYearIndex = getExistingMonthAndYearIndex();
 
-    if (!existingMonthAndYearEntry) {
+    if (!existingMonthAndYearIndex) {
       game.playerHistory.push(Players.newMonthlyEntry());
-      existingMonthAndYearEntry = game.playerHistory.length - 1;
+      existingMonthAndYearIndex = game.playerHistory.length - 1;
     }
 
-    game.playerHistory[existingMonthAndYearEntry].trackedPlayers.push(
-      new TrackedPlayers(players[i]),
-    );
+    const currentMonthAndYearEntry = game.playerHistory[existingMonthAndYearIndex];
 
-    game.playerHistory[existingMonthAndYearEntry].averagePlayers =
-      calculateAveragePlayers(game, existingMonthAndYearEntry);
+    currentMonthAndYearEntry.trackedPlayers.push(new TrackedPlayers(players[i]));
+
+    currentMonthAndYearEntry.averagePlayers = calculateAveragePlayers(
+      currentMonthAndYearEntry,
+    );
 
     return game;
   });
 }
 
-function getExistingMonthAndYearEntry(game) {
+function getExistingMonthAndYearIndex(game) {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
 
@@ -38,9 +39,8 @@ function getExistingMonthAndYearEntry(game) {
   );
 }
 
-function calculateAveragePlayers(game, existingMonthAndYearEntry) {
-  const currentTrackedHistories =
-    game.playerHistory[existingMonthAndYearEntry].trackedPlayers;
+function calculateAveragePlayers(currentMonthAndYearEntry) {
+  const currentTrackedHistories = currentMonthAndYearEntry.trackedPlayers;
 
   const playersSum = currentTrackedHistories.reduce((previous, current) => {
     return { players: previous.players + current.players };
