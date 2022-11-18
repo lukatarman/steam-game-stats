@@ -13,7 +13,7 @@ export function XXXaddCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
     let existingMonthAndYearIndex = getExistingMonthAndYearIndex(game);
 
-    if (!existingMonthAndYearIndex) {
+    if (existingMonthAndYearIndex === -1) {
       game.playerHistory.push(Players.newMonthlyEntry());
       existingMonthAndYearIndex = game.playerHistory.length - 1;
     }
