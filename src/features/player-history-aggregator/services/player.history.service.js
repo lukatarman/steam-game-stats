@@ -43,7 +43,7 @@ function calculateAveragePlayers(currentMonthAndYearEntry) {
   const currentTrackedHistories = currentMonthAndYearEntry.trackedPlayers;
 
   const playersSum = currentTrackedHistories.reduce((previous, current) => {
-    return { players: previous.players + current.players };
+    return { players: parseFloat(previous.players) + parseFloat(current.players) };
   });
 
   return playersSum.players / currentTrackedHistories.length;
