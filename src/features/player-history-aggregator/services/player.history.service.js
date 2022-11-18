@@ -14,8 +14,8 @@ export function XXXaddCurrentPlayersFromSteam(players, games) {
     let existingMonthAndYearEntry = getExistingMonthAndYearEntry();
 
     if (!existingMonthAndYearEntry) {
-      existingMonthAndYearEntry = playerHistory.length;
-      game.playerHistory[existingMonthAndYearEntry] = Players.newMonthlyEntry();
+      game.playerHistory.push(Players.newMonthlyEntry());
+      existingMonthAndYearEntry = game.playerHistory.length - 1;
     }
 
     game.playerHistory[existingMonthAndYearEntry].trackedPlayers.push(
