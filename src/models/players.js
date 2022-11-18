@@ -9,8 +9,8 @@ export class Players {
     const players   = new Players();
     players.year    = date.getFullYear();
     players.month   = date.getMonth();
-    averagePlayers  = averagePlayers;
-    trackedPlayers  = [];
+    players.averagePlayers  = averagePlayers;
+    players.trackedPlayers  = [];
     return players;
   }
 
@@ -19,8 +19,8 @@ export class Players {
     const players   = new Players();
     players.year    = new Date().getFullYear();
     players.month   = new Date().getMonth();
-    averagePlayers  = undefined;
-    trackedPlayers  = [];
+    players.averagePlayers  = 0;
+    players.trackedPlayers  = [];
     return players;
   }
 }
