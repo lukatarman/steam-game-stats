@@ -52,7 +52,8 @@ function calculateAveragePlayers(currentMonthAndYearEntry) {
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
-    if (page !== "") game.playerHistory.push(parsePlayerHistory(page));
+    if (page !== "")
+      game.playerHistory.push(Players.fromSteamcharts(parsePlayerHistory(page)));
     games.push(game);
   }
   return games;
@@ -72,10 +73,8 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
     .reverse()
     .map((entry) => entry.firstElementChild)
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
-    .map((element) =>
-      Players.fromSteamcharts(
-        element.nextElementSibling.textContent,
-        element.textContent,
-      ),
+    .map(
+      (element) =>
+        new TrackedPlayers(element.nextElementSibling.textContent, element.textContent),
     );
 }
