@@ -36,7 +36,7 @@ describe("player.history.service.js", function () {
       });
     });
 
-    fdescribe("when the game's 'playerHistory' array includes this month's entry, 'this.results[0].playerHistory[0]'", function () {
+    describe("when the game's 'playerHistory' array includes this month's entry, 'this.results[0].playerHistory[0]'", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
 
