@@ -64,7 +64,6 @@ export class GamesRepository {
               as: "game",
             },
           },
-          { $match: { checked: true } },
           { $unwind: "$game" },
           { $replaceWith: "$game" },
           { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
