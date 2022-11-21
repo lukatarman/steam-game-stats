@@ -46,7 +46,7 @@ function calculateAveragePlayers(currentMonthAndYearEntry) {
     return { players: parseFloat(previous.players) + parseFloat(current.players) };
   });
 
-  return (playersSum.players / currentTrackedHistories.length).toFixed(1);
+  return parseFloat((playersSum.players / currentTrackedHistories.length).toFixed(1));
 }
 
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
