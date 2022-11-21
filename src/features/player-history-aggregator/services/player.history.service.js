@@ -53,7 +53,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
     if (page !== "")
-      game.playerHistory.push(Players.fromSteamcharts(parsePlayerHistory(page)));
+      game.playerHistory = Players.manyFromSteamchartsPage(parsePlayerHistory(page));
     games.push(game);
   }
   return games;
