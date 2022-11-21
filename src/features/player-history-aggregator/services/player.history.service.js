@@ -59,7 +59,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   return games;
 }
 
-export function parsePlayerHistory(pageHttpDetailsHtml) {
+function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
     ".common-table tbody tr",
