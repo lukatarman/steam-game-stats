@@ -51,6 +51,8 @@ export class GamesRepository {
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
+  //todo match with either last update passed time or empty playerHistory.trackedHistories.date
+
   async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
     return (
       await this.#dbClient
