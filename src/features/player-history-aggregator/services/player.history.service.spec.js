@@ -1,12 +1,15 @@
-import { parsePlayerHistory } from "./player.history.service.js";
+import {
+  addCurrentPlayersFromSteam,
+  parsePlayerHistory,
+} from "./player.history.service.js";
 import { XXXaddCurrentPlayersFromSteam } from "./player.history.service.js";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
 import { Players } from "../../../models/players.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { sniperEliteHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/sniper.elite.just.released.html.details.page.js";
 
-xdescribe("player.history.service.js", function () {
-  describe(".XXXaddCurrentPlayersFromSteam function adds the current players to the games object and calculates the average players. So,", function () {
+describe("player.history.service.js", function () {
+  describe(".XXXaddCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
     describe("if the game's 'playerHistory' array is empty, the first array entry in this.result[0].playerHistory'", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
@@ -67,9 +70,10 @@ xdescribe("player.history.service.js", function () {
       });
     });
 
-    describe("if the game's 'playerHistory' array includes this month's entry", function () {
+    describe("if the game's 'playerHistory' array is not empty, and it does not include this month's entry", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
+        this.date = new Date("2021");
 
         this.games = [
           {
@@ -77,8 +81,8 @@ xdescribe("player.history.service.js", function () {
             name: "Random Game",
             playerHistory: [
               {
-                year: new Date().getFullYear(),
-                month: new Date().getMonth(),
+                year: this.date.getFullYear(),
+                month: this.date.getMonth(),
                 averagePlayers: 0,
                 trackedPlayers: [new TrackedPlayers("23"), new TrackedPlayers("66")],
               },
@@ -89,13 +93,16 @@ xdescribe("player.history.service.js", function () {
         this.result = XXXaddCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
-      it("will have a property called 'average players', which will equal '40.3'", function () {
-        expect(this.result[0].playerHistory[0].averagePlayers).toBe("40.3");
+      it("will have a property called 'average players', which will equal '0'", function () {
+        expect(this.result[0].playerHistory[0].averagePlayers).toBe(0);
       });
       it("will have a property called 'tracked players' its first array entry will be an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
           TrackedPlayers,
         );
+      });
+      it("the playerHistory array will have an entry that will be an instance of Players", function () {
+        expect(this.result[0].playerHistory[1]).toBeInstanceOf(Players);
       });
     });
   });
