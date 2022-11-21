@@ -4,13 +4,6 @@ import { Players } from "../../../models/players.js";
 
 export function addCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
-    game.playerHistory.push(new TrackedPlayers(players[i]));
-    return game;
-  });
-}
-
-export function XXXaddCurrentPlayersFromSteam(players, games) {
-  return games.map((game, i) => {
     let existingMonthAndYearIndex = getExistingMonthAndYearIndex(game);
 
     if (existingMonthAndYearIndex === -1) {
