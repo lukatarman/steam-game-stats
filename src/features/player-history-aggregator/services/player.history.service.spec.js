@@ -26,7 +26,7 @@ xdescribe("player.history.service.js", function () {
         expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
       });
       it("will have a property called 'average players', which will equal '32'", function () {
-        expect(this.result[0].playerHistory[0].averagePlayers).toBe(32);
+        expect(this.result[0].playerHistory[0].averagePlayers).toBe(32.0);
       });
       it("will have a property called 'tracked players'. Its first array entry will be an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
@@ -58,7 +58,7 @@ xdescribe("player.history.service.js", function () {
       });
 
       it("will have a property called 'average players', which will equal '40.3'", function () {
-        expect(this.result[0].playerHistory[0].averagePlayers).toBe("40.3");
+        expect(this.result[0].playerHistory[0].averagePlayers).toBe(40.3);
       });
       it("will have a property called 'tracked players'. Its first array entry will be an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
