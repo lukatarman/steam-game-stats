@@ -1,6 +1,6 @@
 import { Players } from "./players.js";
 
-fdescribe("Players", function () {
+describe("Players", function () {
   describe(".manyFromSteamChartsPage takes the passed in array, and instantiates it with the 'fromSteamcharts' method. So,", function () {
     describe("when the passed in array contains player histories,", function () {
       beforeEach(function () {
