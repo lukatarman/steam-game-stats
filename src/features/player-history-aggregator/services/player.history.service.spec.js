@@ -8,7 +8,7 @@ import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-
 
 describe("player.history.service.js", function () {
   describe(".addCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
-    describe("if the game's 'playerHistory' array is empty, the first array entry in this.result[0].playerHistory'", function () {
+    describe("when the game's 'playerHistory' array is empty, the first array entry in this.result[0].playerHistory'", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
 
@@ -23,13 +23,13 @@ describe("player.history.service.js", function () {
         this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
-      it("will be an instance of Players", function () {
+      it("is an instance of Players", function () {
         expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
       });
-      it("will have a property called 'average players', which will equal '32'", function () {
+      it("has a property called 'average players', which equals '32.0'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(32.0);
       });
-      it("will have a property called 'tracked players'. Its first array entry will be an instance of 'TrackedPlayers'", function () {
+      it("has a property called 'tracked players'. Its first array entry is an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
           TrackedPlayers,
         );
