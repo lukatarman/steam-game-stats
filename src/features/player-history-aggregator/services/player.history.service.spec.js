@@ -2,13 +2,12 @@ import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts,
 } from "./player.history.service.js";
-import { XXXaddCurrentPlayersFromSteam } from "./player.history.service.js";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
 import { Players } from "../../../models/players.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
 fdescribe("player.history.service.js", function () {
-  describe(".XXXaddCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
+  describe(".addCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
     describe("if the game's 'playerHistory' array is empty, the first array entry in this.result[0].playerHistory'", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
@@ -21,7 +20,7 @@ fdescribe("player.history.service.js", function () {
           },
         ];
 
-        this.result = XXXaddCurrentPlayersFromSteam(this.playersFromSteam, this.games);
+        this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
       it("will be an instance of Players", function () {
@@ -56,7 +55,7 @@ fdescribe("player.history.service.js", function () {
           },
         ];
 
-        this.result = XXXaddCurrentPlayersFromSteam(this.playersFromSteam, this.games);
+        this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
       it("will have a property called 'average players', which will equal '40.3'", function () {
@@ -89,7 +88,7 @@ fdescribe("player.history.service.js", function () {
           },
         ];
 
-        this.result = XXXaddCurrentPlayersFromSteam(this.playersFromSteam, this.games);
+        this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
       it("will have a property called 'average players', which will equal '0'", function () {
