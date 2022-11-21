@@ -130,7 +130,7 @@ describe("player.history.service.js", function () {
     });
   });
 
-  describe(".parsePlayerHistory", function () {
+  describe(".addPlayerHistoriesFromSteamcharts", function () {
     describe("if the game has multiple histories", function () {
       beforeEach(function () {
         this.playerHistories = parsePlayerHistory(eldenRingHttpDetailsSteamcharts);
@@ -154,16 +154,6 @@ describe("player.history.service.js", function () {
 
       it("the first entries' year is 2022", function () {
         expect(this.playerHistories[0].date.getFullYear()).toBe(2022);
-      });
-    });
-
-    describe("if the game has just been released and only has one history", function () {
-      beforeEach(function () {
-        this.playerHistories = parsePlayerHistory(sniperEliteHttpDetailsSteamcharts);
-      });
-
-      it("it returns an empty array", function () {
-        expect(this.playerHistories).toEqual([]);
       });
     });
   });
