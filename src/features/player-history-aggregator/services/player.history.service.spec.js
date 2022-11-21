@@ -130,30 +130,40 @@ describe("player.history.service.js", function () {
     });
   });
 
-  describe(".addPlayerHistoriesFromSteamcharts", function () {
-    describe("if the game has multiple histories", function () {
+  describe(".addPlayerHistoriesFromSteamcharts uses the gamesPagesMap to add the player histories to each entry in the games array, and then returns it. So,", function () {
+    describe("if the gamesPagesMap includes Elden Ring's player history", function () {
       beforeEach(function () {
-        this.playerHistories = parsePlayerHistory(eldenRingHttpDetailsSteamcharts);
+        this.map = new Map();
+        this.page = eldenRingHttpDetailsSteamcharts;
+
+        this.game = {
+          id: 1,
+          name: "Elden Ring",
+          playerHistory: [],
+        };
+
+        this.map.set(this.game, this.page);
+
+        this.result = addPlayerHistoriesFromSteamcharts(this.map);
       });
 
-      it("playerHistories is an instance of 'TrackedPlayers'", function () {
-        expect(this.playerHistories[0]).toBeInstanceOf(TrackedPlayers);
+      it("the first value of the property 'playerHistory' of the resulting array's first entry is an instance of 'Players'", function () {
+        expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
       });
-
-      it("playerHistories has two entries", function () {
-        expect(this.playerHistories.length).toBe(2);
+      it("the 'year' value in the first entry of the playerHistory array has the value of '2022'", function () {
+        expect(this.result[0].playerHistory[0].year).toBe(2022);
       });
-
-      it("the first entries' player amount is 522066.4", function () {
-        expect(this.playerHistories[0].players).toBe(522066.4);
+      it("the 'month' value in the first entry of the playerHistory array has the value of '2'", function () {
+        expect(this.result[0].playerHistory[0].month).toBe(2);
       });
-
-      it("the first entries' month is March", function () {
-        expect(this.playerHistories[0].date.getMonth()).toBe(2);
+      it("the 'averagePlayers' value in the first entry of the playerHistory array has the value of '522066.4'", function () {
+        expect(this.result[0].playerHistory[0].averagePlayers).toBe(522066.4);
       });
-
-      it("the first entries' year is 2022", function () {
-        expect(this.playerHistories[0].date.getFullYear()).toBe(2022);
+      it("the 'month' value in the second entry of the playerHistory array has the value of '3'", function () {
+        expect(this.result[0].playerHistory[1].month).toBe(3);
+      });
+      it("the 'averagePlayers' value in the second entry of the playerHistory array has the value of '211468.9'", function () {
+        expect(this.result[0].playerHistory[1].averagePlayers).toBe(211468.9);
       });
     });
   });
