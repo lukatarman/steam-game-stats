@@ -2,6 +2,8 @@ import { JSDOM } from "jsdom";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
 import { Players } from "../../../models/players.js";
 
+// todo: add sorting when adding histories from Steamcharts. Should be sorted in order from oldest to latest.
+
 export function addCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => {
     let existingMonthAndYearIndex = getExistingMonthAndYearIndex(game);
