@@ -4,21 +4,25 @@ export class Players {
   averagePlayers;
   trackedPlayers;
 
+  static manyFromSteamchartsPage(histories) {
+    return histories.map((history) => this.fromSteamcharts(history));
+  }
+
   //prettier-ignore
-  static fromSteamcharts(averagePlayers, date) {
-    const players   = new Players();
-    players.year    = date.getFullYear();
-    players.month   = date.getMonth();
-    players.averagePlayers  = averagePlayers;
+  static fromSteamcharts(history) {
+    const players           = new Players();
+    players.year            = history.date.getFullYear();
+    players.month           = history.date.getMonth();
+    players.averagePlayers  = history.players;
     players.trackedPlayers  = [];
     return players;
   }
 
   //prettier-ignore
   static newMonthlyEntry() {
-    const players   = new Players();
-    players.year    = new Date().getFullYear();
-    players.month   = new Date().getMonth();
+    const players           = new Players();
+    players.year            = new Date().getFullYear();
+    players.month           = new Date().getMonth();
     players.averagePlayers  = 0;
     players.trackedPlayers  = [];
     return players;
