@@ -4,6 +4,8 @@ export class Players {
   averagePlayers;
   trackedPlayers;
 
+  // todo: add tests
+
   static manyFromSteamchartsPage(histories) {
     return histories.map((history) => this.fromSteamcharts(history));
   }
