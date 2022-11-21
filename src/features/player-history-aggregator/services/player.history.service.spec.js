@@ -8,7 +8,7 @@ import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-
 
 describe("player.history.service.js", function () {
   describe(".addCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
-    describe("when the game's 'playerHistory' array is empty, this.result[0].playerHistory[0]'", function () {
+    describe("when the game's 'playerHistory' array is empty, this.result[0].playerHistory[0]", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
 
@@ -23,20 +23,20 @@ describe("player.history.service.js", function () {
         this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
-      it("is an instance of Players", function () {
+      it("' is an instance of Players", function () {
         expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
       });
-      it("has a property called 'average players', which equals '32.0'", function () {
+      it("' has a property called 'average players', which equals '32.0'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(32.0);
       });
-      it("has a property called 'tracked players'. Its first array entry is an instance of 'TrackedPlayers'", function () {
+      it(".trackedPlayers[0]' is an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
           TrackedPlayers,
         );
       });
     });
 
-    describe("when the game's 'playerHistory' array includes this month's entry, 'this.results[0].playerHistory[0]'", function () {
+    describe("when the game's 'playerHistory' array includes this month's entry, 'this.results[0].playerHistory[0]", function () {
       beforeEach(function () {
         this.playersFromSteam = ["32"];
 
@@ -54,13 +54,13 @@ describe("player.history.service.js", function () {
         this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
       });
 
-      it("is an instance of Players", function () {
+      it("' is an instance of Players", function () {
         expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
       });
-      it("has a property called 'average players', which equals '40.3'", function () {
+      it("' has a property called 'average players', which equals '40.3'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(40.3);
       });
-      it("is an instance of 'TrackedPlayers'", function () {
+      it(".trackedPlayers[0]' is an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
           TrackedPlayers,
         );
