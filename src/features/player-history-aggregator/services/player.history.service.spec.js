@@ -9,6 +9,29 @@ import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-
 import { sniperEliteHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/sniper.elite.just.released.html.details.page.js";
 
 describe("player.history.service.js", function () {
+  describe(".addCurrentPlayersFromSteam adds the current players and date to the tracked players array. So,", function () {
+    fdescribe("if a game just had '15' players playing it most recently,", function () {
+      beforeEach(function () {
+        this.players = [15];
+
+        this.games = [
+          {
+            playerHistory: [],
+          },
+        ];
+
+        this.result = addCurrentPlayersFromSteam(this.players, this.games);
+      });
+
+      it("the resulting array's first entry will include a value 'playerHistory'. It will be an instance of 'TrackedPlayers'", function () {
+        expect(this.result[0].playerHistory[0]).toBeInstanceOf(TrackedPlayers);
+      });
+      it("the resulting array's first entry will include a value 'playerHistory'. The players property will equal '15'", function () {
+        expect(this.result[0].playerHistory[0].players).toBe(15);
+      });
+    });
+  });
+
   describe(".XXXaddCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
     describe("if the game's 'playerHistory' array is empty, the first array entry in this.result[0].playerHistory'", function () {
       beforeEach(function () {
