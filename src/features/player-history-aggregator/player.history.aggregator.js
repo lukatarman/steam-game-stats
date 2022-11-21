@@ -5,11 +5,6 @@ import {
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
 
-//Todo: Move average players calculation to backend
-// remove mock function
-// adjust tests
-// check if everything works
-
 export class PlayerHistoryAggregator {
   #steamClient;
   #gamesRepository;
