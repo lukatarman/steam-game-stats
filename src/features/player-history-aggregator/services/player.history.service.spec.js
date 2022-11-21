@@ -1,6 +1,6 @@
 import {
   addCurrentPlayersFromSteam,
-  parsePlayerHistory,
+  addPlayerHistoriesFromSteamcharts,
 } from "./player.history.service.js";
 import { XXXaddCurrentPlayersFromSteam } from "./player.history.service.js";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
