@@ -122,7 +122,13 @@ export class GamesRepository {
             ],
           },
         },
-        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $addFields: { lastPlayerHistory: { $last: "$playerHistory" } } },
+        {
+          $addFields: {
+            currentPlayers: { $last: "$lastPlayerHistory.trackedPlayers.players" },
+          },
+        },
+        { $unset: "lastPlayerHistory" },
         { $sort: { currentPlayers: -1 } },
         { $limit: 15 },
       ])
