@@ -187,5 +187,25 @@ describe("player.history.service.js", function () {
         expect(this.result[0].playerHistory[2].month).toBe(11);
       });
     });
+
+    describe("when the gamesPagesMap's page value is an empty array", function () {
+      beforeEach(function () {
+        this.map = new Map();
+
+        this.game = {
+          id: 1,
+          name: "Elden Ring",
+          playerHistory: [],
+        };
+
+        this.map.set(this.game, []);
+
+        this.result = addPlayerHistoriesFromSteamcharts(this.map);
+      });
+
+      it("the playerHistory value is an empty array", function () {
+        expect(this.result[0].playerHistory).toEqual([]);
+      });
+    });
   });
 });
