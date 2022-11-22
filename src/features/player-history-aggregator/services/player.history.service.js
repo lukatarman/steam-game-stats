@@ -66,6 +66,7 @@ function sortGameHistories(gameHistories) {
 
     return dateA - dateB;
   });
+  return sortedHistories;
 }
 
 function parsePlayerHistory(pageHttpDetailsHtml) {
