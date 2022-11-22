@@ -51,8 +51,6 @@ export class GamesRepository {
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
-  //todo match with either last update passed time or empty playerHistory.trackedHistories.date
-
   async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
     return (
       await this.#dbClient
@@ -68,8 +66,19 @@ export class GamesRepository {
           },
           { $unwind: "$game" },
           { $replaceWith: "$game" },
-          { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
-          { $match: { lastUpdateDate: { $lt: new Date(Date.now() - ms) } } },
+          {
+            $addFields: {
+              lastUpdateDate: { $last: "$playerHistory.trackedHistories.date" },
+            },
+          },
+          {
+            $match: {
+              $or: [
+                { playerHistory: { $eq: [] } },
+                { lastUpdateDate: { $lt: new Date(Date.now() - ms) } },
+              ],
+            },
+          },
           { $unset: "lastUpdateDate" },
           { $limit: amount },
         ])
