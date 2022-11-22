@@ -46,10 +46,13 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
     if (page !== "") {
-      const gameHistories = Players.manyFromSteamchartsPage(parsePlayerHistory(page));
-      gameHistories.forEach((history) => {
+      const parsedGameHistories = parseGameHistories(page);
+      const fixedGameHistories = Players.manyFromSteamchartsPage(parsedGameHistories);
+
+      fixedGameHistories.forEach((history) => {
         game.playerHistory.push(history);
       });
+
       game.playerHistory = sortGameHistories(game.playerHistory);
     }
 
@@ -69,7 +72,7 @@ function sortGameHistories(gameHistories) {
   return sortedHistories;
 }
 
-function parsePlayerHistory(pageHttpDetailsHtml) {
+function parseGameHistories(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
     ".common-table tbody tr",
