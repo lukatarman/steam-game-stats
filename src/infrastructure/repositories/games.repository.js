@@ -97,7 +97,13 @@ export class GamesRepository {
       .get("games")
       .aggregate([
         { $match: { playerHistory: { $ne: [] } } },
-        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $addFields: { lastPlayerHistory: { $last: "$playerHistory" } } },
+        {
+          $addFields: {
+            currentPlayers: { $last: "$lastPlayerHistory.trackedPlayers.players" },
+          },
+        },
+        { $unset: "lastPlayerHistory" },
         { $sort: { currentPlayers: -1 } },
         { $limit: amount },
       ])
