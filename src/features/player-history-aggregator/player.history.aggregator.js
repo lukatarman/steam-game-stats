@@ -62,10 +62,7 @@ export class PlayerHistoryAggregator {
   }
 
   addCurrentPlayers = async () => {
-    const games = await this.#gamesRepository.getXgamesCheckedMoreThanYmsAgo(
-      this.#options.batchSize,
-      this.#options.currentPlayersUpdateIntervalDelay,
-    );
+    const games = await this.#gamesRepository.getXgamesCheckedMoreThanYmsAgo(1000, 1000);
 
     if (games.length === 0) return;
 
