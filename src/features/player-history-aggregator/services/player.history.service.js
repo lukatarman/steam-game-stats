@@ -45,11 +45,27 @@ function calculateAveragePlayers(currentMonthAndYearEntry) {
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
-    if (page !== "")
-      game.playerHistory = Players.manyFromSteamchartsPage(parsePlayerHistory(page));
+    if (page !== "") {
+      const gameHistories = Players.manyFromSteamchartsPage(parsePlayerHistory(page));
+      gameHistories.forEach((history) => {
+        game.playerHistory.push(history);
+      });
+      game.playerHistory = sortGameHistories(game.playerHistory);
+    }
+
     games.push(game);
   }
   return games;
+}
+
+function sortGameHistories(gameHistories) {
+  const sortedHistories = [...gameHistories];
+  sortedHistories.sort((a, b) => {
+    const dateA = new Date(a.year, a.month);
+    const dateB = new Date(b.year, b.month);
+
+    return dateA - dateB;
+  });
 }
 
 function parsePlayerHistory(pageHttpDetailsHtml) {
