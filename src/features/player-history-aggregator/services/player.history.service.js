@@ -53,7 +53,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
         game.playerHistory.push(history);
       });
 
-      game.playerHistory = sortGameHistories(game.playerHistory);
+      game.playerHistory = sortGameHistoriesByDate(game.playerHistory);
     }
 
     games.push(game);
@@ -61,14 +61,16 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   return games;
 }
 
-function sortGameHistories(gameHistories) {
+function sortGameHistoriesByDate(gameHistories) {
   const sortedHistories = [...gameHistories];
+
   sortedHistories.sort((a, b) => {
     const dateA = new Date(a.year, a.month);
     const dateB = new Date(b.year, b.month);
 
     return dateA - dateB;
   });
+
   return sortedHistories;
 }
 
