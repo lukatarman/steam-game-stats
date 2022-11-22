@@ -68,7 +68,12 @@ export class GamesRepository {
           { $replaceWith: "$game" },
           {
             $addFields: {
-              lastUpdateDate: { $last: "$playerHistory.trackedHistories.date" },
+              lastHistory: { $last: "$playerHistory" },
+            },
+          },
+          {
+            $addFields: {
+              lastUpdateDate: { $last: "$lastHistory.trackedPlayers.date" },
             },
           },
           {
@@ -80,6 +85,7 @@ export class GamesRepository {
             },
           },
           { $unset: "lastUpdateDate" },
+          { $unset: "lastHistory" },
           { $limit: amount },
         ])
         .toArray()
