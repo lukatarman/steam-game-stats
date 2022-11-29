@@ -6,16 +6,16 @@ In each topic all sub topics which were introduced or are yet to be introduced a
 
 ## Table of Content
 
-1. Requirements
-2. Back-end
-3. Debugging
-4. Testing
-5. Clean Code
-6. Refactoring
-7. Architecture
-8. Front-end
-9. Deployment
-10. Agile
+ 1. [Requirements](#requirements)
+ 2. [Back-end](#back-end)
+ 3. [Debugging](#debugging)
+ 4. [Testing](#testing)
+ 5. [Clean Code](#clean-code)
+ 6. [Refactoring](#refactoring)
+ 7. [Architecture](#architecture)
+ 8. [Front-end](#front-end)
+ 9. [Deployment](#deployment)
+ 10. [Agile](#agile)
 
 ## Requirements
 
@@ -25,18 +25,99 @@ In each topic all sub topics which were introduced or are yet to be introduced a
 
 ## Back-end
 
-- [ ] Node.js development environment setup.
-- [ ] Using npm and package.json for package management.
-- [ ] Working with git feature branches and Github.
-- [ ] Classes and object-oriented programming.
-- [ ] Working with a data model.
-- [ ] Working with an HTTP client to acess external APIs.
-- [ ] MongoDB NoSQL database setup.
-- [ ] Working with a database client.
-- [ ] Developing application features.
-- [ ] Unit testing of code without dependencies.
-- [ ] Scaleable project directory structure.
-- [ ] Application entry point.
-- [ ] Dependency injection.
-- [ ] Unit testing of code with dependencies using spies and mocks.
-- [ ] ...
+- [x] Node.js development environment setup.
+- [x] Using npm and package.json for package management.
+- [x] Working with git feature branches and Github.
+- [x] Classes and object-oriented programming.
+- [x] Working with a data model.
+- [x] Working with an HTTP client to access external APIs.
+- [x] MongoDB NoSQL database setup.
+- [x] Working with a database client.
+- [x] Developing application features.
+- [x] Scaleable project directory and file structure.
+- [x] Application entry point.
+- [x] Dependency injection.
+- [x] Setting up a Web-server with [*fastify*](fastify.io/).
+- [ ] Creating a REST API endpoints for HTTP requests:
+  - [x] GET
+  - [ ] POST
+  - [ ] PUT
+  - [ ] DELETE
+- [ ] Authentication.
+
+## Debugging
+
+- [x] Debugger setup in Visual Studio Code.
+- [x] Debugging in practice
+  - [x] Breakpoints
+  - [x] Stepping
+  - [ ] Watching
+  - [ ] Call Stack
+
+## Testing
+
+- [x] What are tests and why do we need them?
+- [x] Unit testing of code without dependencies.
+- [x] Unit testing using spies and mocks.
+- [x] Clean and readable tests.
+- [x] Testability as a marker for clean code.
+- [ ] Testing the integration layer.
+- [ ] System tests.
+- [ ] Unit tests in the front-end.
+- [ ] End to end tests.
+
+## Clean Code
+
+- [x] Identifiers of clean code.
+- [x] Single responsibility principle.
+- [x] Separation of concerns.
+- [x] Cohesion.
+- [x] Naming functions, variables and classes.
+- [x] Small functions and classes.
+
+## Refactoring
+
+- [x] What is refactoring and why do we need it?
+- [x] When should the code be refactored and why?
+- [x] Refactoring without tests.
+- [x] Common refactorings:
+  - [x] Extract function, variable and class
+  - [x] Renaming
+  - [x] Split loop
+  - [x] Replace loop with pipeline
+  - [x] Decompose conditional
+  - [x] Replace nested conditional with guard clauses
+
+## Architecture
+
+- [x] What is software architecture?
+- [x] Layered architecture.
+- [ ] Modularity.
+
+## Front-end
+
+- [x] Benefits of a front-end framework like React.
+- [x] Front-end project setup with Node.js.
+- [x] Front-end project structure.
+- [x] Using a UI library like Bootstrap.
+- [x] Connecting the front-end to the back-end via HTTP.
+
+## Deployment
+
+- [ ] What is application deployment and why do we need it?
+- [ ] Deployment Scripts.
+- [ ] Local deployment.
+- [ ] Deploying into the cloud.
+- [ ] Containerizing an application.
+- [ ] Automated deployment with Github Actions.
+
+## Agile
+
+- [x] What is the Agile development and do we need it?
+- [ ] Agile ceremonies
+  - [ ] Sprints
+  - [x] Daily standups
+  - [ ] Planing
+  - [ ] Scoring
+  - [ ] Sprint review
+  - [ ] Scoring poker
