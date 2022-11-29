@@ -1,4 +1,4 @@
-# Course Details
+# Course Content
 
 This page is a high level overview of the topics which are covered in the intensive full stack web developer course. The language of choice is JavaScript/Node.js. All topics are demonstrated and implemented in the project.
 
