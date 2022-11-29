@@ -3,7 +3,7 @@
 ## Table of Contents
 
   1. [Introduction](#introduction)
-  1. [Course Details](#course-details)
+  1. [Course Content](#course-content)
   1. [Project Details](#project-details)
   1. [Development Setup](#development-setup)
   1. [Running the Application](#running-the-application)
@@ -11,17 +11,17 @@
 
 ## Introduction
 
-This repository contains the backend implementation of a proof of concept application which was developed by Luka Tarman (*add link to read only CV w/o address*) during an intensive full stack web developer course. The purpose of this repository is to demonstrate the skilset of Luka Tarman to potential employers.
+This repository contains the backend implementation of a proof of concept application which was developed by Luka Tarman during an intensive full stack web developer course. The purpose of this repository is to demonstrate the skilset of Luka Tarman to potential employers.
 
-A few words about the student. Luka Tarman is an adaptable and open minded Full Stack Software Developer with a preference for the backend layer. He started with software development due to his extensive experience with computers from a young age, and the fact that he finds great joy in solving technical problems.
+A few words about the student. Luka Tarman is an adaptable and open minded Full Stack Software Developer with a preference for the backend layer. He started with software development due to his extensive experience with computers from a young age, and the fact that he finds great joy in solving technical problems. An up to date CV of Luka can be found here: [CV](https://docs.google.com/document/d/1koF3BsafLKzIdoWY6iUA0Oq-BxEqdRP4ZrKAQ16nwnA/edit?usp=sharing).
 
 A few words about the course instructor. The instructor is [Stanislav Jakuschevskij](https://www.linkedin.com/in/stanislav-jakuschevskij/). He is a Senior Software Engineer at IBM with a specialization in Blockchain. You can find out more about him on LinkedIn. In case a potential employer would like to ask questions about the course and Lukas programming education he or she can contact Stanislav via LinkedIn.
 
 At the time of this writing the application is in a running state and can be demonstrated. The development continues and new features are constantly introduced.
 
-## Course Details
+## Course Content
 
-The course details are documented separately. Follow this [link](/docs/course.documentation.md) for more info.
+The course details are documented separately. Follow this [link](/docs/course.content.md) for more info.
 
 ## Project Details
 
