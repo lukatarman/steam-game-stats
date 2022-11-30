@@ -1,10 +1,10 @@
 # Course Content
 
-This page is a high level overview of the topics which are covered in the intensive full stack web developer course. The language of choice is JavaScript/Node.js. All topics are demonstrated and implemented in the project.
+This page is a high level overview of the topics which were or are yet to be covered in the intensive full stack web developer course. The language of choice is JavaScript/Node.js. All topics are demonstrated and implemented in the project where possible.
 
-In each topic all sub topics which were introduced or are yet to be introduced are listed.
+Each topic lists sub topics without a particular order.
 
-## Table of Content
+## Table of Contents
 
  1. [Requirements](#requirements)
  2. [Back-end](#back-end)
@@ -21,24 +21,24 @@ In each topic all sub topics which were introduced or are yet to be introduced a
 
 - [x] Brainstorming a development project idea.
 - [ ] Identifying and documenting requirements and users.
-- [x] Tracking of requirements in Github.
+- [x] Tracking of requirements in Github as Github Issues.
 
 ## Back-end
 
 - [x] Node.js development environment setup.
 - [x] Using npm and package.json for package management.
 - [x] Working with git feature branches and Github.
+- [x] Developing application features.
 - [x] Classes and object-oriented programming.
 - [x] Working with a data model.
 - [x] Working with an HTTP client to access external APIs.
 - [x] MongoDB NoSQL database setup.
 - [x] Working with a database client.
-- [x] Developing application features.
 - [x] Scaleable project directory and file structure.
 - [x] Application entry point.
-- [x] Dependency injection.
-- [x] Setting up a Web-server with [*fastify*](fastify.io/).
-- [ ] Creating a REST API endpoints for HTTP requests:
+- [x] Dependency injection and when should you use it.
+- [x] Setting up a web-server with [*fastify*](fastify.io/).
+- [ ] Creating REST API endpoints for HTTP requests:
   - [x] GET
   - [ ] POST
   - [ ] PUT
@@ -81,12 +81,12 @@ In each topic all sub topics which were introduced or are yet to be introduced a
 - [x] When should the code be refactored and why?
 - [x] Refactoring without tests.
 - [x] Common refactorings:
-  - [x] Extract function, variable and class
-  - [x] Renaming
-  - [x] Split loop
-  - [x] Replace loop with pipeline
-  - [x] Decompose conditional
-  - [x] Replace nested conditional with guard clauses
+  - [x] Extract function, variable and class.
+  - [x] Renaming.
+  - [x] Split loop.
+  - [x] Replace loop with pipeline.
+  - [x] Decompose conditional.
+  - [x] Replace nested conditional with guard clauses.
 
 ## Architecture
 
@@ -113,11 +113,11 @@ In each topic all sub topics which were introduced or are yet to be introduced a
 
 ## Agile
 
-- [x] What is the Agile development and do we need it?
-- [ ] Agile ceremonies
-  - [ ] Sprints
-  - [x] Daily standups
-  - [ ] Planing
-  - [ ] Scoring
-  - [ ] Sprint review
-  - [ ] Scoring poker
+- [x] What is Agile development and do we need it?
+- [ ] Agile ceremonies:
+  - [ ] Sprints.
+  - [x] Daily standups.
+  - [ ] Sprint planing.
+  - [ ] Sprint review.
+  - [ ] Scoring poker.
+  - [ ] Sprint retrospective.
