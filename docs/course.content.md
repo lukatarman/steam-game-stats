@@ -7,13 +7,13 @@ Each topic lists sub topics without a particular order.
 ## Table of Contents
 
  1. [Requirements](#requirements)
- 2. [Back-end](#back-end)
+ 2. [Backend](#backend)
  3. [Debugging](#debugging)
  4. [Testing](#testing)
  5. [Clean Code](#clean-code)
  6. [Refactoring](#refactoring)
  7. [Architecture](#architecture)
- 8. [Front-end](#front-end)
+ 8. [Frontend](#frontend)
  9. [Deployment](#deployment)
  10. [Agile](#agile)
 
@@ -23,7 +23,7 @@ Each topic lists sub topics without a particular order.
 - [ ] Identifying and documenting requirements and users.
 - [x] Tracking of requirements in Github as Github Issues.
 
-## Back-end
+## Backend
 
 - [x] Node.js development environment setup.
 - [x] Using npm and package.json for package management.
@@ -63,7 +63,7 @@ Each topic lists sub topics without a particular order.
 - [x] Testability as a marker for clean code.
 - [ ] Testing the integration layer.
 - [ ] System tests.
-- [ ] Unit tests in the front-end.
+- [ ] Unit tests in the frontend.
 - [ ] End to end tests.
 
 ## Clean Code
@@ -94,13 +94,13 @@ Each topic lists sub topics without a particular order.
 - [x] Layered architecture.
 - [ ] Modularity.
 
-## Front-end
+## Frontend
 
-- [x] Benefits of a front-end framework like React.
-- [x] Front-end project setup with Node.js.
-- [x] Front-end project structure.
+- [x] Benefits of a frontend framework like React.
+- [x] Frontend project setup with Node.js.
+- [x] Frontend project structure.
 - [x] Using a UI library like Bootstrap.
-- [x] Connecting the front-end to the back-end via HTTP.
+- [x] Connecting the frontend to the backend via HTTP.
 
 ## Deployment
 
