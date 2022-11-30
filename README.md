@@ -69,3 +69,5 @@ Open [http://localhost:8080](http://localhost:8080) in your browser and explore 
 The application uses a 3-tier architecture.
 
 Container diagram pending: [#91](https://github.com/lukatarman/steam-game-stats-backend/issues/91).
+
+Data model diagram pending: [#91](https://github.com/lukatarman/steam-game-stats-backend/issues/91).
