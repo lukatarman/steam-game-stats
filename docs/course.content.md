@@ -6,16 +6,16 @@ Each topic lists sub topics without a particular order.
 
 ## Table of Contents
 
- 1. [Requirements](#requirements)
- 2. [Backend](#backend)
- 3. [Debugging](#debugging)
- 4. [Testing](#testing)
- 5. [Clean Code](#clean-code)
- 6. [Refactoring](#refactoring)
- 7. [Architecture](#architecture)
- 8. [Frontend](#frontend)
- 9. [Deployment](#deployment)
- 10. [Agile](#agile)
+1.  [Requirements](#requirements)
+2.  [Backend](#backend)
+3.  [Debugging](#debugging)
+4.  [Testing](#testing)
+5.  [Clean Code](#clean-code)
+6.  [Refactoring](#refactoring)
+7.  [Architecture](#architecture)
+8.  [Frontend](#frontend)
+9.  [Deployment](#deployment)
+10. [Agile](#agile)
 
 ## Requirements
 
@@ -37,7 +37,7 @@ Each topic lists sub topics without a particular order.
 - [x] Scaleable project directory and file structure.
 - [x] Application entry point.
 - [x] Dependency injection and when should you use it.
-- [x] Setting up a web-server with [*fastify*](fastify.io/).
+- [x] Setting up a web-server with [_fastify_](fastify.io/).
 - [ ] Creating REST API endpoints for HTTP requests:
   - [x] GET
   - [ ] POST

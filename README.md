@@ -2,12 +2,12 @@
 
 ## Table of Contents
 
-  1. [Introduction](#introduction)
-  1. [Course Content](#course-content)
-  1. [Project Details](#project-details)
-  1. [Development Setup](#development-setup)
-  1. [Running the Application](#running-the-application)
-  1. [Architecture](#architecture)
+1. [Introduction](#introduction)
+1. [Course Content](#course-content)
+1. [Project Details](#project-details)
+1. [Development Setup](#development-setup)
+1. [Running the Application](#running-the-application)
+1. [Architecture](#architecture)
 
 ## Introduction
 
@@ -25,7 +25,7 @@ The course content is documented separately. Follow this [link](/docs/course.con
 
 ## Project Details
 
-The *Steam Game Stats* application collects current and historic player numbers of all games available on the steam platform through the steam api and other online sources. The idea behind it is at some point to identify trending "niche" games which are gaining in popularity before they hit the mainstream channels. In its current iteration there is not yet a distinction between niche and mainstream games. But this feature will be added in the future.
+The _Steam Game Stats_ application collects current and historic player numbers of all games available on the steam platform through the steam api and other online sources. The idea behind it is at some point to identify trending "niche" games which are gaining in popularity before they hit the mainstream channels. In its current iteration there is not yet a distinction between niche and mainstream games. But this feature will be added in the future.
 
 The backend is designed to run 24/7 and collect player numbers of games every day. It provides a REST API for the frontend.
 
