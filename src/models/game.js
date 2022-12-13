@@ -52,6 +52,27 @@ export class Game {
     return index;
   }
 
+  addManyHistoryEntriesFromSteamcharts(gameHistories) {
+    const fixedGameHistories = Players.manyFromSteamchartsPage(gameHistories);
+
+    const sortedHistories = this.#sortGameHistoriesByDate(fixedGameHistories);
+
+    this.playerHistory.push(sortedHistories);
+  }
+
+  #sortGameHistoriesByDate(gameHistories) {
+    const sortedHistories = [...gameHistories];
+
+    sortedHistories.sort((a, b) => {
+      const dateA = new Date(a.year, a.month);
+      const dateB = new Date(b.year, b.month);
+
+      return dateA - dateB;
+    });
+
+    return sortedHistories;
+  }
+
   get lastUpdate() {
     return this.hasHistory
       ? this.playerHistory[this.playerHistory.length - 1].date
