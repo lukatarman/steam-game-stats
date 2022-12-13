@@ -20,6 +20,21 @@ export class Players {
     return players;
   }
 
+  static manyFromDbEntry(histories) {
+    if (histories.length === 0) return [];
+    return histories.map((history) => this.fromFromDbEntry(history));
+  }
+
+  //prettier-ignore
+  static fromFromDbEntry(history) {
+    const players           = new Players();
+    players.year            = history.year;
+    players.month           = history.month;
+    players.averagePlayers  = history.averagePlayers;
+    players.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
+    return players;
+  }
+
   //prettier-ignore
   static newMonthlyEntry() {
     const players           = new Players();
