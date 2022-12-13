@@ -1,8 +1,8 @@
 import { Players } from "./players.js";
 
 describe("Players", function () {
-  describe(".manyFromSteamChartsPage takes the passed in array, and instantiates it with the 'fromSteamcharts' method. So,", function () {
-    describe("when the passed in array contains player histories, 'this.results[0]'", function () {
+  describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects. So,", function () {
+    describe("when a list of history objects is passed in", function () {
       beforeEach(function () {
         this.currentDate = new Date();
 
@@ -16,16 +16,16 @@ describe("Players", function () {
         this.results = Players.manyFromSteamchartsPage(this.histories);
       });
 
-      it("is an instance of 'Player'", function () {
+      it("the result is a list of Player instances.", function () {
         expect(this.results[0]).toBeInstanceOf(Players);
       });
-      it("has a property called 'year', which equals the current year.", function () {
+      it("a Player instance year is the same as the history object year.", function () {
         expect(this.results[0].year).toBe(this.currentDate.getFullYear());
       });
-      it("has a property called 'month', which equals the current month.", function () {
+      it("a Player instance month is the same as the history object month.", function () {
         expect(this.results[0].month).toBe(this.currentDate.getMonth());
       });
-      it("has a property called 'averagePlayers', which equals '23'", function () {
+      it("a Player instance averagePlayers is the same as the history object averagePlayers", function () {
         expect(this.results[0].averagePlayers).toBe(23);
       });
     });
