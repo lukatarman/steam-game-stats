@@ -1,3 +1,5 @@
+import { Players } from "./players.js";
+
 export class Game {
   id;
   name;
@@ -23,6 +25,31 @@ export class Game {
     game.imageUrl      = dbEntry.imageUrl;
     game.playerHistory = Players.manyFromDbEntry(dbEntry.playerHistory);
     return game;
+  }
+
+  addOnePlayerHistoryEntry(players) {
+    let existingMonthAndYearIndex = this.#getExistingMonthAndYearIndex();
+    if (existingMonthAndYearIndex === -1) {
+      this.playerHistory.push(Players.newMonthlyEntry());
+      existingMonthAndYearIndex = this.playerHistory.length - 1;
+    }
+
+    const currentMonthAndYearEntry = this.playerHistory[existingMonthAndYearIndex];
+
+    currentMonthAndYearEntry.addNewTrackedPlayers(players);
+
+    return this;
+  }
+
+  #getExistingMonthAndYearIndex() {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+
+    const index = this.playerHistory.findIndex(
+      (history) => history.year === currentYear && history.month === currentMonth,
+    );
+
+    return index;
   }
 
   get lastUpdate() {
