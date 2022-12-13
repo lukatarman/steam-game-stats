@@ -8,8 +8,12 @@ export function addCurrentPlayersFromSteam(players, games) {
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
-    if (page !== "") {
-      const parsedGameHistories = parseGameHistories(page);
+    if (page === "") {
+      games.push(game);
+      continue;
+    }
+
+    const parsedGameHistories = parseGameHistories(page);
       const fixedGameHistories = Players.manyFromSteamchartsPage(parsedGameHistories);
 
       fixedGameHistories.forEach((history) => {
