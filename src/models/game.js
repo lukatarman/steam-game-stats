@@ -21,7 +21,7 @@ export class Game {
     game.id            = dbEntry.id;
     game.name          = dbEntry.name;
     game.imageUrl      = dbEntry.imageUrl;
-    game.playerHistory = dbEntry.playerHistory;
+    game.playerHistory = Players.manyFromDbEntry(dbEntry.playerHistory);
     return game;
   }
 
