@@ -26,7 +26,7 @@ export class Players {
   }
 
   //prettier-ignore
-  static fromFromDbEntry(history) {
+  static fromDbEntry(history) {
     const players           = new Players();
     players.year            = history.year;
     players.month           = history.month;
