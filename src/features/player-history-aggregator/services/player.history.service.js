@@ -22,19 +22,6 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   return games;
 }
 
-function sortGameHistoriesByDate(gameHistories) {
-  const sortedHistories = [...gameHistories];
-
-  sortedHistories.sort((a, b) => {
-    const dateA = new Date(a.year, a.month);
-    const dateB = new Date(b.year, b.month);
-
-    return dateA - dateB;
-  });
-
-  return sortedHistories;
-}
-
 function parseGameHistories(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
