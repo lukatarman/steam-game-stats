@@ -18,6 +18,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
 
     games.push(game);
   }
+
   return games;
 }
 
