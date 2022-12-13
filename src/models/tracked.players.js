@@ -19,4 +19,10 @@ export class TrackedPlayers {
 
     return new Date(dateInMs + twelveHoursInMs);
   }
+
+  static manyFromDbEntry(trackedPlayersArray) {
+    return trackedPlayersArray.map(({ players, date }) => {
+      return new TrackedPlayers(players, date);
+    });
+  }
 }
