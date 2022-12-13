@@ -6,7 +6,7 @@ import { TrackedPlayers } from "../../../models/tracked.players.js";
 import { Players } from "../../../models/players.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
-describe("player.history.service.js", function () {
+xdescribe("player.history.service.js", function () {
   describe(".addCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
     describe("when the game's 'playerHistory' array is empty, this.result[0].playerHistory[0]", function () {
       beforeEach(function () {
