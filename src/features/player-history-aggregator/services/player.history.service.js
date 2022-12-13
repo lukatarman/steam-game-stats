@@ -2,43 +2,7 @@ import { JSDOM } from "jsdom";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
 
 export function addCurrentPlayersFromSteam(players, games) {
-  return games.map((game, i) => {
-    let existingMonthAndYearIndex = getExistingMonthAndYearIndex(game);
-
-    if (existingMonthAndYearIndex === -1) {
-      game.playerHistory.push(Players.newMonthlyEntry());
-      existingMonthAndYearIndex = game.playerHistory.length - 1;
-    }
-
-    const currentMonthAndYearEntry = game.playerHistory[existingMonthAndYearIndex];
-
-    currentMonthAndYearEntry.trackedPlayers.push(new TrackedPlayers(players[i]));
-
-    currentMonthAndYearEntry.averagePlayers = calculateAveragePlayers(
-      currentMonthAndYearEntry,
-    );
-
-    return game;
-  });
-}
-
-function getExistingMonthAndYearIndex(game) {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
-
-  return game.playerHistory.findIndex(
-    (history) => history.year === currentYear && history.month === currentMonth,
-  );
-}
-
-function calculateAveragePlayers(currentMonthAndYearEntry) {
-  const currentTrackedHistories = currentMonthAndYearEntry.trackedPlayers;
-
-  const playersSum = currentTrackedHistories.reduce((previous, current) => {
-    return { players: parseFloat(previous.players) + parseFloat(current.players) };
-  });
-
-  return parseFloat((playersSum.players / currentTrackedHistories.length).toFixed(1));
+  return games.map((game, i) => game.addOnePlayerHistoryEntry(players[i]));
 }
 
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
