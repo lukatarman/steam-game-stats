@@ -44,4 +44,20 @@ export class Players {
     players.trackedPlayers  = [];
     return players;
   }
+
+  addNewTrackedPlayers(players) {
+    this.trackedPlayers.push(new TrackedPlayers(players));
+
+    this.averagePlayers = this.#calculateAveragePlayers();
+  }
+
+  #calculateAveragePlayers() {
+    const currentTrackedHistories = this.trackedPlayers;
+
+    const playersSum = currentTrackedHistories.reduce((previous, current) => {
+      return previous + parseFloat(current.players);
+    }, 0);
+
+    return parseFloat((playersSum / currentTrackedHistories.length).toFixed(1));
+  }
 }
