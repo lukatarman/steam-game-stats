@@ -22,7 +22,7 @@ export class Players {
 
   static manyFromDbEntry(histories) {
     if (histories.length === 0) return [];
-    return histories.map((history) => this.fromFromDbEntry(history));
+    return histories.map((history) => this.fromDbEntry(history));
   }
 
   //prettier-ignore
