@@ -60,8 +60,6 @@ describe("player.history.service.js", function () {
     });
   });
 
-  //todo continue here
-
   describe(".addPlayerHistoriesFromSteamcharts adds the player histores from Steamcharts to each game object", function () {
     describe("When both gamesPagesMap properties have proper values", function () {
       beforeEach(function () {
