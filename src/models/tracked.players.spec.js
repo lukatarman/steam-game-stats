@@ -35,7 +35,7 @@ describe("players.js", function () {
         this.players = new TrackedPlayers("0", this.currentDate);
       });
 
-      it("the property date should be the current date", function () {
+      it("the property 'players' should be 0", function () {
         expect(this.players.players).toBe(0);
       });
     });
@@ -46,7 +46,7 @@ describe("players.js", function () {
         this.players = new TrackedPlayers("5473.4", this.currentDate);
       });
 
-      it("the property date should be the current date", function () {
+      it("the property players should be '5473'", function () {
         expect(this.players.players).toBe(5473.4);
       });
     });
