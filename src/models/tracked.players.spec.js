@@ -68,22 +68,22 @@ describe("players.js", function () {
           this.results = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
         });
 
-        it("the result is a list of Player instances.", function () {
+        it("the first result is an intance of Players.", function () {
           expect(this.results[0]).toBeInstanceOf(TrackedPlayers);
         });
-        it("a Player instance year is the same as the history object year.", function () {
+        it("the first result has a property'players' which equals 20.", function () {
           expect(this.results[0].players).toBe(20);
         });
-        it("a Player instance year is the same as the history object year.", function () {
+        it("the first result has a property'date' which equals the current date.", function () {
           expect(this.results[0].date).toEqual(this.currentDate);
         });
-        it("the result is a list of Player instances.", function () {
+        it("the second result is an intance of Players.", function () {
           expect(this.results[1]).toBeInstanceOf(TrackedPlayers);
         });
-        it("a Player instance year is the same as the history object year.", function () {
+        it("the second result has a property'players' which equals 15.", function () {
           expect(this.results[1].players).toBe(15);
         });
-        it("a Player instance year is the same as the history object year.", function () {
+        it("the second result has a property'date' which equals the current date.", function () {
           expect(this.results[1].date).toEqual(this.currentDate);
         });
       });
