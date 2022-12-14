@@ -50,5 +50,53 @@ describe("players.js", function () {
         expect(this.players.players).toBe(5473.4);
       });
     });
+
+    fdescribe(".manyFromDbEntry creates a list of TrackedPlayers instances from an array of objects. So,", function () {
+      describe("when an array of objects is passed in,", function () {
+        beforeEach(function () {
+          this.currentDate = new Date();
+
+          this.trackedPlayersArray = [
+            {
+              players: 20,
+            },
+            {
+              players: 15,
+            },
+          ];
+
+          this.results = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
+        });
+
+        it("the result is a list of Player instances.", function () {
+          expect(this.results[0]).toBeInstanceOf(TrackedPlayers);
+        });
+        it("a Player instance year is the same as the history object year.", function () {
+          expect(this.results[0].players).toBe(20);
+        });
+        it("a Player instance year is the same as the history object year.", function () {
+          expect(this.results[0].date).toEqual(this.currentDate);
+        });
+        it("the result is a list of Player instances.", function () {
+          expect(this.results[1]).toBeInstanceOf(TrackedPlayers);
+        });
+        it("a Player instance year is the same as the history object year.", function () {
+          expect(this.results[1].players).toBe(15);
+        });
+        it("a Player instance year is the same as the history object year.", function () {
+          expect(this.results[1].date).toEqual(this.currentDate);
+        });
+      });
+
+      describe("when the passed in array is empty", function () {
+        beforeEach(function () {
+          this.results = TrackedPlayers.manyFromDbEntry([]);
+        });
+
+        it("the returned array's will be empty", function () {
+          expect(this.results).toEqual([]);
+        });
+      });
+    });
   });
 });
