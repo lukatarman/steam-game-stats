@@ -1,4 +1,5 @@
 import { Game } from "./game.js";
+import { Players } from "./players.js";
 
 describe("game.js", function () {
   describe("Game", function () {
@@ -145,6 +146,76 @@ describe("game.js", function () {
 
           it("it returns 'undefined'", function () {
             expect(this.testClass.lastUpdate).toBe("21 September 1989");
+          });
+        });
+      });
+    });
+
+    describe(".addOnePlayerHistoryEntry adds a trackedPlayers entry to the correct playerHistory object and returns the object. So,", function () {
+      describe("when this month's entry already exists", function () {
+        describe("players get added into the existing playerHistory entry. So,", function () {
+          beforeEach(function () {
+            this.currentPlayers = 45;
+            this.playerHistory = [
+              {
+                year: new Date().getFullYear(),
+                month: new Date().getMonth(),
+                averagePlayers: 0,
+                trackedPlayers: [],
+              },
+            ];
+
+            this.game = {
+              id: 1,
+              name: "Test Game",
+              imageUrl: `https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg`,
+              playerHistory: Players.manyFromDbEntry(this.playerHistory),
+            };
+
+            this.result = Game.fromDbEntry(this.game);
+
+            this.result.addOnePlayerHistoryEntry(this.currentPlayers);
+          });
+
+          it("the resulting object's playerHistory value is an instance of Players.", function () {
+            expect(this.result.playerHistory[0]).toBeInstanceOf(Players);
+          });
+          it("the resulting object has a property called players, which equals 45", function () {
+            expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(45);
+          });
+        });
+      });
+
+      describe("when this month's entry does not exist yet", function () {
+        describe("players get added into a new playerHistory entry. So,", function () {
+          beforeEach(function () {
+            this.currentPlayers = 33;
+            this.playerHistory = [
+              {
+                year: "2022",
+                month: "10",
+                averagePlayers: 75,
+                trackedPlayers: [],
+              },
+            ];
+
+            this.game = {
+              id: 1,
+              name: "Test Game",
+              imageUrl: `https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg`,
+              playerHistory: Players.manyFromDbEntry(this.playerHistory),
+            };
+
+            this.result = Game.fromDbEntry(this.game);
+
+            this.result.addOnePlayerHistoryEntry(this.currentPlayers);
+          });
+
+          it("the resulting object's playerHistory value has a length of 1", function () {
+            expect(this.result.playerHistory.length).toBe(2);
+          });
+          it("the resulting object's second playerHistory entry has a property called players, which equals 45", function () {
+            expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(33);
           });
         });
       });
