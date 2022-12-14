@@ -2,107 +2,65 @@ import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts,
 } from "./player.history.service.js";
-import { TrackedPlayers } from "../../../models/tracked.players.js";
 import { Players } from "../../../models/players.js";
+import { Game } from "../../../models/game.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
-xdescribe("player.history.service.js", function () {
-  describe(".addCurrentPlayersFromSteam adds the current players to the games object and calculates the average players. So,", function () {
-    describe("when the game's 'playerHistory' array is empty, this.result[0].playerHistory[0]", function () {
+describe("player.history.service.js", function () {
+  describe(".addCurrentPlayersFromSteam runs addOnePlayerHistoryEntry on each value of the provided games array.", function () {
+    describe("When the games array includes games,", function () {
       beforeEach(function () {
-        this.playersFromSteam = ["32"];
+        this.firstGame = { id: 1, name: "Game 1", playerHistory: [] };
+        this.SecondGame = { id: 2, name: "Game 2", playerHistory: [] };
+
+        this.players = [55, 45];
 
         this.games = [
-          {
-            id: 1,
-            name: "Random Game",
-            playerHistory: [],
-          },
+          Game.fromDbEntry(this.firstGame),
+          Game.fromDbEntry(this.SecondGame),
         ];
 
-        this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
+        this.result = addCurrentPlayersFromSteam(this.players, this.games);
       });
 
-      it("' is an instance of Players", function () {
-        expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(2);
       });
-      it("' has a property called 'average players', which equals '32.0'", function () {
-        expect(this.result[0].playerHistory[0].averagePlayers).toBe(32.0);
+      it("the first result has a value of average players, which is 55", function () {
+        expect(this.result[0].playerHistory[0].averagePlayers).toBe(55);
       });
-      it(".trackedPlayers[0]' is an instance of 'TrackedPlayers'", function () {
-        expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
-          TrackedPlayers,
-        );
+      it("the second result has a value of average players, which is 45", function () {
+        expect(this.result[1].playerHistory[0].averagePlayers).toBe(45);
       });
     });
 
-    describe("when the game's 'playerHistory' array includes this month's entry, 'this.results[0].playerHistory[0]", function () {
+    fdescribe("When the players array is full of zeroes", function () {
       beforeEach(function () {
-        this.playersFromSteam = ["32"];
+        this.firstGame = { id: 1, name: "Game 1", playerHistory: [] };
+        this.SecondGame = { id: 2, name: "Game 2", playerHistory: [] };
 
         this.games = [
-          {
-            id: 1,
-            name: "Random Game",
-            playerHistory: [Players.newMonthlyEntry()],
-          },
+          Game.fromDbEntry(this.firstGame),
+          Game.fromDbEntry(this.SecondGame),
         ];
 
-        this.games[0].playerHistory[0].trackedPlayers.push(new TrackedPlayers("23"));
-        this.games[0].playerHistory[0].trackedPlayers.push(new TrackedPlayers("66"));
+        this.players = [0, 0];
 
-        this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
+        this.result = addCurrentPlayersFromSteam(this.players, this.games);
       });
-
-      it("' is an instance of Players", function () {
-        expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
+      it("the result is an empty array", function () {
+        expect(this.result.length).toBe(2);
       });
-      it("' has a property called 'average players', which equals '40.3'", function () {
-        expect(this.result[0].playerHistory[0].averagePlayers).toBe(40.3);
-      });
-      it(".trackedPlayers[0]' is an instance of 'TrackedPlayers'", function () {
-        expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
-          TrackedPlayers,
-        );
-      });
-    });
-
-    describe("when the game's 'playerHistory' array is not empty, and it does not include this month's entry, 'this.results[0].", function () {
-      beforeEach(function () {
-        this.playersFromSteam = ["32"];
-        this.date = new Date("2021");
-
-        this.games = [
-          {
-            id: 1,
-            name: "Random Game",
-            playerHistory: [
-              {
-                year: this.date.getFullYear(),
-                month: this.date.getMonth(),
-                averagePlayers: 0,
-                trackedPlayers: [new TrackedPlayers("23"), new TrackedPlayers("66")],
-              },
-            ],
-          },
-        ];
-
-        this.result = addCurrentPlayersFromSteam(this.playersFromSteam, this.games);
-      });
-
-      it("playerHistory[0]' has a property called 'average players', which equals '0'", function () {
+      it("the first result has a property 'averagePlayers', which equals 0", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(0);
       });
-      it("playerHistory[0]' has a property called 'tracked players' its first array entry is an instance of 'TrackedPlayers'", function () {
-        expect(this.result[0].playerHistory[0].trackedPlayers[0]).toBeInstanceOf(
-          TrackedPlayers,
-        );
-      });
-      it("playerHistory[1]' is an instance of Players", function () {
-        expect(this.result[0].playerHistory[1]).toBeInstanceOf(Players);
+      it("the second result has a property 'averagePlayers', which equals 0", function () {
+        expect(this.result[1].playerHistory[0].averagePlayers).toBe(0);
       });
     });
   });
+
+  //todo continue here
 
   describe(".addPlayerHistoriesFromSteamcharts uses the gamesPagesMap to add the player histories to each entry in the games array, and then returns it. So,", function () {
     describe("if the gamesPagesMap includes Elden Ring's player history, 'this.result[0].", function () {
