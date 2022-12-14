@@ -262,5 +262,48 @@ describe("game.js", function () {
         });
       });
     });
+
+    describe(".hasHistory checks whether or not the object's playerHistory array has values.", function () {
+      describe("When the playerHistory array has no length", function () {
+        beforeEach(function () {
+          this.steamApp = {
+            appid: 1,
+            name: "Test Game",
+          };
+
+          this.gameObject = Game.fromSteamApp(this.steamApp);
+          this.result = this.gameObject.hasHistory;
+        });
+
+        it("the getter function returns false", function () {
+          expect(this.result).toBeFalse();
+        });
+      });
+
+      describe("When the playerHistory array has a length", function () {
+        beforeEach(function () {
+          this.steamApp = {
+            appid: 1,
+            name: "Test Game",
+          };
+
+          this.gameHistories = [
+            {
+              date: new Date("April 2020"),
+              players: 5,
+            },
+          ];
+
+          this.gameObject = Game.fromSteamApp(this.steamApp);
+          this.gameObject.addHistoryEntriesFromSteamcharts(this.gameHistories);
+
+          this.result = this.gameObject.hasHistory;
+        });
+
+        it("the getter function returns false", function () {
+          expect(this.result).toBeTrue();
+        });
+      });
+    });
   });
 });
