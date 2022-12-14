@@ -111,44 +111,6 @@ describe("game.js", function () {
           expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
         });
       });
-
-      describe("class is instantiated,", function () {
-        describe("with an object whose playerHistory property is an empty array", function () {
-          beforeEach(function () {
-            this.testObject = {
-              id: 123,
-              name: "test game",
-              imageUrl: "test url",
-              playerHistory: [],
-            };
-
-            this.testClass = Game.fromDbEntry(this.testObject);
-
-            this.result = this.testClass.lastUpdate;
-          });
-
-          it("it returns 'undefined'", function () {
-            expect(this.result).toBeUndefined();
-          });
-        });
-
-        describe("with an object whose playerHistory property has entries", function () {
-          beforeEach(function () {
-            this.testObject = {
-              id: 123,
-              name: "test game",
-              imageUrl: "test url",
-              playerHistory: [{ date: "21 September 1989" }],
-            };
-
-            this.testClass = Game.fromDbEntry(this.testObject);
-          });
-
-          it("it returns 'undefined'", function () {
-            expect(this.testClass.lastUpdate).toBe("21 September 1989");
-          });
-        });
-      });
     });
 
     describe(".addOnePlayerHistoryEntry adds a trackedPlayers entry to the correct playerHistory object and returns the object. So,", function () {
@@ -259,49 +221,6 @@ describe("game.js", function () {
           expect(this.result.playerHistory[0].averagePlayers).toBe(55);
           expect(this.result.playerHistory[1].averagePlayers).toBe(5);
           expect(this.result.playerHistory[2].averagePlayers).toBe(15);
-        });
-      });
-    });
-
-    describe(".hasHistory checks whether or not the object's playerHistory array has values.", function () {
-      describe("When the playerHistory array has no length", function () {
-        beforeEach(function () {
-          this.steamApp = {
-            appid: 1,
-            name: "Test Game",
-          };
-
-          this.gameObject = Game.fromSteamApp(this.steamApp);
-          this.result = this.gameObject.hasHistory;
-        });
-
-        it("the getter function returns false", function () {
-          expect(this.result).toBeFalse();
-        });
-      });
-
-      describe("When the playerHistory array has a length", function () {
-        beforeEach(function () {
-          this.steamApp = {
-            appid: 1,
-            name: "Test Game",
-          };
-
-          this.gameHistories = [
-            {
-              date: new Date("April 2020"),
-              players: 5,
-            },
-          ];
-
-          this.gameObject = Game.fromSteamApp(this.steamApp);
-          this.gameObject.addHistoryEntriesFromSteamcharts(this.gameHistories);
-
-          this.result = this.gameObject.hasHistory;
-        });
-
-        it("the getter function returns false", function () {
-          expect(this.result).toBeTrue();
         });
       });
     });
