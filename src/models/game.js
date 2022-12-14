@@ -17,6 +17,10 @@ export class Game {
     return game;
   }
 
+  static manyFromDbEntry(entries) {
+    return entries.map((entry) => this.fromDbEntry(entry));
+  }
+
   // prettier-ignore
   static fromDbEntry(dbEntry) {
     const game         = new Game();
