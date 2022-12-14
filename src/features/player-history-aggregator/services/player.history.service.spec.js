@@ -2,7 +2,6 @@ import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts,
 } from "./player.history.service.js";
-import { Players } from "../../../models/players.js";
 import { Game } from "../../../models/game.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
