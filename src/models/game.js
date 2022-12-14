@@ -72,14 +72,4 @@ export class Game {
 
     return sortedHistories;
   }
-
-  get hasHistory() {
-    return this.playerHistory && this.playerHistory.length !== 0;
-  }
-
-  get lastUpdate() {
-    return this.hasHistory
-      ? this.playerHistory[this.playerHistory.length - 1].date
-      : undefined;
-  }
 }
