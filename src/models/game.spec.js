@@ -220,5 +220,47 @@ describe("game.js", function () {
         });
       });
     });
+
+    describe(".addHistoryEntriesFromSteamcharts", function () {
+      describe("adds a game's Steamcharts history entries in the correct format. So, ", function () {
+        beforeEach(function () {
+          this.steamApp = {
+            appid: 1,
+            name: "Test Game",
+          };
+
+          this.gameHistories = [
+            {
+              date: new Date("April 2020"),
+              players: 5,
+            },
+            {
+              date: new Date("July 2020"),
+              players: 15,
+            },
+            {
+              date: new Date("February 2020"),
+              players: 55,
+            },
+          ];
+
+          this.result = Game.fromSteamApp(this.steamApp);
+
+          this.result.addHistoryEntriesFromSteamcharts(this.gameHistories);
+        });
+
+        it("the resulting object's playerHistory value is an instance of Players", function () {
+          expect(this.result.playerHistory[0]).toBeInstanceOf(Players);
+        });
+        it("the resulting object's playerHistory array has a length of 3", function () {
+          expect(this.result.playerHistory.length).toBe(3);
+        });
+        it("the resulting object's playerHistory array is in the correct order", function () {
+          expect(this.result.playerHistory[0].averagePlayers).toBe(55);
+          expect(this.result.playerHistory[1].averagePlayers).toBe(5);
+          expect(this.result.playerHistory[2].averagePlayers).toBe(15);
+        });
+      });
+    });
   });
 });
