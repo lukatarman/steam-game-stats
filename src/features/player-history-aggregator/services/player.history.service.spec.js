@@ -5,9 +5,10 @@ import {
 import { Players } from "../../../models/players.js";
 import { Game } from "../../../models/game.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
+import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 
 describe("player.history.service.js", function () {
-  describe(".addCurrentPlayersFromSteam runs addOnePlayerHistoryEntry on each value of the provided games array.", function () {
+  describe(".addCurrentPlayersFromSteam runs a function on each value of the provided games array.", function () {
     describe("When the games array includes games,", function () {
       beforeEach(function () {
         this.firstGame = { id: 1, name: "Game 1", playerHistory: [] };
@@ -34,7 +35,7 @@ describe("player.history.service.js", function () {
       });
     });
 
-    fdescribe("When the players array is full of zeroes", function () {
+    describe("When the players array is full of zeroes", function () {
       beforeEach(function () {
         this.firstGame = { id: 1, name: "Game 1", playerHistory: [] };
         this.SecondGame = { id: 2, name: "Game 2", playerHistory: [] };
@@ -62,91 +63,46 @@ describe("player.history.service.js", function () {
 
   //todo continue here
 
-  describe(".addPlayerHistoriesFromSteamcharts uses the gamesPagesMap to add the player histories to each entry in the games array, and then returns it. So,", function () {
-    describe("if the gamesPagesMap includes Elden Ring's player history, 'this.result[0].", function () {
+  describe(".addPlayerHistoriesFromSteamcharts adds the player histores from Steamcharts to each game object", function () {
+    describe("When both gamesPagesMap properties have proper values", function () {
       beforeEach(function () {
         this.map = new Map();
-        this.page = eldenRingHttpDetailsSteamcharts;
+        this.firstPage = eldenRingHttpDetailsSteamcharts;
+        this.secondPage = crushTheCastleHtmlDetailsSteamcharts;
 
-        this.game = {
+        this.firstGame = {
           id: 1,
           name: "Elden Ring",
           playerHistory: [],
         };
 
-        this.map.set(this.game, this.page);
-
-        this.result = addPlayerHistoriesFromSteamcharts(this.map);
-      });
-
-      it("playerHistory[0]' is an instance of 'Players'", function () {
-        expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
-      });
-      it("playerHistory[0]' has a property called 'year', which equals '2022'", function () {
-        expect(this.result[0].playerHistory[0].year).toBe(2022);
-      });
-      it("playerHistory[0]' has a property called 'month', which equals '2'", function () {
-        expect(this.result[0].playerHistory[0].month).toBe(2);
-      });
-      it("playerHistory[0]' has a property called 'averagePlayers', which equals '522066.4'", function () {
-        expect(this.result[0].playerHistory[0].averagePlayers).toBe(522066.4);
-      });
-      it("playerHistory[1]' has a property called month, which equals '3'", function () {
-        expect(this.result[0].playerHistory[1].month).toBe(3);
-      });
-      it("playerHistory[1]' has a property called averagePlayers, which equals '211468.9'", function () {
-        expect(this.result[0].playerHistory[1].averagePlayers).toBe(211468.9);
-      });
-    });
-
-    describe("if the gamesPagesMap includes Elden Ring's player history, and the playerHistory already contains even more recent histories 'this.result[0].", function () {
-      beforeEach(function () {
-        this.map = new Map();
-        this.page = eldenRingHttpDetailsSteamcharts;
-
-        this.game = {
-          id: 1,
-          name: "Elden Ring",
-          playerHistory: [
-            {
-              year: 2022,
-              month: 11,
-            },
-          ],
+        this.secondGame = {
+          id: 2,
+          name: "Crush The Castle",
+          playerHistory: [],
         };
 
-        this.map.set(this.game, this.page);
+        this.instantiatedFirstGame = Game.fromDbEntry(this.firstGame);
+        this.instantiatedSecondGame = Game.fromDbEntry(this.secondGame);
+
+        this.map.set(this.instantiatedFirstGame, this.firstPage);
+        this.map.set(this.instantiatedSecondGame, this.secondPage);
 
         this.result = addPlayerHistoriesFromSteamcharts(this.map);
       });
 
-      it("playerHistory[0]' is an instance of 'Players'", function () {
-        expect(this.result[0].playerHistory[0]).toBeInstanceOf(Players);
+      it("The first result's playerHistory value has a length of 2", function () {
+        expect(this.result[0].playerHistory.length).toBe(2);
       });
-      it("playerHistory[0]' has a property called 'year', which equals '2022'", function () {
-        expect(this.result[0].playerHistory[0].year).toBe(2022);
-      });
-      it("playerHistory[0]' has a property called 'month', which equals '2'", function () {
-        expect(this.result[0].playerHistory[0].month).toBe(2);
-      });
-      it("playerHistory[0]' has a property called 'averagePlayers', which equals '522066.4'", function () {
+      it("The first result has an averagePlayers value of '522066.4'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(522066.4);
       });
-      it("playerHistory[1]' has a property called month, which equals '3'", function () {
-        expect(this.result[0].playerHistory[1].month).toBe(3);
-      });
-      it("playerHistory[1]' has a property called averagePlayers, which equals '211468.9'", function () {
-        expect(this.result[0].playerHistory[1].averagePlayers).toBe(211468.9);
-      });
-      it("playerHistory[2]' has a property called year, which equals '2022'", function () {
-        expect(this.result[0].playerHistory[2].year).toBe(2022);
-      });
-      it("playerHistory[2]' has a property called month, which equals '11'", function () {
-        expect(this.result[0].playerHistory[2].month).toBe(11);
+      it("The second result has an averagePlayers value of '7.5'", function () {
+        expect(this.result[1].playerHistory[0].averagePlayers).toBe(7.5);
       });
     });
 
-    describe("when the gamesPagesMap's page value is an empty array", function () {
+    describe("when the gamesPagesMap's page value is an empty string", function () {
       beforeEach(function () {
         this.map = new Map();
 
@@ -156,7 +112,7 @@ describe("player.history.service.js", function () {
           playerHistory: [],
         };
 
-        this.map.set(this.game, []);
+        this.map.set(this.game, "");
 
         this.result = addPlayerHistoriesFromSteamcharts(this.map);
       });
