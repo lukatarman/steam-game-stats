@@ -1,7 +1,7 @@
 import { TrackedPlayers } from "./tracked.players.js";
 
-describe("players.js", function () {
-  describe("Players", function () {
+describe("tracked.players.js", function () {
+  describe("TrackedPlayers", function () {
     describe("if nothing is passed as the second parameter when instantiating", function () {
       beforeEach(function () {
         this.currentDate = new Date();
