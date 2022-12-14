@@ -122,4 +122,26 @@ describe("Players", function () {
       expect(this.result.trackedPlayers).toEqual([]);
     });
   });
+
+  describe(".addNewTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. So, the modified object", function () {
+    beforeEach(function () {
+      this.firstPlayers = "10";
+      this.secondPlayers = "50";
+
+      this.result = Players.newMonthlyEntry();
+
+      this.result.addNewTrackedPlayers(this.firstPlayers);
+      this.result.addNewTrackedPlayers(this.secondPlayers);
+    });
+
+    it("has a 'players' property in its trackedPlayers first array value, which equals 10", function () {
+      expect(this.result.trackedPlayers[0].players).toBe(10);
+    });
+    it("has a 'players' property in its trackedPlayers second array value, which equals 50", function () {
+      expect(this.result.trackedPlayers[1].players).toBe(50);
+    });
+    it("has its averagePlayers property updated to 30", function () {
+      expect(this.result.averagePlayers).toBe(30);
+    });
+  });
 });
