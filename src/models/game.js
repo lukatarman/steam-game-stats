@@ -52,7 +52,7 @@ export class Game {
     return index;
   }
 
-  addManyHistoryEntriesFromSteamcharts(gameHistories) {
+  addHistoryEntriesFromSteamcharts(gameHistories) {
     const fixedGameHistories = Players.manyFromSteamchartsPage(gameHistories);
 
     const sortedHistories = this.#sortGameHistoriesByDate(fixedGameHistories);
