@@ -57,7 +57,7 @@ export class Game {
 
     const sortedHistories = this.#sortGameHistoriesByDate(fixedGameHistories);
 
-    this.playerHistory.push(sortedHistories);
+    this.playerHistory = sortedHistories;
   }
 
   #sortGameHistoriesByDate(gameHistories) {
