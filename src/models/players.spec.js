@@ -26,11 +26,11 @@ describe("Players", function () {
         expect(this.results[0].month).toBe(this.currentDate.getMonth());
       });
       it("a Player instance averagePlayers is the same as the history object averagePlayers", function () {
-        expect(this.results[0].averagePlayers).toBe(23);
+        expect(this.results[0].averagePlayers).toBe(this.histories[0].players);
       });
     });
 
-    describe("when the passed in array is empty", function () {
+    fdescribe("when the passed in array is empty", function () {
       beforeEach(function () {
         this.results = Players.manyFromSteamchartsPage([]);
       });
@@ -99,7 +99,7 @@ describe("Players", function () {
     });
   });
 
-  describe(".newMonthlyEntry instantiates the Players class with default values. So, the returned object", function () {
+  describe(".newMonthlyEntry instantiates the Players class with default values. The returned object", function () {
     beforeEach(function () {
       this.currentDate = new Date();
 
@@ -123,7 +123,7 @@ describe("Players", function () {
     });
   });
 
-  describe(".addNewTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. So, the modified object", function () {
+  describe(".addNewTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
     beforeEach(function () {
       this.firstPlayers = "10";
       this.secondPlayers = "50";
