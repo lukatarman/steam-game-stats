@@ -94,6 +94,9 @@ describe("player.history.service.js", function () {
       it("The first result has an averagePlayers value of '522066.4'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(522066.4);
       });
+      it("The second result's playerHistory value has a length of 2", function () {
+        expect(this.result[1].playerHistory.length).toBe(2);
+      });
       it("The second result has an averagePlayers value of '7.5'", function () {
         expect(this.result[1].playerHistory[0].averagePlayers).toBe(7.5);
       });
