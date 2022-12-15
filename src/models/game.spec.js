@@ -171,7 +171,7 @@ describe("game.js", function () {
             this.result.addOnePlayerHistoryEntry(this.currentPlayers);
           });
 
-          it("The resulting object's playerHistory value has a length of 1", function () {
+          it("The resulting object's playerHistory value has a length of 2", function () {
             expect(this.result.playerHistory.length).toBe(2);
           });
           it("The resulting object's second playerHistory entry has a property called players, which equals 45", function () {
