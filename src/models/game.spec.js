@@ -174,7 +174,7 @@ describe("game.js", function () {
           it("The resulting object's playerHistory value has a length of 2", function () {
             expect(this.result.playerHistory.length).toBe(2);
           });
-          it("The resulting object's second playerHistory entry has a property called players, which equals 45", function () {
+          it("The resulting object's second playerHistory entry has a property called players, which equals 33", function () {
             expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(33);
           });
         });
