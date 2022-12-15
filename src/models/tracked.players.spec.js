@@ -56,12 +56,21 @@ describe("tracked.players.js", function () {
         beforeEach(function () {
           this.currentDate = new Date();
 
+          this.twelveHoursInMs = 12 * 60 * 60 * 1000;
+
+          this.datePlusTwelveHoursInMs =
+            Date.parse(this.currentDate) + this.twelveHoursInMs;
+
+          this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
+
           this.trackedPlayersArray = [
             {
               players: 20,
+              date: this.currentDate,
             },
             {
               players: 15,
+              date: this.currentDate,
             },
           ];
 
@@ -75,7 +84,7 @@ describe("tracked.players.js", function () {
           expect(this.results[0].players).toBe(20);
         });
         it("the first result has a property'date' which equals the current date.", function () {
-          expect(this.results[0].date).toEqual(this.currentDate);
+          expect(this.results[0].date).toEqual(this.currentDatePlusTwelveHours);
         });
         it("the second result is an intance of Players.", function () {
           expect(this.results[1]).toBeInstanceOf(TrackedPlayers);
@@ -84,7 +93,7 @@ describe("tracked.players.js", function () {
           expect(this.results[1].players).toBe(15);
         });
         it("the second result has a property'date' which equals the current date.", function () {
-          expect(this.results[1].date).toEqual(this.currentDate);
+          expect(this.results[1].date).toEqual(this.currentDatePlusTwelveHours);
         });
       });
 
