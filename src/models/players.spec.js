@@ -9,7 +9,7 @@ describe("Players", function () {
         this.histories = [
           {
             players: 23,
-            date: new Date(),
+            date: this.currentDate,
           },
         ];
 
