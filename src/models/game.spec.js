@@ -130,7 +130,6 @@ describe("game.js", function () {
             this.game = {
               id: 1,
               name: "Test Game",
-              imageUrl: `https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg`,
               playerHistory: Players.manyFromDbEntry(this.playerHistory),
             };
 
@@ -164,7 +163,6 @@ describe("game.js", function () {
             this.game = {
               id: 1,
               name: "Test Game",
-              imageUrl: `https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg`,
               playerHistory: Players.manyFromDbEntry(this.playerHistory),
             };
 
