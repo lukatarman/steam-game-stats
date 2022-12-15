@@ -3,7 +3,7 @@ import { HistoryCheck } from "./history.check.js";
 describe("history.check.js", function () {
   describe("HistoryCheck", function () {
     describe(".manyFromSteamchartsPages adds a HistoryCheck object for each game in the gamesPagesMap.", function () {
-      describe("When the games pages map's pages properties contain one truthy and one falsy value", function () {
+      describe("When the gamesPagesMap's pages properties contain one truthy and one falsy value", function () {
         beforeEach(function () {
           this.firstGame = { id: 1 };
           this.secondGame = { id: 2 };
@@ -38,7 +38,7 @@ describe("history.check.js", function () {
     });
 
     describe(".manyFromGames adds a HistoryCheck object for each game in games array", function () {
-      describe("when the games array has two games values", function () {
+      describe("when the games array has two game values", function () {
         beforeEach(function () {
           this.games = [{ id: 1 }, { id: 2 }];
 
