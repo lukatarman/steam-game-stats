@@ -30,7 +30,7 @@ describe("Players", function () {
       });
     });
 
-    fdescribe("when the passed in array is empty", function () {
+    describe("when the passed in array is empty", function () {
       beforeEach(function () {
         this.results = Players.manyFromSteamchartsPage([]);
       });

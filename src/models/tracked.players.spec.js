@@ -51,7 +51,7 @@ describe("tracked.players.js", function () {
       });
     });
 
-    fdescribe(".manyFromDbEntry creates a list of TrackedPlayers instances from an array of objects.", function () {
+    describe(".manyFromDbEntry creates a list of TrackedPlayers instances from an array of objects.", function () {
       describe("When an array of objects is passed in,", function () {
         beforeEach(function () {
           this.currentDate = new Date();
