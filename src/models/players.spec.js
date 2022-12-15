@@ -1,8 +1,8 @@
 import { Players } from "./players.js";
 
 describe("Players", function () {
-  describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects. So,", function () {
-    describe("when a list of history objects is passed in", function () {
+  describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects.", function () {
+    describe("When a list of history objects is passed in,", function () {
       beforeEach(function () {
         this.currentDate = new Date();
 
@@ -41,8 +41,8 @@ describe("Players", function () {
     });
   });
 
-  describe(".manyFromDbEntry creates a list of Player instances from a list of history objects. So,", function () {
-    describe("when a list of history objects is passed in", function () {
+  describe(".manyFromDbEntry creates a list of Player instances from a list of history objects.", function () {
+    describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
         this.histories = [
           {
@@ -88,7 +88,7 @@ describe("Players", function () {
       });
     });
 
-    describe("when the passed in array is empty", function () {
+    describe("When the passed in array is empty,", function () {
       beforeEach(function () {
         this.results = Players.manyFromSteamchartsPage([]);
       });
