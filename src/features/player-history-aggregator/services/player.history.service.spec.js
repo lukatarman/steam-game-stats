@@ -8,7 +8,7 @@ import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamch
 
 describe("player.history.service.js", function () {
   describe(".addCurrentPlayersFromSteam runs a function on each value of the provided games array.", function () {
-    describe("When the games array includes games,", function () {
+    describe("When the players array has player values", function () {
       beforeEach(function () {
         this.firstGame = { id: 1, name: "Game 1", playerHistory: [] };
         this.SecondGame = { id: 2, name: "Game 2", playerHistory: [] };
@@ -34,7 +34,7 @@ describe("player.history.service.js", function () {
       });
     });
 
-    describe("When the players array is full of zeroes", function () {
+    describe("When the players array has zeroes", function () {
       beforeEach(function () {
         this.firstGame = { id: 1, name: "Game 1", playerHistory: [] };
         this.SecondGame = { id: 2, name: "Game 2", playerHistory: [] };
