@@ -36,5 +36,28 @@ describe("history.check.js", function () {
         });
       });
     });
+
+    describe(".manyFromGames adds a HistoryCheck object for each game in games array", function () {
+      describe("when the games array has two games values", function () {
+        beforeEach(function () {
+          this.games = [{ id: 1 }, { id: 2 }];
+
+          this.result = HistoryCheck.manyFromGames(this.games);
+        });
+
+        it("the first result is an instance of HistoryCheck", function () {
+          expect(this.result[0]).toBeInstanceOf(HistoryCheck);
+        });
+        it("the first result has a value of gameId, which equals 1", function () {
+          expect(this.result[0].gameId).toBe(1);
+        });
+        it("the second result is an instance of HistoryCheck", function () {
+          expect(this.result[1]).toBeInstanceOf(HistoryCheck);
+        });
+        it("the second result has a value of gameId, which equals 2", function () {
+          expect(this.result[1].gameId).toBe(2);
+        });
+      });
+    });
   });
 });
