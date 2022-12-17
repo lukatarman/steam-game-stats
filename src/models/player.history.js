@@ -6,16 +6,6 @@ export class PlayerHistory {
   averagePlayers;
   trackedPlayers;
 
-  //prettier-ignore
-  static fromPlayerHistoryService(history) {
-    const playerHistory           = new PlayerHistory();
-    playerHistory.year            = new Date(history.date).getFullYear();
-    playerHistory.month           = new Date(history.date).getMonth();
-    playerHistory.trackedPlayers  = [new TrackedPlayers(history.players, history.date)];
-    playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
-    return playerHistory;
-  }
-
   static manyFromDbEntry(histories) {
     return histories.map((history) => this.fromDbEntry(history));
   }
@@ -29,6 +19,16 @@ export class PlayerHistory {
     playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
     return playerHistory;
   }
+
+  //prettier-ignore
+  static fromPlayerHistoryService(history) {
+      const playerHistory           = new PlayerHistory();
+      playerHistory.year            = new Date(history.date).getFullYear();
+      playerHistory.month           = new Date(history.date).getMonth();
+      playerHistory.trackedPlayers  = [new TrackedPlayers(history.players, history.date)];
+      playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
+      return playerHistory;
+    }
 
   //prettier-ignore
   static newMonthlyEntry() {
