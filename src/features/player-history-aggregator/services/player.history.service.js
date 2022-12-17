@@ -19,7 +19,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
     }
 
     const parsedGameHistories = parseGameHistories(page);
-    game.addHistoryFromSteamcharts(parsedGameHistories);
+    game.addHistoriesFromSteamcharts(parsedGameHistories);
 
     games.push(game);
   }

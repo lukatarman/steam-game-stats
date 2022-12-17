@@ -56,7 +56,7 @@ export class Game {
     return index;
   }
 
-  addHistoryFromSteamcharts(gameHistories) {
+  addHistoriesFromSteamcharts(gameHistories) {
     const fixedGameHistories = PlayerHistory.manyFromSteamchartsPage(gameHistories);
 
     fixedGameHistories.forEach((history) => this.playerHistory.push(history));
