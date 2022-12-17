@@ -189,6 +189,10 @@ describe("game.js", function () {
             name: "Test Game",
           };
 
+          this.result = Game.fromSteamApp(this.steamApp);
+
+          this.result.addOnePlayerHistoryEntry(513);
+
           this.gameHistories = [
             {
               date: new Date("April 2020"),
@@ -204,21 +208,23 @@ describe("game.js", function () {
             },
           ];
 
-          this.result = Game.fromSteamApp(this.steamApp);
-
-          this.result.addHistoryEntriesFromSteamcharts(this.gameHistories);
+          this.result.addHistoryFromSteamcharts(this.gameHistories);
         });
 
         it("The resulting object's playerHistory value is an instance of Players", function () {
           expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
         });
-        it("The resulting object's playerHistory array has a length of 3", function () {
-          expect(this.result.playerHistory.length).toBe(3);
+        it("The resulting object's playerHistory array has a length of 4", function () {
+          expect(this.result.playerHistory.length).toBe(4);
+        });
+        it("The resulting object's second playerHistory value is an instance of Players", function () {
+          expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
         });
         it("The resulting object's playerHistory array is in the correct order", function () {
           expect(this.result.playerHistory[0].averagePlayers).toBe(55);
           expect(this.result.playerHistory[1].averagePlayers).toBe(5);
           expect(this.result.playerHistory[2].averagePlayers).toBe(15);
+          expect(this.result.playerHistory[3].averagePlayers).toBe(513);
         });
       });
     });
