@@ -1,8 +1,8 @@
 import { JSDOM } from "jsdom";
+import { PlayerHistory } from "../../../models/player.history.js";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
 
 //todo
-//   fix Game.addHistoryEntriesFromSteamcharts method to sort properly.
 //  .parseGameHistories should instantiate playersHistory class
 //  in playersHistory class, trackedPlayers should not be empty. Run it through trackedPlayers and calculate average based on one entry
 
@@ -41,8 +41,10 @@ function parseGameHistories(pageHttpDetailsHtml) {
     .reverse()
     .map((entry) => entry.firstElementChild)
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
-    .map(
-      (element) =>
-        new TrackedPlayers(element.nextElementSibling.textContent, element.textContent),
+    .map((element) =>
+      PlayerHistory.fromPlayerHistoryService({
+        players: element.nextElementSibling.textContent,
+        date: element.textContent,
+      }),
     );
 }
