@@ -13,10 +13,20 @@ export class PlayerHistory {
   //prettier-ignore
   static fromSteamcharts(history) {
     const playerHistory           = new PlayerHistory();
-    playerHistory.year            = history.date.getFullYear();
-    playerHistory.month           = history.date.getMonth();
-    playerHistory.averagePlayers  = history.players;
-    playerHistory.trackedPlayers  = [];
+    playerHistory.year            = history.year;
+    playerHistory.month           = history.month;
+    playerHistory.averagePlayers  = history.averagePlayers;
+    playerHistory.trackedPlayers  = history.trackedPlayers;
+    return playerHistory;
+  }
+
+  //prettier-ignore
+  static fromPlayerHistoryService(history) {
+    const playerHistory           = new PlayerHistory();
+    playerHistory.year            = new Date(history.date).getFullYear();
+    playerHistory.month           = new Date(history.date).getMonth();
+    playerHistory.trackedPlayers  = [new TrackedPlayers(history.players, history.date)];
+    playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
     return playerHistory;
   }
 
