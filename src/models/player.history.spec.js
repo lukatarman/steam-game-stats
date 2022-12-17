@@ -1,7 +1,7 @@
 import { PlayerHistory } from "./player.history.js";
 
 describe("PlayerHistory", function () {
-  fdescribe(".manyFromSteamChartsPage creates a list of PlayerHistory instances from a list of history objects.", function () {
+  describe(".manyFromSteamChartsPage creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in,", function () {
       beforeEach(function () {
         this.currentDate = new Date();
