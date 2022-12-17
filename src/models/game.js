@@ -56,12 +56,12 @@ export class Game {
     return index;
   }
 
-  addHistoryEntriesFromSteamcharts(gameHistories) {
+  addHistoryFromSteamcharts(gameHistories) {
     const fixedGameHistories = PlayerHistory.manyFromSteamchartsPage(gameHistories);
 
-    const sortedHistories = this.#sortGameHistoriesByDate(fixedGameHistories);
+    fixedGameHistories.forEach((history) => this.playerHistory.push(history));
 
-    this.playerHistory = sortedHistories;
+    this.playerHistory = this.#sortGameHistoriesByDate(this.playerHistory);
   }
 
   #sortGameHistoriesByDate(gameHistories) {
