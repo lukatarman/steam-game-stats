@@ -1,5 +1,6 @@
 import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
+import { TrackedPlayers } from "./tracked.players.js";
 
 describe("game.js", function () {
   describe("Game", function () {
@@ -181,7 +182,7 @@ describe("game.js", function () {
       });
     });
 
-    describe(".addHistoryEntriesFromSteamcharts", function () {
+    describe(".addHistoriesFromSteamcharts", function () {
       describe("adds a game's Steamcharts history entries in the correct format. ", function () {
         beforeEach(function () {
           this.steamApp = {
@@ -195,20 +196,26 @@ describe("game.js", function () {
 
           this.gameHistories = [
             {
-              date: new Date("April 2020"),
-              players: 5,
+              year: "2020",
+              month: "5",
+              averagePlayers: 5,
+              trackedPlayers: [new TrackedPlayers("5", "April 2020")],
             },
             {
-              date: new Date("July 2020"),
-              players: 15,
+              year: "2020",
+              month: "7",
+              averagePlayers: 15,
+              trackedPlayers: [new TrackedPlayers("15", "July 2020")],
             },
             {
-              date: new Date("February 2020"),
-              players: 55,
+              year: "2020",
+              month: "3",
+              averagePlayers: 55,
+              trackedPlayers: [new TrackedPlayers("55", "February 2020")],
             },
           ];
 
-          this.result.addHistoryFromSteamcharts(this.gameHistories);
+          this.result.addHistoriesFromSteamcharts(this.gameHistories);
         });
 
         it("The resulting object's playerHistory value is an instance of Players", function () {
