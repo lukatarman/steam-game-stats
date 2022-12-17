@@ -62,7 +62,6 @@ export class PlayerHistory {
 
   #calculateAveragePlayers() {
     const currentTrackedHistories = this.trackedPlayers;
-
     const playersSum = currentTrackedHistories.reduce((previous, current) => {
       return previous + parseFloat(current.players);
     }, 0);
