@@ -1,6 +1,11 @@
 import { JSDOM } from "jsdom";
 import { TrackedPlayers } from "../../../models/tracked.players.js";
 
+//todo
+//   fix Game.addHistoryEntriesFromSteamcharts method to sort properly.
+//  .parseGameHistories should instantiate playersHistory class
+//  in playersHistory class, trackedPlayers should not be empty. Run it through trackedPlayers and calculate average based on one entry
+
 export function addCurrentPlayersFromSteam(players, games) {
   return games.map((game, i) => game.addOnePlayerHistoryEntry(players[i]));
 }
