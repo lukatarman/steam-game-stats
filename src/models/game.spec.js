@@ -139,7 +139,7 @@ describe("game.js", function () {
             this.result.addOnePlayerHistoryEntry(this.currentPlayers);
           });
 
-          it("The resulting object's playerHistory value is an instance of Players.", function () {
+          it("The resulting object's playerHistory value is an instance of PlayerHistory.", function () {
             expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
           });
           it("The resulting object has a property called players, which equals 45", function () {
