@@ -6,20 +6,6 @@ export class PlayerHistory {
   averagePlayers;
   trackedPlayers;
 
-  static manyFromSteamchartsPage(histories) {
-    return histories.map((history) => this.fromSteamcharts(history));
-  }
-
-  //prettier-ignore
-  static fromSteamcharts(history) {
-    const playerHistory           = new PlayerHistory();
-    playerHistory.year            = history.year;
-    playerHistory.month           = history.month;
-    playerHistory.averagePlayers  = history.averagePlayers;
-    playerHistory.trackedPlayers  = history.trackedPlayers;
-    return playerHistory;
-  }
-
   //prettier-ignore
   static fromPlayerHistoryService(history) {
     const playerHistory           = new PlayerHistory();
