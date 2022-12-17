@@ -12,12 +12,12 @@ export class PlayerHistory {
 
   //prettier-ignore
   static fromSteamcharts(history) {
-    const players           = new PlayerHistory();
-    players.year            = history.date.getFullYear();
-    players.month           = history.date.getMonth();
-    players.averagePlayers  = history.players;
-    players.trackedPlayers  = [];
-    return players;
+    const playerHistory           = new PlayerHistory();
+    playerHistory.year            = history.date.getFullYear();
+    playerHistory.month           = history.date.getMonth();
+    playerHistory.averagePlayers  = history.players;
+    playerHistory.trackedPlayers  = [];
+    return playerHistory;
   }
 
   static manyFromDbEntry(histories) {
@@ -26,22 +26,22 @@ export class PlayerHistory {
 
   //prettier-ignore
   static fromDbEntry(history) {
-    const players           = new PlayerHistory();
-    players.year            = history.year;
-    players.month           = history.month;
-    players.averagePlayers  = history.averagePlayers;
-    players.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
-    return players;
+    const playerHistory           = new PlayerHistory();
+    playerHistory.year            = history.year;
+    playerHistory.month           = history.month;
+    playerHistory.averagePlayers  = history.averagePlayers;
+    playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
+    return playerHistory;
   }
 
   //prettier-ignore
   static newMonthlyEntry() {
-    const players           = new PlayerHistory();
-    players.year            = new Date().getFullYear();
-    players.month           = new Date().getMonth();
-    players.averagePlayers  = 0;
-    players.trackedPlayers  = [];
-    return players;
+    const playerHistory           = new PlayerHistory();
+    playerHistory.year            = new Date().getFullYear();
+    playerHistory.month           = new Date().getMonth();
+    playerHistory.averagePlayers  = 0;
+    playerHistory.trackedPlayers  = [];
+    return playerHistory;
   }
 
   addNewTrackedPlayers(players) {
