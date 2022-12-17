@@ -1,32 +1,39 @@
 import { PlayerHistory } from "./player.history.js";
 
-describe("Players", function () {
-  describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects.", function () {
+describe("PlayerHistory", function () {
+  fdescribe(".manyFromSteamChartsPage creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in,", function () {
       beforeEach(function () {
         this.currentDate = new Date();
+        this.currentYearAsString = this.currentDate.getFullYear().toString();
+        this.currentMonthAsString = this.currentDate.getMonth().toString();
 
         this.histories = [
           {
-            players: 23,
-            date: this.currentDate,
+            year: this.currentYearAsString,
+            month: this.currentMonthAsString,
+            averagePlayers: 23,
+            trackedPlayers: [],
           },
         ];
 
         this.results = PlayerHistory.manyFromSteamchartsPage(this.histories);
       });
 
-      it("the result is a list of Player instances.", function () {
+      it("the first result in an instance of PlayerHistory", function () {
         expect(this.results[0]).toBeInstanceOf(PlayerHistory);
       });
-      it("a Player instance year is the same as the history object year.", function () {
-        expect(this.results[0].year).toBe(this.currentDate.getFullYear());
+      it("the result has a property called year, which equals the current year", function () {
+        expect(this.results[0].year).toBe(this.currentYearAsString);
       });
-      it("a Player instance month is the same as the history object month.", function () {
-        expect(this.results[0].month).toBe(this.currentDate.getMonth());
+      it("the result has a property called month, which equals the current month", function () {
+        expect(this.results[0].month).toBe(this.currentMonthAsString);
       });
-      it("a Player instance averagePlayers is the same as the history object averagePlayers", function () {
-        expect(this.results[0].averagePlayers).toBe(this.histories[0].players);
+      it("the result has a property called averagePlayers, which equals 23", function () {
+        expect(this.results[0].averagePlayers).toBe(this.histories[0].averagePlayers);
+      });
+      it("the result has a property called trackedPlayers, which equals 23", function () {
+        expect(this.results[0].trackedPlayers).toEqual(this.histories[0].trackedPlayers);
       });
     });
 
@@ -41,7 +48,7 @@ describe("Players", function () {
     });
   });
 
-  describe(".manyFromDbEntry creates a list of Player instances from a list of history objects.", function () {
+  describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
         this.histories = [
@@ -62,7 +69,7 @@ describe("Players", function () {
         this.results = PlayerHistory.manyFromDbEntry(this.histories);
       });
 
-      it("the first result is an instance of Players.", function () {
+      it("the first result is an instance of PlayerHistory.", function () {
         expect(this.results[0]).toBeInstanceOf(PlayerHistory);
       });
       it("the first result has a property called year, which equals 2022.", function () {
@@ -74,7 +81,7 @@ describe("Players", function () {
       it("the first result has a property called averagePlayers, which equals 34", function () {
         expect(this.results[0].averagePlayers).toBe(34);
       });
-      it("the second result is an instance of Players.", function () {
+      it("the second result is an instance of PlayerHistory.", function () {
         expect(this.results[1]).toBeInstanceOf(PlayerHistory);
       });
       it("the second result has a property called year, which equals 2022.", function () {
@@ -99,14 +106,14 @@ describe("Players", function () {
     });
   });
 
-  describe(".newMonthlyEntry instantiates the Players class with default values. The returned object", function () {
+  describe(".newMonthlyEntry instantiates the PlayerHistory class with default values. The returned object", function () {
     beforeEach(function () {
       this.currentDate = new Date();
 
       this.result = PlayerHistory.newMonthlyEntry();
     });
 
-    it("is an instance of Players", function () {
+    it("is an instance of PlayerHistory", function () {
       expect(this.result).toBeInstanceOf(PlayerHistory);
     });
     it("has a property called 'year'. It's value equals the current year", function () {
