@@ -1,4 +1,4 @@
-import { Players } from "./players.js";
+import { PlayerHistory } from "./players.js";
 
 describe("Players", function () {
   describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects.", function () {
@@ -13,11 +13,11 @@ describe("Players", function () {
           },
         ];
 
-        this.results = Players.manyFromSteamchartsPage(this.histories);
+        this.results = PlayerHistory.manyFromSteamchartsPage(this.histories);
       });
 
       it("the result is a list of Player instances.", function () {
-        expect(this.results[0]).toBeInstanceOf(Players);
+        expect(this.results[0]).toBeInstanceOf(PlayerHistory);
       });
       it("a Player instance year is the same as the history object year.", function () {
         expect(this.results[0].year).toBe(this.currentDate.getFullYear());
@@ -32,7 +32,7 @@ describe("Players", function () {
 
     describe("when the passed in array is empty", function () {
       beforeEach(function () {
-        this.results = Players.manyFromSteamchartsPage([]);
+        this.results = PlayerHistory.manyFromSteamchartsPage([]);
       });
 
       it("the returned array's will be empty", function () {
@@ -59,11 +59,11 @@ describe("Players", function () {
           },
         ];
 
-        this.results = Players.manyFromDbEntry(this.histories);
+        this.results = PlayerHistory.manyFromDbEntry(this.histories);
       });
 
       it("the first result is an instance of Players.", function () {
-        expect(this.results[0]).toBeInstanceOf(Players);
+        expect(this.results[0]).toBeInstanceOf(PlayerHistory);
       });
       it("the first result has a property called year, which equals 2022.", function () {
         expect(this.results[0].year).toBe("2022");
@@ -75,7 +75,7 @@ describe("Players", function () {
         expect(this.results[0].averagePlayers).toBe(34);
       });
       it("the second result is an instance of Players.", function () {
-        expect(this.results[1]).toBeInstanceOf(Players);
+        expect(this.results[1]).toBeInstanceOf(PlayerHistory);
       });
       it("the second result has a property called year, which equals 2022.", function () {
         expect(this.results[1].year).toBe("2022");
@@ -90,7 +90,7 @@ describe("Players", function () {
 
     describe("When the passed in array is empty,", function () {
       beforeEach(function () {
-        this.results = Players.manyFromSteamchartsPage([]);
+        this.results = PlayerHistory.manyFromSteamchartsPage([]);
       });
 
       it("the returned array's will be empty", function () {
@@ -103,11 +103,11 @@ describe("Players", function () {
     beforeEach(function () {
       this.currentDate = new Date();
 
-      this.result = Players.newMonthlyEntry();
+      this.result = PlayerHistory.newMonthlyEntry();
     });
 
     it("is an instance of Players", function () {
-      expect(this.result).toBeInstanceOf(Players);
+      expect(this.result).toBeInstanceOf(PlayerHistory);
     });
     it("has a property called 'year'. It's value equals the current year", function () {
       expect(this.result.year).toBe(this.currentDate.getFullYear());
@@ -128,7 +128,7 @@ describe("Players", function () {
       this.firstPlayers = "10";
       this.secondPlayers = "50";
 
-      this.result = Players.newMonthlyEntry();
+      this.result = PlayerHistory.newMonthlyEntry();
 
       this.result.addNewTrackedPlayers(this.firstPlayers);
       this.result.addNewTrackedPlayers(this.secondPlayers);

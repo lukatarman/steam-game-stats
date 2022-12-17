@@ -1,4 +1,4 @@
-import { Players } from "./players.js";
+import { PlayerHistory } from "./players.js";
 
 export class Game {
   id;
@@ -27,14 +27,14 @@ export class Game {
     game.id            = dbEntry.id;
     game.name          = dbEntry.name;
     game.imageUrl      = dbEntry.imageUrl;
-    game.playerHistory = Players.manyFromDbEntry(dbEntry.playerHistory);
+    game.playerHistory = PlayerHistory.manyFromDbEntry(dbEntry.playerHistory);
     return game;
   }
 
   addOnePlayerHistoryEntry(players) {
     let existingMonthAndYearIndex = this.#getExistingMonthAndYearIndex();
     if (existingMonthAndYearIndex === -1) {
-      this.playerHistory.push(Players.newMonthlyEntry());
+      this.playerHistory.push(PlayerHistory.newMonthlyEntry());
       existingMonthAndYearIndex = this.playerHistory.length - 1;
     }
 
@@ -57,7 +57,7 @@ export class Game {
   }
 
   addHistoryEntriesFromSteamcharts(gameHistories) {
-    const fixedGameHistories = Players.manyFromSteamchartsPage(gameHistories);
+    const fixedGameHistories = PlayerHistory.manyFromSteamchartsPage(gameHistories);
 
     const sortedHistories = this.#sortGameHistoriesByDate(fixedGameHistories);
 

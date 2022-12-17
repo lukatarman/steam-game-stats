@@ -1,5 +1,5 @@
 import { Game } from "./game.js";
-import { Players } from "./players.js";
+import { PlayerHistory } from "./players.js";
 
 describe("game.js", function () {
   describe("Game", function () {
@@ -130,7 +130,7 @@ describe("game.js", function () {
             this.game = {
               id: 1,
               name: "Test Game",
-              playerHistory: Players.manyFromDbEntry(this.playerHistory),
+              playerHistory: PlayerHistory.manyFromDbEntry(this.playerHistory),
             };
 
             this.result = Game.fromDbEntry(this.game);
@@ -139,7 +139,7 @@ describe("game.js", function () {
           });
 
           it("The resulting object's playerHistory value is an instance of Players.", function () {
-            expect(this.result.playerHistory[0]).toBeInstanceOf(Players);
+            expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
           });
           it("The resulting object has a property called players, which equals 45", function () {
             expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(45);
@@ -163,7 +163,7 @@ describe("game.js", function () {
             this.game = {
               id: 1,
               name: "Test Game",
-              playerHistory: Players.manyFromDbEntry(this.playerHistory),
+              playerHistory: PlayerHistory.manyFromDbEntry(this.playerHistory),
             };
 
             this.result = Game.fromDbEntry(this.game);
@@ -210,7 +210,7 @@ describe("game.js", function () {
         });
 
         it("The resulting object's playerHistory value is an instance of Players", function () {
-          expect(this.result.playerHistory[0]).toBeInstanceOf(Players);
+          expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
         });
         it("The resulting object's playerHistory array has a length of 3", function () {
           expect(this.result.playerHistory.length).toBe(3);

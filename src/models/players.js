@@ -1,6 +1,6 @@
 import { TrackedPlayers } from "./tracked.players.js";
 
-export class Players {
+export class PlayerHistory {
   year;
   month;
   averagePlayers;
@@ -12,7 +12,7 @@ export class Players {
 
   //prettier-ignore
   static fromSteamcharts(history) {
-    const players           = new Players();
+    const players           = new PlayerHistory();
     players.year            = history.date.getFullYear();
     players.month           = history.date.getMonth();
     players.averagePlayers  = history.players;
@@ -26,7 +26,7 @@ export class Players {
 
   //prettier-ignore
   static fromDbEntry(history) {
-    const players           = new Players();
+    const players           = new PlayerHistory();
     players.year            = history.year;
     players.month           = history.month;
     players.averagePlayers  = history.averagePlayers;
@@ -36,7 +36,7 @@ export class Players {
 
   //prettier-ignore
   static newMonthlyEntry() {
-    const players           = new Players();
+    const players           = new PlayerHistory();
     players.year            = new Date().getFullYear();
     players.month           = new Date().getMonth();
     players.averagePlayers  = 0;
