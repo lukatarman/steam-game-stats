@@ -218,14 +218,8 @@ describe("game.js", function () {
           this.result.addHistoriesFromSteamcharts(this.gameHistories);
         });
 
-        it("The resulting object's playerHistory value is an instance of Players", function () {
-          expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
-        });
         it("The resulting object's playerHistory array has a length of 4", function () {
           expect(this.result.playerHistory.length).toBe(4);
-        });
-        it("The resulting object's second playerHistory value is an instance of Players", function () {
-          expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
         });
         it("The resulting object's playerHistory array is in the correct order", function () {
           expect(this.result.playerHistory[0].averagePlayers).toBe(55);

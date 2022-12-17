@@ -1,53 +1,6 @@
 import { PlayerHistory } from "./player.history.js";
 
 describe("PlayerHistory", function () {
-  describe(".manyFromSteamChartsPage creates a list of PlayerHistory instances from a list of history objects.", function () {
-    describe("When a list of history objects is passed in,", function () {
-      beforeEach(function () {
-        this.currentDate = new Date();
-        this.currentYearAsString = this.currentDate.getFullYear().toString();
-        this.currentMonthAsString = this.currentDate.getMonth().toString();
-
-        this.histories = [
-          {
-            year: this.currentYearAsString,
-            month: this.currentMonthAsString,
-            averagePlayers: 23,
-            trackedPlayers: [],
-          },
-        ];
-
-        this.results = PlayerHistory.manyFromSteamchartsPage(this.histories);
-      });
-
-      it("the first result in an instance of PlayerHistory", function () {
-        expect(this.results[0]).toBeInstanceOf(PlayerHistory);
-      });
-      it("the result has a property called year, which equals the current year", function () {
-        expect(this.results[0].year).toBe(this.currentYearAsString);
-      });
-      it("the result has a property called month, which equals the current month", function () {
-        expect(this.results[0].month).toBe(this.currentMonthAsString);
-      });
-      it("the result has a property called averagePlayers, which equals 23", function () {
-        expect(this.results[0].averagePlayers).toBe(this.histories[0].averagePlayers);
-      });
-      it("the result has a property called trackedPlayers, which equals 23", function () {
-        expect(this.results[0].trackedPlayers).toEqual(this.histories[0].trackedPlayers);
-      });
-    });
-
-    describe("when the passed in array is empty", function () {
-      beforeEach(function () {
-        this.results = PlayerHistory.manyFromSteamchartsPage([]);
-      });
-
-      it("the returned array's will be empty", function () {
-        expect(this.results).toEqual([]);
-      });
-    });
-  });
-
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
@@ -97,7 +50,7 @@ describe("PlayerHistory", function () {
 
     describe("When the passed in array is empty,", function () {
       beforeEach(function () {
-        this.results = PlayerHistory.manyFromSteamchartsPage([]);
+        this.results = PlayerHistory.manyFromDbEntry([]);
       });
 
       it("the returned array's will be empty", function () {
