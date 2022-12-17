@@ -1,4 +1,4 @@
-import { PlayerHistory } from "./players.js";
+import { PlayerHistory } from "./player.history.js";
 
 export class Game {
   id;

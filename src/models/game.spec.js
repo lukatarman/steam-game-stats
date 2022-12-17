@@ -1,5 +1,5 @@
 import { Game } from "./game.js";
-import { PlayerHistory } from "./players.js";
+import { PlayerHistory } from "./player.history.js";
 
 describe("game.js", function () {
   describe("Game", function () {

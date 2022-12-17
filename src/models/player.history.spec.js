@@ -1,4 +1,4 @@
-import { PlayerHistory } from "./players.js";
+import { PlayerHistory } from "./player.history.js";
 
 describe("Players", function () {
   describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects.", function () {
