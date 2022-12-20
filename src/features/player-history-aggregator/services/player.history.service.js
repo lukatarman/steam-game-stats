@@ -9,8 +9,8 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
       continue;
     }
 
-    const parsedGameHistories = parseGameHistories(page);
-    game.addHistoriesFromSteamcharts(parsedGameHistories);
+    const playerHistories = parsePlayerHistory(page);
+    game.pushPlayerHistory(playerHistories);
 
     games.push(game);
   }
@@ -18,7 +18,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   return games;
 }
 
-function parseGameHistories(pageHttpDetailsHtml) {
+function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
     ".common-table tbody tr",

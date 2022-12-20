@@ -182,7 +182,7 @@ describe("game.js", function () {
       });
     });
 
-    describe(".addHistoriesFromSteamcharts", function () {
+    describe(".pushPlayerHistory", function () {
       describe("adds a game's Steamcharts history entries in the correct format. ", function () {
         beforeEach(function () {
           this.steamApp = {
@@ -215,7 +215,7 @@ describe("game.js", function () {
             },
           ];
 
-          this.result.addHistoriesFromSteamcharts(this.gameHistories);
+          this.result.pushPlayerHistory(this.gameHistories);
         });
 
         it("The resulting object's playerHistory array has a length of 4", function () {

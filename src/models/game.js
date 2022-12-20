@@ -56,7 +56,7 @@ export class Game {
     return index;
   }
 
-  addHistoriesFromSteamcharts(gameHistories) {
+  pushPlayerHistory(gameHistories) {
     gameHistories.forEach((history) => this.playerHistory.push(history));
 
     this.playerHistory = this.#sortGameHistoriesByDate(this.playerHistory);
