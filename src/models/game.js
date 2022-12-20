@@ -52,7 +52,7 @@ export class Game {
     this.playerHistory = this.#sortGameHistoriesByDate(this.playerHistory);
   }
 
-  #sortGameHistoriesByDate(gameHistories) {
+  #sortPlayerHistoryByDate(gameHistories) {
     const sortedHistories = [...gameHistories];
 
     sortedHistories.sort((a, b) => {
