@@ -46,8 +46,8 @@ export class Game {
     );
   }
 
-  pushPlayerHistory(gameHistories) {
-    gameHistories.forEach((history) => this.playerHistory.push(history));
+  pushPlayerHistory(playerHistories) {
+    playerHistories.forEach((history) => this.playerHistory.push(history));
 
     this.playerHistory = this.#sortGameHistoriesByDate(this.playerHistory);
   }
