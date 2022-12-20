@@ -46,10 +46,14 @@ export class Game {
     );
   }
 
-  pushPlayerHistory(playerHistories) {
-    playerHistories.forEach((history) => this.playerHistory.push(history));
+  pushPlayerHistories(playerHistories) {
+    playerHistories.forEach((history) => {
+      const historyCopy = v8.deserialize(v8.serialize(history));
 
-    this.playerHistory = this.#sortGameHistoriesByDate(this.playerHistory);
+      this.playerHistory.push(historyCopy);
+    });
+
+    this.playerHistory = this.#sortPlayerHistoryByDate(this.playerHistory);
   }
 
   #sortPlayerHistoryByDate(gameHistories) {
