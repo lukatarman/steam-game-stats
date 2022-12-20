@@ -19,42 +19,66 @@ describe("PlayerHistory", function () {
           },
         ];
 
-        this.results = PlayerHistory.manyFromDbEntry(this.histories);
+        this.result = PlayerHistory.manyFromDbEntry(this.histories);
       });
 
       it("the first result is an instance of PlayerHistory.", function () {
-        expect(this.results[0]).toBeInstanceOf(PlayerHistory);
+        expect(this.result[0]).toBeInstanceOf(PlayerHistory);
       });
       it("the first result has a property called year, which equals 2022.", function () {
-        expect(this.results[0].year).toBe("2022");
+        expect(this.result[0].year).toBe("2022");
       });
       it("the first result has a property called month, which equals 11.", function () {
-        expect(this.results[0].month).toBe("11");
+        expect(this.result[0].month).toBe("11");
       });
       it("the first result has a property called averagePlayers, which equals 34", function () {
-        expect(this.results[0].averagePlayers).toBe(34);
+        expect(this.result[0].averagePlayers).toBe(34);
       });
       it("the second result is an instance of PlayerHistory.", function () {
-        expect(this.results[1]).toBeInstanceOf(PlayerHistory);
+        expect(this.result[1]).toBeInstanceOf(PlayerHistory);
       });
       it("the second result has a property called year, which equals 2022.", function () {
-        expect(this.results[1].year).toBe("2022");
+        expect(this.result[1].year).toBe("2022");
       });
       it("the second result has a property called month, which equals 10.", function () {
-        expect(this.results[1].month).toBe("10");
+        expect(this.result[1].month).toBe("10");
       });
       it("the second result has a property called averagePlayers, which equals 78", function () {
-        expect(this.results[1].averagePlayers).toBe(78);
+        expect(this.result[1].averagePlayers).toBe(78);
       });
     });
 
     describe("When the passed in array is empty,", function () {
       beforeEach(function () {
-        this.results = PlayerHistory.manyFromDbEntry([]);
+        this.result = PlayerHistory.manyFromDbEntry([]);
       });
 
       it("the returned array's will be empty", function () {
-        expect(this.results).toEqual([]);
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  fdescribe(".fromRawData instantiates a new PlayerHistory object and returns it.", function () {
+    describe("When players and a date are passed in,", function () {
+      beforeEach(function () {
+        this.players = 62;
+        this.date = "September 2014";
+
+        this.result = PlayerHistory.fromRawData(this.players, this.date);
+      });
+
+      it("the result is an instance of PlayerHistory.", function () {
+        expect(this.result).toBeInstanceOf(PlayerHistory);
+      });
+      it("the result has a property called year, which equals 2014.", function () {
+        expect(this.result.year).toBe(2014);
+      });
+      it("the result has a property called month, which equals 8.", function () {
+        expect(this.result.month).toBe(8);
+      });
+      it("the result has a property called averagePlayers, which equals 62", function () {
+        expect(this.result.averagePlayers).toBe(62);
       });
     });
   });
