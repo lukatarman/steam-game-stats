@@ -32,20 +32,17 @@ export class Game {
   }
 
   pushCurrentPlayers(players) {
-    let existingMonthAndYearIndex = this.#getExistingMonthAndYearIndex();
-    if (existingMonthAndYearIndex === -1) {
+    if (this.#currentMonthEntryIndex === -1) {
       this.playerHistory.push(PlayerHistory.newMonthlyEntry());
       existingMonthAndYearIndex = this.playerHistory.length - 1;
     }
 
-    const currentMonthAndYearEntry = this.playerHistory[existingMonthAndYearIndex];
-
-    currentMonthAndYearEntry.addNewTrackedPlayers(players);
+    this.playerHistory[this.#currentMonthEntryIndex].addNewTrackedPlayers(players);
 
     return this;
   }
 
-  #getExistingMonthAndYearIndex() {
+  get #currentMonthEntryIndex() {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
