@@ -31,12 +31,13 @@ export class PlayerHistory {
     }
 
   //prettier-ignore
-  static newMonthlyEntry() {
+  static newMonthlyEntry(players) {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = new Date().getFullYear();
     playerHistory.month           = new Date().getMonth();
     playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
+    playerHistory.trackedPlayers.push(new TrackedPlayers(players));
     return playerHistory;
   }
 

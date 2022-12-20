@@ -32,12 +32,9 @@ export class Game {
   }
 
   pushCurrentPlayers(players) {
-    if (this.#currentMonthEntryIndex === -1) {
-      this.playerHistory.push(PlayerHistory.newMonthlyEntry());
-      existingMonthAndYearIndex = this.playerHistory.length - 1;
-    }
-
-    this.playerHistory[this.#currentMonthEntryIndex].push(players);
+    this.#currentMonthEntryIndex === -1
+      ? this.playerHistory.push(PlayerHistory.newMonthlyEntry(players))
+      : this.playerHistory[this.#currentMonthEntryIndex].push(players);
   }
 
   get #currentMonthEntryIndex() {
