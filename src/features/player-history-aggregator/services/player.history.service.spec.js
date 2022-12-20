@@ -3,7 +3,7 @@ import { Game } from "../../../models/game.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 
-describe("player.history.service.js", function () {
+xdescribe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histores from Steamcharts to each game object", function () {
     describe("When both gamesPagesMap properties have proper values", function () {
       beforeEach(function () {

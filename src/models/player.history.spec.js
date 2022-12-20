@@ -1,6 +1,6 @@
 import { PlayerHistory } from "./player.history.js";
 
-describe("PlayerHistory", function () {
+xdescribe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
@@ -59,7 +59,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  fdescribe(".fromRawData instantiates a new PlayerHistory object and returns it.", function () {
+  describe(".fromRawData instantiates a new PlayerHistory object and returns it.", function () {
     describe("When players and a date are passed in,", function () {
       beforeEach(function () {
         this.players = 62;

@@ -2,7 +2,7 @@ import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
 import { TrackedPlayers } from "./tracked.players.js";
 
-describe("game.js", function () {
+xdescribe("game.js", function () {
   describe("Game", function () {
     describe(".fromSteamApp", function () {
       describe("is called with no arguments, ", function () {
