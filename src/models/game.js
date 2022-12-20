@@ -41,11 +41,9 @@ export class Game {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
-    const index = this.playerHistory.findIndex(
+    return this.playerHistory.findIndex(
       (history) => history.year === currentYear && history.month === currentMonth,
     );
-
-    return index;
   }
 
   pushPlayerHistory(gameHistories) {
