@@ -1,10 +1,6 @@
 import { JSDOM } from "jsdom";
 import { PlayerHistory } from "../../../models/player.history.js";
 
-export function addCurrentPlayersFromSteam(players, games) {
-  return games.map((game, i) => game.addOnePlayerHistoryEntry(players[i]));
-}
-
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
