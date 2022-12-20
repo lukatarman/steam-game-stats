@@ -1,6 +1,9 @@
 import { JSDOM } from "jsdom";
 import { PlayerHistory } from "../../../models/player.history.js";
 
+//todo
+//Fix reference array issue in game class
+
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
