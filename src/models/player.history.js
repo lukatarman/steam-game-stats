@@ -21,11 +21,11 @@ export class PlayerHistory {
   }
 
   //prettier-ignore
-  static fromRawData(history) {
+  static fromRawData(players, date) {
       const playerHistory           = new PlayerHistory();
-      playerHistory.year            = new Date(history.date).getFullYear();
-      playerHistory.month           = new Date(history.date).getMonth();
-      playerHistory.trackedPlayers  = [new TrackedPlayers(history.players, history.date)];
+      playerHistory.year            = new Date(date).getFullYear();
+      playerHistory.month           = new Date(date).getMonth();
+      playerHistory.trackedPlayers  = [new TrackedPlayers(players, date)];
       playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
       return playerHistory;
     }

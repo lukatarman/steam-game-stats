@@ -33,9 +33,9 @@ function parsePlayerHistory(pageHttpDetailsHtml) {
     .map((entry) => entry.firstElementChild)
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
     .map((element) =>
-      PlayerHistory.fromRawData({
-        players: element.nextElementSibling.textContent,
-        date: element.textContent,
-      }),
+      PlayerHistory.fromRawData(
+        element.nextElementSibling.textContent,
+        element.textContent,
+      ),
     );
 }
