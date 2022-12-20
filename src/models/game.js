@@ -37,7 +37,7 @@ export class Game {
       existingMonthAndYearIndex = this.playerHistory.length - 1;
     }
 
-    this.playerHistory[this.#currentMonthEntryIndex].addNewTrackedPlayers(players);
+    this.playerHistory[this.#currentMonthEntryIndex].push(players);
 
     return this;
   }

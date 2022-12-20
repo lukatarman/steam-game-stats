@@ -83,15 +83,15 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".addNewTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
+  describe(".push adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
     beforeEach(function () {
       this.firstPlayers = "10";
       this.secondPlayers = "50";
 
       this.result = PlayerHistory.newMonthlyEntry();
 
-      this.result.addNewTrackedPlayers(this.firstPlayers);
-      this.result.addNewTrackedPlayers(this.secondPlayers);
+      this.result.push(this.firstPlayers);
+      this.result.push(this.secondPlayers);
     });
 
     it("has a 'players' property in its trackedPlayers first array value, which equals 10", function () {

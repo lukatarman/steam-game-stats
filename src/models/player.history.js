@@ -40,7 +40,7 @@ export class PlayerHistory {
     return playerHistory;
   }
 
-  addNewTrackedPlayers(players) {
+  push(players) {
     this.trackedPlayers.push(new TrackedPlayers(players));
 
     this.averagePlayers = this.#calculateAveragePlayers();
