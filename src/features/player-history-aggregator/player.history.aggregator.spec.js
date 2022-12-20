@@ -263,7 +263,7 @@ describe("PlayerHistoryAggregator", function () {
       });
     });
 
-    fdescribe("gets current players for one game in a batch of one, and adds the players", function () {
+    describe("gets current players for one game in a batch of one, and adds the players", function () {
       beforeEach(async function () {
         this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
@@ -277,7 +277,7 @@ describe("PlayerHistoryAggregator", function () {
 
         this.gamesWithCurrentPlayers = Game.manyFromDbEntry(
           oneGameWithUncheckedPlayerHistory,
-        ).map((game, i) => {
+        ).map((game) => {
           game.pushCurrentPlayers(285);
           return game;
         });

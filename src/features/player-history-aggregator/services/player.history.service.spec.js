@@ -5,7 +5,7 @@ import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamch
 
 describe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histores from Steamcharts to each game object", function () {
-    fdescribe("When both gamesPagesMap properties have proper values", function () {
+    describe("When both gamesPagesMap properties have proper values", function () {
       beforeEach(function () {
         this.map = new Map();
         this.firstPage = eldenRingHttpDetailsSteamcharts;
