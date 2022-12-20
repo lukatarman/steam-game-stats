@@ -114,7 +114,7 @@ describe("game.js", function () {
       });
     });
 
-    describe(".addOnePlayerHistoryEntry adds a trackedPlayers entry to the correct playerHistory array entry.", function () {
+    describe(".pushCurrentPlayers adds a trackedPlayers entry to the correct playerHistory array entry.", function () {
       describe("When this month's entry already exists,", function () {
         describe("players get added into the existing playerHistory entry.", function () {
           beforeEach(function () {
@@ -136,7 +136,7 @@ describe("game.js", function () {
 
             this.result = Game.fromDbEntry(this.game);
 
-            this.result.addOnePlayerHistoryEntry(this.currentPlayers);
+            this.result.pushCurrentPlayers(this.currentPlayers);
           });
 
           it("The resulting object's playerHistory value is an instance of PlayerHistory.", function () {
@@ -169,7 +169,7 @@ describe("game.js", function () {
 
             this.result = Game.fromDbEntry(this.game);
 
-            this.result.addOnePlayerHistoryEntry(this.currentPlayers);
+            this.result.pushCurrentPlayers(this.currentPlayers);
           });
 
           it("The resulting object's playerHistory value has a length of 2", function () {
@@ -192,7 +192,7 @@ describe("game.js", function () {
 
           this.result = Game.fromSteamApp(this.steamApp);
 
-          this.result.addOnePlayerHistoryEntry(513);
+          this.result.pushCurrentPlayers(513);
 
           this.gameHistories = [
             {

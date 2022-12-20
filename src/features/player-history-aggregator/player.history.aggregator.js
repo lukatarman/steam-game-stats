@@ -72,7 +72,7 @@ export class PlayerHistoryAggregator {
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
     const gamesWithCurrentPlayers = games.map((game, i) =>
-      game.addOnePlayerHistoryEntry(players[i]),
+      game.pushCurrentPlayers(players[i]),
     );
 
     await this.#playerHistoryRepository.updatePlayerHistoriesById(

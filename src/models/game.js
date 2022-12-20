@@ -31,7 +31,7 @@ export class Game {
     return game;
   }
 
-  addOnePlayerHistoryEntry(players) {
+  pushCurrentPlayers(players) {
     let existingMonthAndYearIndex = this.#getExistingMonthAndYearIndex();
     if (existingMonthAndYearIndex === -1) {
       this.playerHistory.push(PlayerHistory.newMonthlyEntry());
