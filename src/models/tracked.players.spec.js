@@ -74,36 +74,36 @@ describe("tracked.players.js", function () {
             },
           ];
 
-          this.results = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
+          this.result = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
         });
 
         it("the first result is an intance of Players.", function () {
-          expect(this.results[0]).toBeInstanceOf(TrackedPlayers);
+          expect(this.result[0]).toBeInstanceOf(TrackedPlayers);
         });
         it("the first result has a property'players' which equals 20.", function () {
-          expect(this.results[0].players).toBe(20);
+          expect(this.result[0].players).toBe(20);
         });
         it("the first result has a property'date' which equals the current date.", function () {
-          expect(this.results[0].date).toEqual(this.currentDatePlusTwelveHours);
+          expect(this.result[0].date).toEqual(this.currentDatePlusTwelveHours);
         });
         it("the second result is an intance of Players.", function () {
-          expect(this.results[1]).toBeInstanceOf(TrackedPlayers);
+          expect(this.result[1]).toBeInstanceOf(TrackedPlayers);
         });
         it("the second result has a property'players' which equals 15.", function () {
-          expect(this.results[1].players).toBe(15);
+          expect(this.result[1].players).toBe(15);
         });
         it("the second result has a property'date' which equals the current date.", function () {
-          expect(this.results[1].date).toEqual(this.currentDatePlusTwelveHours);
+          expect(this.result[1].date).toEqual(this.currentDatePlusTwelveHours);
         });
       });
 
       describe("When the passed in array is empty,", function () {
         beforeEach(function () {
-          this.results = TrackedPlayers.manyFromDbEntry([]);
+          this.result = TrackedPlayers.manyFromDbEntry([]);
         });
 
         it("the returned array's will be empty", function () {
-          expect(this.results).toEqual([]);
+          expect(this.result).toEqual([]);
         });
       });
     });
