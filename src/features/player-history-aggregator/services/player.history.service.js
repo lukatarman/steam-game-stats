@@ -10,7 +10,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
     }
 
     const playerHistories = parsePlayerHistory(page);
-    game.pushPlayerHistory(playerHistories);
+    game.pushPlayerHistories(playerHistories);
 
     games.push(game);
   }

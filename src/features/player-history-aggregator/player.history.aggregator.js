@@ -1,7 +1,4 @@
-import {
-  addCurrentPlayersFromSteam,
-  addPlayerHistoriesFromSteamcharts,
-} from "./services/player.history.service.js";
+import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
 
@@ -71,9 +68,10 @@ export class PlayerHistoryAggregator {
 
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
-    const gamesWithCurrentPlayers = games.map((game, i) =>
-      game.pushCurrentPlayers(players[i]),
-    );
+    const gamesWithCurrentPlayers = games.map((game, i) => {
+      game.pushCurrentPlayers(players[i]);
+      return game;
+    });
 
     await this.#playerHistoryRepository.updatePlayerHistoriesById(
       gamesWithCurrentPlayers,

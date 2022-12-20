@@ -4,10 +4,7 @@ import { oneGameWithUncheckedPlayerHistory } from "../../../assets/db-responses/
 import { twoGamesWithUncheckedPlayerHistory } from "../../../assets/db-responses/two.games.unchecked.history.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { Game } from "../../models/game.js";
-import {
-  addCurrentPlayersFromSteam,
-  addPlayerHistoriesFromSteamcharts,
-} from "./services/player.history.service.js";
+import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 
 describe("PlayerHistoryAggregator", function () {
   describe(".addPlayerHistoryFromSteamcharts()", function () {
@@ -266,7 +263,7 @@ describe("PlayerHistoryAggregator", function () {
       });
     });
 
-    describe("gets current players for one game in a batch of one, and adds the players", function () {
+    fdescribe("gets current players for one game in a batch of one, and adds the players", function () {
       beforeEach(async function () {
         this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
@@ -278,10 +275,12 @@ describe("PlayerHistoryAggregator", function () {
 
         this.steamClientMock = createSteamMock([], [285]);
 
-        this.gamesWithCurrentPlayers = addCurrentPlayersFromSteam(
-          [285],
-          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
-        );
+        this.gamesWithCurrentPlayers = Game.manyFromDbEntry(
+          oneGameWithUncheckedPlayerHistory,
+        ).map((game, i) => {
+          game.pushCurrentPlayers(285);
+          return game;
+        });
 
         const agg = new PlayerHistoryAggregator(
           this.steamClientMock,
