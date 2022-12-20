@@ -21,7 +21,7 @@ export class PlayerHistory {
   }
 
   //prettier-ignore
-  static fromPlayerHistoryService(history) {
+  static fromRawData(history) {
       const playerHistory           = new PlayerHistory();
       playerHistory.year            = new Date(history.date).getFullYear();
       playerHistory.month           = new Date(history.date).getMonth();
