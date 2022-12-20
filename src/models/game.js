@@ -38,8 +38,6 @@ export class Game {
     }
 
     this.playerHistory[this.#currentMonthEntryIndex].push(players);
-
-    return this;
   }
 
   get #currentMonthEntryIndex() {
