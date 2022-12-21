@@ -7,7 +7,7 @@ import { Game } from "../../models/game.js";
 import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 
 describe("PlayerHistoryAggregator", function () {
-  describe(".addPlayerHistoryFromSteamcharts()", function () {
+  describe(".addPlayerHistoryFromSteamcharts", function () {
     describe("finds the player history for one game in a batch of one and updates the game data", function () {
       beforeEach(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
