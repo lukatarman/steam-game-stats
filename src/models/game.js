@@ -47,17 +47,17 @@ export class Game {
     );
   }
 
-  pushSteamchartsPlayerHistories(playerHistories) {
+  pushSteamchartsPlayerHistory(playerHistories) {
     playerHistories.forEach((history) => {
       const historyCopy = v8.deserialize(v8.serialize(history));
 
       this.playerHistory.push(historyCopy);
     });
 
-    this.#sortPlayerHistoriesByDate();
+    this.#sortPlayerHistoryByDate();
   }
 
-  #sortPlayerHistoriesByDate() {
+  #sortPlayerHistoryByDate() {
     this.playerHistory.sort((a, b) => {
       const dateA = new Date(a.year, a.month);
       const dateB = new Date(b.year, b.month);

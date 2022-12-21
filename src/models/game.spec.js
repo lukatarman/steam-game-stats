@@ -182,7 +182,7 @@ describe("game.js", function () {
       });
     });
 
-    describe(".pushSteamchartsPlayerHistories", function () {
+    describe(".pushSteamchartsPlayerHistory", function () {
       describe("adds a game's Steamcharts history entries in the correct format. ", function () {
         beforeEach(function () {
           this.steamApp = {
@@ -215,7 +215,7 @@ describe("game.js", function () {
             },
           ];
 
-          this.result.pushSteamchartsPlayerHistories(this.gameHistories);
+          this.result.pushSteamchartsPlayerHistory(this.gameHistories);
 
           this.gameHistories[0].month = "55";
         });
