@@ -1,7 +1,7 @@
 import { PlayerHistory } from "./player.history.js";
 import { TrackedPlayers } from "./tracked.players.js";
 
-fdescribe("PlayerHistory", function () {
+describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
@@ -84,7 +84,7 @@ fdescribe("PlayerHistory", function () {
     });
   });
 
-  fdescribe(".newMonthlyEntry instantiates the PlayerHistory class with default values. The returned object", function () {
+  describe(".newMonthlyEntry instantiates the PlayerHistory class with default values. The returned object", function () {
     beforeEach(function () {
       this.currentDate = new Date();
 
@@ -115,22 +115,28 @@ fdescribe("PlayerHistory", function () {
   describe(".push adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
     beforeEach(function () {
       this.firstPlayers = "10";
+      this.firstDate = "October 2020";
       this.secondPlayers = "50";
+      this.secondDate = "August 2019";
+      this.currentPlayers = "15";
 
-      this.result = PlayerHistory.newMonthlyEntry();
+      this.result = PlayerHistory.newMonthlyEntry(this.currentPlayers);
 
-      this.result.push(this.firstPlayers);
-      this.result.push(this.secondPlayers);
+      this.result.push(this.firstPlayers, this.firstDate);
+      this.result.push(this.secondPlayers, this.secondDate);
     });
 
-    it("has a 'players' property in its trackedPlayers first array value, which equals 10", function () {
-      expect(this.result.trackedPlayers[0].players).toBe(10);
+    it("has a 'players' property in its trackedPlayers first array value, which equals 15", function () {
+      expect(this.result.trackedPlayers[0].players).toBe(15);
     });
-    it("has a 'players' property in its trackedPlayers second array value, which equals 50", function () {
-      expect(this.result.trackedPlayers[1].players).toBe(50);
+    it("has a 'players' property in its trackedPlayers second array value, which equals 10", function () {
+      expect(this.result.trackedPlayers[1].players).toBe(10);
     });
-    it("has its averagePlayers property updated to 30", function () {
-      expect(this.result.averagePlayers).toBe(30);
+    it("has a 'players' property in its trackedPlayers third array value, which equals 50", function () {
+      expect(this.result.trackedPlayers[2].players).toBe(50);
+    });
+    it("has its averagePlayers property updated to 25", function () {
+      expect(this.result.averagePlayers).toBe(25);
     });
   });
 });
