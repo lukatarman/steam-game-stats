@@ -1,4 +1,5 @@
 import { PlayerHistory } from "./player.history.js";
+import { TrackedPlayers } from "./tracked.players.js";
 
 fdescribe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
@@ -83,11 +84,12 @@ fdescribe("PlayerHistory", function () {
     });
   });
 
-  describe(".newMonthlyEntry instantiates the PlayerHistory class with default values. The returned object", function () {
+  fdescribe(".newMonthlyEntry instantiates the PlayerHistory class with default values. The returned object", function () {
     beforeEach(function () {
       this.currentDate = new Date();
 
-      this.result = PlayerHistory.newMonthlyEntry();
+      this.result = PlayerHistory.newMonthlyEntry(42);
+      debugger;
     });
 
     it("is an instance of PlayerHistory", function () {
@@ -99,11 +101,14 @@ fdescribe("PlayerHistory", function () {
     it("has a property called 'month'. It's value equals the current month", function () {
       expect(this.result.month).toBe(this.currentDate.getMonth());
     });
-    it("has a property called 'averagePlayers'. It's value equals '0'", function () {
-      expect(this.result.averagePlayers).toBe(0);
+    it("has a property called 'averagePlayers'. It's value equals '42'", function () {
+      expect(this.result.averagePlayers).toBe(42);
     });
-    it("has a property called 'trackedPlayers'. It's value equals an empty array.", function () {
-      expect(this.result.trackedPlayers).toEqual([]);
+    it("has a property called 'trackedPlayers'. It is an instance of TrackedPlayers", function () {
+      expect(this.result.trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
+    });
+    it("has a property called 'players'. It's value equals '42'", function () {
+      expect(this.result.trackedPlayers[0].players).toBe(42);
     });
   });
 
