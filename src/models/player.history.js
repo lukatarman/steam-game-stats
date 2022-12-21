@@ -25,7 +25,8 @@ export class PlayerHistory {
       const playerHistory           = new PlayerHistory();
       playerHistory.year            = new Date(date).getFullYear();
       playerHistory.month           = new Date(date).getMonth();
-      playerHistory.trackedPlayers  = [new TrackedPlayers(players, date)];
+      playerHistory.trackedPlayers  = [];
+      playerHistory.push(players, date);
       playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
       return playerHistory;
     }
@@ -35,13 +36,14 @@ export class PlayerHistory {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = new Date().getFullYear();
     playerHistory.month           = new Date().getMonth();
-    playerHistory.trackedPlayers  = [new TrackedPlayers(players)];
+    playerHistory.trackedPlayers  = [];
+    playerHistory.push(players);
     playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
     return playerHistory;
   }
 
-  push(players) {
-    this.trackedPlayers.push(new TrackedPlayers(players));
+  push(players, date = "") {
+    this.trackedPlayers.push(new TrackedPlayers(players, date));
 
     this.averagePlayers = this.#calculateAveragePlayers();
   }
