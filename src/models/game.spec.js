@@ -183,7 +183,7 @@ describe("game.js", function () {
     });
 
     describe(".pushSteamchartsPlayerHistories", function () {
-      describe("adds a game's Steamcharts history entries in the correct format. ", function () {
+      fdescribe("adds a game's Steamcharts history entries in the correct format. ", function () {
         beforeEach(function () {
           this.steamApp = {
             appid: 1,
@@ -216,6 +216,8 @@ describe("game.js", function () {
           ];
 
           this.result.pushSteamchartsPlayerHistories(this.gameHistories);
+
+          this.gameHistories[0].month = "55";
         });
 
         it("The resulting object's playerHistory array has a length of 4", function () {
@@ -226,6 +228,16 @@ describe("game.js", function () {
           expect(this.result.playerHistory[1].averagePlayers).toBe(5);
           expect(this.result.playerHistory[2].averagePlayers).toBe(15);
           expect(this.result.playerHistory[3].averagePlayers).toBe(513);
+        });
+        it("The resulting object's playerHistory array is in the correct order", function () {
+          expect(this.result.playerHistory[0].averagePlayers).toBe(55);
+          expect(this.result.playerHistory[1].averagePlayers).toBe(5);
+          expect(this.result.playerHistory[2].averagePlayers).toBe(15);
+          expect(this.result.playerHistory[3].averagePlayers).toBe(513);
+        });
+        it("The resulting object's playerHistory array does not change, when changing the original playerHistory array", function () {
+          expect(this.gameHistories[0].month).toBe("55");
+          expect(this.result.playerHistory[0].month).toBe("3");
         });
       });
     });
