@@ -47,7 +47,7 @@ export class Game {
     );
   }
 
-  pushPlayerHistories(playerHistories) {
+  pushSteamchartsPlayerHistories(playerHistories) {
     playerHistories.forEach((history) => {
       const historyCopy = v8.deserialize(v8.serialize(history));
 
