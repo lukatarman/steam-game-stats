@@ -1,3 +1,4 @@
+import v8 from "node:v8";
 import { PlayerHistory } from "./player.history.js";
 
 export class Game {
