@@ -54,19 +54,15 @@ export class Game {
       this.playerHistory.push(historyCopy);
     });
 
-    this.playerHistory = this.#sortPlayerHistoriesByDate(this.playerHistory);
+    this.#sortPlayerHistoriesByDate();
   }
 
-  #sortPlayerHistoriesByDate(gameHistories) {
-    const sortedHistories = [...gameHistories];
-
-    sortedHistories.sort((a, b) => {
+  #sortPlayerHistoriesByDate() {
+    this.playerHistory.sort((a, b) => {
       const dateA = new Date(a.year, a.month);
       const dateB = new Date(b.year, b.month);
 
       return dateA - dateB;
     });
-
-    return sortedHistories;
   }
 }
