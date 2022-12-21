@@ -50,6 +50,6 @@ export class PlayerHistory {
     const average =
       this.trackedPlayers.reduce((sum, cur) => sum + cur.players, 0) /
       this.trackedPlayers.length;
-    return average.toFixed(1);
+    return parseFloat(average.toFixed(1));
   }
 }
