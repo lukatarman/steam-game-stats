@@ -235,7 +235,7 @@ describe("game.js", function () {
           expect(this.result.playerHistory[2].averagePlayers).toBe(15);
           expect(this.result.playerHistory[3].averagePlayers).toBe(513);
         });
-        it("The resulting object's playerHistory array does not change, when changing the original playerHistory array", function () {
+        it("The resulting object's playerHistory array does not change when changing the original playerHistory array", function () {
           expect(this.gameHistories[0].month).toBe("55");
           expect(this.result.playerHistory[0].month).toBe("3");
         });
