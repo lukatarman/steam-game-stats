@@ -3,24 +3,28 @@ import { TrackedPlayers } from "./tracked.players.js";
 
 describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
-    describe("When a list of history objects is passed in, ", function () {
+    fdescribe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
+        this.firstDate = new Date("December 2022");
+        this.secondDate = new Date("November 2022");
+
         this.histories = [
           {
             year: "2022",
             month: "11",
             averagePlayers: 34,
-            trackedPlayers: [],
+            trackedPlayers: [{ players: 34, date: this.firstDate }],
           },
           {
             year: "2022",
             month: "10",
             averagePlayers: 78,
-            trackedPlayers: [],
+            trackedPlayers: [{ players: 78, date: this.secondDate }],
           },
         ];
 
         this.result = PlayerHistory.manyFromDbEntry(this.histories);
+        debugger;
       });
 
       it("the first result is an instance of PlayerHistory.", function () {
@@ -35,6 +39,12 @@ describe("PlayerHistory", function () {
       it("the first result has a property called averagePlayers, which equals 34", function () {
         expect(this.result[0].averagePlayers).toBe(34);
       });
+      it("the first result has a property called 'trackedPlayers', which is an instance of 'TrackedPlayers'", function () {
+        expect(this.result[0].trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
+      });
+      it("the first result has a property players, which equals 34", function () {
+        expect(this.result[0].trackedPlayers[0].players).toBe(34);
+      });
       it("the second result is an instance of PlayerHistory.", function () {
         expect(this.result[1]).toBeInstanceOf(PlayerHistory);
       });
@@ -46,6 +56,12 @@ describe("PlayerHistory", function () {
       });
       it("the second result has a property called averagePlayers, which equals 78", function () {
         expect(this.result[1].averagePlayers).toBe(78);
+      });
+      it("the second result has a property called 'trackedPlayers', which is an instance of 'TrackedPlayers'", function () {
+        expect(this.result[1].trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
+      });
+      it("the second result has a property players, which equals 78", function () {
+        expect(this.result[1].trackedPlayers[0].players).toBe(78);
       });
     });
 
@@ -122,8 +138,8 @@ describe("PlayerHistory", function () {
 
       this.result = PlayerHistory.newMonthlyEntry(this.currentPlayers);
 
-      this.result.push(this.firstPlayers, this.firstDate);
-      this.result.push(this.secondPlayers, this.secondDate);
+      this.result.pushTrackedPlayers(this.firstPlayers, this.firstDate);
+      this.result.pushTrackedPlayers(this.secondPlayers, this.secondDate);
     });
 
     it("has a 'players' property in its trackedPlayers first array value, which equals 15", function () {
