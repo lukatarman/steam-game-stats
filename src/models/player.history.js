@@ -25,9 +25,9 @@ export class PlayerHistory {
       const playerHistory           = new PlayerHistory();
       playerHistory.year            = new Date(date).getFullYear();
       playerHistory.month           = new Date(date).getMonth();
+      playerHistory.averagePlayers  = 0;
       playerHistory.trackedPlayers  = [];
       playerHistory.push(players, date);
-      playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
       return playerHistory;
     }
 
@@ -36,9 +36,9 @@ export class PlayerHistory {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = new Date().getFullYear();
     playerHistory.month           = new Date().getMonth();
+    playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
     playerHistory.push(players);
-    playerHistory.averagePlayers  = playerHistory.#calculateAveragePlayers();
     return playerHistory;
   }
 
