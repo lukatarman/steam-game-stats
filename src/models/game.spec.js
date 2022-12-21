@@ -183,7 +183,7 @@ describe("game.js", function () {
     });
 
     describe(".pushSteamchartsPlayerHistories", function () {
-      fdescribe("adds a game's Steamcharts history entries in the correct format. ", function () {
+      describe("adds a game's Steamcharts history entries in the correct format. ", function () {
         beforeEach(function () {
           this.steamApp = {
             appid: 1,
