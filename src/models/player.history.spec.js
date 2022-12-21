@@ -3,7 +3,7 @@ import { TrackedPlayers } from "./tracked.players.js";
 
 describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
-    fdescribe("When a list of history objects is passed in, ", function () {
+    describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
         this.firstDate = new Date("December 2022");
         this.secondDate = new Date("November 2022");
@@ -97,6 +97,12 @@ describe("PlayerHistory", function () {
       it("the result has a property called averagePlayers, which equals 62", function () {
         expect(this.result.averagePlayers).toBe(62);
       });
+      it("the result has a property called tracked players, which is an instance of TrackedPlayers", function () {
+        expect(this.result.trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
+      });
+      it("the result has a property called players, which equals 62", function () {
+        expect(this.result.trackedPlayers[0].players).toBe(62);
+      });
     });
   });
 
@@ -128,7 +134,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".push adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
+  describe(".pushTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
     beforeEach(function () {
       this.firstPlayers = "10";
       this.firstDate = "October 2020";
