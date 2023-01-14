@@ -4,7 +4,7 @@ import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 
 describe("player.history.service.js", function () {
-  describe(".addPlayerHistoriesFromSteamcharts adds the player histores from Steamcharts to each game object", function () {
+  describe(".addPlayerHistoriesFromSteamcharts adds the player histories from Steamcharts to each game object", function () {
     describe("When both gamesPagesMap properties have proper values", function () {
       beforeEach(function () {
         this.map = new Map();
