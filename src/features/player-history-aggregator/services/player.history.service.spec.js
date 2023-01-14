@@ -30,8 +30,13 @@ describe("player.history.service.js", function () {
         this.map.set(this.instantiatedSecondGame, this.secondPage);
 
         this.result = addPlayerHistoriesFromSteamcharts(this.map);
+        debugger;
       });
 
+      it("the result is a list of games", function () {
+        expect(this.result[0]).toBeInstanceOf(Game);
+        expect(this.result[1]).toBeInstanceOf(Game);
+      });
       it("the first result's playerHistory value has a length of 2", function () {
         expect(this.result[0].playerHistory.length).toBe(2);
       });
