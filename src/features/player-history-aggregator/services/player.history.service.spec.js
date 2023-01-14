@@ -46,7 +46,7 @@ describe("player.history.service.js", function () {
       });
     });
 
-    describe("when the gamesPagesMap's page value is an empty string", function () {
+    describe("When the gamesPagesMap's page value is an empty string", function () {
       beforeEach(function () {
         this.map = new Map();
 
