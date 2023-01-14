@@ -5,7 +5,7 @@ import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamch
 
 describe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histories from Steamcharts to each game object", function () {
-    describe("When both gamesPagesMap properties have proper values", function () {
+    describe("When a map of games and its corresponding Steamcharts pages is provided the player histories are parsed from the pages, so that", function () {
       beforeEach(function () {
         this.map = new Map();
         this.firstPage = eldenRingHttpDetailsSteamcharts;
@@ -32,16 +32,16 @@ describe("player.history.service.js", function () {
         this.result = addPlayerHistoriesFromSteamcharts(this.map);
       });
 
-      it("The first result's playerHistory value has a length of 2", function () {
+      it("the first result's playerHistory value has a length of 2", function () {
         expect(this.result[0].playerHistory.length).toBe(2);
       });
-      it("The first result has an averagePlayers value of '522066.4'", function () {
+      it("the first result has an averagePlayers value of '522066.4'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(522066.4);
       });
-      it("The second result's playerHistory value has a length of 2", function () {
+      it("the second result's playerHistory value has a length of 2", function () {
         expect(this.result[1].playerHistory.length).toBe(2);
       });
-      it("The second result has an averagePlayers value of '7.5'", function () {
+      it("the second result has an averagePlayers value of '7.5'", function () {
         expect(this.result[1].playerHistory[0].averagePlayers).toBe(7.5);
       });
     });
