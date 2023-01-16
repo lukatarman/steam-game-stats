@@ -7,30 +7,29 @@ describe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histories from Steamcharts to each game object", function () {
     describe("When a map of games and its corresponding Steamcharts pages is provided the player histories are parsed from the pages, so that", function () {
       beforeEach(function () {
-        this.map = new Map();
-        this.firstPage = eldenRingHttpDetailsSteamcharts;
-        this.secondPage = crushTheCastleHtmlDetailsSteamcharts;
+        const map = new Map();
+        const firstPage = eldenRingHttpDetailsSteamcharts;
+        const secondPage = crushTheCastleHtmlDetailsSteamcharts;
 
-        this.firstGame = {
+        const firstGame = {
           id: 1,
           name: "Elden Ring",
           playerHistory: [],
         };
 
-        this.secondGame = {
+        const secondGame = {
           id: 2,
           name: "Crush The Castle",
           playerHistory: [],
         };
 
-        this.instantiatedFirstGame = Game.fromDbEntry(this.firstGame);
-        this.instantiatedSecondGame = Game.fromDbEntry(this.secondGame);
+        const instantiatedFirstGame = Game.fromDbEntry(firstGame);
+        const instantiatedSecondGame = Game.fromDbEntry(secondGame);
 
-        this.map.set(this.instantiatedFirstGame, this.firstPage);
-        this.map.set(this.instantiatedSecondGame, this.secondPage);
+        map.set(instantiatedFirstGame, firstPage);
+        map.set(instantiatedSecondGame, secondPage);
 
-        this.result = addPlayerHistoriesFromSteamcharts(this.map);
-        debugger;
+        this.result = addPlayerHistoriesFromSteamcharts(map);
       });
 
       it("the result is a list of games", function () {
@@ -53,20 +52,20 @@ describe("player.history.service.js", function () {
 
     describe("When the gamesPagesMap's page value is an empty string", function () {
       beforeEach(function () {
-        this.map = new Map();
+        const map = new Map();
 
-        this.game = {
+        const game = {
           id: 1,
           name: "Elden Ring",
           playerHistory: [],
         };
 
-        this.map.set(this.game, "");
+        map.set(game, "");
 
-        this.result = addPlayerHistoriesFromSteamcharts(this.map);
+        this.result = addPlayerHistoriesFromSteamcharts(map);
       });
 
-      it("the playerHistory value is an empty array", function () {
+      it("no change to the player history entry of a game is made", function () {
         expect(this.result[0].playerHistory).toEqual([]);
       });
     });
