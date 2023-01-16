@@ -65,7 +65,7 @@ describe("player.history.service.js", function () {
         this.result = addPlayerHistoriesFromSteamcharts(map);
       });
 
-      it("no change to the player history entry of a game is made", function () {
+      it("the playerHistory value is an empty array", function () {
         expect(this.result[0].playerHistory).toEqual([]);
       });
     });
