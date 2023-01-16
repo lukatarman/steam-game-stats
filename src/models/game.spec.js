@@ -119,7 +119,8 @@ describe("game.js", function () {
         describe("players get added into the existing playerHistory entry.", function () {
           beforeEach(function () {
             this.currentPlayers = 45;
-            this.playerHistory = [
+
+            const playerHistory = [
               {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth(),
@@ -128,13 +129,13 @@ describe("game.js", function () {
               },
             ];
 
-            this.game = {
+            const game = {
               id: 1,
               name: "Test Game",
-              playerHistory: PlayerHistory.manyFromDbEntry(this.playerHistory),
+              playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
             };
 
-            this.result = Game.fromDbEntry(this.game);
+            this.result = Game.fromDbEntry(game);
 
             this.result.pushCurrentPlayers(this.currentPlayers);
           });
@@ -143,7 +144,9 @@ describe("game.js", function () {
             expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
           });
           it("The resulting object has a property called players, which equals 45", function () {
-            expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(45);
+            expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(
+              this.currentPlayers,
+            );
           });
         });
       });
@@ -152,7 +155,8 @@ describe("game.js", function () {
         describe("players get added into a new playerHistory entry.", function () {
           beforeEach(function () {
             this.currentPlayers = 33;
-            this.playerHistory = [
+
+            const playerHistory = [
               {
                 year: "2022",
                 month: "10",
@@ -161,13 +165,13 @@ describe("game.js", function () {
               },
             ];
 
-            this.game = {
+            const game = {
               id: 1,
               name: "Test Game",
-              playerHistory: PlayerHistory.manyFromDbEntry(this.playerHistory),
+              playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
             };
 
-            this.result = Game.fromDbEntry(this.game);
+            this.result = Game.fromDbEntry(game);
 
             this.result.pushCurrentPlayers(this.currentPlayers);
           });
@@ -176,7 +180,9 @@ describe("game.js", function () {
             expect(this.result.playerHistory.length).toBe(2);
           });
           it("The resulting object's second playerHistory entry has a property called players, which equals 33", function () {
-            expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(33);
+            expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(
+              this.currentPlayers,
+            );
           });
         });
       });
@@ -185,12 +191,12 @@ describe("game.js", function () {
     describe(".pushSteamchartsPlayerHistory", function () {
       describe("adds a game's Steamcharts history entries in the correct format. ", function () {
         beforeEach(function () {
-          this.steamApp = {
+          const steamApp = {
             appid: 1,
             name: "Test Game",
           };
 
-          this.result = Game.fromSteamApp(this.steamApp);
+          this.result = Game.fromSteamApp(steamApp);
 
           this.result.pushCurrentPlayers(513);
 
