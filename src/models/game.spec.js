@@ -154,8 +154,8 @@ describe("game.js", function () {
         });
       });
 
-      describe("When this month's entry does not exist yet", function () {
-        describe("players get added into a new playerHistory entry.", function () {
+      describe("When this month's entry does not exist", function () {
+        describe("An entry for the current month is created.", function () {
           beforeEach(function () {
             this.currentPlayers = 33;
 
