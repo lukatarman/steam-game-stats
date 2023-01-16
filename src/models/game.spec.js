@@ -177,7 +177,6 @@ describe("game.js", function () {
             this.result = Game.fromDbEntry(this.game);
 
             this.result.pushCurrentPlayers(this.currentPlayers);
-            debugger;
           });
 
           it("this month's entry is created", function () {
