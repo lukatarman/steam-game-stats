@@ -154,7 +154,7 @@ describe("game.js", function () {
         });
       });
 
-      fdescribe("When this month's player history entry does not exist yet", function () {
+      describe("When this month's player history entry does not exist yet", function () {
         describe("An entry for the current month is created. So,", function () {
           beforeEach(function () {
             this.currentPlayers = 33;
@@ -203,53 +203,32 @@ describe("game.js", function () {
         };
 
         this.result = Game.fromSteamApp(steamApp);
-
+        //
         this.result.pushCurrentPlayers(513);
 
-        this.gameHistories = [
-          {
-            year: "2020",
-            month: "5",
-            averagePlayers: 5,
-            trackedPlayers: [new TrackedPlayers("5", "April 2020")],
-          },
-          {
-            year: "2020",
-            month: "7",
-            averagePlayers: 15,
-            trackedPlayers: [new TrackedPlayers("15", "July 2020")],
-          },
-          {
-            year: "2020",
-            month: "3",
-            averagePlayers: 55,
-            trackedPlayers: [new TrackedPlayers("55", "February 2020")],
-          },
-        ];
+        this.gameHistories = [];
+
+        this.gameHistories.push(PlayerHistory.fromRawData(5, "April 2020"));
+        this.gameHistories.push(PlayerHistory.fromRawData(15, "July 2020"));
+        this.gameHistories.push(PlayerHistory.fromRawData(55, "February 2020"));
 
         this.result.pushSteamchartsPlayerHistory(this.gameHistories);
-
-        this.gameHistories[0].month = "55";
       });
 
-      it("The resulting object's playerHistory array has a length of 4", function () {
+      it("The game has three new player history entries", function () {
         expect(this.result.playerHistory.length).toBe(4);
       });
-      it("The resulting object's playerHistory array is in the correct order", function () {
+      it("All player history entries are in correct order", function () {
         expect(this.result.playerHistory[0].averagePlayers).toBe(55);
         expect(this.result.playerHistory[1].averagePlayers).toBe(5);
         expect(this.result.playerHistory[2].averagePlayers).toBe(15);
         expect(this.result.playerHistory[3].averagePlayers).toBe(513);
       });
-      it("The resulting object's playerHistory array is in the correct order", function () {
-        expect(this.result.playerHistory[0].averagePlayers).toBe(55);
-        expect(this.result.playerHistory[1].averagePlayers).toBe(5);
-        expect(this.result.playerHistory[2].averagePlayers).toBe(15);
-        expect(this.result.playerHistory[3].averagePlayers).toBe(513);
-      });
-      it("The resulting object's playerHistory array does not change when changing the original playerHistory array", function () {
+      it("The games player history entries are new PlayerHistory class instances", function () {
+        this.gameHistories[0].month = "55";
+
         expect(this.gameHistories[0].month).toBe("55");
-        expect(this.result.playerHistory[0].month).toBe("3");
+        expect(this.result.playerHistory[0].month).toBe(1);
       });
     });
   });
