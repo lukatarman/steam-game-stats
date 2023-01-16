@@ -116,7 +116,7 @@ describe("game.js", function () {
 
     describe(".pushCurrentPlayers creates a new player history entry or updates an existing one.", function () {
       describe("When this month's player history entry already exists,", function () {
-        fdescribe("players are added to the existing entry.", function () {
+        describe("players are added to the existing entry.", function () {
           beforeEach(function () {
             this.currentPlayers = 45;
 
@@ -154,8 +154,8 @@ describe("game.js", function () {
         });
       });
 
-      describe("When this month's entry does not exist", function () {
-        describe("An entry for the current month is created.", function () {
+      fdescribe("When this month's player history entry does not exist yet", function () {
+        describe("An entry for the current month is created. So,", function () {
           beforeEach(function () {
             this.currentPlayers = 33;
 
@@ -168,86 +168,89 @@ describe("game.js", function () {
               },
             ];
 
-            const game = {
+            this.game = {
               id: 1,
               name: "Test Game",
               playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
             };
 
-            this.result = Game.fromDbEntry(game);
+            this.result = Game.fromDbEntry(this.game);
 
             this.result.pushCurrentPlayers(this.currentPlayers);
+            debugger;
           });
 
-          it("The resulting object's playerHistory value has a length of 2", function () {
+          it("this month's entry is created", function () {
             expect(this.result.playerHistory.length).toBe(2);
+            expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
           });
-          it("The resulting object's second playerHistory entry has a property called players, which equals 33", function () {
+          it("the resulting object's second playerHistory entry has a property called players, which equals 33", function () {
             expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(
               this.currentPlayers,
             );
+          });
+          it("the existing entry does not change", function () {
+            expect(this.game.playerHistory[0]).toEqual(this.result.playerHistory[0]);
           });
         });
       });
     });
 
-    describe(".pushSteamchartsPlayerHistory", function () {
-      describe("adds a game's Steamcharts history entries in the correct format. ", function () {
-        beforeEach(function () {
-          const steamApp = {
-            appid: 1,
-            name: "Test Game",
-          };
+    describe(".pushSteamchartsPlayerHistory adds player histories from Steamcharts to existing entries while keeping the order intact.", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Test Game",
+        };
 
-          this.result = Game.fromSteamApp(steamApp);
+        this.result = Game.fromSteamApp(steamApp);
 
-          this.result.pushCurrentPlayers(513);
+        this.result.pushCurrentPlayers(513);
 
-          this.gameHistories = [
-            {
-              year: "2020",
-              month: "5",
-              averagePlayers: 5,
-              trackedPlayers: [new TrackedPlayers("5", "April 2020")],
-            },
-            {
-              year: "2020",
-              month: "7",
-              averagePlayers: 15,
-              trackedPlayers: [new TrackedPlayers("15", "July 2020")],
-            },
-            {
-              year: "2020",
-              month: "3",
-              averagePlayers: 55,
-              trackedPlayers: [new TrackedPlayers("55", "February 2020")],
-            },
-          ];
+        this.gameHistories = [
+          {
+            year: "2020",
+            month: "5",
+            averagePlayers: 5,
+            trackedPlayers: [new TrackedPlayers("5", "April 2020")],
+          },
+          {
+            year: "2020",
+            month: "7",
+            averagePlayers: 15,
+            trackedPlayers: [new TrackedPlayers("15", "July 2020")],
+          },
+          {
+            year: "2020",
+            month: "3",
+            averagePlayers: 55,
+            trackedPlayers: [new TrackedPlayers("55", "February 2020")],
+          },
+        ];
 
-          this.result.pushSteamchartsPlayerHistory(this.gameHistories);
+        this.result.pushSteamchartsPlayerHistory(this.gameHistories);
 
-          this.gameHistories[0].month = "55";
-        });
+        this.gameHistories[0].month = "55";
+      });
 
-        it("The resulting object's playerHistory array has a length of 4", function () {
-          expect(this.result.playerHistory.length).toBe(4);
-        });
-        it("The resulting object's playerHistory array is in the correct order", function () {
-          expect(this.result.playerHistory[0].averagePlayers).toBe(55);
-          expect(this.result.playerHistory[1].averagePlayers).toBe(5);
-          expect(this.result.playerHistory[2].averagePlayers).toBe(15);
-          expect(this.result.playerHistory[3].averagePlayers).toBe(513);
-        });
-        it("The resulting object's playerHistory array is in the correct order", function () {
-          expect(this.result.playerHistory[0].averagePlayers).toBe(55);
-          expect(this.result.playerHistory[1].averagePlayers).toBe(5);
-          expect(this.result.playerHistory[2].averagePlayers).toBe(15);
-          expect(this.result.playerHistory[3].averagePlayers).toBe(513);
-        });
-        it("The resulting object's playerHistory array does not change when changing the original playerHistory array", function () {
-          expect(this.gameHistories[0].month).toBe("55");
-          expect(this.result.playerHistory[0].month).toBe("3");
-        });
+      it("The resulting object's playerHistory array has a length of 4", function () {
+        expect(this.result.playerHistory.length).toBe(4);
+      });
+      it("The resulting object's playerHistory array is in the correct order", function () {
+        expect(this.result.playerHistory[0].averagePlayers).toBe(55);
+        expect(this.result.playerHistory[1].averagePlayers).toBe(5);
+        expect(this.result.playerHistory[2].averagePlayers).toBe(15);
+        expect(this.result.playerHistory[3].averagePlayers).toBe(513);
+      });
+      it("The resulting object's playerHistory array is in the correct order", function () {
+        expect(this.result.playerHistory[0].averagePlayers).toBe(55);
+        expect(this.result.playerHistory[1].averagePlayers).toBe(5);
+        expect(this.result.playerHistory[2].averagePlayers).toBe(15);
+        expect(this.result.playerHistory[3].averagePlayers).toBe(513);
+      });
+      it("The resulting object's playerHistory array does not change when changing the original playerHistory array", function () {
+        expect(this.gameHistories[0].month).toBe("55");
+        expect(this.result.playerHistory[0].month).toBe("3");
       });
     });
   });
