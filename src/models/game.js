@@ -35,7 +35,7 @@ export class Game {
   pushCurrentPlayers(players) {
     this.#currentMonthEntryIndex === -1
       ? this.playerHistory.push(PlayerHistory.newMonthlyEntry(players))
-      : this.playerHistory[this.#currentMonthEntryIndex].pushTrackedPlayers(players);
+      : this.playerHistory[this.#currentMonthEntryIndex].pushCurrentPlayers(players);
   }
 
   get #currentMonthEntryIndex() {

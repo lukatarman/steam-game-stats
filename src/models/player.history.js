@@ -27,7 +27,7 @@ export class PlayerHistory {
       playerHistory.month           = new Date(date).getMonth();
       playerHistory.averagePlayers  = 0;
       playerHistory.trackedPlayers  = [];
-      playerHistory.pushTrackedPlayers(players, date);
+      playerHistory.pushCurrentPlayers(players, date);
       return playerHistory;
     }
 
@@ -38,11 +38,11 @@ export class PlayerHistory {
     playerHistory.month           = new Date().getMonth();
     playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
-    playerHistory.pushTrackedPlayers(players);
+    playerHistory.pushCurrentPlayers(players);
     return playerHistory;
   }
 
-  pushTrackedPlayers(players, date = "") {
+  pushCurrentPlayers(players, date = "") {
     this.trackedPlayers.push(new TrackedPlayers(players, date));
 
     this.averagePlayers = this.#calculateAveragePlayers();
