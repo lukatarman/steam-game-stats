@@ -2,6 +2,7 @@ import { addPlayerHistoriesFromSteamcharts } from "./player.history.service.js";
 import { Game } from "../../../models/game.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
+import { PlayerHistory } from "../../../models/player.history.js";
 
 describe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histories from Steamcharts to each game object", function () {
@@ -38,6 +39,9 @@ describe("player.history.service.js", function () {
       });
       it("the first result's playerHistory value has a length of 2", function () {
         expect(this.result[0].playerHistory.length).toBe(2);
+      });
+      it("the resulting playerHistory property is an instance of PlayerHistory", function () {
+        expect(this.result[0].playerHistory[0]).toBeInstanceOf(PlayerHistory);
       });
       it("the first result has an averagePlayers value of '522066.4'", function () {
         expect(this.result[0].playerHistory[0].averagePlayers).toBe(522066.4);
