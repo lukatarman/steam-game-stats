@@ -5,25 +5,25 @@ describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
-        this.firstDate = new Date("December 2022");
-        this.secondDate = new Date("November 2022");
+        const firstDate = new Date("December 2022");
+        const secondDate = new Date("November 2022");
 
-        this.histories = [
+        const histories = [
           {
             year: "2022",
             month: "11",
             averagePlayers: 34,
-            trackedPlayers: [{ players: 34, date: this.firstDate }],
+            trackedPlayers: [{ players: 34, date: firstDate }],
           },
           {
             year: "2022",
             month: "10",
             averagePlayers: 78,
-            trackedPlayers: [{ players: 78, date: this.secondDate }],
+            trackedPlayers: [{ players: 78, date: secondDate }],
           },
         ];
 
-        this.result = PlayerHistory.manyFromDbEntry(this.histories);
+        this.result = PlayerHistory.manyFromDbEntry(histories);
         debugger;
       });
 
@@ -79,10 +79,10 @@ describe("PlayerHistory", function () {
   describe(".fromRawData instantiates a new PlayerHistory object and returns it.", function () {
     describe("When players and a date are passed in,", function () {
       beforeEach(function () {
-        this.players = 62;
-        this.date = "September 2014";
+        const players = 62;
+        const date = "September 2014";
 
-        this.result = PlayerHistory.fromRawData(this.players, this.date);
+        this.result = PlayerHistory.fromRawData(players, date);
       });
 
       it("the result is an instance of PlayerHistory.", function () {
@@ -134,18 +134,18 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".pushTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
+  describe(".pushCurrentPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
     beforeEach(function () {
-      this.firstPlayers = "10";
-      this.firstDate = "October 2020";
-      this.secondPlayers = "50";
-      this.secondDate = "August 2019";
-      this.currentPlayers = "15";
+      const firstPlayers = "10";
+      const firstDate = "October 2020";
+      const secondPlayers = "50";
+      const secondDate = "August 2019";
+      const currentPlayers = "15";
 
-      this.result = PlayerHistory.newMonthlyEntry(this.currentPlayers);
+      this.result = PlayerHistory.newMonthlyEntry(currentPlayers);
 
-      this.result.pushTrackedPlayers(this.firstPlayers, this.firstDate);
-      this.result.pushTrackedPlayers(this.secondPlayers, this.secondDate);
+      this.result.pushCurrentPlayers(firstPlayers, firstDate);
+      this.result.pushCurrentPlayers(secondPlayers, secondDate);
     });
 
     it("has a 'players' property in its trackedPlayers first array value, which equals 15", function () {
