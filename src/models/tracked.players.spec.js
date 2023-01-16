@@ -15,12 +15,12 @@ describe("tracked.players.js", function () {
 
     describe("if a date is passed as the second parameter when instantiating", function () {
       beforeEach(function () {
-        this.currentDate = new Date("September 2000");
-        this.twelveHoursInMs = 12 * 60 * 60 * 1000;
-        this.datePlusTwelveHoursInMs =
-          Date.parse(this.currentDate) + this.twelveHoursInMs;
+        const currentDate = new Date("September 2000");
+        const twelveHoursInMs = 12 * 60 * 60 * 1000;
 
-        this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
+        const datePlusTwelveHoursInMs = Date.parse(currentDate) + twelveHoursInMs;
+
+        this.currentDatePlusTwelveHours = new Date(datePlusTwelveHoursInMs);
         this.players = new TrackedPlayers("24", "September 2000");
       });
 
@@ -31,8 +31,8 @@ describe("tracked.players.js", function () {
 
     describe("if zero is passed in as the player number", function () {
       beforeEach(function () {
-        this.currentDate = new Date();
-        this.players = new TrackedPlayers("0", this.currentDate);
+        const currentDate = new Date();
+        this.players = new TrackedPlayers("0", currentDate);
       });
 
       it("the property 'players' should be 0", function () {
@@ -42,8 +42,8 @@ describe("tracked.players.js", function () {
 
     describe("if 5473.4 is passed in as the player number", function () {
       beforeEach(function () {
-        this.currentDate = new Date();
-        this.players = new TrackedPlayers("5473.4", this.currentDate);
+        const currentDate = new Date();
+        this.players = new TrackedPlayers("5473.4", currentDate);
       });
 
       it("the property players should be '5473'", function () {
@@ -54,27 +54,26 @@ describe("tracked.players.js", function () {
     describe(".manyFromDbEntry creates a list of TrackedPlayers instances from an array of objects.", function () {
       describe("When an array of objects is passed in,", function () {
         beforeEach(function () {
-          this.currentDate = new Date();
+          const currentDate = new Date();
 
-          this.twelveHoursInMs = 12 * 60 * 60 * 1000;
+          const twelveHoursInMs = 12 * 60 * 60 * 1000;
 
-          this.datePlusTwelveHoursInMs =
-            Date.parse(this.currentDate) + this.twelveHoursInMs;
+          const datePlusTwelveHoursInMs = Date.parse(currentDate) + twelveHoursInMs;
 
-          this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
+          this.currentDatePlusTwelveHours = new Date(datePlusTwelveHoursInMs);
 
-          this.trackedPlayersArray = [
+          const trackedPlayersArray = [
             {
               players: 20,
-              date: this.currentDate,
+              date: currentDate,
             },
             {
               players: 15,
-              date: this.currentDate,
+              date: currentDate,
             },
           ];
 
-          this.result = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
+          this.result = TrackedPlayers.manyFromDbEntry(trackedPlayersArray);
         });
 
         it("the first result is an intance of Players.", function () {
