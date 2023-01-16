@@ -24,7 +24,6 @@ describe("PlayerHistory", function () {
         ];
 
         this.result = PlayerHistory.manyFromDbEntry(histories);
-        debugger;
       });
 
       it("the first result is an instance of PlayerHistory.", function () {
@@ -111,7 +110,6 @@ describe("PlayerHistory", function () {
       this.currentDate = new Date();
 
       this.result = PlayerHistory.newMonthlyEntry(42);
-      debugger;
     });
 
     it("is an instance of PlayerHistory", function () {
