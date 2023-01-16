@@ -114,9 +114,9 @@ describe("game.js", function () {
       });
     });
 
-    describe(".pushCurrentPlayers adds a trackedPlayers entry to the correct playerHistory array entry.", function () {
-      describe("When this month's entry already exists,", function () {
-        describe("players get added into the existing playerHistory entry.", function () {
+    describe(".pushCurrentPlayers creates a new player history entry or updates an existing one.", function () {
+      describe("When this month's player history entry already exists,", function () {
+        describe("players are added to the existing entry.", function () {
           beforeEach(function () {
             this.currentPlayers = 45;
 
