@@ -116,7 +116,7 @@ describe("game.js", function () {
 
     describe(".pushCurrentPlayers creates a new player history entry or updates an existing one.", function () {
       describe("When this month's player history entry already exists,", function () {
-        describe("players are added to the existing entry.", function () {
+        fdescribe("players are added to the existing entry.", function () {
           beforeEach(function () {
             this.currentPlayers = 45;
 
@@ -129,6 +129,8 @@ describe("game.js", function () {
               },
             ];
 
+            this.historyLength = playerHistory.length;
+
             const game = {
               id: 1,
               name: "Test Game",
@@ -140,10 +142,11 @@ describe("game.js", function () {
             this.result.pushCurrentPlayers(this.currentPlayers);
           });
 
-          it("The resulting object's playerHistory value is an instance of PlayerHistory.", function () {
-            expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
+          it("No new entry is created", function () {
+            expect(this.result.playerHistory.length).toBe(this.historyLength);
           });
-          it("The resulting object has a property called players, which equals 45", function () {
+          it("The existing entry is updated.", function () {
+            expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
             expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(
               this.currentPlayers,
             );
