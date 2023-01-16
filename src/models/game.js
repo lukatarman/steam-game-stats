@@ -1,4 +1,3 @@
-import v8 from "node:v8";
 import { PlayerHistory } from "./player.history.js";
 
 export class Game {
@@ -49,7 +48,7 @@ export class Game {
 
   pushSteamchartsPlayerHistory(playerHistories) {
     playerHistories.forEach((history) => {
-      const historyCopy = v8.deserialize(v8.serialize(history));
+      const historyCopy = history.copy();
 
       this.playerHistory.push(historyCopy);
     });

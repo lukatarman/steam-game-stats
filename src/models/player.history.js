@@ -3,7 +3,6 @@ import { TrackedPlayers } from "./tracked.players.js";
 export class PlayerHistory {
   year;
   month;
-  averagePlayers;
   trackedPlayers;
 
   static manyFromDbEntry(histories) {
@@ -15,7 +14,6 @@ export class PlayerHistory {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = history.year;
     playerHistory.month           = history.month;
-    playerHistory.averagePlayers  = history.averagePlayers;
     playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
     return playerHistory;
   }
@@ -25,7 +23,6 @@ export class PlayerHistory {
       const playerHistory           = new PlayerHistory();
       playerHistory.year            = new Date(date).getFullYear();
       playerHistory.month           = new Date(date).getMonth();
-      playerHistory.averagePlayers  = 0;
       playerHistory.trackedPlayers  = [];
       playerHistory.pushCurrentPlayers(players, date);
       return playerHistory;
@@ -36,16 +33,28 @@ export class PlayerHistory {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = new Date().getFullYear();
     playerHistory.month           = new Date().getMonth();
-    playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
     playerHistory.pushCurrentPlayers(players);
     return playerHistory;
   }
 
+  //prettier-ignore
+  copy() {
+    const clone         = JSON.parse(JSON.stringify(this));
+
+    const copy          = new PlayerHistory();
+    copy.year           = clone.year;
+    copy.month          = clone.month;
+    copy.trackedPlayers = clone.trackedPlayers;
+    return copy;
+  }
+
   pushCurrentPlayers(players, date = "") {
     this.trackedPlayers.push(new TrackedPlayers(players, date));
+  }
 
-    this.averagePlayers = this.#calculateAveragePlayers();
+  get averagePlayers() {
+    return this.#calculateAveragePlayers();
   }
 
   #calculateAveragePlayers() {
