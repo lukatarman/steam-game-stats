@@ -21,8 +21,8 @@ export class TrackedPlayers {
   }
 
   static manyFromDbEntry(trackedPlayersArray) {
-    return trackedPlayersArray.map(({ players, date }) => {
-      return new TrackedPlayers(players, date);
-    });
+    return trackedPlayersArray.map(
+      ({ players, date }) => new TrackedPlayers(players, date),
+    );
   }
 }
