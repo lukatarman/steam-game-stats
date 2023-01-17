@@ -38,17 +38,6 @@ export class PlayerHistory {
     return playerHistory;
   }
 
-  //prettier-ignore
-  copy() {
-    const clone         = JSON.parse(JSON.stringify(this));
-    const copy          = new PlayerHistory();
-    copy.year           = clone.year;
-    copy.month          = clone.month;
-    copy.trackedPlayers = clone.trackedPlayers;
-    debugger;
-    return copy;
-  }
-
   pushTrackedPlayers(players, date = "") {
     this.trackedPlayers.push(new TrackedPlayers(players, date));
   }
