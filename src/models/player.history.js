@@ -54,10 +54,6 @@ export class PlayerHistory {
   }
 
   get averagePlayers() {
-    return this.#calculateAveragePlayers();
-  }
-
-  #calculateAveragePlayers() {
     const average =
       this.trackedPlayers.reduce((sum, cur) => sum + cur.players, 0) /
       this.trackedPlayers.length;
