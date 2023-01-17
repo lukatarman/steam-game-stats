@@ -29,7 +29,7 @@ describe("PlayerHistory", function () {
       it("the first entry is an instance of PlayerHistory.", function () {
         expect(this.result[0]).toBeInstanceOf(PlayerHistory);
       });
-      it("the first entry player history instance is identical to the document.", function () {
+      it("the first entry PlayerHistory instance is identical to the document.", function () {
         expect(this.result[0].year).toBe(this.histories[0].year);
         expect(this.result[0].month).toBe(this.histories[0].month);
         expect(this.result[0].averagePlayers).toBe(this.histories[0].averagePlayers);
@@ -43,7 +43,7 @@ describe("PlayerHistory", function () {
       it("the second entry is an instance of PlayerHistory.", function () {
         expect(this.result[1]).toBeInstanceOf(PlayerHistory);
       });
-      it("the second entry player history instance is identical to the document.", function () {
+      it("the second entry PlayerHistory instance is identical to the document.", function () {
         expect(this.result[1].year).toBe(this.histories[1].year);
         expect(this.result[1].month).toBe(this.histories[1].month);
         expect(this.result[1].averagePlayers).toBe(this.histories[1].averagePlayers);
@@ -67,7 +67,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".fromRawData creates a new playerHistory instance.", function () {
+  describe(".fromRawData creates a new PlayerHistory instance.", function () {
     describe("When players and a date are passed in,", function () {
       beforeEach(function () {
         this.players = 62;
@@ -79,19 +79,19 @@ describe("PlayerHistory", function () {
       it("the result is an instance of PlayerHistory.", function () {
         expect(this.result).toBeInstanceOf(PlayerHistory);
       });
-      it("the player history year property equals to the year of the passed in date.", function () {
+      it("the PlayerHistory year property equals to the year of the passed in date.", function () {
         expect(this.result.year).toBe(new Date(this.date).getFullYear());
       });
-      it("the player history month property equals to the month of the passed in date.", function () {
+      it("the PlayerHistory month property equals to the month of the passed in date.", function () {
         expect(this.result.month).toBe(new Date(this.date).getMonth());
       });
-      it("the player history average players property equals to the passed in players.", function () {
+      it("the PlayerHistory average players property equals to the passed in players.", function () {
         expect(this.result.averagePlayers).toBe(this.players);
       });
-      it("the player history tracked players property is an instance of TrackedPlayers", function () {
+      it("the PlayerHistory tracked players property is an instance of TrackedPlayers", function () {
         expect(this.result.trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
       });
-      it("the player history tracked players has a players property, which equals to the passed in players.", function () {
+      it("the PlayerHistory tracked players has a players property, which equals to the passed in players.", function () {
         expect(this.result.trackedPlayers[0].players).toBe(this.players);
       });
     });
@@ -107,25 +107,25 @@ describe("PlayerHistory", function () {
       it("the result is an instance of PlayerHistory", function () {
         expect(this.result).toBeInstanceOf(PlayerHistory);
       });
-      it("the player history year property equals the current year.", function () {
+      it("the PlayerHistory year property equals the current year.", function () {
         expect(this.result.year).toBe(new Date().getFullYear());
       });
-      it("the player history month property equals the current month.", function () {
+      it("the PlayerHistory month property equals the current month.", function () {
         expect(this.result.month).toBe(new Date().getMonth());
       });
-      it("the player history average players property equals the passed in players", function () {
+      it("the PlayerHistory average players property equals the passed in players", function () {
         expect(this.result.averagePlayers).toBe(this.players);
       });
-      it("the player history tracked players property is an instance of TrackedPlayers", function () {
+      it("the PlayerHistory tracked players property is an instance of TrackedPlayers", function () {
         expect(this.result.trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
       });
-      it("the player history tracked players has a players property, which equals to the passed in players.", function () {
+      it("the PlayerHistory tracked players has a players property, which equals to the passed in players.", function () {
         expect(this.result.trackedPlayers[0].players).toBe(this.players);
       });
     });
   });
 
-  describe(".pushTrackedPlayers adds an new instance of tracked players to player history.", function () {
+  describe(".pushTrackedPlayers adds an new instance of tracked players to PlayerHistory.", function () {
     describe("When players are passed in,", function () {
       beforeEach(function () {
         this.players = 10;
@@ -169,7 +169,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".averagePlayers calculates the player history's average players. When the method runs,", function () {
+  describe(".averagePlayers calculates the PlayerHistory's average players. When the method runs,", function () {
     beforeEach(function () {
       const firstPlayers = "102";
       const secondPlayers = "53";
