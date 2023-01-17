@@ -168,4 +168,21 @@ describe("PlayerHistory", function () {
       });
     });
   });
+
+  describe(".averagePlayers calculates the player history's average players. When the method runs,", function () {
+    beforeEach(function () {
+      const firstPlayers = "102";
+      const secondPlayers = "53";
+      const pastDate = "August 2019";
+
+      const playerHistory = PlayerHistory.fromRawData(firstPlayers, pastDate);
+      playerHistory.pushTrackedPlayers(secondPlayers, pastDate);
+
+      this.result = playerHistory.averagePlayers;
+    });
+
+    it("the result is 77.5", function () {
+      expect(this.result).toBe(77.5);
+    });
+  });
 });
