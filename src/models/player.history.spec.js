@@ -97,8 +97,8 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".newMonthlyEntry creates a new PlayerHistory instance for the current month. The result", function () {
-    fdescribe("When players are passed in,", function () {
+  describe(".newMonthlyEntry creates a new PlayerHistory instance for the current month.", function () {
+    describe("When players are passed in,", function () {
       beforeEach(function () {
         this.players = 42;
         this.result = PlayerHistory.newMonthlyEntry(this.players);
@@ -125,31 +125,47 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".pushCurrentPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
-    beforeEach(function () {
-      const firstPlayers = "10";
-      const firstDate = "October 2020";
-      const secondPlayers = "50";
-      const secondDate = "August 2019";
-      const currentPlayers = "15";
+  describe(".pushTrackedPlayers adds an new instance of tracked players to player history.", function () {
+    describe("When players are passed in,", function () {
+      beforeEach(function () {
+        this.players = 10;
 
-      this.result = PlayerHistory.newMonthlyEntry(currentPlayers);
+        this.result = PlayerHistory.newMonthlyEntry("15");
 
-      this.result.pushCurrentPlayers(firstPlayers, firstDate);
-      this.result.pushCurrentPlayers(secondPlayers, secondDate);
+        this.result.pushTrackedPlayers(this.players);
+      });
+
+      it("the resulting tracked players property is an instance of TrackedPlayers", function () {
+        expect(this.result.trackedPlayers[1]).toBeInstanceOf(TrackedPlayers);
+      });
+      it("the tracked players 'players' property equals the passed in players", function () {
+        expect(this.result.trackedPlayers[1].players).toBe(this.players);
+      });
+      it("the tracked players 'date' property equals the current date.", function () {
+        expect(this.result.trackedPlayers[1].date).toEqual(new Date());
+      });
     });
 
-    it("has a 'players' property in its trackedPlayers first array value, which equals 15", function () {
-      expect(this.result.trackedPlayers[0].players).toBe(15);
-    });
-    it("has a 'players' property in its trackedPlayers second array value, which equals 10", function () {
-      expect(this.result.trackedPlayers[1].players).toBe(10);
-    });
-    it("has a 'players' property in its trackedPlayers third array value, which equals 50", function () {
-      expect(this.result.trackedPlayers[2].players).toBe(50);
-    });
-    it("has its averagePlayers property updated to 25", function () {
-      expect(this.result.averagePlayers).toBe(25);
+    describe("When players and a date are passed in,", function () {
+      beforeEach(function () {
+        this.players = 10;
+        this.date = "October 2020";
+
+        this.result = PlayerHistory.newMonthlyEntry("15");
+
+        this.result.pushTrackedPlayers(this.players, this.date);
+      });
+
+      it("the resulting tracked players property is an instance of TrackedPlayers", function () {
+        expect(this.result.trackedPlayers[1]).toBeInstanceOf(TrackedPlayers);
+      });
+      it("the tracked players 'players' property equals the passed in players", function () {
+        expect(this.result.trackedPlayers[1].players).toBe(this.players);
+      });
+      it("the tracked players 'date' property equals the passed in date.", function () {
+        this.trackedPlayers = new TrackedPlayers(this.players, this.date);
+        expect(this.result.trackedPlayers[1].date).toEqual(this.trackedPlayers.date);
+      });
     });
   });
 });
