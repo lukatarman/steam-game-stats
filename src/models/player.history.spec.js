@@ -3,7 +3,7 @@ import { TrackedPlayers } from "./tracked.players.js";
 
 describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of PlayerHistory database documents.", function () {
-    fdescribe("When a list of history objects is passed in, ", function () {
+    describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
         const firstDate = new Date("December 2022");
         const secondDate = new Date("November 2022");
@@ -56,43 +56,43 @@ describe("PlayerHistory", function () {
       });
     });
 
-    describe("When the passed in array is empty,", function () {
+    describe("When no documents are provided,", function () {
       beforeEach(function () {
         this.result = PlayerHistory.manyFromDbEntry([]);
       });
 
-      it("the returned array's will be empty", function () {
+      it("no instanced are created.", function () {
         expect(this.result).toEqual([]);
       });
     });
   });
 
-  describe(".fromRawData instantiates a new PlayerHistory object and returns it.", function () {
+  describe(".fromRawData creates a new playerHistory instance.", function () {
     describe("When players and a date are passed in,", function () {
       beforeEach(function () {
-        const players = 62;
-        const date = "September 2014";
+        this.players = 62;
+        this.date = "September 2014";
 
-        this.result = PlayerHistory.fromRawData(players, date);
+        this.result = PlayerHistory.fromRawData(this.players, this.date);
       });
 
       it("the result is an instance of PlayerHistory.", function () {
         expect(this.result).toBeInstanceOf(PlayerHistory);
       });
-      it("the result has a property called year, which equals 2014.", function () {
-        expect(this.result.year).toBe(2014);
+      it("the player history year property equals to the year of the passed in date.", function () {
+        expect(this.result.year).toBe(new Date(this.date).getFullYear());
       });
-      it("the result has a property called month, which equals 8.", function () {
-        expect(this.result.month).toBe(8);
+      it("the player history month property equals to the month of the passed in date.", function () {
+        expect(this.result.month).toBe(new Date(this.date).getMonth());
       });
-      it("the result has a property called averagePlayers, which equals 62", function () {
-        expect(this.result.averagePlayers).toBe(62);
+      it("the player history average players property equals to the passed in players.", function () {
+        expect(this.result.averagePlayers).toBe(this.players);
       });
-      it("the result has a property called tracked players, which is an instance of TrackedPlayers", function () {
+      it("The player history tracked players property is an instance of TrackedPlayers", function () {
         expect(this.result.trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
       });
-      it("the result has a property called players, which equals 62", function () {
-        expect(this.result.trackedPlayers[0].players).toBe(62);
+      it("the player history tracked players has a players property, which equals to the passed in players.", function () {
+        expect(this.result.trackedPlayers[0].players).toBe(this.players);
       });
     });
   });
