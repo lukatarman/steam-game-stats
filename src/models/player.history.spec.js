@@ -2,7 +2,7 @@ import { PlayerHistory } from "./player.history.js";
 import { TrackedPlayers } from "./tracked.players.js";
 
 describe("PlayerHistory", function () {
-  describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of history objects.", function () {
+  describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of PlayerHistory database documents.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
         const firstDate = new Date("December 2022");
@@ -26,22 +26,22 @@ describe("PlayerHistory", function () {
         this.result = PlayerHistory.manyFromDbEntry(histories);
       });
 
-      it("the first result is an instance of PlayerHistory.", function () {
+      it("the first entry is an instance of PlayerHistory.", function () {
         expect(this.result[0]).toBeInstanceOf(PlayerHistory);
       });
-      it("the first result has a property called year, which equals 2022.", function () {
+      it("the first entry has a property called year, which equals 2022.", function () {
         expect(this.result[0].year).toBe("2022");
       });
-      it("the first result has a property called month, which equals 11.", function () {
+      it("the first entry has a property called month, which equals 11.", function () {
         expect(this.result[0].month).toBe("11");
       });
-      it("the first result has a property called averagePlayers, which equals 34", function () {
+      it("the first entry has a property called averagePlayers, which equals 34", function () {
         expect(this.result[0].averagePlayers).toBe(34);
       });
-      it("the first result has a property called 'trackedPlayers', which is an instance of 'TrackedPlayers'", function () {
+      it("the first entry has a property called 'trackedPlayers', which is an instance of 'TrackedPlayers'", function () {
         expect(this.result[0].trackedPlayers[0]).toBeInstanceOf(TrackedPlayers);
       });
-      it("the first result has a property players, which equals 34", function () {
+      it("the first entry has a property players, which equals 34", function () {
         expect(this.result[0].trackedPlayers[0].players).toBe(34);
       });
       it("the second result is an instance of PlayerHistory.", function () {
