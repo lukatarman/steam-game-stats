@@ -24,7 +24,7 @@ export class PlayerHistory {
       playerHistory.year            = new Date(date).getFullYear();
       playerHistory.month           = new Date(date).getMonth();
       playerHistory.trackedPlayers  = [];
-      playerHistory.pushCurrentPlayers(players, date);
+      playerHistory.pushTrackedPlayers(players, date);
       return playerHistory;
     }
 
@@ -34,22 +34,22 @@ export class PlayerHistory {
     playerHistory.year            = new Date().getFullYear();
     playerHistory.month           = new Date().getMonth();
     playerHistory.trackedPlayers  = [];
-    playerHistory.pushCurrentPlayers(players);
+    playerHistory.pushTrackedPlayers(players);
     return playerHistory;
   }
 
   //prettier-ignore
   copy() {
     const clone         = JSON.parse(JSON.stringify(this));
-
     const copy          = new PlayerHistory();
     copy.year           = clone.year;
     copy.month          = clone.month;
     copy.trackedPlayers = clone.trackedPlayers;
+    debugger;
     return copy;
   }
 
-  pushCurrentPlayers(players, date = "") {
+  pushTrackedPlayers(players, date = "") {
     this.trackedPlayers.push(new TrackedPlayers(players, date));
   }
 
