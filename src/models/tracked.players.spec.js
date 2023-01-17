@@ -1,6 +1,6 @@
 import { TrackedPlayers } from "./tracked.players.js";
 
-fdescribe("TrackedPlayers", function () {
+describe("TrackedPlayers", function () {
   describe("when no date is provided", function () {
     beforeEach(function () {
       this.players = new TrackedPlayers("24");
