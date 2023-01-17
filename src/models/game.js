@@ -1,4 +1,5 @@
 import { PlayerHistory } from "./player.history.js";
+import cloneDeep from "lodash.clonedeep";
 
 export class Game {
   id;
@@ -48,7 +49,7 @@ export class Game {
 
   pushSteamchartsPlayerHistory(playerHistories) {
     playerHistories.forEach((history) => {
-      const historyCopy = history.copy();
+      const historyCopy = cloneDeep(history);
 
       this.playerHistory.push(historyCopy);
     });
