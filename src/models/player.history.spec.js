@@ -1,7 +1,7 @@
 import { PlayerHistory } from "./player.history.js";
 import { TrackedPlayers } from "./tracked.players.js";
 
-fdescribe("PlayerHistory", function () {
+describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of PlayerHistory database documents.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
