@@ -263,7 +263,7 @@ describe("PlayerHistoryAggregator", function () {
       });
     });
 
-    fdescribe("gets current players for one game in a batch of one, and adds the players", function () {
+    describe("gets current players for one game in a batch of one, and adds the players", function () {
       beforeEach(async function () {
         jasmine.clock().mockDate(new Date());
 
