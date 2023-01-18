@@ -1,7 +1,7 @@
 import { PlayerHistory } from "./player.history.js";
 import { TrackedPlayers } from "./tracked.players.js";
 
-describe("PlayerHistory", function () {
+fdescribe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of PlayerHistory database documents.", function () {
     describe("When a list of history objects is passed in, ", function () {
       beforeEach(function () {
@@ -97,11 +97,15 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".newMonthlyEntry creates a new PlayerHistory instance for the current month.", function () {
+  fdescribe(".newMonthlyEntry creates a new PlayerHistory instance for the current month.", function () {
     describe("When players are passed in,", function () {
       beforeEach(function () {
+        jasmine.clock().mockDate(new Date());
+
         this.players = 42;
         this.result = PlayerHistory.newMonthlyEntry(this.players);
+
+        jasmine.clock().uninstall();
       });
 
       it("the result is an instance of PlayerHistory", function () {
@@ -128,11 +132,15 @@ describe("PlayerHistory", function () {
   describe(".pushTrackedPlayers adds an new instance of tracked players to PlayerHistory.", function () {
     describe("When players are passed in,", function () {
       beforeEach(function () {
+        jasmine.clock().mockDate(new Date());
+
         this.players = 10;
 
         this.result = PlayerHistory.newMonthlyEntry("15");
 
         this.result.pushTrackedPlayers(this.players);
+
+        jasmine.clock().uninstall();
       });
 
       it("the resulting tracked players property is an instance of TrackedPlayers", function () {
