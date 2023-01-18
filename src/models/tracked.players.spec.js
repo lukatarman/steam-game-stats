@@ -4,7 +4,11 @@ describe("TrackedPlayers", function () {
   describe("Instantiates the TrackedPlayers class.", function () {
     describe("When no date is provided", function () {
       beforeEach(function () {
+        jasmine.clock().mockDate(new Date());
+
         this.players = new TrackedPlayers("24");
+
+        jasmine.clock().uninstall();
       });
 
       it("the current date is used.", function () {
