@@ -263,8 +263,10 @@ describe("PlayerHistoryAggregator", function () {
       });
     });
 
-    describe("gets current players for one game in a batch of one, and adds the players", function () {
+    fdescribe("gets current players for one game in a batch of one, and adds the players", function () {
       beforeEach(async function () {
+        jasmine.clock().mockDate(new Date());
+
         this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
           Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
@@ -291,6 +293,7 @@ describe("PlayerHistoryAggregator", function () {
         );
 
         await agg.addCurrentPlayers();
+        jasmine.clock().uninstall();
       });
 
       it("calls .getXgamesCheckedMoreThanYmsAgo once", function () {
