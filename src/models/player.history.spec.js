@@ -97,7 +97,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  fdescribe(".newMonthlyEntry creates a new PlayerHistory instance for the current month.", function () {
+  describe(".newMonthlyEntry creates a new PlayerHistory instance for the current month.", function () {
     describe("When players are passed in,", function () {
       beforeEach(function () {
         jasmine.clock().mockDate(new Date());
