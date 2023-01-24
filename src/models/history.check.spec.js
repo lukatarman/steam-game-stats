@@ -19,30 +19,39 @@ describe("history.check.js", function () {
         it("the first entry is an instance of HistoryCheck", function () {
           expect(this.result[0]).toBeInstanceOf(HistoryCheck);
         });
+
         it("the first entry HistoryCheck instance 'gameId' property equals the passed in game id", function () {
           expect(this.result[0].gameId).toBe(this.firstGame.id);
         });
+
         it("the first entry HistoryCheck instance 'checked' property equals true", function () {
           expect(this.result[0].checked).toBeTrue();
         });
+
         it("the first entry HistoryCheck instance 'found' property equals true", function () {
           expect(this.result[0].found).toBeTrue();
         });
+
         it("the first entry HistoryCheck instance 'source' property equals 'steamCharts'", function () {
           expect(this.result[0].source).toBe("steamCharts");
         });
+
         it("the second entry is an instance of HistoryCheck", function () {
           expect(this.result[1]).toBeInstanceOf(HistoryCheck);
         });
+
         it("the second entry HistoryCheck instance 'gameId' property equals the passed in game id", function () {
           expect(this.result[1].gameId).toBe(this.secondGame.id);
         });
+
         it("the second entry HistoryCheck instance 'checked' property equals true", function () {
           expect(this.result[1].checked).toBeTrue();
         });
+
         it("the second entry HistoryCheck instance 'found' property equals false", function () {
           expect(this.result[1].found).toBeFalse();
         });
+
         it("the second entry HistoryCheck instance 'source' property equals 'steamCharts'", function () {
           expect(this.result[1].source).toBe("steamCharts");
         });
@@ -60,24 +69,31 @@ describe("history.check.js", function () {
         it("the first entry is an instance of HistoryCheck", function () {
           expect(this.result[0]).toBeInstanceOf(HistoryCheck);
         });
+
         it("the first entry HistoryCheck instance 'gameId' property equals the first passed in game id", function () {
           expect(this.result[0].gameId).toBe(this.games[0].id);
         });
+
         it("the first entry HistoryCheck instance 'checked' property equals false", function () {
           expect(this.result[0].checked).toBeFalse();
         });
+
         it("the first entry HistoryCheck instance 'found' property equals false", function () {
           expect(this.result[0].found).toBeFalse();
         });
+
         it("the second entry is an instance of HistoryCheck", function () {
           expect(this.result[1]).toBeInstanceOf(HistoryCheck);
         });
+
         it("the second entry HistoryCheck instance 'gameId' property equals the first passed in game id", function () {
           expect(this.result[1].gameId).toBe(this.games[1].id);
         });
+
         it("the second entry HistoryCheck instance 'checked' property equals false", function () {
           expect(this.result[1].checked).toBeFalse();
         });
+
         it("the second entry HistoryCheck instance 'found' property equals false", function () {
           expect(this.result[1].found).toBeFalse();
         });
