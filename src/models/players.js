@@ -1,22 +1,62 @@
+import { TrackedPlayers } from "./tracked.players.js";
+
 export class Players {
-  date;
-  players;
+  year;
+  month;
+  averagePlayers;
+  trackedPlayers;
 
-  constructor(playersAsString, dateAsString = "") {
-    // We add twelve hours to the date saved in the players class to remove any issues related to any
-    // automatic changing of dates at any point. Currently, this is relevant because mongoDB automatically converts
-    // all dates into the UTC timezone. This marks our dates as being part of the wrong month when saving
-    // the entries into the database.
-
-    this.date = dateAsString === "" ? new Date() : this.#addTwelveHours(dateAsString);
-
-    this.players = parseFloat(parseFloat(playersAsString).toFixed(1));
+  static manyFromSteamchartsPage(histories) {
+    return histories.map((history) => this.fromSteamcharts(history));
   }
 
-  #addTwelveHours(date) {
-    const dateInMs = Date.parse(date);
-    const twelveHoursInMs = 12 * 60 * 60 * 1000;
+  //prettier-ignore
+  static fromSteamcharts(history) {
+    const players           = new Players();
+    players.year            = history.date.getFullYear();
+    players.month           = history.date.getMonth();
+    players.averagePlayers  = history.players;
+    players.trackedPlayers  = [];
+    return players;
+  }
 
-    return new Date(dateInMs + twelveHoursInMs);
+  static manyFromDbEntry(histories) {
+    return histories.map((history) => this.fromDbEntry(history));
+  }
+
+  //prettier-ignore
+  static fromDbEntry(history) {
+    const players           = new Players();
+    players.year            = history.year;
+    players.month           = history.month;
+    players.averagePlayers  = history.averagePlayers;
+    players.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
+    return players;
+  }
+
+  //prettier-ignore
+  static newMonthlyEntry() {
+    const players           = new Players();
+    players.year            = new Date().getFullYear();
+    players.month           = new Date().getMonth();
+    players.averagePlayers  = 0;
+    players.trackedPlayers  = [];
+    return players;
+  }
+
+  addNewTrackedPlayers(players) {
+    this.trackedPlayers.push(new TrackedPlayers(players));
+
+    this.averagePlayers = this.#calculateAveragePlayers();
+  }
+
+  #calculateAveragePlayers() {
+    const currentTrackedHistories = this.trackedPlayers;
+
+    const playersSum = currentTrackedHistories.reduce((previous, current) => {
+      return previous + parseFloat(current.players);
+    }, 0);
+
+    return parseFloat((playersSum / currentTrackedHistories.length).toFixed(1));
   }
 }

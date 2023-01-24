@@ -1,23 +1,28 @@
 import { JSDOM } from "jsdom";
-import { Players } from "../../../models/players.js";
+import { TrackedPlayers } from "../../../models/tracked.players.js";
 
 export function addCurrentPlayersFromSteam(players, games) {
-  return games.map((game, i) => {
-    game.playerHistory.push(new Players(players[i]));
-    return game;
-  });
+  return games.map((game, i) => game.addOnePlayerHistoryEntry(players[i]));
 }
 
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
   for (const [game, page] of gamesPagesMap) {
-    if (page !== "") game.playerHistory = parsePlayerHistory(page);
+    if (page === "") {
+      games.push(game);
+      continue;
+    }
+
+    const parsedGameHistories = parseGameHistories(page);
+    game.addHistoryEntriesFromSteamcharts(parsedGameHistories);
+
     games.push(game);
   }
+
   return games;
 }
 
-export function parsePlayerHistory(pageHttpDetailsHtml) {
+function parseGameHistories(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
     ".common-table tbody tr",
@@ -33,6 +38,6 @@ export function parsePlayerHistory(pageHttpDetailsHtml) {
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
     .map(
       (element) =>
-        new Players(element.nextElementSibling.textContent, element.textContent),
+        new TrackedPlayers(element.nextElementSibling.textContent, element.textContent),
     );
 }

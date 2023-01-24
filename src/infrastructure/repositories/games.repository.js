@@ -64,12 +64,28 @@ export class GamesRepository {
               as: "game",
             },
           },
-          { $match: { checked: true } },
           { $unwind: "$game" },
           { $replaceWith: "$game" },
-          { $addFields: { lastUpdateDate: { $last: "$playerHistory.date" } } },
-          { $match: { lastUpdateDate: { $lt: new Date(Date.now() - ms) } } },
+          {
+            $addFields: {
+              lastHistory: { $last: "$playerHistory" },
+            },
+          },
+          {
+            $addFields: {
+              lastUpdateDate: { $last: "$lastHistory.trackedPlayers.date" },
+            },
+          },
+          {
+            $match: {
+              $or: [
+                { playerHistory: { $eq: [] } },
+                { lastUpdateDate: { $lt: new Date(Date.now() - ms) } },
+              ],
+            },
+          },
           { $unset: "lastUpdateDate" },
+          { $unset: "lastHistory" },
           { $limit: amount },
         ])
         .toArray()
@@ -81,7 +97,13 @@ export class GamesRepository {
       .get("games")
       .aggregate([
         { $match: { playerHistory: { $ne: [] } } },
-        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $addFields: { lastPlayerHistory: { $last: "$playerHistory" } } },
+        {
+          $addFields: {
+            currentPlayers: { $last: "$lastPlayerHistory.trackedPlayers.players" },
+          },
+        },
+        { $unset: "lastPlayerHistory" },
         { $sort: { currentPlayers: -1 } },
         { $limit: amount },
       ])
@@ -100,7 +122,13 @@ export class GamesRepository {
             ],
           },
         },
-        { $addFields: { currentPlayers: { $last: "$playerHistory.players" } } },
+        { $addFields: { lastPlayerHistory: { $last: "$playerHistory" } } },
+        {
+          $addFields: {
+            currentPlayers: { $last: "$lastPlayerHistory.trackedPlayers.players" },
+          },
+        },
+        { $unset: "lastPlayerHistory" },
         { $sort: { currentPlayers: -1 } },
         { $limit: 15 },
       ])

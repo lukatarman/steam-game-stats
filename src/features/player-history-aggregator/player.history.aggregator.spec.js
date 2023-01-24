@@ -1,12 +1,13 @@
 import { PlayerHistoryAggregator } from "./player.history.aggregator.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 import { oneGameWithUncheckedPlayerHistory } from "../../../assets/db-responses/one.game.unchecked.history.js";
+import { twoGamesWithUncheckedPlayerHistory } from "../../../assets/db-responses/two.games.unchecked.history.js";
 import { HistoryCheck } from "../../models/history.check.js";
+import { Game } from "../../models/game.js";
 import {
   addCurrentPlayersFromSteam,
   addPlayerHistoriesFromSteamcharts,
 } from "./services/player.history.service.js";
-import { twoGamesWithUncheckedPlayerHistory } from "../../../assets/db-responses/two.games.unchecked.history.js";
 
 describe("PlayerHistoryAggregator", function () {
   describe(".addPlayerHistoryFromSteamcharts()", function () {
@@ -15,13 +16,16 @@ describe("PlayerHistoryAggregator", function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
-          oneGameWithUncheckedPlayerHistory,
+          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
         );
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
         this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         [this.historyChecks, this.games] = createMap([
-          [twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts],
+          [
+            Game.fromDbEntry(twoGamesWithUncheckedPlayerHistory[0]),
+            crushTheCastleHtmlDetailsSteamcharts,
+          ],
         ]);
 
         this.agg = new PlayerHistoryAggregator(
@@ -97,15 +101,18 @@ describe("PlayerHistoryAggregator", function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
-          twoGamesWithUncheckedPlayerHistory,
+          Game.manyFromDbEntry(twoGamesWithUncheckedPlayerHistory),
         );
 
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
         this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
         [this.historyChecks, this.games] = createMap([
-          [twoGamesWithUncheckedPlayerHistory[0], crushTheCastleHtmlDetailsSteamcharts],
-          [twoGamesWithUncheckedPlayerHistory[1], ""],
+          [
+            Game.fromDbEntry(twoGamesWithUncheckedPlayerHistory[0]),
+            crushTheCastleHtmlDetailsSteamcharts,
+          ],
+          [Game.fromDbEntry(twoGamesWithUncheckedPlayerHistory[1]), ""],
         ]);
 
         this.agg = new PlayerHistoryAggregator(
@@ -263,7 +270,7 @@ describe("PlayerHistoryAggregator", function () {
       beforeEach(async function () {
         this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
-          oneGameWithUncheckedPlayerHistory,
+          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
         );
 
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
@@ -273,7 +280,7 @@ describe("PlayerHistoryAggregator", function () {
 
         this.gamesWithCurrentPlayers = addCurrentPlayersFromSteam(
           [285],
-          oneGameWithUncheckedPlayerHistory,
+          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
         );
 
         const agg = new PlayerHistoryAggregator(
@@ -305,10 +312,10 @@ describe("PlayerHistoryAggregator", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .getAllCurrentPlayersConcurrently with oneGameWithUncheckedPlayerHistory", function () {
+      it("calls .getAllCurrentPlayersConcurrently with this.gamesWithCurrentPlayers", function () {
         expect(
           this.steamClientMock.getAllCurrentPlayersConcurrently,
-        ).toHaveBeenCalledWith(oneGameWithUncheckedPlayerHistory);
+        ).toHaveBeenCalledWith(this.gamesWithCurrentPlayers);
       });
 
       it("calls .getAllCurrentPlayersConcurrently  before .updatePlayerHistoriesById", function () {

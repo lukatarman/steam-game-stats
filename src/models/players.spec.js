@@ -1,54 +1,147 @@
 import { Players } from "./players.js";
 
-describe("players.js", function () {
-  describe("Players", function () {
-    describe("if nothing is passed as the second parameter when instantiating", function () {
+describe("Players", function () {
+  describe(".manyFromSteamChartsPage creates a list of Player instances from a list of history objects.", function () {
+    describe("When a list of history objects is passed in,", function () {
       beforeEach(function () {
         this.currentDate = new Date();
-        this.players = new Players("24");
+
+        this.histories = [
+          {
+            players: 23,
+            date: this.currentDate,
+          },
+        ];
+
+        this.results = Players.manyFromSteamchartsPage(this.histories);
       });
 
-      it("the property date should be the current date", function () {
-        expect(this.players.date).toEqual(this.currentDate);
+      it("the result is a list of Player instances.", function () {
+        expect(this.results[0]).toBeInstanceOf(Players);
+      });
+      it("a Player instance year is the same as the history object year.", function () {
+        expect(this.results[0].year).toBe(this.currentDate.getFullYear());
+      });
+      it("a Player instance month is the same as the history object month.", function () {
+        expect(this.results[0].month).toBe(this.currentDate.getMonth());
+      });
+      it("a Player instance averagePlayers is the same as the history object averagePlayers", function () {
+        expect(this.results[0].averagePlayers).toBe(this.histories[0].players);
       });
     });
 
-    describe("if a date is passed as the second parameter when instantiating", function () {
+    describe("when the passed in array is empty", function () {
       beforeEach(function () {
-        this.currentDate = new Date("September 2000");
-        this.twelveHoursInMs = 12 * 60 * 60 * 1000;
-        this.datePlusTwelveHoursInMs =
-          Date.parse(this.currentDate) + this.twelveHoursInMs;
-
-        this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
-        this.players = new Players("24", "September 2000");
+        this.results = Players.manyFromSteamchartsPage([]);
       });
 
-      it("the property date should be the current date, plus twelve hours", function () {
-        expect(this.players.date).toEqual(this.currentDatePlusTwelveHours);
+      it("the returned array's will be empty", function () {
+        expect(this.results).toEqual([]);
+      });
+    });
+  });
+
+  describe(".manyFromDbEntry creates a list of Player instances from a list of history objects.", function () {
+    describe("When a list of history objects is passed in, ", function () {
+      beforeEach(function () {
+        this.histories = [
+          {
+            year: "2022",
+            month: "11",
+            averagePlayers: 34,
+            trackedPlayers: [],
+          },
+          {
+            year: "2022",
+            month: "10",
+            averagePlayers: 78,
+            trackedPlayers: [],
+          },
+        ];
+
+        this.results = Players.manyFromDbEntry(this.histories);
+      });
+
+      it("the first result is an instance of Players.", function () {
+        expect(this.results[0]).toBeInstanceOf(Players);
+      });
+      it("the first result has a property called year, which equals 2022.", function () {
+        expect(this.results[0].year).toBe("2022");
+      });
+      it("the first result has a property called month, which equals 11.", function () {
+        expect(this.results[0].month).toBe("11");
+      });
+      it("the first result has a property called averagePlayers, which equals 34", function () {
+        expect(this.results[0].averagePlayers).toBe(34);
+      });
+      it("the second result is an instance of Players.", function () {
+        expect(this.results[1]).toBeInstanceOf(Players);
+      });
+      it("the second result has a property called year, which equals 2022.", function () {
+        expect(this.results[1].year).toBe("2022");
+      });
+      it("the second result has a property called month, which equals 10.", function () {
+        expect(this.results[1].month).toBe("10");
+      });
+      it("the second result has a property called averagePlayers, which equals 78", function () {
+        expect(this.results[1].averagePlayers).toBe(78);
       });
     });
 
-    describe("if zero is passed in as the player number", function () {
+    describe("When the passed in array is empty,", function () {
       beforeEach(function () {
-        this.currentDate = new Date();
-        this.players = new Players("0", this.currentDate);
+        this.results = Players.manyFromSteamchartsPage([]);
       });
 
-      it("the property date should be the current date", function () {
-        expect(this.players.players).toBe(0);
+      it("the returned array's will be empty", function () {
+        expect(this.results).toEqual([]);
       });
     });
+  });
 
-    describe("if 5473.4 is passed in as the player number", function () {
-      beforeEach(function () {
-        this.currentDate = new Date();
-        this.players = new Players("5473.4", this.currentDate);
-      });
+  describe(".newMonthlyEntry instantiates the Players class with default values. The returned object", function () {
+    beforeEach(function () {
+      this.currentDate = new Date();
 
-      it("the property date should be the current date", function () {
-        expect(this.players.players).toBe(5473.4);
-      });
+      this.result = Players.newMonthlyEntry();
+    });
+
+    it("is an instance of Players", function () {
+      expect(this.result).toBeInstanceOf(Players);
+    });
+    it("has a property called 'year'. It's value equals the current year", function () {
+      expect(this.result.year).toBe(this.currentDate.getFullYear());
+    });
+    it("has a property called 'month'. It's value equals the current month", function () {
+      expect(this.result.month).toBe(this.currentDate.getMonth());
+    });
+    it("has a property called 'averagePlayers'. It's value equals '0'", function () {
+      expect(this.result.averagePlayers).toBe(0);
+    });
+    it("has a property called 'trackedPlayers'. It's value equals an empty array.", function () {
+      expect(this.result.trackedPlayers).toEqual([]);
+    });
+  });
+
+  describe(".addNewTrackedPlayers adds an new instance of TrackedPlayers, and updates the average players property. The modified object", function () {
+    beforeEach(function () {
+      this.firstPlayers = "10";
+      this.secondPlayers = "50";
+
+      this.result = Players.newMonthlyEntry();
+
+      this.result.addNewTrackedPlayers(this.firstPlayers);
+      this.result.addNewTrackedPlayers(this.secondPlayers);
+    });
+
+    it("has a 'players' property in its trackedPlayers first array value, which equals 10", function () {
+      expect(this.result.trackedPlayers[0].players).toBe(10);
+    });
+    it("has a 'players' property in its trackedPlayers second array value, which equals 50", function () {
+      expect(this.result.trackedPlayers[1].players).toBe(50);
+    });
+    it("has its averagePlayers property updated to 30", function () {
+      expect(this.result.averagePlayers).toBe(30);
     });
   });
 });
