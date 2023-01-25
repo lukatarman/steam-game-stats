@@ -14,7 +14,9 @@ export class PlayerHistory {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = history.year;
     playerHistory.month           = history.month;
+    playerHistory.averagePlayers  = history.averagePlayers;
     playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
+    
     return playerHistory;
   }
 
@@ -23,6 +25,7 @@ export class PlayerHistory {
       const playerHistory           = new PlayerHistory();
       playerHistory.year            = new Date(date).getFullYear();
       playerHistory.month           = new Date(date).getMonth();
+      playerHistory.averagePlayers  = 0;
       playerHistory.trackedPlayers  = [];
       playerHistory.pushTrackedPlayers(players, date);
       return playerHistory;
@@ -33,6 +36,7 @@ export class PlayerHistory {
     const playerHistory           = new PlayerHistory();
     playerHistory.year            = new Date().getFullYear();
     playerHistory.month           = new Date().getMonth();
+    playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
     playerHistory.pushTrackedPlayers(players);
     return playerHistory;
@@ -40,9 +44,11 @@ export class PlayerHistory {
 
   pushTrackedPlayers(players, date = "") {
     this.trackedPlayers.push(new TrackedPlayers(players, date));
+
+    this.averagePlayers = this.getAveragePlayers();
   }
 
-  get averagePlayers() {
+  getAveragePlayers() {
     const average =
       this.trackedPlayers.reduce((sum, cur) => sum + cur.players, 0) /
       this.trackedPlayers.length;
