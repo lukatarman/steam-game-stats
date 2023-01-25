@@ -20,9 +20,6 @@ const GameDetailsBehavior = () => {
 
   useEffect(() => {
     if (!gameData.playerHistory) return;
-    console.log(gameData);
-    console.log(gameData.playerHistory[0]);
-  }, [gameData]);
 
   useEffect(() => {
     if (!gameData.playerHistory) return;
