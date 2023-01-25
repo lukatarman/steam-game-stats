@@ -104,8 +104,6 @@ describe("PlayerHistory", function () {
 
         this.players = 42;
         this.result = PlayerHistory.newMonthlyEntry(this.players);
-
-        jasmine.clock().uninstall();
       });
 
       it("the result is an instance of PlayerHistory", function () {
@@ -116,6 +114,7 @@ describe("PlayerHistory", function () {
       });
       it("the PlayerHistory month property equals the current month.", function () {
         expect(this.result.month).toBe(new Date().getMonth());
+        jasmine.clock().uninstall();
       });
       it("the PlayerHistory average players property equals the passed in players", function () {
         expect(this.result.averagePlayers).toBe(this.players);
@@ -129,7 +128,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".pushTrackedPlayers adds an new instance of tracked players to PlayerHistory.", function () {
+  describe(".pushTrackedPlayers adds an new instance of tracked players to PlayerHistory and calculates the average players property.", function () {
     describe("When players are passed in,", function () {
       beforeEach(function () {
         jasmine.clock().mockDate(new Date());
@@ -139,8 +138,6 @@ describe("PlayerHistory", function () {
         this.result = PlayerHistory.newMonthlyEntry("15");
 
         this.result.pushTrackedPlayers(this.players);
-
-        jasmine.clock().uninstall();
       });
 
       it("the resulting tracked players property is an instance of TrackedPlayers", function () {
@@ -149,8 +146,12 @@ describe("PlayerHistory", function () {
       it("the tracked players 'players' property equals the passed in players", function () {
         expect(this.result.trackedPlayers[1].players).toBe(this.players);
       });
+      it("the tracked players 'averagePlayers' property equals '12.5'", function () {
+        expect(this.result.averagePlayers).toBe(12.5);
+      });
       it("the tracked players 'date' property equals the current date.", function () {
         expect(this.result.trackedPlayers[1].date).toEqual(new Date());
+        jasmine.clock().uninstall();
       });
     });
 
@@ -170,6 +171,9 @@ describe("PlayerHistory", function () {
       it("the tracked players 'players' property equals the passed in players", function () {
         expect(this.result.trackedPlayers[1].players).toBe(this.players);
       });
+      it("the tracked players 'averagePlayers' property equals '12.5'", function () {
+        expect(this.result.averagePlayers).toBe(12.5);
+      });
       it("the tracked players 'date' property equals the passed in date.", function () {
         this.trackedPlayers = new TrackedPlayers(this.players, this.date);
         expect(this.result.trackedPlayers[1].date).toEqual(this.trackedPlayers.date);
@@ -177,7 +181,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".averagePlayers calculates the PlayerHistory's average players. When the method runs,", function () {
+  describe(".getAveragePlayers calculates the PlayerHistory's average players. When the method runs,", function () {
     beforeEach(function () {
       const firstPlayers = "102";
       const secondPlayers = "53";
