@@ -23,15 +23,17 @@ export class Game {
   }
 
   static #getReleaseDate(page) {
+    if (!page.window.document.querySelector(".release_date .date")) return "";
+
     return page.window.document.querySelector(".release_date .date").textContent;
   }
 
   static #getDevelopers(page) {
-    const developers = page.window.document.querySelector(
-      ".dev_row #developers_list",
-    ).children;
+    const developers = page.window.document.querySelector(".dev_row #developers_list");
 
-    return Array.from(developers).map((developer) => developer.textContent);
+    if (!developers) return [];
+
+    return Array.from(developers.children).map((developer) => developer.textContent);
   }
 
   //@todo https://github.com/lukatarman/steam-game-stats-backend/issues/115
