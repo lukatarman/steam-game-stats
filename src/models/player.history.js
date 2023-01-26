@@ -28,6 +28,7 @@ export class PlayerHistory {
       playerHistory.averagePlayers  = 0;
       playerHistory.trackedPlayers  = [];
       playerHistory.pushTrackedPlayers(players, date);
+
       return playerHistory;
     }
 
@@ -39,6 +40,7 @@ export class PlayerHistory {
     playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
     playerHistory.pushTrackedPlayers(players);
+    
     return playerHistory;
   }
 
