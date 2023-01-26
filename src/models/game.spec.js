@@ -2,7 +2,6 @@ import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { JSDOM } from "jsdom";
-import { TrackedPlayers } from "./tracked.players.js";
 
 fdescribe("game.js", function () {
   describe("Game", function () {
