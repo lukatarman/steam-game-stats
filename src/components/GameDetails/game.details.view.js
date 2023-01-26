@@ -14,8 +14,12 @@ const GameDetails = () => {
           </div>
           <div className="m-2">
             <p className="pb-2 h2">{gameData.name}</p>
-            <p>Release Date: {gameData.releaseDate}</p>
-            <p>Developer: {gameData.developers}</p>
+            <p>
+              <span className="fw-bold">Release Date</span>: {gameData.releaseDate}
+            </p>
+            <p>
+              <span className="fw-bold">Developer</span>: {gameData.developers}
+            </p>
           </div>
         </div>
         <Table striped bordered hover>
