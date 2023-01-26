@@ -4,18 +4,25 @@ import cloneDeep from "lodash.clonedeep";
 export class Game {
   id;
   name;
+  releaseDate;
+
   image;
   imageUrl;
   playerHistory;
 
   // prettier-ignore
-  static fromSteamApp(steamApp) {
+  static fromSteamApp(steamApp, page) {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
+    game.releaseDate   = this.#getReleaseDate(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
+  }
+
+  static #getReleaseDate(page) {
+    return page.window.document.querySelector(".release_date .date").textContent;
   }
 
   static manyFromDbEntry(entries) {
