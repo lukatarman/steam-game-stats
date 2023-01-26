@@ -5,6 +5,7 @@ export class Game {
   id;
   name;
   releaseDate;
+  developers;
   image;
   imageUrl;
   playerHistory;
@@ -15,6 +16,7 @@ export class Game {
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
     game.releaseDate   = this.#getReleaseDate(page);
+    game.developers    = this.#getDevelopers(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
@@ -22,6 +24,14 @@ export class Game {
 
   static #getReleaseDate(page) {
     return page.window.document.querySelector(".release_date .date").textContent;
+  }
+
+  static #getDevelopers(page) {
+    const developers = page.window.document.querySelector(
+      ".dev_row #developers_list",
+    ).children;
+
+    return Array.from(developers).map((developer) => developer.textContent);
   }
 
   static manyFromDbEntry(entries) {
@@ -33,6 +43,8 @@ export class Game {
     const game         = new Game();
     game.id            = dbEntry.id;
     game.name          = dbEntry.name;
+    game.releaseDate   = dbEntry.releaseDate;
+    game.developers    = dbEntry.developers;
     game.imageUrl      = dbEntry.imageUrl;
     game.playerHistory = PlayerHistory.manyFromDbEntry(dbEntry.playerHistory);
     return game;
