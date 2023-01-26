@@ -16,7 +16,6 @@ export class PlayerHistory {
     playerHistory.month           = history.month;
     playerHistory.averagePlayers  = history.averagePlayers;
     playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
-    
     return playerHistory;
   }
 
@@ -28,7 +27,6 @@ export class PlayerHistory {
       playerHistory.averagePlayers  = 0;
       playerHistory.trackedPlayers  = [];
       playerHistory.pushTrackedPlayers(players, date);
-
       return playerHistory;
     }
 
@@ -40,7 +38,6 @@ export class PlayerHistory {
     playerHistory.averagePlayers  = 0;
     playerHistory.trackedPlayers  = [];
     playerHistory.pushTrackedPlayers(players);
-    
     return playerHistory;
   }
 
