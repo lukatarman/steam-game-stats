@@ -261,7 +261,9 @@ describe("SteamAppsAggregator", () => {
         );
 
         await agg.collectSteamApps();
+      });
 
+      afterEach(function () {
         jasmine.clock().uninstall();
       });
 
