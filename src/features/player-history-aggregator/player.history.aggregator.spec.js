@@ -293,6 +293,9 @@ describe("PlayerHistoryAggregator", function () {
         );
 
         await agg.addCurrentPlayers();
+      });
+
+      afterEach(function () {
         jasmine.clock().uninstall();
       });
 

@@ -7,9 +7,12 @@ describe("TrackedPlayers", function () {
         jasmine.clock().mockDate(new Date());
 
         this.players = new TrackedPlayers("24");
+      });
 
+      afterEach(function () {
         jasmine.clock().uninstall();
       });
+
 
       it("the current date is used.", function () {
         expect(this.players.date).toEqual(new Date());
@@ -67,18 +70,23 @@ describe("TrackedPlayers", function () {
       it("the first entry is an instance of TrackedPlayers.", function () {
         expect(this.result[0]).toBeInstanceOf(TrackedPlayers);
       });
+
       it("the first entry trackedPlayers instance players property equals 20", function () {
         expect(this.result[0].players).toBe(this.trackedPlayersArray[0].players);
       });
+
       it("the first entry trackedPlayers instance players property equals the passed in date plus twelve hours.", function () {
         expect(this.result[0].date).toEqual(this.currentDatePlusTwelveHours);
       });
+
       it("the second entry is an instance of TrackedPlayers.", function () {
         expect(this.result[1]).toBeInstanceOf(TrackedPlayers);
       });
+
       it("the second entry TrackedPlayers instance players property equals 15.", function () {
         expect(this.result[1].players).toBe(15);
       });
+
       it("the second entry trackedPlayers instance players property equals the passed in date plus twelve hours.", function () {
         expect(this.result[1].date).toEqual(this.currentDatePlusTwelveHours);
       });
