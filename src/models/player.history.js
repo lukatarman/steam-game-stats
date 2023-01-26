@@ -4,6 +4,7 @@ export class PlayerHistory {
   year;
   month;
   trackedPlayers;
+  averagePlayers;
 
   static manyFromDbEntry(histories) {
     return histories.map((history) => this.fromDbEntry(history));
@@ -16,7 +17,7 @@ export class PlayerHistory {
     playerHistory.month           = history.month;
     playerHistory.averagePlayers  = history.averagePlayers;
     playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
-    
+
     return playerHistory;
   }
 
@@ -45,10 +46,10 @@ export class PlayerHistory {
   pushTrackedPlayers(players, date = "") {
     this.trackedPlayers.push(new TrackedPlayers(players, date));
 
-    this.averagePlayers = this.getAveragePlayers();
+    this.averagePlayers = this.calcAveragePlayers();
   }
 
-  getAveragePlayers() {
+  calcAveragePlayers() {
     const average =
       this.trackedPlayers.reduce((sum, cur) => sum + cur.players, 0) /
       this.trackedPlayers.length;

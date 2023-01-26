@@ -66,7 +66,7 @@ describe("PlayerHistory", function () {
         this.result = PlayerHistory.manyFromDbEntry([]);
       });
 
-      it("no instanced are created.", function () {
+      it("no instances are created.", function () {
         expect(this.result).toEqual([]);
       });
     });
@@ -205,7 +205,7 @@ describe("PlayerHistory", function () {
     });
   });
 
-  describe(".getAveragePlayers calculates the PlayerHistory's average players. When the method runs,", function () {
+  describe(".calcAveragePlayers calculates the PlayerHistory's average players. When the method runs,", function () {
     beforeEach(function () {
       const firstPlayers = "102";
       const secondPlayers = "53";
