@@ -34,6 +34,18 @@ export class Game {
     return Array.from(developers).map((developer) => developer.textContent);
   }
 
+  // prettier-ignore
+  static fromSteamcharts(steamApp) {
+      const game         = new Game();
+      game.id            = steamApp.appid;
+      game.name          = steamApp.name;
+      game.releaseDate   = "";
+      game.developers    = [];
+      game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
+      game.playerHistory = [];
+      return game;
+    }
+
   static manyFromDbEntry(entries) {
     return entries.map((entry) => this.fromDbEntry(entry));
   }
