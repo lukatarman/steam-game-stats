@@ -5,7 +5,6 @@ export class Game {
   id;
   name;
   releaseDate;
-
   image;
   imageUrl;
   playerHistory;
