@@ -1,8 +1,10 @@
 import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
+import { animaddicts2gameHtmlDetailsPage } from "../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
+import { JSDOM } from "jsdom";
 import { TrackedPlayers } from "./tracked.players.js";
 
-describe("game.js", function () {
+fdescribe("game.js", function () {
   describe("Game", function () {
     describe(".fromSteamApp", function () {
       describe("is called with no arguments, ", function () {
@@ -33,7 +35,9 @@ describe("game.js", function () {
             playerHistory: [],
           };
 
-          this.result = Game.fromSteamApp(this.testObject);
+          this.htmlPage = animaddicts2gameHtmlDetailsPage;
+
+          this.result = Game.fromSteamApp(this.testObject, new JSDOM(this.htmlPage));
         });
 
         it("is an instance of Game", function () {
@@ -46,6 +50,14 @@ describe("game.js", function () {
 
         it("has a 'name' property which equals 'test game'", function () {
           expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals '3 Mar, 2022", function () {
+          expect(this.result.releaseDate).toBe("3 Mar, 2022");
+        });
+
+        it("has a 'developers' property which equals 'Crossplatform", function () {
+          expect(this.result.developers[0]).toBe("Crossplatform");
         });
 
         it("has an 'imageUrl' property which equals a link", function () {
@@ -80,11 +92,13 @@ describe("game.js", function () {
         });
       });
 
-      describe("is called with appropriate attributes, the returned value", function () {
+      fdescribe("is called with appropriate attributes, the returned value", function () {
         beforeEach(function () {
           this.testObject = {
             id: 123,
             name: "test game",
+            releaseDate: "3 Mar, 2022",
+            developers: ["Crossplatform"],
             imageUrl: "test url",
             playerHistory: [],
           };
@@ -102,6 +116,14 @@ describe("game.js", function () {
 
         it("has a 'name' property which equals 'test game'", function () {
           expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals '3 Mar, 2022", function () {
+          expect(this.result.releaseDate).toBe("3 Mar, 2022");
+        });
+
+        it("has a 'developers' property which equals 'Crossplatform", function () {
+          expect(this.result.developers[0]).toBe("Crossplatform");
         });
 
         it("has an 'imageUrl' property which equals 'test url'", function () {
