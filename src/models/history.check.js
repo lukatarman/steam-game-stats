@@ -6,6 +6,14 @@ export class HistoryCheck {
   found;
   source;
 
+  static manyFromSteamchartsPages(gamesPagesMap) {
+    const checks = [];
+    for (const [game, page] of gamesPagesMap) {
+      checks.push(HistoryCheck.fromSteamcharts(game, !!page));
+    }
+    return checks;
+  }
+
   // prettier-ignore
   static fromSteamcharts(game, found) {
     const check   = new HistoryCheck();
@@ -27,13 +35,5 @@ export class HistoryCheck {
     check.checked = false;
     check.found   = false;
     return check;
-  }
-
-  static manyFromSteamchartsPages(gamesPagesMap) {
-    const checks = [];
-    for (const [game, page] of gamesPagesMap) {
-      checks.push(HistoryCheck.fromSteamcharts(game, !!page));
-    }
-    return checks;
   }
 }
