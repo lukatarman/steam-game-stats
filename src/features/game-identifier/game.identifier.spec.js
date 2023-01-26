@@ -529,7 +529,7 @@ describe("game.identifier.js", function () {
           swordsAndSoldiersBetaSteamcharts,
         ];
 
-        this.game = [Game.fromSteamApp(this.apps[0])];
+        this.game = [Game.fromSteamcharts(this.apps[0])];
 
         this.instantiatedApps = SteamApp.manyFromSteamApi(this.apps);
 
@@ -661,7 +661,10 @@ describe("game.identifier.js", function () {
           mortalDarknessGameHtmlDetailsPage,
         ];
 
-        this.games = [Game.fromSteamApp(this.apps[0]), Game.fromSteamApp(this.apps[2])];
+        this.games = [
+          Game.fromSteamcharts(this.apps[0]),
+          Game.fromSteamcharts(this.apps[2]),
+        ];
 
         this.instantiatedApps = SteamApp.manyFromSteamApi(this.apps);
 
