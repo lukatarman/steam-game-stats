@@ -34,6 +34,8 @@ export class Game {
     return Array.from(developers).map((developer) => developer.textContent);
   }
 
+  //@todo https://github.com/lukatarman/steam-game-stats-backend/issues/115
+
   // prettier-ignore
   static fromSteamcharts(steamApp) {
       const game         = new Game();
