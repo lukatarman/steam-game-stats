@@ -1,9 +1,5 @@
 import { JSDOM } from "jsdom";
-import { TrackedPlayers } from "../../../models/tracked.players.js";
-
-export function addCurrentPlayersFromSteam(players, games) {
-  return games.map((game, i) => game.addOnePlayerHistoryEntry(players[i]));
-}
+import { PlayerHistory } from "../../../models/player.history.js";
 
 export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   const games = [];
@@ -13,8 +9,8 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
       continue;
     }
 
-    const parsedGameHistories = parseGameHistories(page);
-    game.addHistoryEntriesFromSteamcharts(parsedGameHistories);
+    const playerHistories = parsePlayerHistory(page);
+    game.pushSteamchartsPlayerHistory(playerHistories);
 
     games.push(game);
   }
@@ -22,7 +18,7 @@ export function addPlayerHistoriesFromSteamcharts(gamesPagesMap) {
   return games;
 }
 
-function parseGameHistories(pageHttpDetailsHtml) {
+function parsePlayerHistory(pageHttpDetailsHtml) {
   const dom = new JSDOM(pageHttpDetailsHtml);
   const playerHistoryEntries = dom.window.document.querySelectorAll(
     ".common-table tbody tr",
@@ -36,8 +32,10 @@ function parseGameHistories(pageHttpDetailsHtml) {
     .reverse()
     .map((entry) => entry.firstElementChild)
     .filter((firstElement) => firstElement.textContent !== "Last 30 Days")
-    .map(
-      (element) =>
-        new TrackedPlayers(element.nextElementSibling.textContent, element.textContent),
+    .map((element) =>
+      PlayerHistory.fromRawData(
+        element.nextElementSibling.textContent,
+        element.textContent,
+      ),
     );
 }

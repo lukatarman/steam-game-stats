@@ -1,110 +1,103 @@
 import { TrackedPlayers } from "./tracked.players.js";
 
-describe("tracked.players.js", function () {
-  describe("TrackedPlayers", function () {
-    describe("if nothing is passed as the second parameter when instantiating", function () {
+describe("TrackedPlayers", function () {
+  describe("Instantiates the TrackedPlayers class.", function () {
+    describe("When no date is provided", function () {
       beforeEach(function () {
-        this.currentDate = new Date();
+        jasmine.clock().mockDate(new Date());
+
         this.players = new TrackedPlayers("24");
       });
 
-      it("the property date should be the current date", function () {
-        expect(this.players.date).toEqual(this.currentDate);
+      afterEach(function () {
+        jasmine.clock().uninstall();
+      });
+
+      it("the current date is used.", function () {
+        expect(this.players.date).toEqual(new Date());
       });
     });
 
-    describe("if a date is passed as the second parameter when instantiating", function () {
+    describe("when a date is provided", function () {
       beforeEach(function () {
-        this.currentDate = new Date("September 2000");
-        this.twelveHoursInMs = 12 * 60 * 60 * 1000;
-        this.datePlusTwelveHoursInMs =
-          Date.parse(this.currentDate) + this.twelveHoursInMs;
+        const currentDate = new Date("September 2000");
+        const twelveHoursInMs = 12 * 60 * 60 * 1000;
 
-        this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
+        const datePlusTwelveHoursInMs = Date.parse(currentDate) + twelveHoursInMs;
+
+        this.currentDatePlusTwelveHours = new Date(datePlusTwelveHoursInMs);
         this.players = new TrackedPlayers("24", "September 2000");
       });
 
-      it("the property date should be the current date, plus twelve hours", function () {
+      it("12 hours are added to it due to database discrepancies.", function () {
         expect(this.players.date).toEqual(this.currentDatePlusTwelveHours);
       });
     });
+  });
 
-    describe("if zero is passed in as the player number", function () {
+  describe("Player numbers are tracked with one decimal precision", function () {
+    it("5473.43 is stored as 5473.4", function () {
+      expect(new TrackedPlayers("5473.43").players).toBe(5473.4);
+    });
+  });
+
+  describe(".manyFromDbEntry creates a list of TrackedPlayers instances from a list of PlayerHistory objects", function () {
+    describe("When an list of PlayerHistory objects is passed in,", function () {
       beforeEach(function () {
-        this.currentDate = new Date();
-        this.players = new TrackedPlayers("0", this.currentDate);
+        const currentDate = new Date();
+
+        const twelveHoursInMs = 12 * 60 * 60 * 1000;
+
+        const datePlusTwelveHoursInMs = Date.parse(currentDate) + twelveHoursInMs;
+
+        this.currentDatePlusTwelveHours = new Date(datePlusTwelveHoursInMs);
+
+        this.trackedPlayersArray = [
+          {
+            players: 20,
+            date: currentDate,
+          },
+          {
+            players: 15,
+            date: currentDate,
+          },
+        ];
+
+        this.result = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
       });
 
-      it("the property 'players' should be 0", function () {
-        expect(this.players.players).toBe(0);
+      it("the first entry is an instance of TrackedPlayers.", function () {
+        expect(this.result[0]).toBeInstanceOf(TrackedPlayers);
+      });
+
+      it("the first entry trackedPlayers instance players property equals 20", function () {
+        expect(this.result[0].players).toBe(this.trackedPlayersArray[0].players);
+      });
+
+      it("the first entry trackedPlayers instance players property equals the passed in date plus twelve hours.", function () {
+        expect(this.result[0].date).toEqual(this.currentDatePlusTwelveHours);
+      });
+
+      it("the second entry is an instance of TrackedPlayers.", function () {
+        expect(this.result[1]).toBeInstanceOf(TrackedPlayers);
+      });
+
+      it("the second entry TrackedPlayers instance players property equals 15.", function () {
+        expect(this.result[1].players).toBe(15);
+      });
+
+      it("the second entry trackedPlayers instance players property equals the passed in date plus twelve hours.", function () {
+        expect(this.result[1].date).toEqual(this.currentDatePlusTwelveHours);
       });
     });
 
-    describe("if 5473.4 is passed in as the player number", function () {
+    describe("When the passed in array is empty,", function () {
       beforeEach(function () {
-        this.currentDate = new Date();
-        this.players = new TrackedPlayers("5473.4", this.currentDate);
+        this.result = TrackedPlayers.manyFromDbEntry([]);
       });
 
-      it("the property players should be '5473'", function () {
-        expect(this.players.players).toBe(5473.4);
-      });
-    });
-
-    describe(".manyFromDbEntry creates a list of TrackedPlayers instances from an array of objects.", function () {
-      describe("When an array of objects is passed in,", function () {
-        beforeEach(function () {
-          this.currentDate = new Date();
-
-          this.twelveHoursInMs = 12 * 60 * 60 * 1000;
-
-          this.datePlusTwelveHoursInMs =
-            Date.parse(this.currentDate) + this.twelveHoursInMs;
-
-          this.currentDatePlusTwelveHours = new Date(this.datePlusTwelveHoursInMs);
-
-          this.trackedPlayersArray = [
-            {
-              players: 20,
-              date: this.currentDate,
-            },
-            {
-              players: 15,
-              date: this.currentDate,
-            },
-          ];
-
-          this.results = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
-        });
-
-        it("the first result is an intance of Players.", function () {
-          expect(this.results[0]).toBeInstanceOf(TrackedPlayers);
-        });
-        it("the first result has a property'players' which equals 20.", function () {
-          expect(this.results[0].players).toBe(20);
-        });
-        it("the first result has a property'date' which equals the current date.", function () {
-          expect(this.results[0].date).toEqual(this.currentDatePlusTwelveHours);
-        });
-        it("the second result is an intance of Players.", function () {
-          expect(this.results[1]).toBeInstanceOf(TrackedPlayers);
-        });
-        it("the second result has a property'players' which equals 15.", function () {
-          expect(this.results[1].players).toBe(15);
-        });
-        it("the second result has a property'date' which equals the current date.", function () {
-          expect(this.results[1].date).toEqual(this.currentDatePlusTwelveHours);
-        });
-      });
-
-      describe("When the passed in array is empty,", function () {
-        beforeEach(function () {
-          this.results = TrackedPlayers.manyFromDbEntry([]);
-        });
-
-        it("the returned array's will be empty", function () {
-          expect(this.results).toEqual([]);
-        });
+      it("the returned array's will be empty", function () {
+        expect(this.result).toEqual([]);
       });
     });
   });

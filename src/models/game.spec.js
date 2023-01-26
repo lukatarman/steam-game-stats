@@ -1,5 +1,6 @@
 import { Game } from "./game.js";
-import { Players } from "./players.js";
+import { PlayerHistory } from "./player.history.js";
+import { TrackedPlayers } from "./tracked.players.js";
 
 describe("game.js", function () {
   describe("Game", function () {
@@ -113,12 +114,13 @@ describe("game.js", function () {
       });
     });
 
-    describe(".addOnePlayerHistoryEntry adds a trackedPlayers entry to the correct playerHistory array entry.", function () {
-      describe("When this month's entry already exists,", function () {
-        describe("players get added into the existing playerHistory entry.", function () {
+    describe(".pushCurrentPlayers creates a new player history entry or updates an existing one.", function () {
+      describe("When this month's player history entry already exists,", function () {
+        describe("players are added to the existing entry.", function () {
           beforeEach(function () {
             this.currentPlayers = 45;
-            this.playerHistory = [
+
+            const playerHistory = [
               {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth(),
@@ -127,31 +129,38 @@ describe("game.js", function () {
               },
             ];
 
-            this.game = {
+            this.historyLength = playerHistory.length;
+
+            const game = {
               id: 1,
               name: "Test Game",
-              playerHistory: Players.manyFromDbEntry(this.playerHistory),
+              playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
             };
 
-            this.result = Game.fromDbEntry(this.game);
+            this.result = Game.fromDbEntry(game);
 
-            this.result.addOnePlayerHistoryEntry(this.currentPlayers);
+            this.result.pushCurrentPlayers(this.currentPlayers);
           });
 
-          it("The resulting object's playerHistory value is an instance of Players.", function () {
-            expect(this.result.playerHistory[0]).toBeInstanceOf(Players);
+          it("No new entry is created", function () {
+            expect(this.result.playerHistory.length).toBe(this.historyLength);
           });
-          it("The resulting object has a property called players, which equals 45", function () {
-            expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(45);
+
+          it("The existing entry is updated.", function () {
+            expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
+            expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(
+              this.currentPlayers,
+            );
           });
         });
       });
 
-      describe("When this month's entry does not exist yet", function () {
-        describe("players get added into a new playerHistory entry.", function () {
+      describe("When this month's player history entry does not exist yet", function () {
+        describe("An entry for the current month is created. So,", function () {
           beforeEach(function () {
             this.currentPlayers = 33;
-            this.playerHistory = [
+
+            const playerHistory = [
               {
                 year: "2022",
                 month: "10",
@@ -163,63 +172,67 @@ describe("game.js", function () {
             this.game = {
               id: 1,
               name: "Test Game",
-              playerHistory: Players.manyFromDbEntry(this.playerHistory),
+              playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
             };
 
             this.result = Game.fromDbEntry(this.game);
 
-            this.result.addOnePlayerHistoryEntry(this.currentPlayers);
+            this.result.pushCurrentPlayers(this.currentPlayers);
           });
 
-          it("The resulting object's playerHistory value has a length of 2", function () {
+          it("this month's entry is created", function () {
             expect(this.result.playerHistory.length).toBe(2);
+            expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
           });
-          it("The resulting object's second playerHistory entry has a property called players, which equals 33", function () {
-            expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(33);
+
+          it("the last time we checked the game was played by 33 players", function () {
+            expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(
+              this.currentPlayers,
+            );
+          });
+
+          it("the existing entry does not change", function () {
+            expect(this.game.playerHistory[0]).toEqual(this.result.playerHistory[0]);
           });
         });
       });
     });
 
-    describe(".addHistoryEntriesFromSteamcharts", function () {
-      describe("adds a game's Steamcharts history entries in the correct format. ", function () {
-        beforeEach(function () {
-          this.steamApp = {
-            appid: 1,
-            name: "Test Game",
-          };
+    describe(".pushSteamchartsPlayerHistory adds player histories from Steamcharts to existing entries while keeping the order intact.", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Test Game",
+        };
 
-          this.gameHistories = [
-            {
-              date: new Date("April 2020"),
-              players: 5,
-            },
-            {
-              date: new Date("July 2020"),
-              players: 15,
-            },
-            {
-              date: new Date("February 2020"),
-              players: 55,
-            },
-          ];
+        this.result = Game.fromSteamApp(steamApp);
 
-          this.result = Game.fromSteamApp(this.steamApp);
+        this.result.pushCurrentPlayers(513);
 
-          this.result.addHistoryEntriesFromSteamcharts(this.gameHistories);
-        });
+        const gameHistories = [];
+        gameHistories.push(PlayerHistory.fromRawData(5, "April 2020"));
+        gameHistories.push(PlayerHistory.fromRawData(15, "July 2020"));
+        gameHistories.push(PlayerHistory.fromRawData(55, "February 2020"));
 
-        it("The resulting object's playerHistory value is an instance of Players", function () {
-          expect(this.result.playerHistory[0]).toBeInstanceOf(Players);
-        });
-        it("The resulting object's playerHistory array has a length of 3", function () {
-          expect(this.result.playerHistory.length).toBe(3);
-        });
-        it("The resulting object's playerHistory array is in the correct order", function () {
-          expect(this.result.playerHistory[0].averagePlayers).toBe(55);
-          expect(this.result.playerHistory[1].averagePlayers).toBe(5);
-          expect(this.result.playerHistory[2].averagePlayers).toBe(15);
-        });
+        this.result.pushSteamchartsPlayerHistory(gameHistories);
+      });
+
+      it("The game has three new player history entries", function () {
+        expect(this.result.playerHistory.length).toBe(4);
+      });
+
+      it("All player history entries are in correct order", function () {
+        expect(this.result.playerHistory[0].averagePlayers).toBe(55);
+        expect(this.result.playerHistory[1].averagePlayers).toBe(5);
+        expect(this.result.playerHistory[2].averagePlayers).toBe(15);
+        expect(this.result.playerHistory[3].averagePlayers).toBe(513);
+      });
+
+      it("The games player history entries are new PlayerHistory class instances", function () {
+        expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
+        expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
+        expect(this.result.playerHistory[2]).toBeInstanceOf(PlayerHistory);
+        expect(this.result.playerHistory[3]).toBeInstanceOf(PlayerHistory);
       });
     });
   });

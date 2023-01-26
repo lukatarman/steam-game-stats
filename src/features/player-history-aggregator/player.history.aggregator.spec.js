@@ -4,13 +4,10 @@ import { oneGameWithUncheckedPlayerHistory } from "../../../assets/db-responses/
 import { twoGamesWithUncheckedPlayerHistory } from "../../../assets/db-responses/two.games.unchecked.history.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { Game } from "../../models/game.js";
-import {
-  addCurrentPlayersFromSteam,
-  addPlayerHistoriesFromSteamcharts,
-} from "./services/player.history.service.js";
+import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 
 describe("PlayerHistoryAggregator", function () {
-  describe(".addPlayerHistoryFromSteamcharts()", function () {
+  describe(".addPlayerHistoryFromSteamcharts", function () {
     describe("finds the player history for one game in a batch of one and updates the game data", function () {
       beforeEach(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
@@ -268,6 +265,8 @@ describe("PlayerHistoryAggregator", function () {
 
     describe("gets current players for one game in a batch of one, and adds the players", function () {
       beforeEach(async function () {
+        jasmine.clock().mockDate(new Date());
+
         this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
           Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
@@ -278,10 +277,12 @@ describe("PlayerHistoryAggregator", function () {
 
         this.steamClientMock = createSteamMock([], [285]);
 
-        this.gamesWithCurrentPlayers = addCurrentPlayersFromSteam(
-          [285],
-          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
-        );
+        this.gamesWithCurrentPlayers = Game.manyFromDbEntry(
+          oneGameWithUncheckedPlayerHistory,
+        ).map((game) => {
+          game.pushCurrentPlayers(285);
+          return game;
+        });
 
         const agg = new PlayerHistoryAggregator(
           this.steamClientMock,
@@ -292,6 +293,10 @@ describe("PlayerHistoryAggregator", function () {
         );
 
         await agg.addCurrentPlayers();
+      });
+
+      afterEach(function () {
+        jasmine.clock().uninstall();
       });
 
       it("calls .getXgamesCheckedMoreThanYmsAgo once", function () {

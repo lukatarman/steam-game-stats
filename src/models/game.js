@@ -1,4 +1,5 @@
-import { Players } from "./players.js";
+import { PlayerHistory } from "./player.history.js";
+import cloneDeep from "lodash.clonedeep";
 
 export class Game {
   id;
@@ -27,53 +28,41 @@ export class Game {
     game.id            = dbEntry.id;
     game.name          = dbEntry.name;
     game.imageUrl      = dbEntry.imageUrl;
-    game.playerHistory = Players.manyFromDbEntry(dbEntry.playerHistory);
+    game.playerHistory = PlayerHistory.manyFromDbEntry(dbEntry.playerHistory);
     return game;
   }
 
-  addOnePlayerHistoryEntry(players) {
-    let existingMonthAndYearIndex = this.#getExistingMonthAndYearIndex();
-    if (existingMonthAndYearIndex === -1) {
-      this.playerHistory.push(Players.newMonthlyEntry());
-      existingMonthAndYearIndex = this.playerHistory.length - 1;
-    }
-
-    const currentMonthAndYearEntry = this.playerHistory[existingMonthAndYearIndex];
-
-    currentMonthAndYearEntry.addNewTrackedPlayers(players);
-
-    return this;
+  pushCurrentPlayers(players) {
+    this.#currentMonthEntryIndex === -1
+      ? this.playerHistory.push(PlayerHistory.newMonthlyEntry(players))
+      : this.playerHistory[this.#currentMonthEntryIndex].pushTrackedPlayers(players);
   }
 
-  #getExistingMonthAndYearIndex() {
+  get #currentMonthEntryIndex() {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
 
-    const index = this.playerHistory.findIndex(
+    return this.playerHistory.findIndex(
       (history) => history.year === currentYear && history.month === currentMonth,
     );
-
-    return index;
   }
 
-  addHistoryEntriesFromSteamcharts(gameHistories) {
-    const fixedGameHistories = Players.manyFromSteamchartsPage(gameHistories);
+  pushSteamchartsPlayerHistory(playerHistories) {
+    playerHistories.forEach((history) => {
+      const historyCopy = cloneDeep(history);
 
-    const sortedHistories = this.#sortGameHistoriesByDate(fixedGameHistories);
+      this.playerHistory.push(historyCopy);
+    });
 
-    this.playerHistory = sortedHistories;
+    this.#sortPlayerHistoryByDate();
   }
 
-  #sortGameHistoriesByDate(gameHistories) {
-    const sortedHistories = [...gameHistories];
-
-    sortedHistories.sort((a, b) => {
+  #sortPlayerHistoryByDate() {
+    this.playerHistory.sort((a, b) => {
       const dateA = new Date(a.year, a.month);
       const dateB = new Date(b.year, b.month);
 
       return dateA - dateB;
     });
-
-    return sortedHistories;
   }
 }
