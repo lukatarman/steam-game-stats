@@ -8,7 +8,7 @@ const GameDetails = () => {
   return (
     <div>
       <Container>
-        <div className="col d-flex pb-2 mt-4 mb-3">
+        <div className="col d-flex pb-2 mt-4 mb-2">
           <div className="align-items-center justify-content-center ">
             <img src={gameData.imageUrl} alt="Not found" />
           </div>
