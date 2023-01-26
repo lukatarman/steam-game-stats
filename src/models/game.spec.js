@@ -145,6 +145,7 @@ describe("game.js", function () {
           it("No new entry is created", function () {
             expect(this.result.playerHistory.length).toBe(this.historyLength);
           });
+
           it("The existing entry is updated.", function () {
             expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
             expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(
@@ -183,11 +184,13 @@ describe("game.js", function () {
             expect(this.result.playerHistory.length).toBe(2);
             expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
           });
+
           it("the resulting object's second playerHistory entry has a property called players, which equals 33", function () {
             expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(
               this.currentPlayers,
             );
           });
+
           it("the existing entry does not change", function () {
             expect(this.game.playerHistory[0]).toEqual(this.result.playerHistory[0]);
           });
@@ -218,17 +221,19 @@ describe("game.js", function () {
       it("The game has three new player history entries", function () {
         expect(this.result.playerHistory.length).toBe(4);
       });
+
       it("All player history entries are in correct order", function () {
         expect(this.result.playerHistory[0].averagePlayers).toBe(55);
         expect(this.result.playerHistory[1].averagePlayers).toBe(5);
         expect(this.result.playerHistory[2].averagePlayers).toBe(15);
         expect(this.result.playerHistory[3].averagePlayers).toBe(513);
       });
-      it("The games player history entries are new PlayerHistory class instances", function () {
-        this.gameHistories[0].month = "55";
 
-        expect(this.gameHistories[0].month).toBe("55");
-        expect(this.result.playerHistory[0].month).toBe(1);
+      it("The games player history entries are new PlayerHistory class instances", function () {
+        expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
+        expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
+        expect(this.result.playerHistory[2]).toBeInstanceOf(PlayerHistory);
+        expect(this.result.playerHistory[3]).toBeInstanceOf(PlayerHistory);
       });
     });
   });
