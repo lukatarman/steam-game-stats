@@ -1,6 +1,7 @@
 import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
+import { animaddicts2gameMissingClassesPage } from "../../assets/steam-details-pages/animaddicts.2.game.missing.classes.page.js";
 import { JSDOM } from "jsdom";
 
 describe("game.js", function () {
@@ -57,6 +58,51 @@ describe("game.js", function () {
 
         it("has a 'developers' property which equals 'Crossplatform'", function () {
           expect(this.result.developers[0]).toBe("Crossplatform");
+        });
+
+        it("has an 'imageUrl' property which equals a link", function () {
+          expect(this.result.imageUrl).toBe(
+            `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
+          );
+        });
+
+        it("has a 'playerHistory' property which equals an empty array", function () {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
+      });
+
+      describe("is called with appropriate attributes, but the htmlPage doesn't contain the proper classes, the returned value", function () {
+        beforeEach(function () {
+          this.testObject = {
+            appid: 123,
+            name: "test game",
+            imageUrl: "test url",
+            playerHistory: [],
+          };
+
+          const htmlPage = animaddicts2gameMissingClassesPage;
+
+          this.result = Game.fromSteamApp(this.testObject, new JSDOM(htmlPage));
+        });
+
+        it("is an instance of Game", function () {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has an 'id' property which equals 123", function () {
+          expect(this.result.id).toBe(this.testObject.appid);
+        });
+
+        it("has a 'name' property which equals 'test game'", function () {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals an empty string", function () {
+          expect(this.result.releaseDate).toBe("");
+        });
+
+        it("has a 'developers' property which equals an empty array", function () {
+          expect(this.result.developers).toEqual([]);
         });
 
         it("has an 'imageUrl' property which equals a link", function () {
