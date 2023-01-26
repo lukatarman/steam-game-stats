@@ -23,9 +23,11 @@ export class Game {
   }
 
   static #getReleaseDate(page) {
-    if (!page.window.document.querySelector(".release_date .date")) return "";
+    const releaseDate = page.window.document.querySelector(".release_date .date");
 
-    return page.window.document.querySelector(".release_date .date").textContent;
+    if (!releaseDate) return "";
+
+    return releaseDate.textContent;
   }
 
   static #getDevelopers(page) {
