@@ -34,9 +34,9 @@ describe("game.js", function () {
             playerHistory: [],
           };
 
-          this.htmlPage = animaddicts2gameHtmlDetailsPage;
+          const htmlPage = animaddicts2gameHtmlDetailsPage;
 
-          this.result = Game.fromSteamApp(this.testObject, new JSDOM(this.htmlPage));
+          this.result = Game.fromSteamApp(this.testObject, new JSDOM(htmlPage));
         });
 
         it("is an instance of Game", function () {
@@ -55,8 +55,72 @@ describe("game.js", function () {
           expect(this.result.releaseDate).toBe("3 Mar, 2022");
         });
 
-        it("has a 'developers' property which equals 'Crossplatform", function () {
+        it("has a 'developers' property which equals 'Crossplatform'", function () {
           expect(this.result.developers[0]).toBe("Crossplatform");
+        });
+
+        it("has an 'imageUrl' property which equals a link", function () {
+          expect(this.result.imageUrl).toBe(
+            `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
+          );
+        });
+
+        it("has a 'playerHistory' property which equals an empty array", function () {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
+      });
+    });
+
+    describe(".fromSteamcharts", function () {
+      describe("is called with no arguments, ", function () {
+        it("an Error is thrown", function () {
+          expect(Game.fromSteamApp).toThrowError();
+        });
+      });
+
+      describe("is called with incomplete arguments, ", function () {
+        beforeEach(function () {
+          this.testObject = {
+            id: 123,
+            name: "test game",
+          };
+        });
+
+        it("an Error is thrown", function () {
+          expect(Game.fromSteamcharts.bind(this.testObject)).toThrowError();
+        });
+      });
+
+      describe("is called with appropriate attributes, the returned value", function () {
+        beforeEach(function () {
+          this.testObject = {
+            appid: 123,
+            name: "test game",
+            imageUrl: "test url",
+            playerHistory: [],
+          };
+
+          this.result = Game.fromSteamcharts(this.testObject);
+        });
+
+        it("is an instance of Game", function () {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has an 'id' property which equals 123", function () {
+          expect(this.result.id).toBe(this.testObject.appid);
+        });
+
+        it("has a 'name' property which equals 'test game'", function () {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals an empty string", function () {
+          expect(this.result.releaseDate).toBe("");
+        });
+
+        it("has a 'developers' property which equals an empty array", function () {
+          expect(this.result.developers).toEqual([]);
         });
 
         it("has an 'imageUrl' property which equals a link", function () {
@@ -223,8 +287,10 @@ describe("game.js", function () {
           name: "Test Game",
         };
 
-        this.result = Game.fromSteamApp(steamApp);
-        //
+        const htmlPage = animaddicts2gameHtmlDetailsPage;
+
+        this.result = Game.fromSteamApp(steamApp, new JSDOM(htmlPage));
+
         this.result.pushCurrentPlayers(513);
 
         this.gameHistories = [];
