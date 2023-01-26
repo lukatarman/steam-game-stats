@@ -185,7 +185,7 @@ describe("game.js", function () {
             expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
           });
 
-          it("the resulting object's second playerHistory entry has a property called players, which equals 33", function () {
+          it("the last time we checked the game was played by 33 players", function () {
             expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(
               this.currentPlayers,
             );
@@ -206,16 +206,15 @@ describe("game.js", function () {
         };
 
         this.result = Game.fromSteamApp(steamApp);
-        //
+
         this.result.pushCurrentPlayers(513);
 
-        this.gameHistories = [];
+        const gameHistories = [];
+        gameHistories.push(PlayerHistory.fromRawData(5, "April 2020"));
+        gameHistories.push(PlayerHistory.fromRawData(15, "July 2020"));
+        gameHistories.push(PlayerHistory.fromRawData(55, "February 2020"));
 
-        this.gameHistories.push(PlayerHistory.fromRawData(5, "April 2020"));
-        this.gameHistories.push(PlayerHistory.fromRawData(15, "July 2020"));
-        this.gameHistories.push(PlayerHistory.fromRawData(55, "February 2020"));
-
-        this.result.pushSteamchartsPlayerHistory(this.gameHistories);
+        this.result.pushSteamchartsPlayerHistory(gameHistories);
       });
 
       it("The game has three new player history entries", function () {
