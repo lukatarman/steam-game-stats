@@ -25,7 +25,7 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
       if (getSteamAppType(page) === SteamApp.validTypes.game) {
-        return Game.fromSteamApp(steamApps[i]);
+        return Game.fromSteamApp(steamApps[i], new JSDOM(page));
       }
     })
     .filter((game) => !!game);
