@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getGameById } from "../../adapters/http-client/http.client.adapter.js";
 import { monthToString } from "../../utils/dates.js";
-import { fixHistories } from "./services/game.details.service.js";
 
 const GameDetailsBehavior = () => {
   const [gameData, setGameData] = useState([]);
@@ -21,28 +20,19 @@ const GameDetailsBehavior = () => {
   useEffect(() => {
     if (!gameData.playerHistory) return;
 
-    const historiesWithAveragePlayers = fixHistories(gameData.playerHistory);
+    const renderTable = gameData.playerHistory.reverse().map((entry, index) => {
+      return (
+        <tr key={index}>
+          <td>
+            {entry.year} {monthToString(entry.month)}
+          </td>
+          <td>{entry.averagePlayers.toLocaleString()}</td>
+        </tr>
+      );
+    });
 
-    setTableContent(
-      historiesWithAveragePlayers.map((history) => createTableRow(history))
-    );
+    setTableContent(renderTable);
   }, [gameData]);
-
-  function createTableRow(history) {
-    const date = new Date(history.date);
-    const year = date.getFullYear();
-    const month = monthToString(date.getMonth());
-    const players = history.players;
-
-    return (
-      <tr key={history.date}>
-        <td>
-          {year} {month}
-        </td>
-        <td>{players}</td>
-      </tr>
-    );
-  }
 
   return [gameData, tableContent];
 };
