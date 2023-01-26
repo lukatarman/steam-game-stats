@@ -13,7 +13,6 @@ describe("TrackedPlayers", function () {
         jasmine.clock().uninstall();
       });
 
-
       it("the current date is used.", function () {
         expect(this.players.date).toEqual(new Date());
       });
