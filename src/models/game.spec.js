@@ -3,7 +3,7 @@ import { PlayerHistory } from "./player.history.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { JSDOM } from "jsdom";
 
-fdescribe("game.js", function () {
+describe("game.js", function () {
   describe("Game", function () {
     describe(".fromSteamApp", function () {
       describe("is called with no arguments, ", function () {
@@ -91,7 +91,7 @@ fdescribe("game.js", function () {
         });
       });
 
-      fdescribe("is called with appropriate attributes, the returned value", function () {
+      describe("is called with appropriate attributes, the returned value", function () {
         beforeEach(function () {
           this.testObject = {
             id: 123,
