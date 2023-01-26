@@ -24,7 +24,7 @@ const GameDetailsBehavior = () => {
       return (
         <tr key={index}>
           <td>
-            {entry.year} {monthToString(entry.month)}
+            {monthToString(entry.month)} {entry.year}
           </td>
           <td>{entry.averagePlayers.toLocaleString()}</td>
         </tr>
