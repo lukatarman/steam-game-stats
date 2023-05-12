@@ -207,7 +207,7 @@ describe("game.service.js", () => {
         this.result = getDevelopers(riskOfRainHtmlDetailsPage);
       });
 
-      it("the result is an empty string", function () {
+      it("the result is an empty array", function () {
         expect(this.result).toEqual([]);
       });
     });
