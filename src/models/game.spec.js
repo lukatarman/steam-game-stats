@@ -1,7 +1,6 @@
 import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
-import { animaddicts2gameMissingClassesPage } from "../../assets/steam-details-pages/animaddicts.2.game.missing.classes.page.js";
 import { JSDOM } from "jsdom";
 
 describe("game.js", function () {
@@ -35,9 +34,15 @@ describe("game.js", function () {
             playerHistory: [],
           };
 
-          const htmlPage = animaddicts2gameHtmlDetailsPage;
+          this.releaseDate = "24.08.2023";
 
-          this.result = Game.fromSteamApp(this.testObject, new JSDOM(htmlPage));
+          this.developers = ["Two Giants Studios"];
+
+          this.result = Game.fromSteamApp(
+            this.testObject,
+            this.releaseDate,
+            this.developers,
+          );
         });
 
         it("is an instance of Game", function () {
@@ -52,12 +57,16 @@ describe("game.js", function () {
           expect(this.result.name).toBe(this.testObject.name);
         });
 
-        it("has a 'releaseDate' property which equals '3 Mar, 2022", function () {
-          expect(this.result.releaseDate).toBe("3 Mar, 2022");
+        it("has a 'releaseDate' property which equals '24.08.2023", function () {
+          expect(this.result.releaseDate).toBe(this.releaseDate);
         });
 
-        it("has a 'developers' property which equals 'Crossplatform'", function () {
-          expect(this.result.developers[0]).toBe("Crossplatform");
+        it("has a 'developers' property which is an array with a length of 1", function () {
+          expect(this.result.developers.length).toBe(1);
+        });
+
+        it("has a 'developers' property which equals 'Two Giants Studios'", function () {
+          expect(this.result.developers[0]).toBe(this.developers[0]);
         });
 
         it("has an 'imageUrl' property which equals a link", function () {
@@ -71,7 +80,7 @@ describe("game.js", function () {
         });
       });
 
-      describe("is called with appropriate attributes, but the htmlPage doesn't contain the proper classes, the returned value", function () {
+      describe("is called with appropriate attributes, but the releaseDate and Developers are empty the returned value", function () {
         beforeEach(function () {
           this.testObject = {
             appid: 123,
@@ -80,9 +89,14 @@ describe("game.js", function () {
             playerHistory: [],
           };
 
-          const htmlPage = animaddicts2gameMissingClassesPage;
+          this.releaseDate = "";
+          this.developers = [];
 
-          this.result = Game.fromSteamApp(this.testObject, new JSDOM(htmlPage));
+          this.result = Game.fromSteamApp(
+            this.testObject,
+            this.releaseDate,
+            this.developers,
+          );
         });
 
         it("is an instance of Game", function () {

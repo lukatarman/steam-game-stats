@@ -11,31 +11,15 @@ export class Game {
   playerHistory;
 
   // prettier-ignore
-  static fromSteamApp(steamApp, page) {
+  static fromSteamApp(steamApp, releaseDate, developers) {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = this.#getReleaseDate(page);
-    game.developers    = this.#getDevelopers(page);
+    game.releaseDate   = releaseDate;
+    game.developers    = developers;
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
-  }
-
-  static #getReleaseDate(page) {
-    const releaseDate = page.window.document.querySelector(".release_date .date");
-
-    if (!releaseDate) return "";
-
-    return releaseDate.textContent;
-  }
-
-  static #getDevelopers(page) {
-    const developers = page.window.document.querySelector(".dev_row #developers_list");
-
-    if (!developers) return [];
-
-    return Array.from(developers.children).map((developer) => developer.textContent);
   }
 
   //@todo https://github.com/lukatarman/steam-game-stats-backend/issues/115
