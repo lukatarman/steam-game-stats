@@ -201,7 +201,7 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".getDevelopers checks for a release date in the provided HTML page.", function () {
+  describe(".getDevelopers checks for developers in the provided HTML page.", function () {
     describe("if the provided HTML page does not include any developers,", function () {
       beforeEach(function () {
         this.result = getDevelopers(riskOfRainHtmlDetailsPage);
