@@ -1,7 +1,5 @@
 import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
-import { animaddicts2gameHtmlDetailsPage } from "../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
-import { JSDOM } from "jsdom";
 
 describe("game.js", function () {
   describe("Game", function () {
@@ -134,7 +132,7 @@ describe("game.js", function () {
     describe(".fromSteamcharts", function () {
       describe("is called with no arguments, ", function () {
         it("an Error is thrown", function () {
-          expect(Game.fromSteamApp).toThrowError();
+          expect(Game.fromSteamcharts).toThrowError();
         });
       });
 
@@ -350,9 +348,10 @@ describe("game.js", function () {
           name: "Test Game",
         };
 
-        const htmlPage = animaddicts2gameHtmlDetailsPage;
+        this.releaseDate = "";
+        this.developers = [];
 
-        this.result = Game.fromSteamApp(steamApp, new JSDOM(htmlPage));
+        this.result = Game.fromSteamApp(steamApp, this.releaseDate, this.developers);
 
         this.result.pushCurrentPlayers(513);
 
@@ -362,6 +361,18 @@ describe("game.js", function () {
         gameHistories.push(PlayerHistory.fromRawData(55, "February 2020"));
 
         this.result.pushSteamchartsPlayerHistory(gameHistories);
+      });
+
+      it("The result is an instance of Game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("The result has a property release date, which equals an empty string", function () {
+        expect(this.result.releaseDate).toBe("");
+      });
+
+      it("The result has a property developers, which equals an empty array", function () {
+        expect(this.result.developers).toEqual([]);
       });
 
       it("The game has three new player history entries", function () {
