@@ -195,8 +195,11 @@ describe("game.service.js", () => {
         this.result = getReleaseDate(mortalDarknessGameHtmlDetailsPage);
       });
 
+      it("the result is a date", function () {
+        expect(this.result).toBeInstanceOf(Date);
+      });
       it("the result is 'Aug 2023'", function () {
-        expect(this.result).toBe("Aug 2023");
+        expect(this.result).toEqual(new Date(this.result));
       });
     });
   });
