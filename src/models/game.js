@@ -4,19 +4,37 @@ import cloneDeep from "lodash.clonedeep";
 export class Game {
   id;
   name;
+  releaseDate;
+  developers;
   image;
   imageUrl;
   playerHistory;
 
   // prettier-ignore
-  static fromSteamApp(steamApp) {
+  static fromSteamApp(steamApp, releaseDate, developers) {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
+    game.releaseDate   = releaseDate;
+    game.developers    = developers;
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
   }
+
+  //@todo https://github.com/lukatarman/steam-game-stats-backend/issues/115
+
+  // prettier-ignore
+  static fromSteamcharts(steamApp) {
+      const game         = new Game();
+      game.id            = steamApp.appid;
+      game.name          = steamApp.name;
+      game.releaseDate   = "";
+      game.developers    = [];
+      game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
+      game.playerHistory = [];
+      return game;
+    }
 
   static manyFromDbEntry(entries) {
     return entries.map((entry) => this.fromDbEntry(entry));
@@ -27,6 +45,8 @@ export class Game {
     const game         = new Game();
     game.id            = dbEntry.id;
     game.name          = dbEntry.name;
+    game.releaseDate   = dbEntry.releaseDate;
+    game.developers    = dbEntry.developers;
     game.imageUrl      = dbEntry.imageUrl;
     game.playerHistory = PlayerHistory.manyFromDbEntry(dbEntry.playerHistory);
     return game;

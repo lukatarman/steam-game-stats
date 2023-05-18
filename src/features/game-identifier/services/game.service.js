@@ -24,11 +24,35 @@ export function getSteamAppType(httpDetailsPage) {
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
+      const releaseDate = getReleaseDate(htmlDetailsPages);
+      const developers = getDevelopers(htmlDetailsPages);
+
       if (getSteamAppType(page) === SteamApp.validTypes.game) {
-        return Game.fromSteamApp(steamApps[i]);
+        return Game.fromSteamApp(steamApps[i], releaseDate, developers);
       }
     })
     .filter((game) => !!game);
+}
+
+export function getReleaseDate(page) {
+  const dom = new JSDOM(page);
+
+  const releaseDate =
+    dom.window.document.querySelector(".release_date .date").textContent;
+
+  if (!releaseDate) return "";
+
+  return new Date(releaseDate);
+}
+
+export function getDevelopers(page) {
+  const dom = new JSDOM(page);
+
+  const developers = dom.window.document.querySelector(".dev_row #developers_list");
+
+  if (!developers) return [];
+
+  return Array.from(developers.children).map((developer) => developer.textContent);
 }
 
 export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
@@ -47,7 +71,7 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
 export function identifyGames(updatedSteamApps) {
   const games = updatedSteamApps
     .filter((steamApp) => steamApp.isGame())
-    .map((steamApp) => Game.fromSteamApp(steamApp));
+    .map((steamApp) => Game.fromSteamcharts(steamApp));
 
   return games;
 }

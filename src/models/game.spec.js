@@ -1,6 +1,5 @@
 import { Game } from "./game.js";
 import { PlayerHistory } from "./player.history.js";
-import { TrackedPlayers } from "./tracked.players.js";
 
 describe("game.js", function () {
   describe("Game", function () {
@@ -33,7 +32,15 @@ describe("game.js", function () {
             playerHistory: [],
           };
 
-          this.result = Game.fromSteamApp(this.testObject);
+          this.releaseDate = "24.08.2023";
+
+          this.developers = ["Two Giants Studios"];
+
+          this.result = Game.fromSteamApp(
+            this.testObject,
+            this.releaseDate,
+            this.developers,
+          );
         });
 
         it("is an instance of Game", function () {
@@ -46,6 +53,132 @@ describe("game.js", function () {
 
         it("has a 'name' property which equals 'test game'", function () {
           expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals '24.08.2023", function () {
+          expect(this.result.releaseDate).toBe(this.releaseDate);
+        });
+
+        it("has a 'developers' property which is an array with a length of 1", function () {
+          expect(this.result.developers.length).toBe(1);
+        });
+
+        it("has a 'developers' property which equals 'Two Giants Studios'", function () {
+          expect(this.result.developers[0]).toBe(this.developers[0]);
+        });
+
+        it("has an 'imageUrl' property which equals a link", function () {
+          expect(this.result.imageUrl).toBe(
+            `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
+          );
+        });
+
+        it("has a 'playerHistory' property which equals an empty array", function () {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
+      });
+
+      describe("is called with appropriate attributes, but the releaseDate and Developers are empty the returned value", function () {
+        beforeEach(function () {
+          this.testObject = {
+            appid: 123,
+            name: "test game",
+            imageUrl: "test url",
+            playerHistory: [],
+          };
+
+          this.releaseDate = "";
+          this.developers = [];
+
+          this.result = Game.fromSteamApp(
+            this.testObject,
+            this.releaseDate,
+            this.developers,
+          );
+        });
+
+        it("is an instance of Game", function () {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has an 'id' property which equals 123", function () {
+          expect(this.result.id).toBe(this.testObject.appid);
+        });
+
+        it("has a 'name' property which equals 'test game'", function () {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals an empty string", function () {
+          expect(this.result.releaseDate).toBe("");
+        });
+
+        it("has a 'developers' property which equals an empty array", function () {
+          expect(this.result.developers).toEqual([]);
+        });
+
+        it("has an 'imageUrl' property which equals a link", function () {
+          expect(this.result.imageUrl).toBe(
+            `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
+          );
+        });
+
+        it("has a 'playerHistory' property which equals an empty array", function () {
+          expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        });
+      });
+    });
+
+    describe(".fromSteamcharts", function () {
+      describe("is called with no arguments, ", function () {
+        it("an Error is thrown", function () {
+          expect(Game.fromSteamcharts).toThrowError();
+        });
+      });
+
+      describe("is called with incomplete arguments, ", function () {
+        beforeEach(function () {
+          this.testObject = {
+            id: 123,
+            name: "test game",
+          };
+        });
+
+        it("an Error is thrown", function () {
+          expect(Game.fromSteamcharts.bind(this.testObject)).toThrowError();
+        });
+      });
+
+      describe("is called with appropriate attributes, the returned value", function () {
+        beforeEach(function () {
+          this.testObject = {
+            appid: 123,
+            name: "test game",
+            imageUrl: "test url",
+            playerHistory: [],
+          };
+
+          this.result = Game.fromSteamcharts(this.testObject);
+        });
+
+        it("is an instance of Game", function () {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("has an 'id' property which equals 123", function () {
+          expect(this.result.id).toBe(this.testObject.appid);
+        });
+
+        it("has a 'name' property which equals 'test game'", function () {
+          expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals an empty string", function () {
+          expect(this.result.releaseDate).toBe("");
+        });
+
+        it("has a 'developers' property which equals an empty array", function () {
+          expect(this.result.developers).toEqual([]);
         });
 
         it("has an 'imageUrl' property which equals a link", function () {
@@ -85,6 +218,8 @@ describe("game.js", function () {
           this.testObject = {
             id: 123,
             name: "test game",
+            releaseDate: "3 Mar, 2022",
+            developers: ["Crossplatform"],
             imageUrl: "test url",
             playerHistory: [],
           };
@@ -102,6 +237,14 @@ describe("game.js", function () {
 
         it("has a 'name' property which equals 'test game'", function () {
           expect(this.result.name).toBe(this.testObject.name);
+        });
+
+        it("has a 'releaseDate' property which equals '3 Mar, 2022", function () {
+          expect(this.result.releaseDate).toBe("3 Mar, 2022");
+        });
+
+        it("has a 'developers' property which equals 'Crossplatform", function () {
+          expect(this.result.developers[0]).toBe("Crossplatform");
         });
 
         it("has an 'imageUrl' property which equals 'test url'", function () {
@@ -205,7 +348,10 @@ describe("game.js", function () {
           name: "Test Game",
         };
 
-        this.result = Game.fromSteamApp(steamApp);
+        this.releaseDate = "";
+        this.developers = [];
+
+        this.result = Game.fromSteamApp(steamApp, this.releaseDate, this.developers);
 
         this.result.pushCurrentPlayers(513);
 
@@ -215,6 +361,18 @@ describe("game.js", function () {
         gameHistories.push(PlayerHistory.fromRawData(55, "February 2020"));
 
         this.result.pushSteamchartsPlayerHistory(gameHistories);
+      });
+
+      it("The result is an instance of Game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("The result has a property release date, which equals an empty string", function () {
+        expect(this.result.releaseDate).toBe("");
+      });
+
+      it("The result has a property developers, which equals an empty array", function () {
+        expect(this.result.developers).toEqual([]);
       });
 
       it("The game has three new player history entries", function () {

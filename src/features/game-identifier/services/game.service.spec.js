@@ -4,6 +4,8 @@ import {
   updateTypeSideEffectFree,
   identifyGames,
   assignType,
+  getReleaseDate,
+  getDevelopers,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -13,6 +15,9 @@ import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-page
 import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
+import { riskOfRainHtmlDetailsPage } from "../../../../assets/steam-details-pages/risk.of.rain.no.release.date.no.developers.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -170,6 +175,75 @@ describe("game.service.js", () => {
 
       it("the first entry in the games array is an instance of game", function () {
         expect(this.games[1]).toBeInstanceOf(Game);
+      });
+    });
+  });
+
+  describe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
+    describe("if the provided HTML page does not include a release date,", function () {
+      beforeEach(function () {
+        this.result = getReleaseDate(riskOfRainHtmlDetailsPage);
+      });
+
+      it("the result is an empty string", function () {
+        expect(this.result).toBe("");
+      });
+    });
+
+    describe("if the provided HTML page includes a release date,", function () {
+      beforeEach(function () {
+        this.result = getReleaseDate(mortalDarknessGameHtmlDetailsPage);
+      });
+
+      it("the result is a date", function () {
+        expect(this.result).toBeInstanceOf(Date);
+      });
+      it("the result is 'Aug 2023'", function () {
+        expect(this.result).toEqual(new Date(this.result));
+      });
+    });
+  });
+
+  describe(".getDevelopers checks for developers in the provided HTML page.", function () {
+    describe("if the provided HTML page does not include any developers,", function () {
+      beforeEach(function () {
+        this.result = getDevelopers(riskOfRainHtmlDetailsPage);
+      });
+
+      it("the result is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+
+    describe("if the provided HTML page includes one developer,", function () {
+      beforeEach(function () {
+        this.result = getDevelopers(mortalDarknessGameHtmlDetailsPage);
+      });
+
+      it("the result is an array with one value", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the result is 'Dark Faction Games'", function () {
+        expect(this.result[0]).toBe("Dark Faction Games");
+      });
+    });
+
+    describe("if the provided HTML page includes two developers,", function () {
+      beforeEach(function () {
+        this.result = getDevelopers(crusaderKingsDetailsPage);
+      });
+
+      it("the result is an array with two values", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first result is 'Paradox Development Studio'", function () {
+        expect(this.result[0]).toBe("Paradox Development Studio");
+      });
+
+      it("the second result is 'Paradox Thalassic'", function () {
+        expect(this.result[1]).toBe("Paradox Thalassic");
       });
     });
   });

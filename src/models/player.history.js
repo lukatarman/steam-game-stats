@@ -17,7 +17,6 @@ export class PlayerHistory {
     playerHistory.month           = history.month;
     playerHistory.averagePlayers  = history.averagePlayers;
     playerHistory.trackedPlayers  = TrackedPlayers.manyFromDbEntry(history.trackedPlayers);
-
     return playerHistory;
   }
 
