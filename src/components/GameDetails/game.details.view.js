@@ -8,9 +8,19 @@ const GameDetails = () => {
   return (
     <div>
       <Container>
-        <div className="col align-items-center justify-content-center pb-2">
-          <p className="pb-2 h2">{gameData.name}</p>
-          <img src={gameData.imageUrl} alt="Not found" />
+        <div className="col d-flex pb-2 mt-4 mb-2">
+          <div className="align-items-center justify-content-center ">
+            <img src={gameData.imageUrl} alt="Not found" />
+          </div>
+          <div className="m-2">
+            <p className="pb-2 h2">{gameData.name}</p>
+            <p>
+              <span className="fw-bold">Release Date</span>: {gameData.releaseDate}
+            </p>
+            <p>
+              <span className="fw-bold">Developer</span>: {gameData.developers}
+            </p>
+          </div>
         </div>
         <Table striped bordered hover>
           <thead>
