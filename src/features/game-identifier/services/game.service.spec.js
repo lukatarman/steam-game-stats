@@ -294,7 +294,7 @@ describe("game.service.js", () => {
         this.result = getGameDescription(mortalDarknessGameHtmlDetailsPage);
       });
 
-      it("the resulting is a long string", function () {
+      it("the resulting is a specific string", function () {
         expect(this.result).toBe(
           "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
         );
