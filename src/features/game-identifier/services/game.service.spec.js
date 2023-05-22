@@ -6,6 +6,8 @@ import {
   assignType,
   getReleaseDate,
   getDevelopers,
+  getGenres,
+  getGameDescription,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -15,11 +17,11 @@ import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-page
 import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
-import { riskOfRainHtmlDetailsPage } from "../../../../assets/steam-details-pages/risk.of.rain.no.release.date.no.developers.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
+import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 
-describe("game.service.js", () => {
+fdescribe("game.service.js", () => {
   describe(".getSteamAppType", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let appType;
@@ -182,7 +184,7 @@ describe("game.service.js", () => {
   describe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
     describe("if the provided HTML page does not include a release date,", function () {
       beforeEach(function () {
-        this.result = getReleaseDate(riskOfRainHtmlDetailsPage);
+        this.result = getReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
       it("the result is an empty string", function () {
@@ -207,7 +209,7 @@ describe("game.service.js", () => {
   describe(".getDevelopers checks for developers in the provided HTML page.", function () {
     describe("if the provided HTML page does not include any developers,", function () {
       beforeEach(function () {
-        this.result = getDevelopers(riskOfRainHtmlDetailsPage);
+        this.result = getDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
       it("the result is an empty array", function () {
@@ -244,6 +246,58 @@ describe("game.service.js", () => {
 
       it("the second result is 'Paradox Thalassic'", function () {
         expect(this.result[1]).toBe("Paradox Thalassic");
+      });
+    });
+  });
+
+  describe(".getGenres checks for genres in the provided HTML page.", function () {
+    describe("if the provided HTML page does not include any genres,", function () {
+      beforeEach(function () {
+        this.result = getGenres(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the result is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+
+    describe("if the provided HTML page includes genres,", function () {
+      beforeEach(function () {
+        this.result = getGenres(mortalDarknessGameHtmlDetailsPage);
+      });
+
+      it("the resulting array has a length of 4", function () {
+        expect(this.result.length).toBe(4);
+      });
+      it("the first result is 'Action'", function () {
+        expect(this.result[0]).toBe("Action");
+      });
+      it("the fourth result is 'RPG'", function () {
+        expect(this.result[3]).toBe("RPG");
+      });
+    });
+  });
+
+  describe(".getDescription checks for a game's description in the provided HTML page.", function () {
+    describe("if the provided HTML page does not include a game description,", function () {
+      beforeEach(function () {
+        this.result = getGameDescription(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the result is an empty string", function () {
+        expect(this.result).toEqual("");
+      });
+    });
+
+    describe("if the provided HTML page includes a description,", function () {
+      beforeEach(function () {
+        this.result = getGameDescription(mortalDarknessGameHtmlDetailsPage);
+      });
+
+      it("the resulting is a long string", function () {
+        expect(this.result).toBe(
+          "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
+        );
       });
     });
   });

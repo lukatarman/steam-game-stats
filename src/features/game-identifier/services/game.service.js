@@ -24,14 +24,29 @@ export function getSteamAppType(httpDetailsPage) {
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
-      const releaseDate = getReleaseDate(htmlDetailsPages);
-      const developers = getDevelopers(htmlDetailsPages);
+      const { releaseDate, developers, genres, gameDescription } =
+        getAdditionalInfo(page);
 
       if (getSteamAppType(page) === SteamApp.validTypes.game) {
-        return Game.fromSteamApp(steamApps[i], releaseDate, developers);
+        return Game.fromSteamApp(
+          steamApps[i],
+          releaseDate,
+          developers,
+          genres,
+          gameDescription,
+        );
       }
     })
     .filter((game) => !!game);
+}
+
+export function getAdditionalInfo(page) {
+  const releaseDate = getReleaseDate(page);
+  const developers = getDevelopers(page);
+  const genres = getGenres(page);
+  const gameDescription = getGameDescription(page);
+
+  return { releaseDate, developers, genres, gameDescription };
 }
 
 export function getReleaseDate(page) {
@@ -53,6 +68,28 @@ export function getDevelopers(page) {
   if (!developers) return [];
 
   return Array.from(developers.children).map((developer) => developer.textContent);
+}
+
+export function getGenres(page) {
+  const dom = new JSDOM(page);
+
+  const genres = dom.window.document.querySelector("#genresAndManufacturer span");
+
+  if (!genres) return [];
+
+  return Array.from(genres.children)
+    .map((genre) => genre.textContent)
+    .filter((genre) => !!genre);
+}
+
+export function getGameDescription(page) {
+  const dom = new JSDOM(page);
+
+  const description = dom.window.document.querySelector(".game_description_snippet");
+
+  if (!description) return "";
+
+  return description.textContent.trim();
 }
 
 export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
