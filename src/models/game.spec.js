@@ -77,11 +77,11 @@ describe("game.js", function () {
           expect(this.result.genres.length).toBe(2);
         });
 
-        it("'s first genres property equals 'Action'", function () {
+        it("'s first value of the genres property equals 'Action'", function () {
           expect(this.result.genres[0]).toBe(this.genres[0]);
         });
 
-        it("'s second genres property equals 'Adventure'", function () {
+        it("'s second value of the genres property equals 'Adventure'", function () {
           expect(this.result.genres[1]).toBe(this.genres[1]);
         });
 
