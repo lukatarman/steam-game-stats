@@ -52,8 +52,9 @@ export function getAdditionalGameInfo(page) {
 export function getReleaseDate(page) {
   const dom = new JSDOM(page);
 
-  const releaseDate =
-    dom.window.document.querySelector(".release_date .date").textContent;
+  const releaseDate = dom.window.document
+    .querySelector(".release_date .date")
+    .textContent.trim();
 
   if (!releaseDate) return "";
 
@@ -67,7 +68,7 @@ export function getDevelopers(page) {
 
   if (!developers) return [];
 
-  return Array.from(developers.children).map((developer) => developer.textContent);
+  return Array.from(developers.children).map((developer) => developer.textContent.trim());
 }
 
 export function getGenres(page) {
@@ -78,7 +79,7 @@ export function getGenres(page) {
   if (!genres) return [];
 
   return Array.from(genres.children)
-    .map((genre) => genre.textContent)
+    .map((genre) => genre.textContent.trim())
     .filter((genre) => !!genre);
 }
 
