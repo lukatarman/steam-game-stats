@@ -25,7 +25,7 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
       const { releaseDate, developers, genres, gameDescription } =
-        getAdditionalInfo(page);
+        getAdditionalGameInfo(page);
 
       if (getSteamAppType(page) === SteamApp.validTypes.game) {
         return Game.fromSteamApp(
@@ -40,7 +40,7 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
     .filter((game) => !!game);
 }
 
-export function getAdditionalInfo(page) {
+export function getAdditionalGameInfo(page) {
   const releaseDate = getReleaseDate(page);
   const developers = getDevelopers(page);
   const genres = getGenres(page);
