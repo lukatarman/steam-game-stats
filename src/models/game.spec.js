@@ -36,10 +36,16 @@ describe("game.js", function () {
 
           this.developers = ["Two Giants Studios"];
 
+          this.genres = ["Action", "Adventure"];
+
+          this.description = ["A game description"];
+
           this.result = Game.fromSteamApp(
             this.testObject,
             this.releaseDate,
             this.developers,
+            this.genres,
+            this.description,
           );
         });
 
@@ -65,6 +71,22 @@ describe("game.js", function () {
 
         it("has a 'developers' property which equals 'Two Giants Studios'", function () {
           expect(this.result.developers[0]).toBe(this.developers[0]);
+        });
+
+        it("has a 'genres' property which is an array with a length of 2", function () {
+          expect(this.result.genres.length).toBe(2);
+        });
+
+        it("'s first genres property equals 'Action'", function () {
+          expect(this.result.genres[0]).toBe(this.genres[0]);
+        });
+
+        it("'s second genres property equals 'Adventure'", function () {
+          expect(this.result.genres[1]).toBe(this.genres[1]);
+        });
+
+        it("has a 'description' property which equals 'A game description'", function () {
+          expect(this.result.description).toBe(this.description);
         });
 
         it("has an 'imageUrl' property which equals a link", function () {
@@ -181,6 +203,14 @@ describe("game.js", function () {
           expect(this.result.developers).toEqual([]);
         });
 
+        it("has a 'genres' property which equals an empty array", function () {
+          expect(this.result.genres).toEqual([]);
+        });
+
+        it("has a 'description' property which equals an empty string", function () {
+          expect(this.result.description).toEqual("");
+        });
+
         it("has an 'imageUrl' property which equals a link", function () {
           expect(this.result.imageUrl).toBe(
             `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
@@ -220,6 +250,8 @@ describe("game.js", function () {
             name: "test game",
             releaseDate: "3 Mar, 2022",
             developers: ["Crossplatform"],
+            genres: ["Action", "Adventure"],
+            description: "A game's description",
             imageUrl: "test url",
             playerHistory: [],
           };
@@ -245,6 +277,22 @@ describe("game.js", function () {
 
         it("has a 'developers' property which equals 'Crossplatform", function () {
           expect(this.result.developers[0]).toBe("Crossplatform");
+        });
+
+        it("has a 'genres' property which is an array with a length of 2", function () {
+          expect(this.result.genres.length).toBe(2);
+        });
+
+        it("first genres value equals 'Action'", function () {
+          expect(this.result.genres[0]).toBe("Action");
+        });
+
+        it("second genres value equals 'Adventure'", function () {
+          expect(this.result.genres[1]).toBe("Adventure");
+        });
+
+        it("has a 'description' property which equals 'A game's description'", function () {
+          expect(this.result.description).toBe("A game's description");
         });
 
         it("has an 'imageUrl' property which equals 'test url'", function () {
