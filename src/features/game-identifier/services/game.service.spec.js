@@ -21,7 +21,7 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 
-fdescribe("game.service.js", () => {
+describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
     describe("game is age restricted - there is no .blockbg class on the page", () => {
       let appType;
