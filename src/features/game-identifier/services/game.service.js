@@ -24,29 +24,17 @@ export function getSteamAppType(httpDetailsPage) {
 export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
   return htmlDetailsPages
     .map((page, i) => {
-      const { releaseDate, developers, genres, gameDescription } =
-        getAdditionalGameInfo(page);
-
       if (getSteamAppType(page) === SteamApp.validTypes.game) {
         return Game.fromSteamApp(
           steamApps[i],
-          releaseDate,
-          developers,
-          genres,
-          gameDescription,
+          getReleaseDate(page),
+          getDevelopers(page),
+          getGenres(page),
+          getGameDescription(page),
         );
       }
     })
     .filter((game) => !!game);
-}
-
-export function getAdditionalGameInfo(page) {
-  const releaseDate = getReleaseDate(page);
-  const developers = getDevelopers(page);
-  const genres = getGenres(page);
-  const gameDescription = getGameDescription(page);
-
-  return { releaseDate, developers, genres, gameDescription };
 }
 
 export function getReleaseDate(page) {
