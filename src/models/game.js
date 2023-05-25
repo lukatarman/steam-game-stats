@@ -11,12 +11,14 @@ export class Game {
   playerHistory;
 
   // prettier-ignore
-  static fromSteamApp(steamApp, releaseDate, developers) {
+  static fromSteamApp(steamApp, releaseDate, developers, genres, description) {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
     game.releaseDate   = releaseDate;
     game.developers    = developers;
+    game.genres        = genres;
+    game.description   = description;
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     return game;
@@ -31,6 +33,8 @@ export class Game {
       game.name          = steamApp.name;
       game.releaseDate   = "";
       game.developers    = [];
+      game.genres        = [];
+      game.description   = "";
       game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
       game.playerHistory = [];
       return game;
@@ -47,6 +51,8 @@ export class Game {
     game.name          = dbEntry.name;
     game.releaseDate   = dbEntry.releaseDate;
     game.developers    = dbEntry.developers;
+    game.genres        = dbEntry.genres;
+    game.description   = dbEntry.description;
     game.imageUrl      = dbEntry.imageUrl;
     game.playerHistory = PlayerHistory.manyFromDbEntry(dbEntry.playerHistory);
     return game;
