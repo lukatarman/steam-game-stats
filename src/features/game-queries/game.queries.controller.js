@@ -20,4 +20,8 @@ export class GameQueriesController {
   async getGamesBySearchTerm(term) {
     return await this.#gamesRepository.getGamesBySearchTerm(term);
   }
+
+  async getTrendingGames(amount, timePeriodInMs) {
+    return await this.#gamesRepository.getTrendingGames(amount, timePeriodInMs);
+  }
 }
