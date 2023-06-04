@@ -1,3 +1,5 @@
+import { daysToMs } from "../../utils/time.utils.js";
+
 export class GameQueriesRouter {
   #controller;
 
@@ -7,7 +9,7 @@ export class GameQueriesRouter {
 
   routes = async (server, options) => {
     server.get("/games", async (request, reply) => {
-      const limit = request.query.limit ? request.query.limit : 10;
+      const limit = request.query.limit ?? 10;
 
       if (request.query.q)
         return await this.#controller.getGamesBySearchTerm(request.query.q);
@@ -21,6 +23,12 @@ export class GameQueriesRouter {
       const id = parseInt(request.params.id);
 
       return await this.#controller.getOneGameById(id);
+    });
+
+    server.get("/games/trending", async (request, reply) => {
+      const timePeriodInMs = request.query.timePeriod ?? daysToMs(7);
+
+      return await this.#controller.getTrendingGames(timePeriodInMs);
     });
   };
 }
