@@ -95,7 +95,7 @@ describe("time.utils.js", () => {
         result = daysToMs(12);
       });
 
-      it("the function returns '43200000'", () => {
+      it("the function returns '1036800000'", () => {
         expect(result).toBe(10368e5);
       });
     });
