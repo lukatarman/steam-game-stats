@@ -16,7 +16,7 @@ export class TrackedPlayers {
   #fixDate(dateAsString) {
     const date = new Date(dateAsString);
 
-    if (date.getHours && date.getMinutes && date.getSeconds) return date;
+    if (date.getHours() && date.getMinutes() && date.getSeconds()) return date;
 
     return this.#addTwelveHours(dateAsString);
   }
