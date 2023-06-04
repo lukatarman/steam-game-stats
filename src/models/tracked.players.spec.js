@@ -18,7 +18,7 @@ describe("TrackedPlayers", function () {
       });
     });
 
-    describe("when a date with specified hour/minute/seconds is provided", function () {
+    describe("when a date with specified hour, minute or seconds is provided", function () {
       beforeEach(function () {
         this.currentDate = new Date("11:24 September 2000");
 
@@ -30,7 +30,7 @@ describe("TrackedPlayers", function () {
       });
     });
 
-    describe("when a date without specified hours/minutes/seconds is provided", function () {
+    describe("when a date without specified hours, minutes or seconds is provided", function () {
       beforeEach(function () {
         const currentDate = new Date("September 2000");
         const twelveHoursInMs = 12 * 60 * 60 * 1000;
