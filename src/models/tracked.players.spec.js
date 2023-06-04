@@ -74,6 +74,10 @@ describe("TrackedPlayers", function () {
         this.result = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
       });
 
+      afterEach(function () {
+        jasmine.clock().uninstall();
+      });
+
       it("the first entry is an instance of TrackedPlayers.", function () {
         expect(this.result[0]).toBeInstanceOf(TrackedPlayers);
       });
