@@ -1,4 +1,11 @@
 import { Game } from "../../models/game.js";
+import {
+  addAveragePlayersAtCustomDayProperty,
+  addAveragePlayersTodayProperty,
+  addPercentagePlayerIncreaseProperty,
+  getGamesWithAveragePlayersValues,
+  getGamesWithMinimumXPlayers,
+} from "./services/games.repository.service.js";
 
 export class GamesRepository {
   #dbClient;
@@ -133,5 +140,26 @@ export class GamesRepository {
         { $limit: 15 },
       ])
       .toArray();
+  }
+
+  async getTrendingGames(timePeriodInMs, returnAmount, minimumPlayers) {
+    const oneDayInMs = 86400000;
+
+    await this.#dbClient.get("games").aggregate([
+      getGamesWithMinimumXPlayers(minimumPlayers),
+      addAveragePlayersTodayProperty(oneDayInMs),
+      addAveragePlayersAtCustomDayProperty(timePeriodInMs, oneDayInMs),
+      getGamesWithAveragePlayersValues(),
+      addPercentagePlayerIncreaseProperty(),
+      { $unset: "averagePlayersToday" },
+      { $unset: "averagePlayersAtCustomDay" },
+      {
+        $match: {
+          percentagePlayerIncrease: { $gt: 0 },
+        },
+      },
+      { $sort: { percentagePlayerIncrease: -1 } },
+      { $limit: returnAmount },
+    ]);
   }
 }
