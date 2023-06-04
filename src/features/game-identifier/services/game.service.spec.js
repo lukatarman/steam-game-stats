@@ -206,7 +206,7 @@ describe("game.service.js", () => {
     });
   });
 
-  fdescribe(".getDevelopers checks for developers in the provided HTML page.", function () {
+  describe(".getDevelopers checks for developers in the provided HTML page.", function () {
     describe("if the provided HTML page does not include any developers,", function () {
       beforeEach(function () {
         this.result = getDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
@@ -250,7 +250,7 @@ describe("game.service.js", () => {
     });
   });
 
-  fdescribe(".getGenres checks for genres in the provided HTML page.", function () {
+  describe(".getGenres checks for genres in the provided HTML page.", function () {
     describe("if the provided HTML page does not include any genres,", function () {
       beforeEach(function () {
         this.result = getGenres(riskOfRainHtmlDetailsPageMissingInfo);
@@ -278,7 +278,7 @@ describe("game.service.js", () => {
     });
   });
 
-  fdescribe(".getDescription checks for a game's description in the provided HTML page.", function () {
+  describe(".getDescription checks for a game's description in the provided HTML page.", function () {
     describe("if the provided HTML page does not include a game description,", function () {
       beforeEach(function () {
         this.result = getGameDescription(riskOfRainHtmlDetailsPageMissingInfo);
