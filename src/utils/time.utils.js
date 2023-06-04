@@ -6,6 +6,10 @@ export function hoursToMs(hours) {
   return hours * 60 * 60 * 1000;
 }
 
+export function daysToMs(days) {
+  return days * 24 * 60 * 60 * 1000;
+}
+
 export function moreThanXhoursPassedSince(x, date) {
   return msPassedSince(date) > x;
 }
