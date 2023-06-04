@@ -181,7 +181,7 @@ describe("game.service.js", () => {
     });
   });
 
-  fdescribe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
+  describe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
     describe("if the provided HTML page does not include a release date,", function () {
       beforeEach(function () {
         this.result = getReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
