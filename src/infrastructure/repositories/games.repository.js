@@ -143,12 +143,10 @@ export class GamesRepository {
   }
 
   async getTrendingGames(timePeriodInMs, returnAmount, minimumPlayers) {
-    const oneDayInMs = 86400000;
-
     await this.#dbClient.get("games").aggregate([
       getGamesWithMinimumXPlayers(minimumPlayers),
-      addAveragePlayersTodayProperty(oneDayInMs),
-      addAveragePlayersAtCustomDayProperty(timePeriodInMs, oneDayInMs),
+      addAveragePlayersTodayProperty(),
+      addAveragePlayersAtCustomDayProperty(timePeriodInMs),
       getGamesWithAveragePlayersValues(),
       addPercentagePlayerIncreaseProperty(),
       { $unset: "averagePlayersToday" },

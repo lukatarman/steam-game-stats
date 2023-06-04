@@ -1,3 +1,5 @@
+import { daysToMs } from "../../../utils/time.utils.js";
+
 export const getGamesWithMinimumXPlayers = (minimumPlayers) => {
   return {
     $match: {
@@ -8,7 +10,7 @@ export const getGamesWithMinimumXPlayers = (minimumPlayers) => {
   };
 };
 
-export const addAveragePlayersTodayProperty = (oneDayInMs) => {
+export const addAveragePlayersTodayProperty = () => {
   return {
     $addFields: {
       averagePlayersToday: {
@@ -29,7 +31,7 @@ export const addAveragePlayersTodayProperty = (oneDayInMs) => {
                             cond: {
                               $gte: [
                                 "$$players.date",
-                                { $subtract: [new Date(), oneDayInMs] },
+                                { $subtract: [new Date(), daysToMs(1)] },
                               ],
                             },
                           },
@@ -54,7 +56,7 @@ export const addAveragePlayersTodayProperty = (oneDayInMs) => {
   };
 };
 
-export const addAveragePlayersAtCustomDayProperty = (timePeriodInMs, oneDayInMs) => {
+export const addAveragePlayersAtCustomDayProperty = (timePeriodInMs) => {
   return {
     $addFields: {
       averagePlayersAtCustomDay: {
@@ -86,7 +88,7 @@ export const addAveragePlayersAtCustomDayProperty = (timePeriodInMs, oneDayInMs)
                                     {
                                       $subtract: [
                                         { $subtract: [new Date(), timePeriodInMs] },
-                                        oneDayInMs,
+                                        daysToMs(1),
                                       ],
                                     },
                                   ],
