@@ -1,23 +1,26 @@
 import { MongoClient } from "mongodb";
-import { Game } from "../models/game.js";
-import { SteamApp } from "../models/steam.app.js";
 
 export class DatabaseClient {
   #collections;
+  #mongodb;
 
   async init(options) {
     const urlToDb = `${options.url}/${options.databaseName}`;
-    const mongodb = await MongoClient.connect(urlToDb, {
+    this.#mongodb = await MongoClient.connect(urlToDb, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    const database = mongodb.db(options.databaseName);
+    const database = this.#mongodb.db(options.databaseName);
 
     this.#collections = new Map();
     options.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
 
     return this;
+  }
+
+  async disconnect() {
+    this.#mongodb.close();
   }
 
   // low level
