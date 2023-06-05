@@ -2,8 +2,8 @@ import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 
 describe("games.repository.js", function () {
-  describe(".getOneGameById returns a document based on an id.", function () {
-    describe("If an existing id is passed in, the result is an object ", function () {
+  describe(".getOneGameById returns a document based on the id passed in.", function () {
+    describe("If an existing id is passed in, the resulting object ", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase();
 
@@ -18,16 +18,16 @@ describe("games.repository.js", function () {
         this.databaseClient.disconnect();
       });
 
-      it("with an id property that equals one", function () {
+      it("has an id property that equals one", function () {
         expect(this.result.id).toBe(1);
       });
 
-      it("with a name property that equals 'Risk of Rain'", function () {
+      it("has a name property that equals 'Risk of Rain'", function () {
         expect(this.result.name).toBe("Risk of Rain");
       });
     });
 
-    describe("If an non-existing id is passed in, the result is an object ", function () {
+    describe("If an non-existing id is passed in,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase();
 
@@ -42,7 +42,7 @@ describe("games.repository.js", function () {
         this.databaseClient.disconnect();
       });
 
-      it("with an id property that equals null", function () {
+      it("the result is null", function () {
         expect(this.result).toBe(null);
       });
     });
