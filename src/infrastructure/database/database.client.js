@@ -2,16 +2,16 @@ import { MongoClient } from "mongodb";
 
 export class DatabaseClient {
   #collections;
-  #mongodb;
+  #connection;
 
   async init(options) {
     const urlToDb = `${options.url}/${options.databaseName}`;
-    this.#mongodb = await MongoClient.connect(urlToDb, {
+    this.#connection = await MongoClient.connect(urlToDb, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    const database = this.#mongodb.db(options.databaseName);
+    const database = this.#connection.db(options.databaseName);
 
     this.#collections = new Map();
     options.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
@@ -20,7 +20,7 @@ export class DatabaseClient {
   }
 
   async disconnect() {
-    this.#mongodb.close();
+    this.#connection.close();
   }
 
   // low level
