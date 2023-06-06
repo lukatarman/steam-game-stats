@@ -35,6 +35,7 @@
   "devDependencies": {
     "eslint": "8.11.0",
     "jasmine": "4.0.2",
+    "mongodb-memory-server": "8.12.2",
     "prettier": "2.6.0"
   },
   "type": "module"
