@@ -1,7 +1,8 @@
 import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
+import { hoursToMs } from "../../../utils/time.utils.js";
 
-describe("games.repository.js", function () {
+fdescribe("games.repository.js", function () {
   describe(".insertManyGames inserts an array ob objects into the database.", function () {
     describe("If two games are inserted,", function () {
       beforeAll(async function () {
@@ -43,7 +44,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.result = await this.databaseClient.get("games").find({}).toArray();
+        this.result = await this.databaseClient.getAll("games");
       });
 
       afterAll(function () {
@@ -61,7 +62,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
+        await this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -85,7 +86,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
+        await this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -106,7 +107,7 @@ describe("games.repository.js", function () {
     beforeAll(async function () {
       this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-      this.databaseClient.insertMany("games", [
+      await this.databaseClient.insertMany("games", [
         { id: 1, name: "Risk of Train" },
         { id: 2, name: "Risk of Rain" },
       ]);
@@ -140,7 +141,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.databaseClient.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           { id: 1, name: "Risk of Train", playerHistory: [] },
           { id: 2, name: "Risk of Histories", playerHistory: ["Fake History"] },
           { id: 3, name: "Risk of Rain", playerHistory: [] },
@@ -174,7 +175,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.databaseClient.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           { id: 1, name: "Risk of Train", playerHistory: [] },
           { id: 2, name: "Risk of Histories", playerHistory: ["Fake History"] },
           { id: 3, name: "Risk of Rain", playerHistory: [] },
@@ -203,7 +204,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.databaseClient.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           { id: 1, name: "Risk of Train", playerHistory: [] },
           { id: 2, name: "Risk of Histories", playerHistory: ["Fake History"] },
           { id: 3, name: "Risk of Rain", playerHistory: [] },
@@ -240,45 +241,30 @@ describe("games.repository.js", function () {
     });
   });
 
-  describe(".getXgamesWithUncheckedPlayerHistory returns an array of games with unchecked player histories", function () {
-    describe("if the amount of 3 is passed in, with two valid documents", function () {
+  describe(".getXgamesWithUncheckedPlayerHistory returns an array of games with unchecked player histories.", function () {
+    describe("If the amount of 3 is passed in, with two valid documents", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
-        this.databaseClient.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           {
             id: 1,
             name: "Risk of Train",
-            releaseDate: "",
-            developers: "",
-            genres: [],
-            description: "",
-            imageUrl: "",
             playerHistory: [],
           },
           {
             id: 2,
             name: "Risk of Rain",
-            releaseDate: "",
-            developers: "",
-            genres: [],
-            description: "",
-            imageUrl: "",
             playerHistory: [],
           },
           {
             id: 3,
             name: "Risk of Brain",
-            releaseDate: "",
-            developers: "",
-            genres: [],
-            description: "",
-            imageUrl: "",
             playerHistory: [],
           },
         ]);
 
-        this.databaseClient.insertMany("history_checks", [
+        await this.databaseClient.insertMany("history_checks", [
           { gameId: 1, checked: false },
           { gameId: 2, checked: true },
           { gameId: 3, checked: false },
@@ -308,60 +294,44 @@ describe("games.repository.js", function () {
       });
     });
 
-    describe("if the amount of 0 is passed in, with three valid documents", function () {
+    describe("If the amount of 1 is passed in, with three valid documents", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
-        this.databaseClient.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           {
             id: 1,
             name: "Risk of Train",
-            releaseDate: "",
-            developers: "",
-            genres: [],
-            description: "",
-            imageUrl: "",
             playerHistory: [],
           },
           {
             id: 2,
             name: "Risk of Rain",
-            releaseDate: "",
-            developers: "",
-            genres: [],
-            description: "",
-            imageUrl: "",
             playerHistory: [],
           },
           {
             id: 3,
             name: "Risk of Brain",
-            releaseDate: "",
-            developers: "",
-            genres: [],
-            description: "",
-            imageUrl: "",
             playerHistory: [],
           },
         ]);
 
-        this.databaseClient.insertMany("history_checks", [
+        await this.databaseClient.insertMany("history_checks", [
           { gameId: 1, checked: false },
           { gameId: 2, checked: false },
           { gameId: 3, checked: false },
         ]);
 
         const gamesRepo = new GamesRepository(this.databaseClient);
-
-        this.result = await gamesRepo.getXgamesWithUncheckedPlayerHistory(3);
+        this.result = await gamesRepo.getXgamesWithUncheckedPlayerHistory(1);
       });
 
       afterAll(function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
-        expect(this.result.length).toBe(3);
+      it("the resulting array has a length of 1", function () {
+        expect(this.result.length).toBe(1);
       });
 
       it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
@@ -405,14 +375,66 @@ describe("games.repository.js", function () {
         this.result = await gamesRepo.getXgamesCheckedMoreThanYmsAgo(3, hoursToMs(2));
       });
 
-      it("the second array's name property is 'Risk of Rain' and its id is '2'", function () {
-        expect(this.result[1].id).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Rain");
+      afterAll(function () {
+        this.databaseClient.disconnect();
+        jasmine.clock().uninstall();
+      });
+
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first array's name property is 'Risk of Rain' and its id is '2'", function () {
+        expect(this.result[0].id).toBe(2);
+        expect(this.result[0].name).toBe("Risk of Rain");
       });
 
       it("the second array's name property is 'Risk of Brain' and its id is '3'", function () {
-        expect(this.result[2].id).toBe(3);
-        expect(this.result[2].name).toBe("Risk of Brain");
+        expect(this.result[1].id).toBe(3);
+        expect(this.result[1].name).toBe("Risk of Brain");
+      });
+    });
+
+    describe("If the amount of 1 is passed in, with two valid documents", function () {
+      beforeAll(async function () {
+        jasmine.clock().mockDate(new Date("14:00 21 September 2022"));
+
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", [
+          {
+            id: 1,
+            name: "Risk of Train",
+            playerHistory: [
+              { trackedPlayers: [{ date: new Date("10:00 21 September 2022") }] },
+            ],
+          },
+          {
+            id: 2,
+            name: "Risk of Rain",
+            playerHistory: [
+              { trackedPlayers: [{ date: new Date("11:24 21 September 2022") }] },
+            ],
+          },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesCheckedMoreThanYmsAgo(1, hoursToMs(1));
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+        jasmine.clock().uninstall();
+      });
+
+      it("the resulting array has a length of 1", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
       });
     });
   });

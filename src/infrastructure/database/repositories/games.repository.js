@@ -34,6 +34,7 @@ export class GamesRepository {
       await this.#dbClient
         .get("history_checks")
         .aggregate([
+          { $limit: amount },
           {
             $lookup: {
               from: "games",
@@ -45,7 +46,6 @@ export class GamesRepository {
           { $match: { checked: false } },
           { $unwind: "$game" },
           { $replaceWith: "$game" },
-          { $limit: amount },
         ])
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
@@ -54,18 +54,9 @@ export class GamesRepository {
   async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
     return (
       await this.#dbClient
-        .get("history_checks")
+        .get("games")
         .aggregate([
-          {
-            $lookup: {
-              from: "games",
-              localField: "gameId",
-              foreignField: "id",
-              as: "game",
-            },
-          },
-          { $unwind: "$game" },
-          { $replaceWith: "$game" },
+          { $limit: amount },
           {
             $addFields: {
               lastHistory: { $last: "$playerHistory" },
@@ -86,7 +77,6 @@ export class GamesRepository {
           },
           { $unset: "lastUpdateDate" },
           { $unset: "lastHistory" },
-          { $limit: amount },
         ])
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
