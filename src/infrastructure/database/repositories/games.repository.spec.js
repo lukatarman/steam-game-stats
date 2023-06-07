@@ -368,6 +368,42 @@ describe("games.repository.js", function () {
         expect(this.result[0].id).toBe(1);
         expect(this.result[0].name).toBe("Risk of Train");
       });
+    });
+  });
+
+  describe(".getXgamesCheckedMoreThanYmsAgo returns an array of games checked more than a specified time ago.", function () {
+    describe("If the amount of 3 is passed in, with two valid documents", function () {
+      beforeAll(async function () {
+        jasmine.clock().mockDate(new Date("13:00 21 September 2022"));
+
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", [
+          {
+            id: 1,
+            name: "Risk of Train",
+            playerHistory: [
+              { trackedPlayers: [{ date: new Date("12:00 21 September 2022") }] },
+            ],
+          },
+          {
+            id: 2,
+            name: "Risk of Rain",
+            playerHistory: [
+              { trackedPlayers: [{ date: new Date("9:00 21 September 2022") }] },
+            ],
+          },
+          {
+            id: 3,
+            name: "Risk of Brain",
+            playerHistory: [],
+          },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesCheckedMoreThanYmsAgo(3, hoursToMs(2));
+      });
 
       it("the second array's name property is 'Risk of Rain' and its id is '2'", function () {
         expect(this.result[1].id).toBe(2);
