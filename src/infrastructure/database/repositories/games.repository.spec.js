@@ -2,7 +2,7 @@ import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { hoursToMs } from "../../../utils/time.utils.js";
 
-fdescribe("games.repository.js", function () {
+describe("games.repository.js", function () {
   describe(".insertManyGames inserts an array ob objects into the database.", function () {
     describe("If two games are inserted,", function () {
       beforeAll(async function () {
@@ -15,10 +15,7 @@ fdescribe("games.repository.js", function () {
           { id: 2, name: "Second Game" },
         ]);
 
-        this.result = await this.databaseClient
-          .get("games")
-          .find({ id: { $ne: 0 } })
-          .toArray();
+        this.result = await this.databaseClient.getAll("games");
       });
 
       afterAll(function () {
