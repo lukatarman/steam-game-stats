@@ -1,4 +1,4 @@
-import { SteamApp } from "../../models/steam.app.js";
+import { SteamApp } from "../../../models/steam.app.js";
 
 export class SteamAppsRepository {
   #dbClient;
@@ -33,7 +33,6 @@ export class SteamAppsRepository {
         $and: [
           { type: SteamApp.validTypes.unknown },
           { triedVia: { $ne: SteamApp.validDataSources.steamWeb } },
-          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
