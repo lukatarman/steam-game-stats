@@ -39,9 +39,9 @@ describe("games.repository.js", function () {
       });
     });
 
-    fdescribe("If nothing is inserted, the result", function () {
+    describe("If nothing is inserted, the result", function () {
       beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
         this.result = await this.databaseClient.get("games").find({}).toArray();
       });
@@ -59,7 +59,7 @@ describe("games.repository.js", function () {
   describe(".getOneGameById returns a document based on the id passed in.", function () {
     describe("If an existing id is passed in, the resulting object ", function () {
       beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase();
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
         this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
 
@@ -83,7 +83,7 @@ describe("games.repository.js", function () {
 
     describe("If an non-existing id is passed in,", function () {
       beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase();
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
         this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
 
@@ -98,6 +98,285 @@ describe("games.repository.js", function () {
 
       it("the result is null", function () {
         expect(this.result).toBe(null);
+      });
+    });
+  });
+
+  describe(".getAllGames returns an array of all games from the database.", function () {
+    beforeAll(async function () {
+      this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+      this.databaseClient.insertMany("games", [
+        { id: 1, name: "Risk of Train" },
+        { id: 2, name: "Risk of Rain" },
+      ]);
+
+      const gamesRepo = new GamesRepository(this.databaseClient);
+
+      this.result = await gamesRepo.getAllGames();
+    });
+
+    afterAll(function () {
+      this.databaseClient.disconnect();
+    });
+
+    it("the resulting array has a length of 2", function () {
+      expect(this.result.length).toBe(2);
+    });
+
+    it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+      expect(this.result[0].id).toBe(1);
+      expect(this.result[0].name).toBe("Risk of Train");
+    });
+
+    it("the second array's name property is 'Risk of Rain' and its id is '2'", function () {
+      expect(this.result[1].id).toBe(2);
+      expect(this.result[1].name).toBe("Risk of Rain");
+    });
+  });
+
+  describe(".getXgamesWithoutPlayerHistory returns an array of games without player histories.", function () {
+    describe("If an amount of '2' is passed in, with two valid documents", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        this.databaseClient.insertMany("games", [
+          { id: 1, name: "Risk of Train", playerHistory: [] },
+          { id: 2, name: "Risk of Histories", playerHistory: ["Fake History"] },
+          { id: 3, name: "Risk of Rain", playerHistory: [] },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesWithoutPlayerHistory(2);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second array's name property is 'Risk of Rain' and its id is '2'", function () {
+        expect(this.result[1].id).toBe(3);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+    });
+
+    describe("If an amount of '1' is passed in, with 2 valid documents", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        this.databaseClient.insertMany("games", [
+          { id: 1, name: "Risk of Train", playerHistory: [] },
+          { id: 2, name: "Risk of Histories", playerHistory: ["Fake History"] },
+          { id: 3, name: "Risk of Rain", playerHistory: [] },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesWithoutPlayerHistory(1);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+    });
+
+    describe("If amount of '0' is passed in, with three valid documents", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        this.databaseClient.insertMany("games", [
+          { id: 1, name: "Risk of Train", playerHistory: [] },
+          { id: 2, name: "Risk of Histories", playerHistory: ["Fake History"] },
+          { id: 3, name: "Risk of Rain", playerHistory: [] },
+          { id: 4, name: "Risk of Brain", playerHistory: [] },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesWithoutPlayerHistory(0);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the resulting array has a length of 3", function () {
+        expect(this.result.length).toBe(3);
+      });
+
+      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second array's name property is 'Risk of Rain' and its id is '2'", function () {
+        expect(this.result[1].id).toBe(3);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the second array's name property is 'Risk of Brain' and its id is '4'", function () {
+        expect(this.result[2].id).toBe(4);
+        expect(this.result[2].name).toBe("Risk of Brain");
+      });
+    });
+  });
+
+  describe(".getXgamesWithUncheckedPlayerHistory returns an array of games with unchecked player histories", function () {
+    describe("if the amount of 3 is passed in, with two valid documents", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
+
+        this.databaseClient.insertMany("games", [
+          {
+            id: 1,
+            name: "Risk of Train",
+            releaseDate: "",
+            developers: "",
+            genres: [],
+            description: "",
+            imageUrl: "",
+            playerHistory: [],
+          },
+          {
+            id: 2,
+            name: "Risk of Rain",
+            releaseDate: "",
+            developers: "",
+            genres: [],
+            description: "",
+            imageUrl: "",
+            playerHistory: [],
+          },
+          {
+            id: 3,
+            name: "Risk of Brain",
+            releaseDate: "",
+            developers: "",
+            genres: [],
+            description: "",
+            imageUrl: "",
+            playerHistory: [],
+          },
+        ]);
+
+        this.databaseClient.insertMany("history_checks", [
+          { gameId: 1, checked: false },
+          { gameId: 2, checked: true },
+          { gameId: 3, checked: false },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesWithUncheckedPlayerHistory(3);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second array's name property is 'Risk of Brain' and its id is '3'", function () {
+        expect(this.result[1].id).toBe(3);
+        expect(this.result[1].name).toBe("Risk of Brain");
+      });
+    });
+
+    describe("if the amount of 0 is passed in, with three valid documents", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
+
+        this.databaseClient.insertMany("games", [
+          {
+            id: 1,
+            name: "Risk of Train",
+            releaseDate: "",
+            developers: "",
+            genres: [],
+            description: "",
+            imageUrl: "",
+            playerHistory: [],
+          },
+          {
+            id: 2,
+            name: "Risk of Rain",
+            releaseDate: "",
+            developers: "",
+            genres: [],
+            description: "",
+            imageUrl: "",
+            playerHistory: [],
+          },
+          {
+            id: 3,
+            name: "Risk of Brain",
+            releaseDate: "",
+            developers: "",
+            genres: [],
+            description: "",
+            imageUrl: "",
+            playerHistory: [],
+          },
+        ]);
+
+        this.databaseClient.insertMany("history_checks", [
+          { gameId: 1, checked: false },
+          { gameId: 2, checked: false },
+          { gameId: 3, checked: false },
+        ]);
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getXgamesWithUncheckedPlayerHistory(3);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(3);
+      });
+
+      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second array's name property is 'Risk of Rain' and its id is '2'", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the second array's name property is 'Risk of Brain' and its id is '3'", function () {
+        expect(this.result[2].id).toBe(3);
+        expect(this.result[2].name).toBe("Risk of Brain");
       });
     });
   });
