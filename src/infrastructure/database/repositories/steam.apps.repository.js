@@ -56,7 +56,6 @@ export class SteamAppsRepository {
               { triedVia: SteamApp.validDataSources.steamWeb },
             ],
           },
-          { type: { $ne: SteamApp.validTypes.downloadableContent } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
