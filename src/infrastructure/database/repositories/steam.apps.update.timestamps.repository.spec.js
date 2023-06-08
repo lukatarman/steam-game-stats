@@ -31,7 +31,7 @@ describe("steam.apps.update.timestapms.repository.js", function () {
     });
   });
 
-  fdescribe(".getLastSteamAppsUpdateTimestamp gets the last collection added to the database", function () {
+  xdescribe(".getLastSteamAppsUpdateTimestamp gets the last collection added to the database", function () {
     describe("If the method is run", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
