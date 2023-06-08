@@ -63,7 +63,7 @@ describe("SteamApp", function () {
       });
 
       it("the triedVia property array value is 'steamCharts'", function () {
-        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamCharts);
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamcharts);
       });
     });
   });

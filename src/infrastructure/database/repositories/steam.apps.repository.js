@@ -52,7 +52,7 @@ export class SteamAppsRepository {
           { type: SteamApp.validTypes.unknown },
           {
             $and: [
-              { triedVia: { $ne: SteamApp.validDataSources.steamCharts } },
+              { triedVia: { $ne: SteamApp.validDataSources.steamcharts } },
               { triedVia: SteamApp.validDataSources.steamWeb },
             ],
           },

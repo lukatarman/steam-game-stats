@@ -20,7 +20,7 @@ export class HistoryCheck {
     check.gameId  = game.id
     check.checked = true;
     check.found   = found;
-    check.source  = SteamApp.validDataSources.steamCharts;
+    check.source  = SteamApp.validDataSources.steamcharts;
     return check;
   }
 

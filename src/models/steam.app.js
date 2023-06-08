@@ -8,7 +8,7 @@ export class SteamApp {
     "downloadableContent",
     "unknown",
   ]);
-  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamCharts"]);
+  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamcharts"]);
 
   copy() {
     const copy = new SteamApp();
@@ -25,7 +25,7 @@ export class SteamApp {
   }
 
   triedViaSteamchartsWeb() {
-    this.triedVia.push(SteamApp.validDataSources.steamCharts);
+    this.triedVia.push(SteamApp.validDataSources.steamcharts);
   }
 
   isGame() {
