@@ -2,20 +2,26 @@ import { SteamApp } from "../../models/steam.app.js";
 import { moreThanXhoursPassedSince } from "../../utils/time.utils.js";
 
 export class SteamAppsAggregator {
-  #updateTimestampsRepository;
+  #SteamAppsUpdateTimestampsRepository;
   #steamAppsRepository;
   #steamClient;
   #options;
 
-  constructor(steamClient, updateTimestampsRepository, steamAppsRepository, options) {
+  constructor(
+    steamClient,
+    SteamAppsUpdateTimestampsRepository,
+    steamAppsRepository,
+    options,
+  ) {
     this.#steamClient = steamClient;
-    this.#updateTimestampsRepository = updateTimestampsRepository;
+    this.#SteamAppsUpdateTimestampsRepository = SteamAppsUpdateTimestampsRepository;
     this.#steamAppsRepository = steamAppsRepository;
     this.#options = options;
   }
 
   collectSteamApps = async () => {
-    const lastUpdate = await this.#updateTimestampsRepository.getLastUpdateTimestamp();
+    const lastUpdate =
+      await this.#SteamAppsUpdateTimestampsRepository.getLastSteamAppsUpdateTimestamp();
     if (!lastUpdate) {
       await this.#collectFirstTime();
       return;
@@ -30,7 +36,9 @@ export class SteamAppsAggregator {
     const steamApps = await this.#steamClient.getAppList();
 
     await this.#steamAppsRepository.insertManySteamApps(steamApps);
-    await this.#updateTimestampsRepository.insertOneUpdateTimestamp(new Date());
+    await this.#SteamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
+      new Date(),
+    );
   }
 
   async #collectSteamApps() {
@@ -41,10 +49,14 @@ export class SteamAppsAggregator {
      */
     const steamApps = SteamApp.diff(steamAppsApi, steamAppsDb);
     if (steamApps.length === 0) {
-      await this.#updateTimestampsRepository.insertOneUpdateTimestamp(new Date());
+      await this.#SteamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
+        new Date(),
+      );
       return;
     }
     await this.#steamAppsRepository.insertManySteamApps(steamApps);
-    await this.#updateTimestampsRepository.insertOneUpdateTimestamp(new Date());
+    await this.#SteamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
+      new Date(),
+    );
   }
 }
