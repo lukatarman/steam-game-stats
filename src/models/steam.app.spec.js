@@ -189,13 +189,16 @@ describe("SteamApp", function () {
             name: "Castlevania",
             appid: 1,
             type: "game",
-            triedVia: ["steam", "steamcharts"],
+            triedVia: [
+              SteamApp.validDataSources.steam,
+              SteamApp.validDataSources.steamcharts,
+            ],
           },
           {
             name: "Elden Ring",
             appid: 2,
             type: "game",
-            triedVia: ["steam"],
+            triedVia: [SteamApp.validDataSources.steam],
           },
         ];
 
@@ -223,7 +226,7 @@ describe("SteamApp", function () {
           name: "Castlevania",
           appid: 1,
           type: "game",
-          triedVia: ["steam"],
+          triedVia: [SteamApp.validDataSources.steam],
         };
 
         this.result = SteamApp.oneFromDbEntry(this.dbEntry);
@@ -238,11 +241,11 @@ describe("SteamApp", function () {
       });
 
       it("has the entry 'steam' in the 'triedVia' array", function () {
-        expect(this.result.triedVia[0]).toBe("steam");
+        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steam);
       });
 
       it("contains a copy of the dbEntry.triedVia property", function () {
-        this.dbEntry.triedVia = ["steamcharts"];
+        this.dbEntry.triedVia = [SteamApp.validDataSources.steamcharts];
         expect(this.dbEntry.triedVia[0]).not.toBe(this.result.triedVia[0]);
       });
 
