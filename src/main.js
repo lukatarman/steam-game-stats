@@ -26,7 +26,7 @@ async function main() {
   const databaseClient = await new DatabaseClient().init(databaseOptions);
   const gamesRepository = new GamesRepository(databaseClient);
   const steamAppsRepository = new SteamAppsRepository(databaseClient);
-  const updateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
+  const steamAppsUpdateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
     databaseClient,
   );
   const playerHistoryRepository = new PlayerHistoryRepository(databaseClient);
@@ -42,7 +42,7 @@ async function main() {
   };
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,
-    updateTimestampRepository,
+    steamAppsUpdateTimestampRepository,
     steamAppsRepository,
     options,
   );
