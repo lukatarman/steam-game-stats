@@ -97,7 +97,7 @@ describe("DatabaseClient", function () {
         expect(this.result[1].name).toBe("My Name");
       });
 
-      it("the second resulting aray has the correct values", function () {
+      it("the third resulting aray has the correct values", function () {
         expect(this.result[2].id).toBe(3);
         expect(this.result[2].name).toBe("My Tame");
       });
