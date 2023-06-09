@@ -226,7 +226,7 @@ describe("SteamApp", function () {
           name: "Castlevania",
           appid: 1,
           type: "game",
-          triedVia: [SteamApp.validDataSources.steam],
+          triedVia: ["steam"],
         };
 
         this.result = SteamApp.oneFromDbEntry(this.dbEntry);
@@ -241,7 +241,7 @@ describe("SteamApp", function () {
       });
 
       it("has the entry 'steam' in the 'triedVia' array", function () {
-        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steam);
+        expect(this.result.triedVia[0]).toBe("steam");
       });
 
       it("contains a copy of the dbEntry.triedVia property", function () {
