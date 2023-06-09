@@ -32,7 +32,7 @@ describe("SteamAppsUpdateTimestampsRepository", function () {
     });
   });
 
-  fdescribe(".getLastSteamAppsUpdateTimestamp gets the last collection added to the database", function () {
+  describe(".getLastSteamAppsUpdateTimestamp gets the last collection added to the database", function () {
     describe("When the method is run", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
