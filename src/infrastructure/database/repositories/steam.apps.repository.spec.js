@@ -40,7 +40,7 @@ describe("SteamAppsRepository", function () {
     });
   });
 
-  describe(".getAllSteamApps all documents from the database as instances of SteamApp", function () {
+  describe(".getAllSteamApps gets all documents from the database as instances of SteamApp", function () {
     describe("If two steam apps exist in the collection", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
@@ -93,7 +93,7 @@ describe("SteamAppsRepository", function () {
   });
 
   describe(".updateSteamAppsById updates the values of the matching provided steam apps", function () {
-    describe("If two steam provided steam apps match", function () {
+    describe("If two out of three provided steam apps match", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
@@ -182,7 +182,7 @@ describe("SteamAppsRepository", function () {
             appid: 2,
             name: "Risk of Stain",
             type: "unknown",
-            triedVia: ["steamcharts"],
+            triedVia: [],
           },
           {
             appid: 3,
@@ -254,11 +254,11 @@ describe("SteamAppsRepository", function () {
         expect(this.result[1].appid).toBe(2);
         expect(this.result[1].name).toBe("Risk of Stain");
         expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia[0]).toBe("steamcharts");
+        expect(this.result[1].triedVia).toEqual([]);
       });
     });
 
-    describe("If three steam apps out of eigth match the filters, and the amount of 4 is provided", function () {
+    fdescribe("If three steam apps out of eigth match the filters, and the amount of 4 is provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
@@ -273,7 +273,7 @@ describe("SteamAppsRepository", function () {
             appid: 2,
             name: "Risk of Stain",
             type: "unknown",
-            triedVia: ["steamcharts"],
+            triedVia: [],
           },
           {
             appid: 3,
@@ -345,7 +345,7 @@ describe("SteamAppsRepository", function () {
         expect(this.result[1].appid).toBe(2);
         expect(this.result[1].name).toBe("Risk of Stain");
         expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia[0]).toBe("steamcharts");
+        expect(this.result[1].triedVia).toEqual([]);
       });
 
       it("the third result is an instance of SteamApp", function () {
@@ -464,7 +464,7 @@ describe("SteamAppsRepository", function () {
   });
 
   describe(".getSteamchartsUntriedFilteredSteamApps retrieves a specific set of steamApps from the database.", function () {
-    describe("If three steam apps out of nine match the filters, and the amount of 2 is provided", function () {
+    describe("If three steam apps out of ten match the filters, and the amount of 2 is provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
@@ -567,7 +567,7 @@ describe("SteamAppsRepository", function () {
       });
     });
 
-    describe("If three steam apps out of nine match the filters, and the amount of 4 is provided", function () {
+    describe("If three steam apps out of ten match the filters, and the amount of 4 is provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 

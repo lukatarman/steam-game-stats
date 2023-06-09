@@ -105,7 +105,7 @@ describe("DatabaseClient", function () {
   });
 
   describe(".getAll gets all the documents from the collection that match a filter.", function () {
-    describe("If one out of two documents matches the request", function () {
+    describe("If one out of two documents matches the provided filter", function () {
       beforeAll(async function () {
         this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
 
@@ -124,6 +124,31 @@ describe("DatabaseClient", function () {
         expect(this.result[0].name).toBe("My Name");
       });
     });
+
+    describe("If we don't provide a filter", function () {
+      beforeAll(async function () {
+        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClientRepo.insertOne("games", { id: 1, name: "My Game" });
+        await this.databaseClientRepo.insertOne("games", { id: 2, name: "My Name" });
+
+        this.result = await this.databaseClientRepo.getAll("games");
+      });
+
+      it("the resulting array has a length of 2", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first aray has the correct values", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("My Game");
+      });
+
+      it("the second aray has the correct values", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("My Name");
+      });
+    });
   });
 
   describe(".get selects the provided collection.", function () {
@@ -131,15 +156,15 @@ describe("DatabaseClient", function () {
       beforeAll(async function () {
         this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertOne("games", { id: 1, name: "My Game" });
-        await this.databaseClientRepo.insertOne("games", { id: 2, name: "My Name" });
-        await this.databaseClientRepo.insertOne("games", { id: 3, name: "My Tame" });
-
         this.result = await this.databaseClientRepo.get("games");
       });
 
       it("the result is the provided collection", function () {
         expect(this.result).toBeInstanceOf(Collection);
+      });
+
+      it("the result is the provided collection", function () {
+        expect(this.result.s.namespace.collection).toBe("games");
       });
     });
   });
@@ -180,7 +205,7 @@ describe("DatabaseClient", function () {
     });
   });
 
-  describe(".deleteMany deletes all documents of the provided collection, that pass a filter", function () {
+  describe(".deleteMany deletes documents of the provided collection, that pass a filter.", function () {
     describe("When 2 out of 4 documents in the collection pass the filter,", function () {
       beforeAll(async function () {
         this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);

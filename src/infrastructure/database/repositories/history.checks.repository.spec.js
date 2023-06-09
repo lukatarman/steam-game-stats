@@ -1,9 +1,10 @@
+import { SteamApp } from "../../../models/steam.app.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { HistoryChecksRepository } from "./history.checks.repository.js";
 
 describe("HistoryChecksRepository", function () {
-  describe(".insertManyHistoryChecks inserts objects into the database.", function () {
-    describe("If two objects are inserted,", function () {
+  describe(".insertManyHistoryChecks inserts history check documents into the database.", function () {
+    describe("If two documents are inserted,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["history_checks"]);
 
@@ -37,8 +38,8 @@ describe("HistoryChecksRepository", function () {
     });
   });
 
-  describe(".updateHistoryChecks modifies the provided database entries.", function () {
-    describe("When two history checks are provided", function () {
+  describe(".updateHistoryChecks modifies the provided database documents.", function () {
+    describe("When three history checks are provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["history_checks"]);
 
@@ -51,9 +52,24 @@ describe("HistoryChecksRepository", function () {
         ]);
 
         const updatedHistoryChecks = [
-          { gameId: 1, checked: true, found: true, source: "Steamcharts" },
-          { gameId: 2, checked: true, found: false, source: "Steamcharts" },
-          { gameId: 3, checked: true, found: true, source: "Steamcharts" },
+          {
+            gameId: 1,
+            checked: true,
+            found: true,
+            source: SteamApp.validDataSources.steamcharts,
+          },
+          {
+            gameId: 2,
+            checked: true,
+            found: false,
+            source: SteamApp.validDataSources.steamcharts,
+          },
+          {
+            gameId: 3,
+            checked: true,
+            found: true,
+            source: SteamApp.validDataSources.steamcharts,
+          },
         ];
 
         await historyChecksRepo.updateHistoryChecks(updatedHistoryChecks);
@@ -79,21 +95,21 @@ describe("HistoryChecksRepository", function () {
         expect(this.result[0].gameId).toBe(1);
         expect(this.result[0].checked).toBeTrue();
         expect(this.result[0].found).toBeTrue();
-        expect(this.result[0].source).toBe("Steamcharts");
+        expect(this.result[0].source).toBe(SteamApp.validDataSources.steamcharts);
       });
 
       it("the second array has the correct values", function () {
         expect(this.result[1].gameId).toBe(2);
         expect(this.result[1].checked).toBeTrue();
         expect(this.result[1].found).toBeFalse();
-        expect(this.result[1].source).toBe("Steamcharts");
+        expect(this.result[1].source).toBe(SteamApp.validDataSources.steamcharts);
       });
 
       it("the third array has the correct values", function () {
         expect(this.result[2].gameId).toBe(3);
         expect(this.result[2].checked).toBeTrue();
         expect(this.result[2].found).toBeTrue();
-        expect(this.result[2].source).toBe("Steamcharts");
+        expect(this.result[2].source).toBe(SteamApp.validDataSources.steamcharts);
       });
     });
   });
