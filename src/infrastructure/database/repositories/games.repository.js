@@ -19,16 +19,6 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
-  async getXgamesWithoutPlayerHistory(amount) {
-    return (
-      await this.#dbClient
-        .get("games")
-        .find({ playerHistory: { $eq: [] } })
-        .limit(amount)
-        .toArray()
-    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
-  }
-
   async getXgamesWithUncheckedPlayerHistory(amount) {
     return (
       await this.#dbClient
