@@ -7,9 +7,9 @@ describe("HistoryChecksRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["history_checks"]);
 
-        const historyRepo = new HistoryChecksRepository(this.databaseClient);
+        const historyChecksRepo = new HistoryChecksRepository(this.databaseClient);
 
-        await historyRepo.insertManyHistoryChecks([
+        await historyChecksRepo.insertManyHistoryChecks([
           { id: 1, name: "First Game" },
           { id: 2, name: "Second Game" },
         ]);
@@ -42,9 +42,9 @@ describe("HistoryChecksRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["history_checks"]);
 
-        const historyRepo = new HistoryChecksRepository(this.databaseClient);
+        const historyChecksRepo = new HistoryChecksRepository(this.databaseClient);
 
-        await historyRepo.insertManyHistoryChecks([
+        await historyChecksRepo.insertManyHistoryChecks([
           { gameId: 1, checked: false, found: false },
           { gameId: 2, checked: false, found: false },
           { gameId: 3, checked: false, found: false },
@@ -56,7 +56,7 @@ describe("HistoryChecksRepository", function () {
           { gameId: 3, checked: true, found: true, source: "Steamcharts" },
         ];
 
-        await historyRepo.updateHistoryChecks(updatedHistoryChecks);
+        await historyChecksRepo.updateHistoryChecks(updatedHistoryChecks);
 
         this.unresolvedResult = this.databaseClient.getAll("history_checks");
 
