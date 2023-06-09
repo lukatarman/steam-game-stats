@@ -38,7 +38,7 @@ describe("HistoryChecksRepository", function () {
   });
 
   describe(".updateHistoryChecks modifies the provided database entries.", function () {
-    fdescribe("When two history checks are provided", function () {
+    describe("When two history checks are provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["history_checks"]);
 
