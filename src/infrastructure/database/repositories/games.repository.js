@@ -24,7 +24,6 @@ export class GamesRepository {
       await this.#dbClient
         .get("history_checks")
         .aggregate([
-          { $limit: amount },
           {
             $lookup: {
               from: "games",
@@ -36,6 +35,7 @@ export class GamesRepository {
           { $match: { checked: false } },
           { $unwind: "$game" },
           { $replaceWith: "$game" },
+          { $limit: amount },
         ])
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
@@ -46,7 +46,6 @@ export class GamesRepository {
       await this.#dbClient
         .get("games")
         .aggregate([
-          { $limit: amount },
           {
             $addFields: {
               lastHistory: { $last: "$playerHistory" },
@@ -67,6 +66,7 @@ export class GamesRepository {
           },
           { $unset: "lastUpdateDate" },
           { $unset: "lastHistory" },
+          { $limit: amount },
         ])
         .toArray()
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
