@@ -3,8 +3,8 @@ import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { hoursToMs } from "../../../utils/time.utils.js";
 
 describe("GamesRepository", function () {
-  describe(".insertManyGames inserts an array ob objects into the database.", function () {
-    describe("If two games are inserted,", function () {
+  describe(".insertManyGames inserts multiple documents into the collection.", function () {
+    describe("If two games are passed in,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
@@ -38,7 +38,7 @@ describe("GamesRepository", function () {
     });
   });
 
-  describe(".getOneGameById returns a document based on the id passed in.", function () {
+  describe(".getOneGameById returns a document that has the passed in id.", function () {
     describe("If an existing game's id is passed in, the resulting object", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
@@ -375,7 +375,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".getGamesBySearchTerm returns an array of games based on a search term, sorted by current players.", function () {
-    describe("If the term 'rain' is passed into a collection of four documents, two of which pass the filters,", function () {
+    describe("If the term 'rain' is passed into a collection of five documents, three of which pass the filters,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
@@ -408,6 +408,14 @@ describe("GamesRepository", function () {
             id: 4,
             name: "Risk of Strain",
             playerHistory: [],
+          },
+          {
+            id: 4,
+            name: "Risk of No",
+            playerHistory: [
+              { trackedPlayers: [{ players: 34 }] },
+              { trackedPlayers: [{ players: 11 }] },
+            ],
           },
         ]);
 

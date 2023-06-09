@@ -2,7 +2,7 @@ import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { PlayerHistoryRepository } from "./player.history.repository.js";
 
 describe("PlayerHistoryRepository", function () {
-  describe(".updatePlayerHistoriesById updates the player histories of all matching objects.", function () {
+  describe(".updatePlayerHistoriesById updates the player histories of all matching documents.", function () {
     describe("If two out of four provided objects match, ", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
