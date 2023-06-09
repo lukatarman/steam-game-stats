@@ -258,7 +258,7 @@ describe("SteamAppsRepository", function () {
       });
     });
 
-    fdescribe("If three steam apps out of eigth match the filters, and the amount of 4 is provided", function () {
+    describe("If three steam apps out of eigth match the filters, and the amount of 4 is provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
