@@ -681,7 +681,7 @@ describe("SteamAppsRepository", function () {
       });
     });
 
-    fdescribe("If '0' amount is provided,", function () {
+    describe("If '0' amount is provided,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
