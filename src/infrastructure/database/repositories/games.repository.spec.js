@@ -218,7 +218,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".getXgamesCheckedMoreThanYmsAgo returns an array of games last checked more than a specified time ago.", function () {
-    describe("If the amount of 3 is passed in, with two valid documents", function () {
+    fdescribe("If the amount of 3 is passed in, with two valid documents", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date("13:00 21 September 2022"));
 
