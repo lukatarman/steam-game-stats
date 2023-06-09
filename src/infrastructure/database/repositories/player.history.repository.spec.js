@@ -1,13 +1,11 @@
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { PlayerHistoryRepository } from "./player.history.repository.js";
 
-describe("player.history.repository.js", function () {
-  describe(".updatePlayerHistoriesById updated the player histories of all matching objects.", function () {
-    describe("If two out of four matching objects are provided, ", function () {
+describe("PlayerHistoryRepository", function () {
+  describe(".updatePlayerHistoriesById updates the player histories of all matching objects.", function () {
+    describe("If two out of four provided objects match, ", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
-
-        const playerHistoryRepo = new PlayerHistoryRepository(this.databaseClient);
 
         await this.databaseClient.insertMany("games", [
           { id: 1, playerHistory: [] },
@@ -15,6 +13,8 @@ describe("player.history.repository.js", function () {
           { id: 3, playerHistory: [] },
           { id: 4, playerHistory: [] },
         ]);
+
+        const playerHistoryRepo = new PlayerHistoryRepository(this.databaseClient);
 
         const games = [
           { id: 1, playerHistory: [1, 2] },
@@ -24,6 +24,7 @@ describe("player.history.repository.js", function () {
         ];
 
         await playerHistoryRepo.updatePlayerHistoriesById(games);
+
         this.result = await this.databaseClient.getAll("games");
       });
 
@@ -55,22 +56,6 @@ describe("player.history.repository.js", function () {
       it("the fourth array has the correct values", function () {
         expect(this.result[3].id).toBe(4);
         expect(this.result[3].playerHistory).toEqual([]);
-      });
-    });
-
-    describe("If no games are provided,", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["games"]);
-
-        this.result = await this.databaseClient.getAll("games");
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("the result is an empty array", function () {
-        expect(this.result).toEqual([]);
       });
     });
   });
