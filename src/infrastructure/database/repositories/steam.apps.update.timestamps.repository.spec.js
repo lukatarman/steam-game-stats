@@ -31,7 +31,7 @@ describe("steam.apps.update.timestapms.repository.js", function () {
     });
   });
 
-  xdescribe(".getLastSteamAppsUpdateTimestamp gets the last collection added to the database", function () {
+  describe(".getLastSteamAppsUpdateTimestamp gets the last collection added to the database", function () {
     describe("If the method is run", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
@@ -54,12 +54,12 @@ describe("steam.apps.update.timestapms.repository.js", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 1", function () {
-        expect(this.result.length).toBe(1);
+      it("the resulting array has a length of 3", function () {
+        expect(this.result.length).toBe(3);
       });
 
-      it("the first array has the correct values", function () {
-        expect(this.result[0].updatedOn).toEqual(this.date);
+      it("the last array has the correct values", function () {
+        expect(this.result[2].updatedOn).toEqual(this.date);
       });
     });
   });
