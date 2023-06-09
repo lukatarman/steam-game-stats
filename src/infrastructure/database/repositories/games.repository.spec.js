@@ -159,12 +159,12 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(2);
       });
 
-      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+      it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(1);
         expect(this.result[0].name).toBe("Risk of Train");
       });
 
-      it("the second array's name property is 'Risk of Brain' and its id is '3'", function () {
+      it("the second array has the correct values", function () {
         expect(this.result[1].id).toBe(3);
         expect(this.result[1].name).toBe("Risk of Brain");
       });
@@ -210,14 +210,14 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(1);
       });
 
-      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+      it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(1);
         expect(this.result[0].name).toBe("Risk of Train");
       });
     });
   });
 
-  describe(".getXgamesCheckedMoreThanYmsAgo returns an array of games checked more than a specified time ago.", function () {
+  describe(".getXgamesCheckedMoreThanYmsAgo returns an array of games last checked more than a specified time ago.", function () {
     describe("If the amount of 3 is passed in, with two valid documents", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date("13:00 21 September 2022"));
@@ -260,12 +260,12 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(2);
       });
 
-      it("the first array's name property is 'Risk of Rain' and its id is '2'", function () {
+      it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(2);
         expect(this.result[0].name).toBe("Risk of Rain");
       });
 
-      it("the second array's name property is 'Risk of Brain' and its id is '3'", function () {
+      it("the second array has the correct values", function () {
         expect(this.result[1].id).toBe(3);
         expect(this.result[1].name).toBe("Risk of Brain");
       });
@@ -308,7 +308,7 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(1);
       });
 
-      it("the first array's name property is 'Risk of Train' and its id is '1'", function () {
+      it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(1);
         expect(this.result[0].name).toBe("Risk of Train");
       });
@@ -316,69 +316,6 @@ describe("GamesRepository", function () {
   });
 
   describe(".getXgamesSortedByCurrentPlayers returns an array of games sorted by current players.", function () {
-    describe("If the amount of 3 is passed in, with three valid documents", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["games"]);
-
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [
-              { trackedPlayers: [{ players: 4 }] },
-              { trackedPlayers: [{ players: 6 }] },
-            ],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 15 }] },
-              { trackedPlayers: [{ players: 24 }] },
-            ],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 64 }] },
-              { trackedPlayers: [{ players: 87 }] },
-            ],
-          },
-        ]);
-
-        const gamesRepo = new GamesRepository(this.databaseClient);
-
-        this.result = await gamesRepo.getXgamesSortedByCurrentPlayers(3);
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("the resulting array has a length of 3", function () {
-        expect(this.result.length).toBe(3);
-      });
-
-      it("the first array's name property is 'Risk of Brain', its id is '3' and its currentPlayers is 87", function () {
-        expect(this.result[0].id).toBe(3);
-        expect(this.result[0].name).toBe("Risk of Brain");
-        expect(this.result[0].currentPlayers).toBe(87);
-      });
-
-      it("the second array's name property is 'Risk of Rain', its id is '2' and its currentPlayers is 24", function () {
-        expect(this.result[1].id).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Rain");
-        expect(this.result[1].currentPlayers).toBe(24);
-      });
-
-      it("the third array's name property is 'Risk of Train', its id is '1' and its currentPlayers is 6", function () {
-        expect(this.result[2].id).toBe(1);
-        expect(this.result[2].name).toBe("Risk of Train");
-        expect(this.result[2].currentPlayers).toBe(6);
-      });
-    });
-
     describe("If the amount of 2 is passed in, with three valid documents", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
@@ -423,13 +360,13 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(2);
       });
 
-      it("the first array's name property is 'Risk of Brain', its id is '3' and its currentPlayers is 87", function () {
+      it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(3);
         expect(this.result[0].name).toBe("Risk of Brain");
         expect(this.result[0].currentPlayers).toBe(87);
       });
 
-      it("the second array's name property is 'Risk of Rain', its id is '2' and its currentPlayers is 24", function () {
+      it("the second array has the correct values", function () {
         expect(this.result[1].id).toBe(2);
         expect(this.result[1].name).toBe("Risk of Rain");
         expect(this.result[1].currentPlayers).toBe(24);
@@ -438,70 +375,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".getGamesBySearchTerm returns an array of games based on a search term, sorted by current players.", function () {
-    describe("If the term 'rain' is passed into a collection of three documents containing the word,", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["games"]);
-
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [
-              { trackedPlayers: [{ players: 4 }] },
-              { trackedPlayers: [{ players: 6 }] },
-            ],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 15 }] },
-              { trackedPlayers: [{ players: 24 }] },
-            ],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 64 }] },
-              { trackedPlayers: [{ players: 87 }] },
-            ],
-          },
-        ]);
-
-        const gamesRepo = new GamesRepository(this.databaseClient);
-
-        this.result = await gamesRepo.getGamesBySearchTerm("rain");
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("the resulting array has a length of 3", function () {
-        expect(this.result.length).toBe(3);
-      });
-
-      it("the first array's name property is 'Risk of Brain', its id is '3' and its currentPlayers is 87", function () {
-        expect(this.result[0].id).toBe(3);
-        expect(this.result[0].name).toBe("Risk of Brain");
-        expect(this.result[0].currentPlayers).toBe(87);
-      });
-
-      it("the second array's name property is 'Risk of Rain', its id is '2' and its currentPlayers is 24", function () {
-        expect(this.result[1].id).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Rain");
-        expect(this.result[1].currentPlayers).toBe(24);
-      });
-
-      it("the third array's name property is 'Risk of Train', its id is '1' and its currentPlayers is 6", function () {
-        expect(this.result[2].id).toBe(1);
-        expect(this.result[2].name).toBe("Risk of Train");
-        expect(this.result[2].currentPlayers).toBe(6);
-      });
-    });
-
-    describe("If the term 'rain' is passed into a collection of five documents, four of which contain the word,", function () {
+    describe("If the term 'rain' is passed into a collection of four documents, two of which pass the filters,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
@@ -532,57 +406,40 @@ describe("GamesRepository", function () {
           },
           {
             id: 4,
-            name: "Risk of Gain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 124 }] },
-              { trackedPlayers: [{ players: 250 }] },
-            ],
-          },
-          {
-            id: 5,
-            name: "Risk of Cane",
-            playerHistory: [
-              { trackedPlayers: [{ players: 342 }] },
-              { trackedPlayers: [{ players: 432 }] },
-            ],
+            name: "Risk of Strain",
+            playerHistory: [],
           },
         ]);
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
-        this.result = await gamesRepo.getGamesBySearchTerm("ain");
+        this.result = await gamesRepo.getGamesBySearchTerm("rain");
       });
 
       afterAll(function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 4", function () {
-        expect(this.result.length).toBe(4);
+      it("the resulting array has a length of 3", function () {
+        expect(this.result.length).toBe(3);
       });
 
-      it("the first array's name property is 'Risk of Gain', its id is '4' and its currentPlayers is 250", function () {
-        expect(this.result[0].id).toBe(4);
-        expect(this.result[0].name).toBe("Risk of Gain");
-        expect(this.result[0].currentPlayers).toBe(250);
+      it("the first array has the correct values", function () {
+        expect(this.result[0].id).toBe(3);
+        expect(this.result[0].name).toBe("Risk of Brain");
+        expect(this.result[0].currentPlayers).toBe(87);
       });
 
-      it("the first array's name property is 'Risk of Brain', its id is '3' and its currentPlayers is 87", function () {
-        expect(this.result[1].id).toBe(3);
-        expect(this.result[1].name).toBe("Risk of Brain");
-        expect(this.result[1].currentPlayers).toBe(87);
+      it("the second array has the correct values", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+        expect(this.result[1].currentPlayers).toBe(24);
       });
 
-      it("the second array's name property is 'Risk of Rain', its id is '2' and its currentPlayers is 24", function () {
-        expect(this.result[2].id).toBe(2);
-        expect(this.result[2].name).toBe("Risk of Rain");
-        expect(this.result[2].currentPlayers).toBe(24);
-      });
-
-      it("the third array's name property is 'Risk of Train', its id is '1' and its currentPlayers is 6", function () {
-        expect(this.result[3].id).toBe(1);
-        expect(this.result[3].name).toBe("Risk of Train");
-        expect(this.result[3].currentPlayers).toBe(6);
+      it("the third array has the correct values", function () {
+        expect(this.result[2].id).toBe(1);
+        expect(this.result[2].name).toBe("Risk of Train");
+        expect(this.result[2].currentPlayers).toBe(6);
       });
     });
   });
