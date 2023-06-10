@@ -1,13 +1,13 @@
 import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 
-fdescribe("games.repository.js", function () {
+describe("games.repository.js", function () {
   describe(".getOneGameById returns a document based on the id passed in.", function () {
     describe("If an existing id is passed in, the resulting object ", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase();
 
-        this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
+        await this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -31,7 +31,7 @@ fdescribe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase();
 
-        this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
+        await this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
