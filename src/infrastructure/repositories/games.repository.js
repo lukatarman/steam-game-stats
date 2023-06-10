@@ -135,7 +135,7 @@ export class GamesRepository {
       .toArray();
   }
 
-  async getTrendingGames(timePeriodInMs, returnAmount, minimumPlayers) {
+  async getTrendingGames(timePeriodInMs, returnAmount = 10, minimumPlayers = 100) {
     return await this.#dbClient.get("games").aggregate([
       this.#getGamesWithMinimumXPlayers(minimumPlayers),
       this.#addAveragePlayersTodayProperty(),
