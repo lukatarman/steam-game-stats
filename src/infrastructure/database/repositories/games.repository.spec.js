@@ -7,7 +7,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase();
 
-        this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
+        await this.databaseClient.insertOne("games", { id: 1, name: "Risk of Rain" });
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -31,7 +31,7 @@ describe("games.repository.js", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase();
 
-        this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
+        await this.databaseClient.insertOne("games", { id: 2, name: "Risk of Rain" });
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 

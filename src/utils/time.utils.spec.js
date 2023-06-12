@@ -1,4 +1,5 @@
 import {
+  daysToMs,
   delay,
   hoursToMs,
   moreThanXhoursPassedSince,
@@ -70,7 +71,7 @@ describe("time.utils.js", () => {
         result = hoursToMs(0);
       });
 
-      it("the function returns '43200000'", () => {
+      it("the function returns '0'", () => {
         expect(result).toBe(0);
       });
     });
@@ -82,6 +83,30 @@ describe("time.utils.js", () => {
 
       it("the function returns '360000000000'", () => {
         expect(result).toBe(36e10);
+      });
+    });
+  });
+
+  describe(".daysToMs", () => {
+    let result;
+
+    describe("passing a value of 12 into the function", () => {
+      beforeAll(() => {
+        result = daysToMs(12);
+      });
+
+      it("the function returns '1036800000'", () => {
+        expect(result).toBe(10368e5);
+      });
+    });
+
+    describe("passing a value of 0 into the function", () => {
+      beforeAll(() => {
+        result = daysToMs(0);
+      });
+
+      it("the function returns '0'", () => {
+        expect(result).toBe(0);
       });
     });
   });

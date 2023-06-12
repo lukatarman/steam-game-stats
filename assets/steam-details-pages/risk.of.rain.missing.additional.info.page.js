@@ -1088,15 +1088,8 @@ export const riskOfRainHtmlDetailsPageMissingInfo = `
 									</div>
 								</div>
 							
-															<div class="release_date">
-									<div class="subtitle column">Release Date:</div>
-									<div class="date"></div>
-								</div>
-							
 																						<div class="dev_row">
 									<div class="subtitle column">Developer:</div>
-									<div class="summary column" id="developers_list">
-																			</div>
 								</div>
 							
 																								<div class="dev_row">
@@ -1894,7 +1887,6 @@ export const riskOfRainHtmlDetailsPageMissingInfo = `
 					<div id="appDetailsUnderlinedLinks" class="block responsive_apppage_details_left game_details underlined_links">
 						<div class="block_content">
 							<div class="block_content_inner">
-								<div id="genresAndManufacturer" class="details_block">
 
 			<b>Title:</b> Risk of Rain<br>
 

@@ -8,9 +8,18 @@ export class TrackedPlayers {
     // all dates into the UTC timezone. This marks our dates as being part of the wrong month when saving
     // the entries into the database.
 
-    this.date = dateAsString === "" ? new Date() : this.#addTwelveHours(dateAsString);
+    this.date = dateAsString === "" ? new Date() : this.#fixDate(dateAsString);
 
     this.players = parseFloat(parseFloat(playersAsString).toFixed(1));
+  }
+
+  #fixDate(dateAsString) {
+    const date = new Date(dateAsString);
+
+    if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0)
+      return this.#addTwelveHours(dateAsString);
+
+    return date;
   }
 
   #addTwelveHours(date) {
