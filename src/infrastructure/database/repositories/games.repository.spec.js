@@ -3,7 +3,7 @@ import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { hoursToMs } from "../../../utils/time.utils.js";
 
 describe("GamesRepository", function () {
-  describe(".insertManyGames inserts multiple documents into the collection.", function () {
+  describe(".insertManyGames inserts multiple games into the collection.", function () {
     describe("If two games are passed in,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
@@ -22,7 +22,7 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -102,7 +102,7 @@ describe("GamesRepository", function () {
       this.databaseClient.disconnect();
     });
 
-    it("the resulting array has a length of 2", function () {
+    it("the result has two games", function () {
       expect(this.result.length).toBe(2);
     });
 
@@ -155,7 +155,7 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -256,7 +256,7 @@ describe("GamesRepository", function () {
         jasmine.clock().uninstall();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -356,7 +356,7 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 

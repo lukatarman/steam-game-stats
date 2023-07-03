@@ -33,14 +33,14 @@ describe("DatabaseClient", function () {
   describe(".disconnect disconnects the database.", function () {
     describe("When we try to run a method on the class after disconnecting,", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.disconnect();
+        await this.databaseClient.disconnect();
       });
 
       it("the method thorws an error", function () {
         expect(function () {
-          this.databaseClientRepo.getAll("games");
+          this.databaseClient.getAll("games");
         }).toThrowError();
       });
     });
@@ -49,11 +49,11 @@ describe("DatabaseClient", function () {
   describe(".insertOne inserts one document into the provided collection.", function () {
     describe("If we provide the collection and data to the method,", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertOne("games", { id: 1, name: "My Game" });
+        await this.databaseClient.insertOne("games", { id: 1, name: "My Game" });
 
-        this.result = await this.databaseClientRepo.getAll("games");
+        this.result = await this.databaseClient.getAll("games");
       });
 
       it("the resulting array has a length of 1", function () {
@@ -70,7 +70,7 @@ describe("DatabaseClient", function () {
   describe(".insertMany inserts all the provided documents into the collection.", function () {
     describe("If we provide three documents", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
         const documents = [
           { id: 1, name: "My Game" },
@@ -78,9 +78,9 @@ describe("DatabaseClient", function () {
           { id: 3, name: "My Tame" },
         ];
 
-        await this.databaseClientRepo.insertMany("games", documents);
+        await this.databaseClient.insertMany("games", documents);
 
-        this.result = await this.databaseClientRepo.getAll("games");
+        this.result = await this.databaseClient.getAll("games");
       });
 
       it("the resulting array has a length of 3", function () {
@@ -107,12 +107,12 @@ describe("DatabaseClient", function () {
   describe(".getAll gets all the documents from the collection that match a filter.", function () {
     describe("If one out of two documents matches the provided filter", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertOne("games", { id: 1, name: "My Game" });
-        await this.databaseClientRepo.insertOne("games", { id: 2, name: "My Name" });
+        await this.databaseClient.insertOne("games", { id: 1, name: "My Game" });
+        await this.databaseClient.insertOne("games", { id: 2, name: "My Name" });
 
-        this.result = await this.databaseClientRepo.getAll("games", { id: 2 });
+        this.result = await this.databaseClient.getAll("games", { id: 2 });
       });
 
       it("the resulting array has a length of 1", function () {
@@ -127,15 +127,15 @@ describe("DatabaseClient", function () {
 
     describe("If we don't provide a filter", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertOne("games", { id: 1, name: "My Game" });
-        await this.databaseClientRepo.insertOne("games", { id: 2, name: "My Name" });
+        await this.databaseClient.insertOne("games", { id: 1, name: "My Game" });
+        await this.databaseClient.insertOne("games", { id: 2, name: "My Name" });
 
-        this.result = await this.databaseClientRepo.getAll("games");
+        this.result = await this.databaseClient.getAll("games");
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -154,9 +154,9 @@ describe("DatabaseClient", function () {
   describe(".get selects the provided collection.", function () {
     describe("When the method runs", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.result = await this.databaseClientRepo.get("games");
+        this.result = await this.databaseClient.get("games");
       });
 
       it("the result is the provided collection", function () {
@@ -172,21 +172,17 @@ describe("DatabaseClient", function () {
   describe(".updateOne updates one filtered document, with the provided data.", function () {
     describe("When the correct arguments are provided", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertMany("games", [
-          { id: 1 },
-          { id: 2 },
-          { id: 3 },
-        ]);
+        await this.databaseClient.insertMany("games", [{ id: 1 }, { id: 2 }, { id: 3 }]);
 
-        await this.databaseClientRepo.updateOne(
+        await this.databaseClient.updateOne(
           "games",
           { id: 1 },
           { $set: { tested: true } },
         );
 
-        this.result = await this.databaseClientRepo.getAll("games");
+        this.result = await this.databaseClient.getAll("games");
       });
 
       it("the resulting array has a length of 3", function () {
@@ -208,21 +204,21 @@ describe("DatabaseClient", function () {
   describe(".deleteMany deletes documents of the provided collection, that pass a filter.", function () {
     describe("When 2 out of 4 documents in the collection pass the filter,", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           { id: 1, name: "DayZ" },
           { id: 2, name: "Half-Life" },
           { id: 3, name: "Counter-Strike" },
           { id: 4, name: "Monster Hunter" },
         ]);
 
-        await this.databaseClientRepo.deleteMany("games", { id: { $gt: 2 } });
+        await this.databaseClient.deleteMany("games", { id: { $gt: 2 } });
 
-        this.result = await this.databaseClientRepo.getAll("games");
+        this.result = await this.databaseClient.getAll("games");
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -241,16 +237,16 @@ describe("DatabaseClient", function () {
   describe(".getLast gets the last document in the collection", function () {
     describe("When the method runs,", function () {
       beforeAll(async function () {
-        this.databaseClientRepo = await initiateInMemoryDatabase(["games"]);
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClientRepo.insertMany("games", [
+        await this.databaseClient.insertMany("games", [
           { id: 1, name: "DayZ" },
           { id: 2, name: "Half-Life" },
           { id: 3, name: "Counter-Strike" },
           { id: 4, name: "Monster Hunter" },
         ]);
 
-        this.result = await this.databaseClientRepo.getLast("games");
+        this.result = await this.databaseClient.getLast("games");
       });
 
       it("the result has the correct values", function () {

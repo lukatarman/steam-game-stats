@@ -24,7 +24,7 @@ describe("SteamAppsRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -66,7 +66,7 @@ describe("SteamAppsRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -231,7 +231,7 @@ describe("SteamAppsRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -540,7 +540,7 @@ describe("SteamAppsRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 

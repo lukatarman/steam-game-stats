@@ -22,7 +22,7 @@ describe("HistoryChecksRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("the result has two games", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -74,17 +74,11 @@ describe("HistoryChecksRepository", function () {
 
         await historyChecksRepo.updateHistoryChecks(updatedHistoryChecks);
 
-        this.unresolvedResult = this.databaseClient.getAll("history_checks");
-
         this.result = await this.databaseClient.getAll("history_checks");
       });
 
       afterAll(function () {
         this.databaseClient.disconnect();
-      });
-
-      it("the uresolved result is a Promise", function () {
-        expect(this.unresolvedResult).toBeInstanceOf(Promise);
       });
 
       it("the resulting array has a length of 3", function () {

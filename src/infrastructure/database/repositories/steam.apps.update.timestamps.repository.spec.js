@@ -2,7 +2,7 @@ import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { SteamAppsUpdateTimestampsRepository } from "./steam.apps.update.timestamps.repository.js";
 
 describe("SteamAppsUpdateTimestampsRepository", function () {
-  describe(".insertOneSteamAppsUpdateTimestamp adds a document contining the update timestamp to the collection", function () {
+  describe(".insertOneSteamAppsUpdateTimestamp adds a document containing the update timestamp to the collection", function () {
     describe("When a date is provided,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
@@ -38,8 +38,8 @@ describe("SteamAppsUpdateTimestampsRepository", function () {
         this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
 
         const firstDocument = { updatedOn: new Date("June 2021") };
-        const secondDocument = { updatedOn: new Date("June 2021") };
-        this.thirdDocument = { updatedOn: new Date("June 2021") };
+        const secondDocument = { updatedOn: new Date("July 2021") };
+        this.thirdDocument = { updatedOn: new Date("August 2021") };
 
         await this.databaseClient.insertMany("update_timestamps", [
           firstDocument,
