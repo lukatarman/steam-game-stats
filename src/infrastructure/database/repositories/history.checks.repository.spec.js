@@ -1,4 +1,4 @@
-import { SteamApp } from "../../../models/steam.app.js";
+import { ValidDataSources } from "../../../utils/valid.data.sources.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { HistoryChecksRepository } from "./history.checks.repository.js";
 
@@ -56,19 +56,19 @@ describe("HistoryChecksRepository", function () {
             gameId: 1,
             checked: true,
             found: true,
-            source: SteamApp.validDataSources.steamcharts,
+            source: ValidDataSources.validDataSources.steamcharts,
           },
           {
             gameId: 2,
             checked: true,
             found: false,
-            source: SteamApp.validDataSources.steamcharts,
+            source: ValidDataSources.validDataSources.steamcharts,
           },
           {
             gameId: 3,
             checked: true,
             found: true,
-            source: SteamApp.validDataSources.steamcharts,
+            source: ValidDataSources.validDataSources.steamcharts,
           },
         ];
 
@@ -89,21 +89,21 @@ describe("HistoryChecksRepository", function () {
         expect(this.result[0].gameId).toBe(1);
         expect(this.result[0].checked).toBeTrue();
         expect(this.result[0].found).toBeTrue();
-        expect(this.result[0].source).toBe(SteamApp.validDataSources.steamcharts);
+        expect(this.result[0].source).toBe(ValidDataSources.validDataSources.steamcharts);
       });
 
       it("the second array has the correct values", function () {
         expect(this.result[1].gameId).toBe(2);
         expect(this.result[1].checked).toBeTrue();
         expect(this.result[1].found).toBeFalse();
-        expect(this.result[1].source).toBe(SteamApp.validDataSources.steamcharts);
+        expect(this.result[1].source).toBe(ValidDataSources.validDataSources.steamcharts);
       });
 
       it("the third array has the correct values", function () {
         expect(this.result[2].gameId).toBe(3);
         expect(this.result[2].checked).toBeTrue();
         expect(this.result[2].found).toBeTrue();
-        expect(this.result[2].source).toBe(SteamApp.validDataSources.steamcharts);
+        expect(this.result[2].source).toBe(ValidDataSources.validDataSources.steamcharts);
       });
     });
   });

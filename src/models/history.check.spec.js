@@ -1,5 +1,5 @@
+import { ValidDataSources } from "../utils/valid.data.sources.js";
 import { HistoryCheck } from "./history.check.js";
-import { SteamApp } from "./steam.app.js";
 
 describe("history.check.js", function () {
   describe("HistoryCheck", function () {
@@ -34,7 +34,9 @@ describe("history.check.js", function () {
         });
 
         it("the first entry HistoryCheck instance 'source' property equals 'steamCharts'", function () {
-          expect(this.result[0].source).toBe(SteamApp.validDataSources.steamcharts);
+          expect(this.result[0].source).toBe(
+            ValidDataSources.validDataSources.steamcharts,
+          );
         });
 
         it("the second entry is an instance of HistoryCheck", function () {
@@ -54,7 +56,9 @@ describe("history.check.js", function () {
         });
 
         it("the second entry HistoryCheck instance 'source' property equals 'steamCharts'", function () {
-          expect(this.result[1].source).toBe(SteamApp.validDataSources.steamcharts);
+          expect(this.result[1].source).toBe(
+            ValidDataSources.validDataSources.steamcharts,
+          );
         });
       });
     });

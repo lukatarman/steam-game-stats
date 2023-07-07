@@ -1,5 +1,6 @@
 import { gamesMock } from "../../assets/small.data.set.js";
 import { smallestGamesMock } from "../../assets/smallest.data.set.js";
+import { ValidDataSources } from "../utils/valid.data.sources.js";
 import { SteamApp } from "./steam.app.js";
 
 describe("SteamApp", function () {
@@ -44,7 +45,7 @@ describe("SteamApp", function () {
       });
 
       it("the triedVia property array value is 'steamWeb'", function () {
-        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamWeb);
+        expect(this.result.triedVia[0]).toBe(ValidDataSources.validDataSources.steamWeb);
       });
     });
   });
@@ -63,7 +64,9 @@ describe("SteamApp", function () {
       });
 
       it("the triedVia property array value is 'steamCharts'", function () {
-        expect(this.result.triedVia[0]).toBe(SteamApp.validDataSources.steamcharts);
+        expect(this.result.triedVia[0]).toBe(
+          ValidDataSources.validDataSources.steamcharts,
+        );
       });
     });
   });
@@ -190,15 +193,15 @@ describe("SteamApp", function () {
             appid: 1,
             type: "game",
             triedVia: [
-              SteamApp.validDataSources.steam,
-              SteamApp.validDataSources.steamcharts,
+              ValidDataSources.validDataSources.steam,
+              ValidDataSources.validDataSources.steamcharts,
             ],
           },
           {
             name: "Elden Ring",
             appid: 2,
             type: "game",
-            triedVia: [SteamApp.validDataSources.steam],
+            triedVia: [ValidDataSources.validDataSources.steam],
           },
         ];
 
@@ -245,7 +248,7 @@ describe("SteamApp", function () {
       });
 
       it("contains a copy of the dbEntry.triedVia property", function () {
-        this.dbEntry.triedVia = [SteamApp.validDataSources.steamcharts];
+        this.dbEntry.triedVia = [ValidDataSources.validDataSources.steamcharts];
         expect(this.dbEntry.triedVia[0]).not.toBe(this.result.triedVia[0]);
       });
 

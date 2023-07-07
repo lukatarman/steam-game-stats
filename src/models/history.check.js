@@ -1,4 +1,4 @@
-import { SteamApp } from "./steam.app.js";
+import { ValidDataSources } from "../utils/valid.data.sources.js";
 
 export class HistoryCheck {
   gameId;
@@ -20,7 +20,7 @@ export class HistoryCheck {
     check.gameId  = game.id
     check.checked = true;
     check.found   = found;
-    check.source  = SteamApp.validDataSources.steamcharts;
+    check.source  = ValidDataSources.validDataSources.steamcharts;
     return check;
   }
 

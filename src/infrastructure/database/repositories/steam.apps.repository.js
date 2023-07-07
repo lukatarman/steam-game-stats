@@ -1,4 +1,5 @@
 import { SteamApp } from "../../../models/steam.app.js";
+import { ValidDataSources } from "../../../utils/valid.data.sources.js";
 
 export class SteamAppsRepository {
   #dbClient;
@@ -32,7 +33,7 @@ export class SteamAppsRepository {
       .find({
         $and: [
           { type: SteamApp.validTypes.unknown },
-          { triedVia: { $ne: SteamApp.validDataSources.steamWeb } },
+          { triedVia: { $ne: ValidDataSources.validDataSources.steamWeb } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },
@@ -52,8 +53,8 @@ export class SteamAppsRepository {
           { type: SteamApp.validTypes.unknown },
           {
             $and: [
-              { triedVia: { $ne: SteamApp.validDataSources.steamcharts } },
-              { triedVia: SteamApp.validDataSources.steamWeb },
+              { triedVia: { $ne: ValidDataSources.validDataSources.steamcharts } },
+              { triedVia: ValidDataSources.validDataSources.steamWeb },
             ],
           },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },

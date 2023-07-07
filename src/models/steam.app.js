@@ -1,3 +1,5 @@
+import { ValidDataSources } from "../utils/valid.data.sources.js";
+
 export class SteamApp {
   appid;
   name;
@@ -21,11 +23,11 @@ export class SteamApp {
   }
 
   triedViaSteamWeb() {
-    this.triedVia.push(SteamApp.validDataSources.steamWeb);
+    this.triedVia.push(ValidDataSources.validDataSources.steamWeb);
   }
 
   triedViaSteamchartsWeb() {
-    this.triedVia.push(SteamApp.validDataSources.steamcharts);
+    this.triedVia.push(ValidDataSources.validDataSources.steamcharts);
   }
 
   isGame() {
