@@ -18,7 +18,7 @@ describe("SteamAppsRepository", function () {
           },
         ];
 
-        this.databaseClient.insertMany("steam_apps", apps);
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -60,7 +60,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const insertedApps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -79,7 +79,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: [],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, insertedApps);
 
         const apps = [
           { appid: 1, name: "Risk of Strain", type: "game", triedVia: "steamWeb" },
@@ -134,7 +136,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const apps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -183,7 +185,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: ["steamcharts"],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -225,7 +229,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const apps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -274,7 +278,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: ["steamcharts"],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -327,7 +333,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const apps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -376,7 +382,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: ["steamcharts"],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -431,7 +439,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const apps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -492,7 +500,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: ["steamWeb, steamcharts"],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -534,7 +544,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const apps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -595,7 +605,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: ["steamWeb, steamcharts"],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -648,7 +660,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        this.databaseClient.insertMany("steam_apps", [
+        const apps = [
           {
             appid: 1,
             name: "Risk of Strain",
@@ -703,7 +715,9 @@ describe("SteamAppsRepository", function () {
             type: "unknown",
             triedVia: ["steamWeb"],
           },
-        ]);
+        ];
+
+        insertManyApps(this.databaseClient, apps);
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -753,3 +767,7 @@ describe("SteamAppsRepository", function () {
     });
   });
 });
+
+const insertManyApps = (client, apps) => {
+  client.insertMany("steam_apps", apps);
+};
