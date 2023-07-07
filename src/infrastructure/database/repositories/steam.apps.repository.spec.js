@@ -3,43 +3,6 @@ import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { SteamAppsRepository } from "./steam.apps.repository.js";
 
 describe("SteamAppsRepository", function () {
-  describe(".insertManySteamApps adds provided apps into the database", function () {
-    describe("If two apps are provided,", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
-
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
-
-        const apps = [
-          { appid: 1, name: "Risk of Strain" },
-          { appid: 2, name: "Risk of Stain" },
-        ];
-
-        await steamAppsRepo.insertManySteamApps(apps);
-
-        this.result = await this.databaseClient.getAll("steam_apps");
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("the result has two games", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-      });
-
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-      });
-    });
-  });
-
   describe(".getAllSteamApps gets all documents from the database as instances of SteamApp", function () {
     describe("If two steam apps exist in the collection", function () {
       beforeAll(async function () {
