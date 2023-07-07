@@ -131,7 +131,7 @@ describe("SteamAppsRepository", function () {
     });
   });
 
-  describe(".getSteamWebUntriedFilteredSteamApps retrieves a specific set of steamApps from the database.", function () {
+  describe(".getSteamWebUntriedFilteredSteamApps.", function () {
     describe("If three steam apps out of eigth match the filters, and the amount of 2 is provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
@@ -434,7 +434,7 @@ describe("SteamAppsRepository", function () {
     });
   });
 
-  describe(".getSteamchartsUntriedFilteredSteamApps retrieves a specific set of steamApps from the database.", function () {
+  describe(".getSteamchartsUntriedFilteredSteamApps.", function () {
     describe("If three steam apps out of ten match the filters, and the amount of 2 is provided", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
