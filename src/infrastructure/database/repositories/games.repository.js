@@ -19,16 +19,6 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
-  async getXgamesWithoutPlayerHistory(amount) {
-    return (
-      await this.#dbClient
-        .get("games")
-        .find({ playerHistory: { $eq: [] } })
-        .limit(amount)
-        .toArray()
-    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
-  }
-
   async getXgamesWithUncheckedPlayerHistory(amount) {
     return (
       await this.#dbClient
@@ -54,18 +44,8 @@ export class GamesRepository {
   async getXgamesCheckedMoreThanYmsAgo(amount, ms) {
     return (
       await this.#dbClient
-        .get("history_checks")
+        .get("games")
         .aggregate([
-          {
-            $lookup: {
-              from: "games",
-              localField: "gameId",
-              foreignField: "id",
-              as: "game",
-            },
-          },
-          { $unwind: "$game" },
-          { $replaceWith: "$game" },
           {
             $addFields: {
               lastHistory: { $last: "$playerHistory" },

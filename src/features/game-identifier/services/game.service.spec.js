@@ -20,6 +20,7 @@ import { SteamApp } from "../../../models/steam.app.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
+import { ValidDataSources } from "../../../utils/valid.data.sources.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -336,7 +337,7 @@ describe("game.service.js", () => {
 
       it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
         expect(this.updatedSteamApps[0].triedVia[0]).toBe(
-          SteamApp.validDataSources.steamWeb,
+          ValidDataSources.validDataSources.steamWeb,
         );
       });
 
@@ -406,19 +407,19 @@ describe("game.service.js", () => {
 
       it("the first array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
         expect(this.updatedSteamApps[0].triedVia[0]).toBe(
-          SteamApp.validDataSources.steamWeb,
+          ValidDataSources.validDataSources.steamWeb,
         );
       });
 
       it("the second array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
         expect(this.updatedSteamApps[1].triedVia[0]).toBe(
-          SteamApp.validDataSources.steamWeb,
+          ValidDataSources.validDataSources.steamWeb,
         );
       });
 
       it("the third array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
         expect(this.updatedSteamApps[2].triedVia[0]).toBe(
-          SteamApp.validDataSources.steamWeb,
+          ValidDataSources.validDataSources.steamWeb,
         );
       });
 

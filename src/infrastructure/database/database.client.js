@@ -52,8 +52,8 @@ export class DatabaseClient {
     return await this.#collections
       .get(collectionName)
       .find()
-      .limit(1)
       .sort({ $natural: -1 })
+      .limit(1)
       .next();
   }
 }

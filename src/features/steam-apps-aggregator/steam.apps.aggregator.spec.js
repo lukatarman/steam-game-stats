@@ -7,7 +7,7 @@ import { SteamApp } from "../../models/steam.app.js";
 describe("SteamAppsAggregator", () => {
   describe(".collectSteamApps()", () => {
     let steamClientMock;
-    let updateTimestampsRepositoryMock;
+    let steamAppsUpdateTimestampsRepositoryMock;
     let steamAppsRepositoryMock;
     let updateTimestamp;
 
@@ -19,12 +19,13 @@ describe("SteamAppsAggregator", () => {
       beforeEach(async () => {
         steamClientMock = createSteamMock(smallestGamesMock);
 
-        updateTimestampsRepositoryMock = createUpdateTimestampsRepositoryMock(null);
+        steamAppsUpdateTimestampsRepositoryMock =
+          createSteamAppsUpdateTimestampsRepositoryMock(null);
         steamAppsRepositoryMock = createSteamAppsRepositoryMock(undefined);
 
         const agg = new SteamAppsAggregator(
           steamClientMock,
-          updateTimestampsRepositoryMock,
+          steamAppsUpdateTimestampsRepositoryMock,
           steamAppsRepositoryMock,
           {},
         );
@@ -32,15 +33,15 @@ describe("SteamAppsAggregator", () => {
         await agg.collectSteamApps();
       });
 
-      it("calls .getLastUpdateTimestamp once", () => {
+      it("calls .getLastSteamAppsUpdateTimestamp once", () => {
         expect(
-          updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+          steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .getLastUpdateTimestamp before .getAppList", () => {
+      it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
         expect(
-          updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+          steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
         ).toHaveBeenCalledBefore(steamClientMock.getAppList);
       });
 
@@ -64,21 +65,23 @@ describe("SteamAppsAggregator", () => {
         );
       });
 
-      it("calls .insertManySteamApps before .insertOneUpdateTimestamp", () => {
+      it("calls .insertManySteamApps before .insertOneSteamAppsUpdateTimestamp", () => {
         expect(steamAppsRepositoryMock.insertManySteamApps).toHaveBeenCalledBefore(
-          updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+          steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
         );
       });
 
-      it("calls .insertOneUpdateTimestamp once", () => {
+      it("calls .insertOneSteamAppsUpdateTimestamp once", () => {
         expect(
-          updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+          steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .insertOneUpdateTimestamp with a new date", () => {
+      it("calls .insertOneSteamAppsUpdateTimestamp with a new date", () => {
         expect(
-          updateTimestampsRepositoryMock.insertOneUpdateTimestamp.calls.argsFor(0)[0],
+          steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp.calls.argsFor(
+            0,
+          )[0],
         ).toBeInstanceOf(Date);
       });
     });
@@ -90,13 +93,13 @@ describe("SteamAppsAggregator", () => {
         beforeEach(async () => {
           steamClientMock = createSteamMock(gamesMock);
 
-          updateTimestampsRepositoryMock =
-            createUpdateTimestampsRepositoryMock(updateTimestamp);
+          steamAppsUpdateTimestampsRepositoryMock =
+            createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
           steamAppsRepositoryMock = createSteamAppsRepositoryMock(smallestGamesMock);
 
           const agg = new SteamAppsAggregator(
             steamClientMock,
-            updateTimestampsRepositoryMock,
+            steamAppsUpdateTimestampsRepositoryMock,
             steamAppsRepositoryMock,
             {
               updateIntervalDelay: 100,
@@ -108,15 +111,15 @@ describe("SteamAppsAggregator", () => {
           await agg.collectSteamApps();
         });
 
-        it("calls .getLastUpdateTimestamp once", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp once", () => {
           expect(
-            updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
           ).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(
-            updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
           ).toHaveBeenCalledBefore(steamClientMock.getAppList);
         });
 
@@ -124,7 +127,7 @@ describe("SteamAppsAggregator", () => {
           expect(steamClientMock.getAppList).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(steamClientMock.getAppList).toHaveBeenCalledBefore(
             steamAppsRepositoryMock.getAllSteamApps,
           );
@@ -134,7 +137,7 @@ describe("SteamAppsAggregator", () => {
           expect(steamAppsRepositoryMock.getAllSteamApps).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(steamAppsRepositoryMock.getAllSteamApps).toHaveBeenCalledBefore(
             steamAppsRepositoryMock.insertManySteamApps,
           );
@@ -150,21 +153,23 @@ describe("SteamAppsAggregator", () => {
           );
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(steamAppsRepositoryMock.insertManySteamApps).toHaveBeenCalledBefore(
-            updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
           );
         });
 
-        it("calls .insertOneUpdateTimestamp once", () => {
+        it("calls .insertOneSteamAppsUpdateTimestamp once", () => {
           expect(
-            updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
           ).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .insertOneUpdateTimestamp with a new date", () => {
+        it("calls .insertOneSteamAppsUpdateTimestamp with a new date", () => {
           expect(
-            updateTimestampsRepositoryMock.insertOneUpdateTimestamp.calls.argsFor(0)[0],
+            steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp.calls.argsFor(
+              0,
+            )[0],
           ).toBeInstanceOf(Date);
         });
       });
@@ -173,13 +178,13 @@ describe("SteamAppsAggregator", () => {
         beforeEach(async () => {
           steamClientMock = createSteamMock(smallestGamesMock);
 
-          updateTimestampsRepositoryMock =
-            createUpdateTimestampsRepositoryMock(updateTimestamp);
+          steamAppsUpdateTimestampsRepositoryMock =
+            createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
           steamAppsRepositoryMock = createSteamAppsRepositoryMock(smallestGamesMock);
 
           const agg = new SteamAppsAggregator(
             steamClientMock,
-            updateTimestampsRepositoryMock,
+            steamAppsUpdateTimestampsRepositoryMock,
             steamAppsRepositoryMock,
             {
               updateIntervalDelay: 100,
@@ -191,15 +196,15 @@ describe("SteamAppsAggregator", () => {
           await agg.collectSteamApps();
         });
 
-        it("calls .getLastUpdateTimestamp once", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp once", () => {
           expect(
-            updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
           ).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(
-            updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
           ).toHaveBeenCalledBefore(steamClientMock.getAppList);
         });
 
@@ -207,7 +212,7 @@ describe("SteamAppsAggregator", () => {
           expect(steamClientMock.getAppList).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(steamClientMock.getAppList).toHaveBeenCalledBefore(
             steamAppsRepositoryMock.getAllSteamApps,
           );
@@ -217,21 +222,23 @@ describe("SteamAppsAggregator", () => {
           expect(steamAppsRepositoryMock.getAllSteamApps).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .getLastUpdateTimestamp before .getAppList", () => {
+        it("calls .getLastSteamAppsUpdateTimestamp before .getAppList", () => {
           expect(steamAppsRepositoryMock.getAllSteamApps).toHaveBeenCalledBefore(
-            updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
           );
         });
 
-        it("calls .insertOneUpdateTimestamp once", () => {
+        it("calls .insertOneSteamAppsUpdateTimestamp once", () => {
           expect(
-            updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+            steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
           ).toHaveBeenCalledTimes(1);
         });
 
-        it("calls .insertOneUpdateTimestamp with a new date", () => {
+        it("calls .insertOneSteamAppsUpdateTimestamp with a new date", () => {
           expect(
-            updateTimestampsRepositoryMock.insertOneUpdateTimestamp.calls.argsFor(0)[0],
+            steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp.calls.argsFor(
+              0,
+            )[0],
           ).toBeInstanceOf(Date);
         });
 
@@ -245,15 +252,15 @@ describe("SteamAppsAggregator", () => {
       beforeEach(async () => {
         steamClientMock = createSteamMock(smallestGamesMock);
 
-        updateTimestampsRepositoryMock =
-          createUpdateTimestampsRepositoryMock(updateTimestamp);
+        steamAppsUpdateTimestampsRepositoryMock =
+          createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
         steamAppsRepositoryMock = createSteamAppsRepositoryMock(smallestGamesMock);
 
         jasmine.clock().mockDate(new Date("2020"));
 
         const agg = new SteamAppsAggregator(
           steamClientMock,
-          updateTimestampsRepositoryMock,
+          steamAppsUpdateTimestampsRepositoryMock,
           steamAppsRepositoryMock,
           {
             updateIntervalDelay: hoursToMs(12),
@@ -267,9 +274,9 @@ describe("SteamAppsAggregator", () => {
         jasmine.clock().uninstall();
       });
 
-      it("calls .getLastUpdateTimestamp once", () => {
+      it("calls .getLastSteamAppsUpdateTimestamp once", () => {
         expect(
-          updateTimestampsRepositoryMock.getLastUpdateTimestamp,
+          steamAppsUpdateTimestampsRepositoryMock.getLastSteamAppsUpdateTimestamp,
         ).toHaveBeenCalledTimes(1);
       });
 
@@ -281,9 +288,9 @@ describe("SteamAppsAggregator", () => {
         expect(steamAppsRepositoryMock.getAllSteamApps).toHaveBeenCalledTimes(0);
       });
 
-      it("calls .insertOneUpdateTimestamp zero times", () => {
+      it("calls .insertOneSteamAppsUpdateTimestamp zero times", () => {
         expect(
-          updateTimestampsRepositoryMock.insertOneUpdateTimestamp,
+          steamAppsUpdateTimestampsRepositoryMock.insertOneSteamAppsUpdateTimestamp,
         ).toHaveBeenCalledTimes(0);
       });
 
@@ -300,10 +307,10 @@ function createSteamMock(ret) {
   });
 }
 
-function createUpdateTimestampsRepositoryMock(updateTs) {
-  return jasmine.createSpyObj("UpdateTimestampsRepository", {
-    getLastUpdateTimestamp: Promise.resolve(updateTs),
-    insertOneUpdateTimestamp: Promise.resolve(undefined),
+function createSteamAppsUpdateTimestampsRepositoryMock(updateTs) {
+  return jasmine.createSpyObj("SteamAppsUpdateTimestampsRepository", {
+    getLastSteamAppsUpdateTimestamp: Promise.resolve(updateTs),
+    insertOneSteamAppsUpdateTimestamp: Promise.resolve(undefined),
   });
 }
 

@@ -1,3 +1,5 @@
+import { ValidDataSources } from "../utils/valid.data.sources.js";
+
 export class SteamApp {
   appid;
   name;
@@ -8,7 +10,7 @@ export class SteamApp {
     "downloadableContent",
     "unknown",
   ]);
-  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamCharts"]);
+  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamcharts"]);
 
   copy() {
     const copy = new SteamApp();
@@ -21,11 +23,11 @@ export class SteamApp {
   }
 
   triedViaSteamWeb() {
-    this.triedVia.push(SteamApp.validDataSources.steamWeb);
+    this.triedVia.push(ValidDataSources.validDataSources.steamWeb);
   }
 
   triedViaSteamchartsWeb() {
-    this.triedVia.push(SteamApp.validDataSources.steamCharts);
+    this.triedVia.push(ValidDataSources.validDataSources.steamcharts);
   }
 
   isGame() {

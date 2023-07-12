@@ -11,7 +11,7 @@ import { GameQueriesController } from "./features/game-queries/game.queries.cont
 import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
 import { GamesRepository } from "./infrastructure/repositories/games.repository.js";
 import { SteamAppsRepository } from "./infrastructure/repositories/steam.apps.repository.js";
-import { UpdateTimestampsRepository } from "./infrastructure/repositories/update.timestamps.repository.js";
+import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/repositories/steam.apps.update.timestamps.repository.js";
 import { PlayerHistoryRepository } from "./infrastructure/repositories/player.history.repository.js";
 import { HistoryChecksRepository } from "./infrastructure/repositories/history.checks.repository.js";
 
@@ -26,7 +26,9 @@ async function main() {
   const databaseClient = await new DatabaseClient().init(databaseOptions);
   const gamesRepository = new GamesRepository(databaseClient);
   const steamAppsRepository = new SteamAppsRepository(databaseClient);
-  const updateTimestampRepository = new UpdateTimestampsRepository(databaseClient);
+  const steamAppsUpdateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
+    databaseClient,
+  );
   const playerHistoryRepository = new PlayerHistoryRepository(databaseClient);
   const historyChecksRepository = new HistoryChecksRepository(databaseClient);
   const steamClient = new SteamClient(httpClient);
@@ -40,7 +42,7 @@ async function main() {
   };
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,
-    updateTimestampRepository,
+    steamAppsUpdateTimestampRepository,
     steamAppsRepository,
     options,
   );
