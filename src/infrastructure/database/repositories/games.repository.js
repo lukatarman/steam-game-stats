@@ -1,4 +1,5 @@
 import { Game } from "../../../models/game.js";
+import { daysToMs } from "../../../utils/time.utils.js";
 
 export class GamesRepository {
   #dbClient;
