@@ -144,7 +144,7 @@ export class GamesRepository {
     return {
       $match: {
         $expr: {
-          $gt: [{ $arrayElemAt: ["$playerHistory.averagePlayers", -1] }, 10],
+          $gt: [{ $arrayElemAt: ["$playerHistory.averagePlayers", -1] }, 100],
         },
       },
     };
