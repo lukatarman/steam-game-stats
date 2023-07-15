@@ -457,15 +457,9 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
 
-        const todaysDate = new Date();
-        const oneWeekAgo = new Date(new Date() - daysToMs(7));
-
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany(
-          "games",
-          getTrendingGamesMockData(oneWeekAgo, todaysDate),
-        );
+        await this.databaseClient.insertMany("games", getTrendingGamesMockData());
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -498,15 +492,9 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
 
-        const todaysDate = new Date();
-        const oneWeekAgo = new Date(new Date() - daysToMs(7));
-
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany(
-          "games",
-          getTrendingGamesMockData(oneWeekAgo, todaysDate),
-        );
+        await this.databaseClient.insertMany("games", getTrendingGamesMockData());
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -531,7 +519,10 @@ describe("GamesRepository", function () {
   });
 });
 
-const getTrendingGamesMockData = (oneWeekAgo, todaysDate) => {
+const getTrendingGamesMockData = () => {
+  const todaysDate = new Date();
+  const oneWeekAgo = new Date(new Date() - daysToMs(7));
+
   return [
     {
       id: 1,
