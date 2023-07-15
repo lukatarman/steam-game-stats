@@ -582,5 +582,41 @@ const getTrendingGamesMockData = () => {
         },
       ],
     },
+    {
+      id: 5,
+      name: "Risk of Crane",
+      playerHistory: [
+        { year: "year", month: "month", averagePlayers: 120 },
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 0 },
+            { date: oneWeekAgo, players: null },
+            { date: todaysDate, players: 0 },
+            { date: todaysDate, players: null },
+          ],
+          averagePlayers: 105,
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "Risk of Hey",
+      playerHistory: [
+        { year: "year", month: "month", averagePlayers: 120 },
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 15 },
+            { date: oneWeekAgo, players: 15 },
+            { date: todaysDate, players: 15 },
+            { date: todaysDate, players: 15 },
+          ],
+          averagePlayers: 105,
+        },
+      ],
+    },
   ];
 };
