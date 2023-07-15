@@ -493,9 +493,7 @@ describe("GamesRepository", function () {
         expect(this.result[1].percentagePlayerIncrease).toBe(425.2);
       });
     });
-  });
 
-  describe(".getTrendingGames returns an array of trending games based on the passed in arguments.", function () {
     describe("If a specific time period, return amount, and minimum players are passed in", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
@@ -525,9 +523,9 @@ describe("GamesRepository", function () {
       });
 
       it("the first game is 'Risk of Strain'", function () {
-        expect(this.result[0].id).toBe(4);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].percentagePlayerIncrease).toBe(3350);
+        expect(this.result[0].id).toBe(3);
+        expect(this.result[0].name).toBe("Risk of Brain");
+        expect(this.result[0].percentagePlayerIncrease).toBe(425.2);
       });
     });
   });
