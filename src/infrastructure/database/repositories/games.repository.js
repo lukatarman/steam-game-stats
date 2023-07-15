@@ -116,8 +116,6 @@ export class GamesRepository {
       .toArray();
   }
 
-  //todo: add test for this
-
   async getTrendingGames(timePeriodInMs, returnAmount = 10, minimumPlayers = 100) {
     return await this.#dbClient
       .get("games")
