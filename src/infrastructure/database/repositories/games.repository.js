@@ -119,29 +119,32 @@ export class GamesRepository {
   //todo: add test for this
 
   async getTrendingGames(timePeriodInMs, returnAmount = 10, minimumPlayers = 100) {
-    return await this.#dbClient.get("games").aggregate([
-      this.#getGamesWithMinimumXPlayers(minimumPlayers),
-      this.#addAveragePlayersTodayProperty(),
-      this.#addAveragePlayersAtCustomDayProperty(timePeriodInMs),
-      this.#getGamesWithAveragePlayersValues(),
-      this.#addPercentagePlayerIncreaseProperty(),
-      { $unset: "averagePlayersToday" },
-      { $unset: "averagePlayersAtCustomDay" },
-      {
-        $match: {
-          percentagePlayerIncrease: { $gt: 0 },
+    return await this.#dbClient
+      .get("games")
+      .aggregate([
+        this.#getGamesWithMinimumXPlayers(minimumPlayers),
+        this.#addAveragePlayersTodayProperty(),
+        this.#addAveragePlayersAtCustomDayProperty(timePeriodInMs),
+        this.#getGamesWithAveragePlayersValues(),
+        this.#addPercentagePlayerIncreaseProperty(),
+        { $unset: "averagePlayersToday" },
+        { $unset: "averagePlayersAtCustomDay" },
+        {
+          $match: {
+            percentagePlayerIncrease: { $gt: 0 },
+          },
         },
-      },
-      { $sort: { percentagePlayerIncrease: -1 } },
-      { $limit: returnAmount },
-    ]);
+        { $sort: { percentagePlayerIncrease: -1 } },
+        { $limit: returnAmount },
+      ])
+      .toArray();
   }
 
   #getGamesWithMinimumXPlayers = (minimumPlayers) => {
     return {
       $match: {
         $expr: {
-          $gt: [{ $arrayElemAt: ["$playerHistory.averagePlayers", -1] }, minimumPlayers],
+          $gt: [{ $arrayElemAt: ["$playerHistory.averagePlayers", -1] }, 10],
         },
       },
     };
