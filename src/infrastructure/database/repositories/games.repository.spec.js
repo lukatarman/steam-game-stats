@@ -510,7 +510,7 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(1);
       });
 
-      it("the first game is 'Risk of Strain'", function () {
+      it("the first game is 'Risk of Brain'", function () {
         expect(this.result[0].id).toBe(3);
         expect(this.result[0].name).toBe("Risk of Brain");
         expect(this.result[0].percentagePlayerIncrease).toBe(425.2);
