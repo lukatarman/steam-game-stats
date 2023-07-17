@@ -1,4 +1,5 @@
 import { Game } from "../../../models/game.js";
+import { daysToMs } from "../../../utils/time.utils.js";
 
 export class GamesRepository {
   #dbClient;
@@ -116,22 +117,25 @@ export class GamesRepository {
   }
 
   async getTrendingGames(timePeriodInMs, returnAmount = 10, minimumPlayers = 100) {
-    return await this.#dbClient.get("games").aggregate([
-      this.#getGamesWithMinimumXPlayers(minimumPlayers),
-      this.#addAveragePlayersTodayProperty(),
-      this.#addAveragePlayersAtCustomDayProperty(timePeriodInMs),
-      this.#getGamesWithAveragePlayersValues(),
-      this.#addPercentagePlayerIncreaseProperty(),
-      { $unset: "averagePlayersToday" },
-      { $unset: "averagePlayersAtCustomDay" },
-      {
-        $match: {
-          percentagePlayerIncrease: { $gt: 0 },
+    return await this.#dbClient
+      .get("games")
+      .aggregate([
+        this.#getGamesWithMinimumXPlayers(minimumPlayers),
+        this.#addAveragePlayersTodayProperty(),
+        this.#addAveragePlayersAtCustomDayProperty(timePeriodInMs),
+        this.#getGamesWithAveragePlayersValues(),
+        this.#addPercentagePlayerIncreaseProperty(),
+        { $unset: "averagePlayersToday" },
+        { $unset: "averagePlayersAtCustomDay" },
+        {
+          $match: {
+            percentagePlayerIncrease: { $gt: 0 },
+          },
         },
-      },
-      { $sort: { percentagePlayerIncrease: -1 } },
-      { $limit: returnAmount },
-    ]);
+        { $sort: { percentagePlayerIncrease: -1 } },
+        { $limit: returnAmount },
+      ])
+      .toArray();
   }
 
   #getGamesWithMinimumXPlayers = (minimumPlayers) => {

@@ -1,6 +1,6 @@
 import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
-import { hoursToMs } from "../../../utils/time.utils.js";
+import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
 
 describe("GamesRepository", function () {
   describe(".insertManyGames inserts multiple games into the collection.", function () {
@@ -451,4 +451,174 @@ describe("GamesRepository", function () {
       });
     });
   });
+
+  describe(".getTrendingGames.", function () {
+    describe("When trending games for the last seven days are requested,", function () {
+      beforeAll(async function () {
+        jasmine.clock().mockDate(new Date());
+
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getTrendingGamesMockData());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getTrendingGames(daysToMs(7));
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+        jasmine.clock().uninstall();
+      });
+
+      it("two games will be returned.", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first game is 'Risk of Strain'", function () {
+        expect(this.result[0].id).toBe(4);
+        expect(this.result[0].name).toBe("Risk of Strain");
+        expect(this.result[0].percentagePlayerIncrease).toBe(3350);
+      });
+
+      it("the second game is 'Risk of Brain'", function () {
+        expect(this.result[1].id).toBe(3);
+        expect(this.result[1].name).toBe("Risk of Brain");
+        expect(this.result[1].percentagePlayerIncrease).toBe(425.2);
+      });
+    });
+
+    describe("When a limit of one trending game within the last seven days, with a minimum amount of players of 104 is requested", function () {
+      beforeAll(async function () {
+        jasmine.clock().mockDate(new Date());
+
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getTrendingGamesMockData());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getTrendingGames(daysToMs(7), 1, 104);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+        jasmine.clock().uninstall();
+      });
+
+      it("one game will be returned.", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the first game is 'Risk of Brain'", function () {
+        expect(this.result[0].id).toBe(3);
+        expect(this.result[0].name).toBe("Risk of Brain");
+        expect(this.result[0].percentagePlayerIncrease).toBe(425.2);
+      });
+    });
+  });
 });
+
+// @todo https://github.com/lukatarman/steam-game-stats-backend/issues/125
+
+const getTrendingGamesMockData = () => {
+  const todaysDate = new Date();
+  const oneWeekAgo = new Date(new Date() - daysToMs(7));
+
+  return [
+    {
+      id: 1,
+      name: "Risk of Train",
+      playerHistory: [
+        { year: "year", month: "month", averagePlayers: 120 },
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 23 },
+            { date: oneWeekAgo, players: 44 },
+            { date: todaysDate, players: 15 },
+            { date: todaysDate, players: 45 },
+          ],
+          averagePlayers: 105,
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Risk of Rain",
+      playerHistory: [{ averagePlayers: 85 }],
+    },
+    {
+      id: 3,
+      name: "Risk of Brain",
+      playerHistory: [
+        { averagePlayers: 70 },
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 53 },
+            { date: oneWeekAgo, players: 78 },
+            { date: todaysDate, players: 233 },
+            { date: todaysDate, players: 455 },
+          ],
+          averagePlayers: 140,
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: "Risk of Strain",
+      playerHistory: [
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 22 },
+            { date: oneWeekAgo, players: 44 },
+            { date: todaysDate, players: 1400 },
+            { date: todaysDate, players: 877 },
+          ],
+          averagePlayers: 102,
+        },
+      ],
+    },
+    {
+      id: 5,
+      name: "Risk of Crane",
+      playerHistory: [
+        { year: "year", month: "month", averagePlayers: 120 },
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 0 },
+            { date: oneWeekAgo, players: null },
+            { date: todaysDate, players: 0 },
+            { date: todaysDate, players: null },
+          ],
+          averagePlayers: 105,
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "Risk of Hey",
+      playerHistory: [
+        { year: "year", month: "month", averagePlayers: 120 },
+        {
+          year: "year",
+          month: "month",
+          trackedPlayers: [
+            { date: oneWeekAgo, players: 15 },
+            { date: oneWeekAgo, players: 15 },
+            { date: todaysDate, players: 15 },
+            { date: todaysDate, players: 15 },
+          ],
+          averagePlayers: 105,
+        },
+      ],
+    },
+  ];
+};
