@@ -453,7 +453,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".getTrendingGames.", function () {
-    describe("If a specific time period is passed in", function () {
+    describe("When trending games for the last seven days are requested,", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
 
@@ -471,7 +471,7 @@ describe("GamesRepository", function () {
         jasmine.clock().uninstall();
       });
 
-      it("the resulting array has a length of 2", function () {
+      it("two games will be returned.", function () {
         expect(this.result.length).toBe(2);
       });
 
@@ -488,7 +488,7 @@ describe("GamesRepository", function () {
       });
     });
 
-    describe("If a specific time period, return amount, and minimum players are passed in", function () {
+    describe("When a limit of one trending game within the last seven days, with a minimum amount of players of 104 is requested", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
 
@@ -506,7 +506,7 @@ describe("GamesRepository", function () {
         jasmine.clock().uninstall();
       });
 
-      it("the resulting array has a length of 1", function () {
+      it("one game will be returned.", function () {
         expect(this.result.length).toBe(1);
       });
 
