@@ -452,7 +452,7 @@ describe("GamesRepository", function () {
     });
   });
 
-  describe(".getTrendingGames returns an array of trending games based on the passed in arguments.", function () {
+  describe(".getTrendingGames.", function () {
     describe("If a specific time period is passed in", function () {
       beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
