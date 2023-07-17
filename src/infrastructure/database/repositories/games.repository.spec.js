@@ -519,6 +519,8 @@ describe("GamesRepository", function () {
   });
 });
 
+// @todo https://github.com/lukatarman/steam-game-stats-backend/issues/125
+
 const getTrendingGamesMockData = () => {
   const todaysDate = new Date();
   const oneWeekAgo = new Date(new Date() - daysToMs(7));
