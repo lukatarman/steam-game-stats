@@ -1,4 +1,8 @@
 import { SteamApp } from "../../../models/steam.app.js";
+import {
+  getThreeSteamchartsUntriedFilteredSteamApps,
+  getThreeSteamwebUntriedFilteredSteamApps,
+} from "../../../models/steam.app.mocks.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { SteamAppsRepository } from "./steam.apps.repository.js";
 
@@ -136,58 +140,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const apps = [
-          {
-            appid: 1,
-            name: "Risk of Strain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 2,
-            name: "Risk of Stain",
-            type: "unknown",
-            triedVia: [],
-          },
-          {
-            appid: 3,
-            name: "Risk of Sprain",
-            type: "game",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 4,
-            name: "Risk of Rain",
-            type: "unknown",
-            triedVia: ["steamcharts", "steamWeb"],
-          },
-          {
-            appid: 5,
-            name: "Risk of Train Soundtrack",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 6,
-            name: "Risk of Cane DLC",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 7,
-            name: "Risk of Plain Demo",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 8,
-            name: "Risk of Crane",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-        ];
-
-        insertManyApps(this.databaseClient, apps);
+        insertManyApps(this.databaseClient, getThreeSteamwebUntriedFilteredSteamApps());
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -229,58 +182,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const apps = [
-          {
-            appid: 1,
-            name: "Risk of Strain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 2,
-            name: "Risk of Stain",
-            type: "unknown",
-            triedVia: [],
-          },
-          {
-            appid: 3,
-            name: "Risk of Sprain",
-            type: "game",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 4,
-            name: "Risk of Rain",
-            type: "unknown",
-            triedVia: ["steamcharts", "steamWeb"],
-          },
-          {
-            appid: 5,
-            name: "Risk of Train Soundtrack",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 6,
-            name: "Risk of Cane DLC",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 7,
-            name: "Risk of Plain Demo",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 8,
-            name: "Risk of Crane",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-        ];
-
-        insertManyApps(this.databaseClient, apps);
+        insertManyApps(this.databaseClient, getThreeSteamwebUntriedFilteredSteamApps());
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -333,58 +235,7 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const apps = [
-          {
-            appid: 1,
-            name: "Risk of Strain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 2,
-            name: "Risk of Stain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 3,
-            name: "Risk of Sprain",
-            type: "game",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 4,
-            name: "Risk of Rain",
-            type: "unknown",
-            triedVia: ["steamcharts", "steamWeb"],
-          },
-          {
-            appid: 5,
-            name: "Risk of Train Soundtrack",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 6,
-            name: "Risk of Cane DLC",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 7,
-            name: "Risk of Plain Demo",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 8,
-            name: "Risk of Crane",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-        ];
-
-        insertManyApps(this.databaseClient, apps);
+        insertManyApps(this.databaseClient, getThreeSteamwebUntriedFilteredSteamApps());
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -418,7 +269,7 @@ describe("SteamAppsRepository", function () {
         expect(this.result[1].appid).toBe(2);
         expect(this.result[1].name).toBe("Risk of Stain");
         expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia[0]).toBe("steamcharts");
+        expect(this.result[1].triedVia).toEqual([]);
       });
 
       it("the third result is an instance of SteamApp", function () {
@@ -439,70 +290,10 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const apps = [
-          {
-            appid: 1,
-            name: "Risk of Strain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 2,
-            name: "Risk of Stain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 3,
-            name: "Risk of Gain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 4,
-            name: "Risk of Sprain",
-            type: "game",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 5,
-            name: "Risk of Rain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 6,
-            name: "Risk of Train",
-            type: "unknown",
-            triedVia: [],
-          },
-          {
-            appid: 7,
-            name: "Risk of Cane Soundtrack",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 8,
-            name: "Risk of Plain DLC",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 9,
-            name: "Risk of Crane Demo",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 10,
-            name: "Risk of Lane",
-            type: "unknown",
-            triedVia: ["steamWeb, steamcharts"],
-          },
-        ];
-
-        insertManyApps(this.databaseClient, apps);
+        insertManyApps(
+          this.databaseClient,
+          getThreeSteamchartsUntriedFilteredSteamApps(),
+        );
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -544,70 +335,10 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const apps = [
-          {
-            appid: 1,
-            name: "Risk of Strain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 2,
-            name: "Risk of Stain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 3,
-            name: "Risk of Gain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 4,
-            name: "Risk of Sprain",
-            type: "game",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 5,
-            name: "Risk of Rain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 6,
-            name: "Risk of Train",
-            type: "unknown",
-            triedVia: [],
-          },
-          {
-            appid: 7,
-            name: "Risk of Cane Soundtrack",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 8,
-            name: "Risk of Plain DLC",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 9,
-            name: "Risk of Crane Demo",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 10,
-            name: "Risk of Lane",
-            type: "unknown",
-            triedVia: ["steamWeb, steamcharts"],
-          },
-        ];
-
-        insertManyApps(this.databaseClient, apps);
+        insertManyApps(
+          this.databaseClient,
+          getThreeSteamchartsUntriedFilteredSteamApps(),
+        );
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
@@ -660,64 +391,10 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const apps = [
-          {
-            appid: 1,
-            name: "Risk of Strain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 2,
-            name: "Risk of Stain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 3,
-            name: "Risk of Gain",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 4,
-            name: "Risk of Sprain",
-            type: "game",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 5,
-            name: "Risk of Rain",
-            type: "unknown",
-            triedVia: ["steamcharts"],
-          },
-          {
-            appid: 6,
-            name: "Risk of Train",
-            type: "unknown",
-            triedVia: [],
-          },
-          {
-            appid: 7,
-            name: "Risk of Cane Soundtrack",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 8,
-            name: "Risk of Plain DLC",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-          {
-            appid: 9,
-            name: "Risk of Crane Demo",
-            type: "unknown",
-            triedVia: ["steamWeb"],
-          },
-        ];
-
-        insertManyApps(this.databaseClient, apps);
+        insertManyApps(
+          this.databaseClient,
+          getThreeSteamchartsUntriedFilteredSteamApps(),
+        );
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
