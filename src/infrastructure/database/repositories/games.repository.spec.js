@@ -1,6 +1,11 @@
 import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
+import {
+  getGamesWithEmptyPlayerHistories,
+  getGamesWithTrackedPlayersNoDate,
+  getTrendingGamesMockData,
+} from "../../../models/game.mocks.js";
 
 describe("GamesRepository", function () {
   describe(".insertManyGames inserts multiple games into the collection.", function () {
@@ -122,23 +127,7 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [],
-          },
-        ]);
+        await this.databaseClient.insertMany("games", getGamesWithEmptyPlayerHistories());
 
         await this.databaseClient.insertMany("history_checks", [
           { gameId: 1, checked: false },
@@ -174,23 +163,7 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [],
-          },
-        ]);
+        await this.databaseClient.insertMany("games", getGamesWithEmptyPlayerHistories());
 
         await this.databaseClient.insertMany("history_checks", [
           { gameId: 1, checked: false },
@@ -320,32 +293,7 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [
-              { trackedPlayers: [{ players: 4 }] },
-              { trackedPlayers: [{ players: 6 }] },
-            ],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 15 }] },
-              { trackedPlayers: [{ players: 24 }] },
-            ],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 64 }] },
-              { trackedPlayers: [{ players: 87 }] },
-            ],
-          },
-        ]);
+        await this.databaseClient.insertMany("games", getGamesWithTrackedPlayersNoDate());
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -379,45 +327,7 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [
-              { trackedPlayers: [{ players: 4 }] },
-              { trackedPlayers: [{ players: 6 }] },
-            ],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 15 }] },
-              { trackedPlayers: [{ players: 24 }] },
-            ],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [
-              { trackedPlayers: [{ players: 64 }] },
-              { trackedPlayers: [{ players: 87 }] },
-            ],
-          },
-          {
-            id: 4,
-            name: "Risk of Strain",
-            playerHistory: [],
-          },
-          {
-            id: 4,
-            name: "Risk of No",
-            playerHistory: [
-              { trackedPlayers: [{ players: 34 }] },
-              { trackedPlayers: [{ players: 11 }] },
-            ],
-          },
-        ]);
+        await this.databaseClient.insertMany("games", getGamesWithTrackedPlayersNoDate());
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -518,105 +428,3 @@ describe("GamesRepository", function () {
     });
   });
 });
-
-const getTrendingGamesMockData = () => {
-  const todaysDate = new Date();
-  const oneWeekAgo = new Date(new Date() - daysToMs(7));
-
-  return [
-    {
-      id: 1,
-      name: "Risk of Train",
-      playerHistory: [
-        { year: "year", month: "month", averagePlayers: 120 },
-        {
-          year: "year",
-          month: "month",
-          trackedPlayers: [
-            { date: oneWeekAgo, players: 23 },
-            { date: oneWeekAgo, players: 44 },
-            { date: todaysDate, players: 15 },
-            { date: todaysDate, players: 45 },
-          ],
-          averagePlayers: 105,
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Risk of Rain",
-      playerHistory: [{ averagePlayers: 85 }],
-    },
-    {
-      id: 3,
-      name: "Risk of Brain",
-      playerHistory: [
-        { averagePlayers: 70 },
-        {
-          year: "year",
-          month: "month",
-          trackedPlayers: [
-            { date: oneWeekAgo, players: 53 },
-            { date: oneWeekAgo, players: 78 },
-            { date: todaysDate, players: 233 },
-            { date: todaysDate, players: 455 },
-          ],
-          averagePlayers: 140,
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Risk of Strain",
-      playerHistory: [
-        {
-          year: "year",
-          month: "month",
-          trackedPlayers: [
-            { date: oneWeekAgo, players: 22 },
-            { date: oneWeekAgo, players: 44 },
-            { date: todaysDate, players: 1400 },
-            { date: todaysDate, players: 877 },
-          ],
-          averagePlayers: 102,
-        },
-      ],
-    },
-    {
-      id: 5,
-      name: "Risk of Crane",
-      playerHistory: [
-        { year: "year", month: "month", averagePlayers: 120 },
-        {
-          year: "year",
-          month: "month",
-          trackedPlayers: [
-            { date: oneWeekAgo, players: 0 },
-            { date: oneWeekAgo, players: null },
-            { date: todaysDate, players: 0 },
-            { date: todaysDate, players: null },
-          ],
-          averagePlayers: 105,
-        },
-      ],
-    },
-    {
-      id: 6,
-      name: "Risk of Hey",
-      playerHistory: [
-        { year: "year", month: "month", averagePlayers: 120 },
-        {
-          year: "year",
-          month: "month",
-          trackedPlayers: [
-            { date: oneWeekAgo, players: 15 },
-            { date: oneWeekAgo, players: 15 },
-            { date: todaysDate, players: 15 },
-            { date: todaysDate, players: 15 },
-          ],
-          averagePlayers: 105,
-        },
-      ],
-    },
-  ];
-};
