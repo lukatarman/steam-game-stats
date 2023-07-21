@@ -5,9 +5,7 @@ describe("SteamAppsUpdateTimestampsRepository", function () {
   describe(".insertOneSteamAppsUpdateTimestamp adds a document containing the update timestamp to the collection", function () {
     describe("When a date is provided,", function () {
       beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase([
-          "steam_apps_update_timestamps",
-        ]);
+        this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
 
         const updateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
           this.databaseClient,
@@ -17,7 +15,7 @@ describe("SteamAppsUpdateTimestampsRepository", function () {
 
         await updateTimestampRepository.insertOneSteamAppsUpdateTimestamp(this.date);
 
-        this.result = await this.databaseClient.getAll("steam_apps_update_timestamps");
+        this.result = await this.databaseClient.getAll("update_timestamps");
       });
 
       afterAll(function () {
@@ -37,15 +35,13 @@ describe("SteamAppsUpdateTimestampsRepository", function () {
   describe(".getLastSteamAppsUpdateTimestamp gets the last update timestamp document added to the collection.", function () {
     describe("When the method is run", function () {
       beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase([
-          "steam_apps_update_timestamps",
-        ]);
+        this.databaseClient = await initiateInMemoryDatabase(["update_timestamps"]);
 
         const firstDocument = { updatedOn: new Date("June 2021") };
         const secondDocument = { updatedOn: new Date("July 2021") };
         this.thirdDocument = { updatedOn: new Date("August 2021") };
 
-        await this.databaseClient.insertMany("steam_apps_update_timestamps", [
+        await this.databaseClient.insertMany("update_timestamps", [
           firstDocument,
           secondDocument,
           this.thirdDocument,
