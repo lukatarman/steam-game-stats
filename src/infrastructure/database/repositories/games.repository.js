@@ -290,4 +290,23 @@ export class GamesRepository {
       },
     };
   };
+
+  async getGamesWithMissingProperties(amount) {
+    return await this.#dbClient
+      .get("games")
+      .aggregate([
+        {
+          $match: {
+            $or: [
+              { releaseDate: { $eq: "" } },
+              { developers: { $eq: [] } },
+              { genres: { $eq: [] } },
+              { description: { $eq: "" } },
+            ],
+          },
+        },
+        { $limit: amount },
+      ])
+      .toArray();
+  }
 }
