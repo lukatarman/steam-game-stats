@@ -15,7 +15,7 @@ import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/repositori
 import { PlayerHistoryRepository } from "./infrastructure/repositories/player.history.repository.js";
 import { HistoryChecksRepository } from "./infrastructure/repositories/history.checks.repository.js";
 
-//todo use update_timestamps to create app specific timestamp for hourly/whatever time game current player updates
+// todo use steam_apps_update_timestamps to create app specific timestamp for hourly/whatever time game current player updates
 // probably add datamodel for this
 // read rest in issue
 
@@ -25,7 +25,12 @@ async function main() {
   const databaseOptions = {
     url: "mongodb://localhost:27017",
     databaseName: "game-stats",
-    collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
+    collections: [
+      "games",
+      "steam_apps",
+      "steam_apps_update_timestamps",
+      "history_checks",
+    ],
   };
   const databaseClient = await new DatabaseClient().init(databaseOptions);
   const gamesRepository = new GamesRepository(databaseClient);
