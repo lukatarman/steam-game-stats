@@ -48,4 +48,10 @@ export class SteamClient {
 
     return (await this.#httpClient.get(url)).data;
   }
+
+  async getSteamDb(id) {
+    const url = `https://steamdb.info/app/${id}/info/`;
+
+    return (await this.#httpClient.get(url)).data;
+  }
 }
