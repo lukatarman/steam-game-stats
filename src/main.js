@@ -15,10 +15,6 @@ import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/database/r
 import { PlayerHistoryRepository } from "./infrastructure/database/repositories/player.history.repository.js";
 import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
 
-// todo use steam_apps_update_timestamps to create app specific timestamp for hourly/whatever time game current player updates
-// probably add datamodel for this
-// read rest in issue
-
 // our entry point = main
 async function main() {
   // setup phase
