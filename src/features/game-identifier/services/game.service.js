@@ -104,3 +104,64 @@ export function assignType(result, steamApp) {
   if (result) steamApp.appType = SteamApp.validTypes.game;
   return steamApp;
 }
+
+export function updateMissingProperties(games, htmlDetailsPages) {
+  return games.map((game, i) => {
+    const page = htmlDetailsPages[i];
+
+    if (game.releaseDate === "") game.releseDate = getSteamDbReleaseDate(page);
+    if (game.developers.length === 0) game.developers = getSteamDbDevelopers(page);
+    if (game.genres.length === 0) game.developers = getSteamDbGenres(page);
+    if (game.description === "") game.developers = getSteamDbDescription(page);
+  });
+}
+
+export function getSteamDbReleaseDate(page) {
+  const dom = new JSDOM(page);
+
+  const releaseDate = dom.window.document.querySelector(
+    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
+  );
+
+  if (!releaseDate) return;
+
+  return releaseDate.textContent.slice(0, releaseDate.indexOf("–") - 1);
+}
+
+export function getSteamDbDevelopers(page) {
+  const dom = new JSDOM(page);
+
+  const developers = dom.window.document.querySelector(
+    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
+  );
+
+  if (!developers) return;
+
+  return developers.children.map((developer) => developer.textContent);
+}
+
+export function getSteamDbGenres(page) {
+  const dom = new JSDOM(page);
+
+  const domTableBody = dom.window.document.querySelector("#info tbody");
+
+  if (!domTableBody) return;
+
+  const genresNodes = Array.from(domTableBody.children).filter(
+    (tableEntry) => tableEntry.children[0].textContent === "Store Genres",
+  )[0].children[1].childNodes;
+
+  return Array.from(genresNodes)
+    .filter((genre) => genre.constructor.name === "Text")
+    .map((genre) => genre.nodeValue.replace(",", "").trim());
+}
+
+export function getSteamDbDescription(page) {
+  const dom = new JSDOM(page);
+
+  const description = dom.window.document.querySelector(".header-description");
+
+  if (!description) return;
+
+  return description.textContent;
+}
