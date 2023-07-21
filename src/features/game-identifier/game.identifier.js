@@ -28,6 +28,10 @@ export class GameIdentifier {
     this.#options = options;
   }
 
+  // todo
+  // add method for checking missing properties
+  // details: https://github.com/lukatarman/steam-game-stats-backend/issues/115
+
   tryViaSteamWeb = async () => {
     const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
