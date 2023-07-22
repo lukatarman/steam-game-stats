@@ -20,6 +20,25 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
+  async updateGames(games) {
+    await Promise.all(
+      games.map((game) =>
+        this.#dbClient.updateOne(
+          "games",
+          { id: { $eq: game.id } },
+          {
+            $set: {
+              releaseDate: game.releaseDate,
+              developers: game.developers,
+              genres: game.genres,
+              description: game.description,
+            },
+          },
+        ),
+      ),
+    );
+  }
+
   async getXgamesWithUncheckedPlayerHistory(amount) {
     return (
       await this.#dbClient
