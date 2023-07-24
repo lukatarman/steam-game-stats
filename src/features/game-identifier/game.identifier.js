@@ -3,6 +3,7 @@ import {
   updateTypeSideEffectFree,
   identifyGames,
   assignType,
+  updateMissingProperties,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -111,5 +112,38 @@ export class GameIdentifier {
     }
 
     return updatedSteamApps;
+  }
+
+  getMissingGameProperties = async () => {
+    const gamesWithMissingProperties =
+      await this.#gamesRepository.getMissingGameProperties(
+        this.#options.missingPropertiesBatchSize,
+      );
+
+    if (gamesWithMissingProperties === 0) return;
+
+    const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(games);
+
+    const updatedGames = updateMissingProperties(
+      gamesWithMissingProperties,
+      htmlDetailsPages,
+    );
+
+    this.#persistMissingProperties(updatedGames);
+  };
+
+  async #getSteamWebHtmlDetailsPages(games) {
+    const htmlDetailsPages = [];
+
+    for (let game of games) {
+      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game));
+      await delay(this.#options.unitDelay);
+    }
+
+    return htmlDetailsPages;
+  }
+
+  async #persistMissingProperties(games) {
+    await this.#gamesRepository.updateMissingGamesProperties(games);
   }
 }
