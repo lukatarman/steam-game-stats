@@ -20,7 +20,28 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
-  async updateGames(games) {
+  async getGamesWithMissingProperties(amount) {
+    return (
+      await this.#dbClient
+        .get("games")
+        .aggregate([
+          {
+            $match: {
+              $or: [
+                { releaseDate: { $eq: "" } },
+                { developers: { $eq: [] } },
+                { genres: { $eq: [] } },
+                { description: { $eq: "" } },
+              ],
+            },
+          },
+          { $limit: amount },
+        ])
+        .toArray()
+    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
+  }
+
+  async updateMissingGamesProperties(games) {
     await Promise.all(
       games.map((game) =>
         this.#dbClient.updateOne(
@@ -309,23 +330,4 @@ export class GamesRepository {
       },
     };
   };
-
-  async getGamesWithMissingProperties(amount) {
-    return await this.#dbClient
-      .get("games")
-      .aggregate([
-        {
-          $match: {
-            $or: [
-              { releaseDate: { $eq: "" } },
-              { developers: { $eq: [] } },
-              { genres: { $eq: [] } },
-              { description: { $eq: "" } },
-            ],
-          },
-        },
-        { $limit: amount },
-      ])
-      .toArray();
-  }
 }
