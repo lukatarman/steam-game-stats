@@ -443,12 +443,16 @@ describe("game.js", function () {
     });
   });
 
-  describe(".updateMissingProperties updates the missing properties of a game.", function () {
-    describe("When all the properties are missing", function () {
+  describe(".updateMissingProperties updates the game with the provided properties.", function () {
+    describe("When all the properties are provided", function () {
       beforeEach(function () {
         const steamApp = {
           appid: 1,
           name: "Test Game",
+          releaseDate: "",
+          developers: [],
+          genres: [],
+          description: "",
         };
 
         this.releaseDate = new Date("23 July 2023");
@@ -465,7 +469,40 @@ describe("game.js", function () {
 
         const game = Game.fromSteamApp(steamApp);
         this.result = game.updateMissingProperties(propertiesObject);
-        console.log(this.result);
+      });
+
+      it("The result is an instance of Game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("All the provided properties are added to the game", function () {
+        expect(this.result.releaseDate).toBe(this.releaseDate);
+        expect(this.result.developers).toEqual(this.developers);
+        expect(this.result.genres).toEqual(this.genres);
+        expect(this.result.description).toBe(this.description);
+      });
+    });
+
+    describe("When no new properties are provided", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Test Game",
+          releaseDate: "",
+          developers: [],
+          genres: [],
+          description: "",
+        };
+
+        const propertiesObject = {
+          releaseDate: "",
+          developers: [],
+          genres: [],
+          description: "",
+        };
+
+        const game = Game.fromSteamApp(steamApp);
+        this.result = game.updateMissingProperties(propertiesObject);
       });
 
       it("The result is an instance of Game", function () {
