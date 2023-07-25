@@ -122,7 +122,9 @@ export class GameIdentifier {
 
     if (gamesWithMissingProperties === 0) return;
 
-    const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(games);
+    const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(
+      gamesWithMissingProperties,
+    );
 
     const updatedGames = updateMissingProperties(
       gamesWithMissingProperties,
