@@ -113,27 +113,40 @@ export function updateMissingProperties(games, htmlDetailsPages) {
   return games.map((game, i) => {
     const page = htmlDetailsPages[i];
 
-    const details = {};
+    const details = {
+      releaseDate: "",
+      developers: [],
+      genres: [],
+      description: "",
+    };
 
-    if (game.releaseDate === "") details.releseDate = getSteamDbReleaseDate(page);
+    if (game.releaseDate === "") details.releaseDate = getSteamDbReleaseDate(page);
     if (game.developers.length === 0) details.developers = getSteamDbDevelopers(page);
     if (game.genres.length === 0) details.genres = getSteamDbGenres(page);
-    if (game.description === "") details.developers = getSteamDbDescription(page);
+    if (game.description === "") details.description = getSteamDbDescription(page);
 
-    return game.updateMissingDetails(details);
+    return game.updateMissingProperties(details);
   });
 }
 
 export function getSteamDbReleaseDate(page) {
   const dom = new JSDOM(page);
 
-  const releaseDate = dom.window.document.querySelector(
+  const releaseDateElement = dom.window.document.querySelector(
     "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
   );
 
-  if (!releaseDate) return "";
+  if (!releaseDateElement) return "";
 
-  return releaseDate.textContent.slice(0, releaseDate.indexOf("–") - 1);
+  const releaseDateString = releaseDateElement.textContent;
+
+  const releaseDate = new Date(
+    releaseDateString.slice(0, releaseDateString.indexOf("–") - 1),
+  );
+
+  if (releaseDate == "Invalid Date") return releaseDateString;
+
+  return releaseDate;
 }
 
 export function getSteamDbDevelopers(page) {
@@ -145,7 +158,7 @@ export function getSteamDbDevelopers(page) {
 
   if (!developers) return [];
 
-  return developers.children.map((developer) => developer.textContent);
+  return Array.from(developers.children).map((developer) => developer.textContent);
 }
 
 export function getSteamDbGenres(page) {
