@@ -8,6 +8,8 @@ import {
   getDevelopers,
   getGenres,
   getGameDescription,
+  updateMissingProperties,
+  getSteamDbReleaseDate,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -21,6 +23,9 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { ValidDataSources } from "../../../utils/valid.data.sources.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -562,6 +567,86 @@ describe("game.service.js", () => {
         it("the function returns the steamApp. The type property is 'game'", function () {
           expect(this.result.type).toBe(SteamApp.validTypes.game);
         });
+      });
+    });
+  });
+
+  describe(".updateMissingProperties.", function () {
+    describe("When all the games' properties are missing,", function () {
+      beforeEach(function () {
+        const firstGame = Game.fromSteamcharts({ appid: 1, name: "Counter-Strike" });
+        const secondGame = Game.fromSteamcharts({ appid: 2, name: "Risk of Rain" });
+
+        const htmlDetailsPages = [
+          counterStrikeHtmlDetailsSteamDb,
+          riskOfRainHtmlDetailsSteamDb,
+        ];
+
+        this.result = updateMissingProperties([firstGame, secondGame], htmlDetailsPages);
+      });
+
+      it("two games are returned", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the name of the first game is 'Counter-Strike", function () {
+        expect(this.result[0].name).toBe("Counter-Strike");
+      });
+
+      it("the first game's properties are added", function () {
+        expect(this.result[0].releaseDate).toBe("21 August 2012");
+        expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
+        expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
+        expect(this.result[0].description).toBe(
+          "Counter-Strike: Global Offensive (CS: GO) expands upon the team-based action gameplay that it pioneered when it was launched 19 years ago. CS: GO features new maps, characters, weapons, and game modes, and delivers updated versions of the classic CS content (de_dust2, etc.).",
+        );
+      });
+
+      it("the second game is 'Risk of Rain", function () {
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the second game's properties are added", function () {
+        expect(this.result[1].releaseDate).toBe("11 August 2020");
+        expect(this.result[1].developers).toEqual(["Hopoo Games"]);
+        expect(this.result[1].genres).toEqual(["Action", "Indie"]);
+        expect(this.result[1].description).toBe(
+          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
+        );
+      });
+    });
+  });
+
+  describe(".getSteamDbReleaseDate. returns the release date from the provided html page.", function () {
+    describe("When the release date is not a valid date,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
+      });
+
+      it("the returned value is 'Coming Soon'", function () {
+        expect(this.result).toBe("Coming soon");
+      });
+    });
+
+    describe("When the release date is a valid date,", function () {
+      beforeEach(function () {
+        this.date = new Date("11 August 2020");
+
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("the returned value is '11 August 2020'", function () {
+        expect(this.result).toEqual(this.date);
+      });
+    });
+
+    describe("When no release date is found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty string", function () {
+        expect(this.result).toBe("");
       });
     });
   });
