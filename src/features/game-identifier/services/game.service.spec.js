@@ -10,6 +10,9 @@ import {
   getGameDescription,
   updateMissingProperties,
   getSteamDbReleaseDate,
+  getSteamDbDevelopers,
+  getSteamDbGenres,
+  getSteamDbDescription,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -594,7 +597,7 @@ describe("game.service.js", () => {
       });
 
       it("the first game's properties are added", function () {
-        expect(this.result[0].releaseDate).toBe("21 August 2012");
+        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012"));
         expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
         expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
         expect(this.result[0].description).toBe(
@@ -607,7 +610,7 @@ describe("game.service.js", () => {
       });
 
       it("the second game's properties are added", function () {
-        expect(this.result[1].releaseDate).toBe("11 August 2020");
+        expect(this.result[1].releaseDate).toEqual(new Date("11 August 2020"));
         expect(this.result[1].developers).toEqual(["Hopoo Games"]);
         expect(this.result[1].genres).toEqual(["Action", "Indie"]);
         expect(this.result[1].description).toBe(
@@ -615,9 +618,46 @@ describe("game.service.js", () => {
         );
       });
     });
+
+    describe("When no games' properties are missing", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Counter-Strike",
+        };
+
+        const releaseDate = "21 July 2019";
+        const developers = ["Valve", "Hopoo Games"];
+        const genres = ["Action", "Adventure"];
+        const description = "Best game";
+
+        const instantiatedGames = [
+          Game.fromSteamApp(steamApp, releaseDate, developers, genres, description),
+        ];
+
+        const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
+
+        this.result = updateMissingProperties(instantiatedGames, htmlDetailsPages);
+      });
+
+      it("one game is returned", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the name of the game is 'Counter-Strike", function () {
+        expect(this.result[0].name).toBe("Counter-Strike");
+      });
+
+      it("the first game has the correct values", function () {
+        expect(this.result[0].releaseDate).toBe("21 July 2019");
+        expect(this.result[0].developers).toEqual(["Valve", "Hopoo Games"]);
+        expect(this.result[0].genres).toEqual(["Action", "Adventure"]);
+        expect(this.result[0].description).toBe("Best game");
+      });
+    });
   });
 
-  describe(".getSteamDbReleaseDate. returns the release date from the provided html page.", function () {
+  describe(".getSteamDbReleaseDate returns the release date from the provided html page.", function () {
     describe("When the release date is not a valid date,", function () {
       beforeEach(function () {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
@@ -647,6 +687,74 @@ describe("game.service.js", () => {
 
       it("the returned value is an empty string", function () {
         expect(this.result).toBe("");
+      });
+    });
+  });
+
+  describe(".getSteamDbDevelopers returns the developers from the provided html page.", function () {
+    describe("When the developers are found,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it('the returned value is ["Hopoo Games"]', function () {
+        expect(this.result).toEqual(["Hopoo Games"]);
+      });
+    });
+
+    describe("When no developers are found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  describe(".getSteamDbGenres returns the genres from the provided html page.", function () {
+    describe("When the genres are found,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbGenres(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it('the returned value is ["Action", "Indie"]', function () {
+        expect(this.result).toEqual(["Action", "Indie"]);
+      });
+    });
+
+    describe("When no genres are found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  describe(".getSteamDbDescription returns the description from the provided html page.", function () {
+    describe("When the description is found,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("the returned value is 'Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.'", function () {
+        expect(this.result).toEqual(
+          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
+        );
+      });
+    });
+
+    describe("When no genres are found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty string", function () {
+        expect(this.result).toEqual("");
       });
     });
   });
