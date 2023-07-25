@@ -40,11 +40,15 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
 export function getReleaseDate(page) {
   const dom = new JSDOM(page);
 
-  const releaseDate = dom.window.document.querySelector(".release_date .date");
+  const releaseDateString = dom.window.document.querySelector(".release_date .date");
 
-  if (!releaseDate) return "";
+  if (!releaseDateString) return "";
 
-  return new Date(releaseDate.textContent.trim());
+  const releaseDate = new Date(releaseDateString.textContent.trim());
+
+  if (releaseDate == "Invalid Date") return releaseDateString;
+
+  return releaseDate;
 }
 
 export function getDevelopers(page) {
@@ -127,7 +131,7 @@ export function getSteamDbReleaseDate(page) {
     "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
   );
 
-  if (!releaseDate) return;
+  if (!releaseDate) return "";
 
   return releaseDate.textContent.slice(0, releaseDate.indexOf("–") - 1);
 }
@@ -139,7 +143,7 @@ export function getSteamDbDevelopers(page) {
     "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
   );
 
-  if (!developers) return;
+  if (!developers) return [];
 
   return developers.children.map((developer) => developer.textContent);
 }
@@ -149,7 +153,7 @@ export function getSteamDbGenres(page) {
 
   const domTableBody = dom.window.document.querySelector("#info tbody");
 
-  if (!domTableBody) return;
+  if (!domTableBody) return [];
 
   const genresNodes = Array.from(domTableBody.children).filter(
     (tableEntry) => tableEntry.children[0].textContent === "Store Genres",
@@ -165,7 +169,7 @@ export function getSteamDbDescription(page) {
 
   const description = dom.window.document.querySelector(".header-description");
 
-  if (!description) return;
+  if (!description) return "";
 
   return description.textContent;
 }
