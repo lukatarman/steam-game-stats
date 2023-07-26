@@ -217,6 +217,72 @@ describe("GamesRepository", function () {
     });
   });
 
+  describe(".updateMissingGamesProperties", function () {
+    describe("When 3 games with updated properties are persisted to the database,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        const games = [
+          {
+            id: 1,
+            name: "Risk of Train",
+            releaseDate: "21.09.1989",
+            developers: ["Valve"],
+            genres: ["Action"],
+            description: "Best game",
+          },
+          {
+            id: 2,
+            name: "Risk of Rain",
+            releaseDate: "21.09.1989",
+            developers: ["Valve"],
+            genres: ["Action", "RPG"],
+            description: "Best one",
+          },
+          {
+            id: 5,
+            name: "Risk of Cane",
+            releaseDate: "",
+            developers: [],
+            genres: ["This updated"],
+            description: "And this updated",
+          },
+        ];
+
+        await this.databaseClient.insertMany("games", getSixGamesWithMissingProperties());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        await gamesRepo.updateMissingGamesProperties(games);
+
+        this.result = await gamesRepo.getAllGames();
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the first game 'Risk of Train' has the correct updated values", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+        expect(this.result[0].releaseDate).toBe("21.09.1989");
+      });
+
+      it("the second game 'Risk of Rain' has the correct updated values", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+        expect(this.result[1].developers).toEqual(["Valve"]);
+      });
+
+      it("the fifth game 'Risk of Cane has the correct updated values'", function () {
+        expect(this.result[4].id).toBe(5);
+        expect(this.result[4].name).toBe("Risk of Cane");
+        expect(this.result[4].genres).toEqual(["This updated"]);
+        expect(this.result[4].description).toBe("And this updated");
+      });
+    });
+  });
+
   describe(".getXgamesWithUncheckedPlayerHistory returns an array of games with unchecked player histories.", function () {
     describe("If the amount of 3 is passed in, with two valid documents", function () {
       beforeAll(async function () {
