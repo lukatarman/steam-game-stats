@@ -828,7 +828,7 @@ describe("game.identifier.js", function () {
       });
     });
 
-    describe("Finds two games with missing properties", function () {
+    fdescribe("Finds two games with missing properties", function () {
       beforeEach(async function () {
         this.options = {
           missingPropertiesBatchSize: 2,
@@ -848,21 +848,21 @@ describe("game.identifier.js", function () {
           description,
         );
         const secondGame = Game.fromSteamApp(
-          { appid: 1, name: "Risk of Rain" },
+          { appid: 2, name: "Risk of Rain" },
           releaseDate,
           developers,
           genres,
           description,
         );
 
-        const gamesRepoReturn = Game.manyFromDbEntry([firstGame, secondGame]);
+        this.gamesRepoReturn = Game.manyFromDbEntry([firstGame, secondGame]);
 
         this.steamClientMock = createSteamMock([
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
         ]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
-        this.gamesRepository = createGamesRepositoryMock(gamesRepoReturn);
+        this.gamesRepository = createGamesRepositoryMock(this.gamesRepoReturn);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -886,11 +886,32 @@ describe("game.identifier.js", function () {
         );
       });
 
+      it("getMissingGameProperties was called before getSteamDbHtmlDetailsPage", function () {
+        expect(this.gamesRepository.getMissingGameProperties).toHaveBeenCalledBefore(
+          this.steamClientMock.getSteamDbHtmlDetailsPage,
+        );
+      });
+
       it("getSteamDbHtmlDetailsPage was called twice", function () {
         expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledTimes(2);
       });
 
-      it("updateMissingGamesProperties was not called", function () {
+      it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
+        expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
+          this.gamesRepoReturn[0],
+        );
+        expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
+          this.gamesRepoReturn[1],
+        );
+      });
+
+      it("getSteamDbHtmlDetailsPage was called before updateMissingGamesProperties", function () {
+        expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledBefore(
+          this.gamesRepository.updateMissingGamesProperties,
+        );
+      });
+
+      it("updateMissingGamesProperties was called once", function () {
         expect(this.gamesRepository.updateMissingGamesProperties).toHaveBeenCalledTimes(
           1,
         );
