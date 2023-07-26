@@ -26,6 +26,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
+      - run: cd backend && npm install
       - run: cd backend && npm run prettier:check
       - run: cd backend && npm test
