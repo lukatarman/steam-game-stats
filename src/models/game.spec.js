@@ -506,7 +506,6 @@ describe("game.js", function () {
         );
 
         this.result = this.game.updateMissingProperties(propertiesObject);
-        console.log(this.result);
       });
 
       it("The result is an instance of Game", function () {
