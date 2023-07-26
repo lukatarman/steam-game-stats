@@ -181,7 +181,7 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("five games are returned", function () {
+      it("six games are returned", function () {
         expect(this.result.length).toBe(6);
       });
 
