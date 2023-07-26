@@ -152,16 +152,19 @@ describe("GamesRepository", function () {
         expect(this.result[1].id).toBe(2);
         expect(this.result[1].name).toBe("Risk of Rain");
       });
+
       it("the third game is 'Risk of Strain'", function () {
         expect(this.result[2].id).toBe(3);
         expect(this.result[2].name).toBe("Risk of Strain");
       });
+
       it("the fourth game is 'Risk of Brain'", function () {
         expect(this.result[3].id).toBe(4);
         expect(this.result[3].name).toBe("Risk of Brain");
       });
+
       it("the fifth game is 'Risk of Cane'", function () {
-        expect(this.result[4].id).toBe(5);
+        expect(this.result[4].id).toBe(6);
         expect(this.result[4].name).toBe("Risk of Cane");
       });
     });
@@ -206,12 +209,12 @@ describe("GamesRepository", function () {
       });
 
       it("the fifth game is 'Risk of Cane'", function () {
-        expect(this.result[4].id).toBe(5);
+        expect(this.result[4].id).toBe(6);
         expect(this.result[4].name).toBe("Risk of Cane");
       });
 
       it("the sixth game is 'Risk of Gain'", function () {
-        expect(this.result[5].id).toBe(6);
+        expect(this.result[5].id).toBe(7);
         expect(this.result[5].name).toBe("Risk of Gain");
       });
     });
@@ -262,19 +265,19 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the first game 'Risk of Train' has the correct updated values", function () {
+      it("the game 'Risk of Train' has the correct updated values", function () {
         expect(this.result[0].id).toBe(1);
         expect(this.result[0].name).toBe("Risk of Train");
         expect(this.result[0].releaseDate).toBe("21.09.1989");
       });
 
-      it("the second game 'Risk of Rain' has the correct updated values", function () {
+      it("the game 'Risk of Rain' has the correct updated values", function () {
         expect(this.result[1].id).toBe(2);
         expect(this.result[1].name).toBe("Risk of Rain");
         expect(this.result[1].developers).toEqual(["Valve"]);
       });
 
-      it("the fifth game 'Risk of Cane has the correct updated values'", function () {
+      it("the game 'Risk of Cane has the correct updated values'", function () {
         expect(this.result[4].id).toBe(5);
         expect(this.result[4].name).toBe("Risk of Cane");
         expect(this.result[4].genres).toEqual(["This updated"]);

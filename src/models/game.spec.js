@@ -455,20 +455,15 @@ describe("game.js", function () {
           description: "",
         };
 
-        this.releaseDate = new Date("23 July 2023");
-        this.developers = ["Valve", "Hopoo Games"];
-        this.genres = ["Action", "RPG"];
-        this.description = "This game is awesome!";
-
-        const propertiesObject = {
-          releaseDate: this.releaseDate,
-          developers: this.developers,
-          genres: this.genres,
-          description: this.description,
+        this.propertiesObject = {
+          releaseDate: new Date("23 July 2023"),
+          developers: ["Valve", "Hopoo Games"],
+          genres: ["Action", "RPG"],
+          description: "This game is awesome!",
         };
 
         const game = Game.fromSteamApp(steamApp);
-        this.result = game.updateMissingProperties(propertiesObject);
+        this.result = game.updateMissingProperties(this.propertiesObject);
       });
 
       it("The result is an instance of Game", function () {
@@ -476,23 +471,24 @@ describe("game.js", function () {
       });
 
       it("All the provided properties are added to the game", function () {
-        expect(this.result.releaseDate).toBe(this.releaseDate);
-        expect(this.result.developers).toEqual(this.developers);
-        expect(this.result.genres).toEqual(this.genres);
-        expect(this.result.description).toBe(this.description);
+        expect(this.result.releaseDate).toBe(this.propertiesObject.releaseDate);
+        expect(this.result.developers).toEqual(this.propertiesObject.developers);
+        expect(this.result.genres).toEqual(this.propertiesObject.genres);
+        expect(this.result.description).toBe(this.propertiesObject.description);
       });
     });
 
-    describe("When no new properties are provided", function () {
+    fdescribe("When no new properties are provided", function () {
       beforeEach(function () {
         const steamApp = {
           appid: 1,
           name: "Test Game",
-          releaseDate: "",
-          developers: [],
-          genres: [],
-          description: "",
         };
+
+        const releaseDate = "";
+        const developers = [];
+        const genres = [];
+        const description = "";
 
         const propertiesObject = {
           releaseDate: "",
@@ -501,19 +497,27 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(steamApp);
-        this.result = game.updateMissingProperties(propertiesObject);
+        this.game = Game.fromSteamApp(
+          steamApp,
+          releaseDate,
+          developers,
+          genres,
+          description,
+        );
+
+        this.result = this.game.updateMissingProperties(propertiesObject);
+        console.log(this.result);
       });
 
       it("The result is an instance of Game", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("All the provided properties are added to the game", function () {
-        expect(this.result.releaseDate).toBe(this.releaseDate);
-        expect(this.result.developers).toEqual(this.developers);
-        expect(this.result.genres).toEqual(this.genres);
-        expect(this.result.description).toBe(this.description);
+      it("The game's properties stay unchanged.", function () {
+        expect(this.result.releaseDate).toBe(this.game.releaseDate);
+        expect(this.result.developers).toEqual(this.game.developers);
+        expect(this.result.genres).toEqual(this.game.genres);
+        expect(this.result.description).toBe(this.game.description);
       });
     });
   });

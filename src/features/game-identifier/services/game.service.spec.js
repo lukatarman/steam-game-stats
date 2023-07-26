@@ -577,15 +577,17 @@ describe("game.service.js", () => {
   describe(".updateMissingProperties.", function () {
     describe("When all the games' properties are missing,", function () {
       beforeEach(function () {
-        const firstGame = Game.fromSteamcharts({ appid: 1, name: "Counter-Strike" });
-        const secondGame = Game.fromSteamcharts({ appid: 2, name: "Risk of Rain" });
+        const games = [
+          Game.fromSteamcharts({ appid: 1, name: "Counter-Strike" }),
+          Game.fromSteamcharts({ appid: 2, name: "Risk of Rain" }),
+        ];
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
         ];
 
-        this.result = updateMissingProperties([firstGame, secondGame], htmlDetailsPages);
+        this.result = updateMissingProperties(games, htmlDetailsPages);
       });
 
       it("two games are returned", function () {

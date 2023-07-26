@@ -233,6 +233,22 @@ export const getSixGamesWithMissingProperties = () => {
     {
       id: 5,
       name: "Risk of Cane",
+      releaseDate: "21.09.1989",
+      developers: ["Valve"],
+      genres: ["Action"],
+      description: "Test",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "Risk of Cane",
       releaseDate: "",
       developers: [],
       genres: [],
@@ -247,7 +263,7 @@ export const getSixGamesWithMissingProperties = () => {
       ],
     },
     {
-      id: 6,
+      id: 7,
       name: "Risk of Gain",
       releaseDate: "",
       developers: [],

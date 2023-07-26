@@ -828,7 +828,7 @@ describe("game.identifier.js", function () {
       });
     });
 
-    fdescribe("Finds two games with missing properties", function () {
+    describe("Finds two games with missing properties", function () {
       beforeEach(async function () {
         this.options = {
           missingPropertiesBatchSize: 2,
