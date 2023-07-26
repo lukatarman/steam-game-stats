@@ -1,7 +1,7 @@
 {
-  "name": "steam-game-stats",
+  "name": "backend",
   "version": "0.0.1",
-  "description": "Application for steam games statistics.",
+  "description": "Steam game stats backend.",
   "main": "src/main.js",
   "scripts": {
     "test": "jasmine --config=jasmine.json",
@@ -13,20 +13,12 @@
     "type": "git",
     "url": "git+https://github.com/lukatarman/steam-game-stats.git"
   },
-  "keywords": [
-    "steam",
-    "games",
-    "statistics"
-  ],
   "author": "Luka Tarman, Stanislav Jakuschevskij",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lukatarman/steam-game-stats/issues"
-  },
   "homepage": "https://github.com/lukatarman/steam-game-stats#readme",
   "dependencies": {
     "@fastify/cors": "8.1.0",
-    "axios": "0.26.1",
+    "axios": "0.27.2",
     "fastify": "4.6.0",
     "jsdom": "19.0.0",
     "lodash.clonedeep": "4.5.0",
@@ -38,5 +30,8 @@
     "mongodb-memory-server": "8.12.2",
     "prettier": "2.6.0"
   },
-  "type": "module"
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  }
 }

@@ -1,6 +1,21 @@
 {
-  "name": "steam-game-stats-frontend",
-  "version": "0.1.0",
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "Steam game stats frontend.",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukatarman/steam-game-stats.git"
+  },
+  "author": "Luka Tarman",
+  "license": "ISC",
+  "homepage": "https://github.com/lukatarman/steam-game-stats#readme",
   "private": true,
   "dependencies": {
     "axios": "0.27.2",
@@ -12,11 +27,10 @@
     "react-scripts": "5.0.1",
     "web-vitals": "2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/react": "13.4.0",
+    "@testing-library/user-event": "14.4.3"
   },
   "eslintConfig": {
     "extends": [
@@ -35,10 +49,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "5.16.5",
-    "@testing-library/react": "13.4.0",
-    "@testing-library/user-event": "14.4.3"
   }
 }
