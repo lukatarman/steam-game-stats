@@ -793,7 +793,7 @@ describe("game.identifier.js", function () {
 
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
-        this.gamesRepository = createGamesRepositoryMock(0);
+        this.gamesRepository = createGamesRepositoryMock([]);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(

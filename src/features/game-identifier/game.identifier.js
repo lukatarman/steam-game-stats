@@ -120,7 +120,7 @@ export class GameIdentifier {
         this.#options.missingPropertiesBatchSize,
       );
 
-    if (gamesWithMissingProperties === 0) return;
+    if (gamesWithMissingProperties.length === 0) return;
 
     const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(
       gamesWithMissingProperties,
