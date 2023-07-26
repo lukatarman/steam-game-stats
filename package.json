@@ -2,6 +2,10 @@
   "name": "steam-game-stats",
   "version": "0.0.1",
   "description": "Application for steam games statistics",
+  "scripts": {
+    "test": "npm test -w backend",
+    "prettier:check": "npm run prettier:check -w backend"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lukatarman/steam-game-stats.git"
