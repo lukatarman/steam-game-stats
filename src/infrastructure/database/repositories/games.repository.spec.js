@@ -4,6 +4,7 @@ import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
 import {
   getGamesWithEmptyPlayerHistories,
   getGamesWithTrackedPlayersNoDate,
+  getSixGamesWithMissingProperties,
   getTrendingGamesMockData,
 } from "../../../models/game.mocks.js";
 
@@ -119,6 +120,100 @@ describe("GamesRepository", function () {
     it("the second array has the correct values", function () {
       expect(this.result[1].id).toBe(2);
       expect(this.result[1].name).toBe("Risk of Rain");
+    });
+  });
+
+  describe(".getGamesWithMissingProperties", function () {
+    describe("When there are 6 games with missing properties, and a limit of 5 is passed in,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getSixGamesWithMissingProperties());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getGamesWithMissingProperties(5);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("five games are returned", function () {
+        expect(this.result.length).toBe(5);
+      });
+
+      it("the first game is 'Risk of Train'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second game is 'Risk of Rain'", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+      it("the third game is 'Risk of Strain'", function () {
+        expect(this.result[2].id).toBe(3);
+        expect(this.result[2].name).toBe("Risk of Strain");
+      });
+      it("the fourth game is 'Risk of Brain'", function () {
+        expect(this.result[3].id).toBe(4);
+        expect(this.result[3].name).toBe("Risk of Brain");
+      });
+      it("the fifth game is 'Risk of Cane'", function () {
+        expect(this.result[4].id).toBe(5);
+        expect(this.result[4].name).toBe("Risk of Cane");
+      });
+    });
+
+    describe("When there are 6 games with missing properties, and a limit of 6 is passed in,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getSixGamesWithMissingProperties());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getGamesWithMissingProperties(6);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("five games are returned", function () {
+        expect(this.result.length).toBe(6);
+      });
+
+      it("the first game is 'Risk of Train'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second game is 'Risk of Rain'", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the third game is 'Risk of Strain'", function () {
+        expect(this.result[2].id).toBe(3);
+        expect(this.result[2].name).toBe("Risk of Strain");
+      });
+
+      it("the fourth game is 'Risk of Brain'", function () {
+        expect(this.result[3].id).toBe(4);
+        expect(this.result[3].name).toBe("Risk of Brain");
+      });
+
+      it("the fifth game is 'Risk of Cane'", function () {
+        expect(this.result[4].id).toBe(5);
+        expect(this.result[4].name).toBe("Risk of Cane");
+      });
+
+      it("the sixth game is 'Risk of Gain'", function () {
+        expect(this.result[5].id).toBe(6);
+        expect(this.result[5].name).toBe("Risk of Gain");
+      });
     });
   });
 
