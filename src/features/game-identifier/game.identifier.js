@@ -30,7 +30,7 @@ export class GameIdentifier {
   }
 
   // todo
-  // add method for checking missing properties
+  // Separate release date property checking into own method
   // details: https://github.com/lukatarman/steam-game-stats-backend/issues/138
 
   tryViaSteamWeb = async () => {
