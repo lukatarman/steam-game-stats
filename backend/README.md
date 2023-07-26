@@ -44,22 +44,22 @@ You need a code editor, Node.js and MongoDB installed.
 
 You have to start the backend and frontend explicitly. The frontend depends on the backend. It won't display any game data if there is no running backend.
 
-The backend can run alone, it will then start collecting game data but it expects a running MongoDB instance. Depending on your operating system first start a MongoDB server instance. Then navigate into the `steam-game-stats-backend` directory and execute in the terminal:
+The backend can run alone, it will then start collecting game data but it expects a running MongoDB instance. Depending on your operating system first start a MongoDB server instance. From the project root directory execute in the terminal:
 
 ```bash
-npm start
+npm start -w backend
 ```
 
 To run the backend tests execute:
 
 ```bash
-npm test
+npm test -w backend
 ```
 
-For the frontend navigate into the `steam-game-stats-frontend` directory and execute:
+For the frontend execute:
 
 ```bash
-npm start
+npm start -w frontend
 ```
 
 Open [http://localhost:8080](http://localhost:8080) in your browser and explore the UI.
