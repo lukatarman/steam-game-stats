@@ -478,7 +478,7 @@ describe("game.js", function () {
       });
     });
 
-    fdescribe("When no new properties are provided", function () {
+    describe("When no new properties are provided", function () {
       beforeEach(function () {
         const steamApp = {
           appid: 1,
