@@ -4,6 +4,7 @@ import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
 import {
   getGamesWithEmptyPlayerHistories,
   getGamesWithTrackedPlayersNoDate,
+  getSixGamesWithMissingProperties,
   getTrendingGamesMockData,
 } from "../../../models/game.mocks.js";
 
@@ -119,6 +120,169 @@ describe("GamesRepository", function () {
     it("the second array has the correct values", function () {
       expect(this.result[1].id).toBe(2);
       expect(this.result[1].name).toBe("Risk of Rain");
+    });
+  });
+
+  describe(".getGamesWithMissingProperties", function () {
+    describe("When there are 6 games with missing properties, and a limit of 5 is passed in,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getSixGamesWithMissingProperties());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getGamesWithMissingProperties(5);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("five games are returned", function () {
+        expect(this.result.length).toBe(5);
+      });
+
+      it("the first game is 'Risk of Train'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second game is 'Risk of Rain'", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the third game is 'Risk of Strain'", function () {
+        expect(this.result[2].id).toBe(3);
+        expect(this.result[2].name).toBe("Risk of Strain");
+      });
+
+      it("the fourth game is 'Risk of Brain'", function () {
+        expect(this.result[3].id).toBe(4);
+        expect(this.result[3].name).toBe("Risk of Brain");
+      });
+
+      it("the fifth game is 'Risk of Cane'", function () {
+        expect(this.result[4].id).toBe(6);
+        expect(this.result[4].name).toBe("Risk of Cane");
+      });
+    });
+
+    describe("When there are 6 games with missing properties, and a limit of 6 is passed in,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getSixGamesWithMissingProperties());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getGamesWithMissingProperties(6);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("six games are returned", function () {
+        expect(this.result.length).toBe(6);
+      });
+
+      it("the first game is 'Risk of Train'", function () {
+        expect(this.result[0].id).toBe(1);
+        expect(this.result[0].name).toBe("Risk of Train");
+      });
+
+      it("the second game is 'Risk of Rain'", function () {
+        expect(this.result[1].id).toBe(2);
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the third game is 'Risk of Strain'", function () {
+        expect(this.result[2].id).toBe(3);
+        expect(this.result[2].name).toBe("Risk of Strain");
+      });
+
+      it("the fourth game is 'Risk of Brain'", function () {
+        expect(this.result[3].id).toBe(4);
+        expect(this.result[3].name).toBe("Risk of Brain");
+      });
+
+      it("the fifth game is 'Risk of Cane'", function () {
+        expect(this.result[4].id).toBe(6);
+        expect(this.result[4].name).toBe("Risk of Cane");
+      });
+
+      it("the sixth game is 'Risk of Gain'", function () {
+        expect(this.result[5].id).toBe(7);
+        expect(this.result[5].name).toBe("Risk of Gain");
+      });
+    });
+  });
+
+  describe(".updateMissingGamesProperties", function () {
+    describe("When 3 games with updated properties are persisted to the database,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        this.games = [
+          {
+            id: 1,
+            name: "Risk of Train",
+            releaseDate: "21.09.1989",
+            developers: ["Valve"],
+            genres: ["Action"],
+            description: "Best game",
+          },
+          {
+            id: 2,
+            name: "Risk of Rain",
+            releaseDate: "21.09.1989",
+            developers: ["Valve"],
+            genres: ["Action", "RPG"],
+            description: "Best one",
+          },
+          {
+            id: 5,
+            name: "Risk of Cane",
+            releaseDate: "",
+            developers: [],
+            genres: ["This updated"],
+            description: "And this updated",
+          },
+        ];
+
+        await this.databaseClient.insertMany("games", getSixGamesWithMissingProperties());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        await gamesRepo.updateMissingGamesProperties(this.games);
+
+        this.result = await gamesRepo.getAllGames();
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the game 'Risk of Train' has the correct updated values", function () {
+        expect(this.result[0].id).toBe(this.games[0].id);
+        expect(this.result[0].name).toBe(this.games[0].name);
+        expect(this.result[0].releaseDate).toBe(this.games[0].releaseDate);
+      });
+
+      it("the game 'Risk of Rain' has the correct updated values", function () {
+        expect(this.result[1].id).toBe(this.games[1].id);
+        expect(this.result[1].name).toBe(this.games[1].name);
+        expect(this.result[1].developers).toEqual(this.games[1].developers);
+      });
+
+      it("the game 'Risk of Cane has the correct updated values'", function () {
+        expect(this.result[4].id).toBe(this.games[2].id);
+        expect(this.result[4].name).toBe(this.games[2].name);
+        expect(this.result[4].genres).toEqual(this.games[2].genres);
+        expect(this.result[4].description).toBe(this.games[2].description);
+      });
     });
   });
 
