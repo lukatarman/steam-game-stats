@@ -468,7 +468,7 @@ describe("game.js", function () {
 
     describe("When the release date is not provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
+        const propertiesObject = {
           releaseDate: "",
           developers: [],
           genres: [],
@@ -477,7 +477,7 @@ describe("game.js", function () {
 
         const game = getOneGameWithoutDetails();
 
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.result = game.updateGameDetails(propertiesObject);
       });
 
       it("a game is returned.", function () {
@@ -514,7 +514,7 @@ describe("game.js", function () {
 
     describe("When the developers are not provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
+        const propertiesObject = {
           releaseDate: "",
           developers: [],
           genres: [],
@@ -523,7 +523,7 @@ describe("game.js", function () {
 
         const game = getOneGameWithoutDetails();
 
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.result = game.updateGameDetails(propertiesObject);
       });
 
       it("a game is returned.", function () {
@@ -560,7 +560,7 @@ describe("game.js", function () {
 
     describe("When the genres are not provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
+        const propertiesObject = {
           releaseDate: "",
           developers: [],
           genres: [],
@@ -569,7 +569,7 @@ describe("game.js", function () {
 
         const game = getOneGameWithoutDetails();
 
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.result = game.updateGameDetails(propertiesObject);
       });
 
       it("a game is returned.", function () {
@@ -606,7 +606,7 @@ describe("game.js", function () {
 
     describe("When the description is not provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
+        const propertiesObject = {
           releaseDate: "",
           developers: [],
           genres: [],
@@ -615,7 +615,7 @@ describe("game.js", function () {
 
         const game = getOneGameWithoutDetails();
 
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.result = game.updateGameDetails(propertiesObject);
       });
 
       it("a game is returned.", function () {
