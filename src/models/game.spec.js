@@ -474,11 +474,11 @@ describe("game.js", function () {
         this.result = game.updateMissingProperties(this.propertiesObject);
       });
 
-      it("The result is an instance of Game", function () {
+      it("a game is returned.", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("All the provided properties are added to the game", function () {
+      it("All the provided properties on the game are changed", function () {
         expect(this.result.releaseDate).toBe(this.propertiesObject.releaseDate);
         expect(this.result.developers).toEqual(this.propertiesObject.developers);
         expect(this.result.genres).toEqual(this.propertiesObject.genres);
@@ -516,11 +516,11 @@ describe("game.js", function () {
         this.result = game.updateMissingProperties(this.propertiesObject);
       });
 
-      it("The result is an instance of Game", function () {
+      it("a game is returned.", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("All the provided properties are added to the game", function () {
+      it("only the value of the provided property changes.", function () {
         expect(this.result.releaseDate).toBe(this.releaseDate);
         expect(this.result.developers).toEqual(this.propertiesObject.developers);
         expect(this.result.genres).toEqual(this.genres);
@@ -558,7 +558,7 @@ describe("game.js", function () {
         this.result = this.game.updateMissingProperties(propertiesObject);
       });
 
-      it("The result is an instance of Game", function () {
+      it("a game is returned.", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
