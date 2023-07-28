@@ -441,7 +441,7 @@ describe("game.js", function () {
     });
   });
 
-  describe(".updateGameDetails returns a game with updated details.", function () {
+  describe(".updateGameDetails.", function () {
     describe("When the release date is provided,", function () {
       beforeEach(function () {
         const steamApp = getOneSampleApp();
