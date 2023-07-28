@@ -6,7 +6,8 @@ export class Game {
   name;
   releaseDate;
   developers;
-  image;
+  genres;
+  description;
   imageUrl;
   playerHistory;
 
@@ -90,5 +91,16 @@ export class Game {
 
       return dateA - dateB;
     });
+  }
+
+  updateGameDetails(details) {
+    const detailsDeepCopy = JSON.parse(JSON.stringify(details));
+
+    if (detailsDeepCopy.releaseDate !== "") this.releaseDate = details.releaseDate;
+    if (detailsDeepCopy.developers.length !== 0) this.developers = details.developers;
+    if (detailsDeepCopy.genres.length !== 0) this.genres = details.genres;
+    if (detailsDeepCopy.description !== "") this.description = details.description;
+
+    return this;
   }
 }
