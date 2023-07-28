@@ -1,4 +1,10 @@
 import { daysToMs } from "../utils/time.utils.js";
+import { Game } from "./game.js";
+import { getOneSampleSteamApp } from "./steam.app.mocks.js";
+
+export const getOneGameWithoutDetails = () => {
+  return Game.fromSteamApp(getOneSampleSteamApp(), "", [], [], "");
+};
 
 export const getGamesWithEmptyPlayerHistories = () => {
   return [
