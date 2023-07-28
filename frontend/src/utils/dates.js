@@ -24,5 +24,7 @@ export function monthToString(monthNumber) {
       return "November";
     case 11:
       return "December";
+    default:
+      return "";
   }
 }
