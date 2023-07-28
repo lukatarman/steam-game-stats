@@ -3,7 +3,7 @@ import { getOneGameWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
 import { getOneSampleSteamApp } from "./steam.app.mocks.js";
 
-fdescribe("game.js", function () {
+describe("game.js", function () {
   describe("Game", function () {
     describe(".fromSteamApp", function () {
       describe("is called with no arguments, ", function () {
