@@ -8,6 +8,11 @@ import {
   getDevelopers,
   getGenres,
   getGameDescription,
+  updateMissingProperties,
+  getSteamDbReleaseDate,
+  getSteamDbDevelopers,
+  getSteamDbGenres,
+  getSteamDbDescription,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -21,6 +26,10 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { ValidDataSources } from "../../../utils/valid.data.sources.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
+import { starfieldHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/starfield.html.details.page.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -562,6 +571,273 @@ describe("game.service.js", () => {
         it("the function returns the steamApp. The type property is 'game'", function () {
           expect(this.result.type).toBe(SteamApp.validTypes.game);
         });
+      });
+    });
+  });
+
+  describe(".updateMissingProperties.", function () {
+    describe("When all the properties of three games are missing,", function () {
+      beforeEach(function () {
+        const games = [
+          Game.fromSteamcharts({ appid: 1, name: "Counter-Strike" }),
+          Game.fromSteamcharts({ appid: 2, name: "Risk of Rain" }),
+          Game.fromSteamcharts({ appid: 3, name: "Starfield" }),
+        ];
+
+        const htmlDetailsPages = [
+          counterStrikeHtmlDetailsSteamDb,
+          riskOfRainHtmlDetailsSteamDb,
+          starfieldHtmlDetailsSteamDb,
+        ];
+
+        this.result = updateMissingProperties(games, htmlDetailsPages);
+      });
+
+      it("three games are returned", function () {
+        expect(this.result.length).toBe(3);
+      });
+
+      it("the name of the first game is 'Counter-Strike", function () {
+        expect(this.result[0].name).toBe("Counter-Strike");
+      });
+
+      it("the first game's properties are added", function () {
+        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012"));
+        expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
+        expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
+        expect(this.result[0].description).toBe(
+          "Counter-Strike: Global Offensive (CS: GO) expands upon the team-based action gameplay that it pioneered when it was launched 19 years ago. CS: GO features new maps, characters, weapons, and game modes, and delivers updated versions of the classic CS content (de_dust2, etc.).",
+        );
+      });
+
+      it("the second game is 'Risk of Rain", function () {
+        expect(this.result[1].name).toBe("Risk of Rain");
+      });
+
+      it("the second game's properties are added", function () {
+        expect(this.result[1].releaseDate).toEqual(new Date("11 August 2020"));
+        expect(this.result[1].developers).toEqual(["Hopoo Games"]);
+        expect(this.result[1].genres).toEqual(["Action", "Indie"]);
+        expect(this.result[1].description).toBe(
+          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
+        );
+      });
+
+      it("the third game is 'Starfield'", function () {
+        expect(this.result[2].name).toBe("Starfield");
+      });
+
+      it("the third game's properties are added", function () {
+        expect(this.result[2].releaseDate).toEqual(new Date("6 September 2023"));
+        expect(this.result[2].developers).toEqual(["Bethesda Game Studios"]);
+        expect(this.result[2].genres).toEqual(["RPG"]);
+        expect(this.result[2].description).toBe(
+          "Starfield is the first new universe in 25 years from Bethesda Game Studios, the award-winning creators of The Elder Scrolls V: Skyrim and Fallout 4.",
+        );
+      });
+    });
+
+    describe("When one property of a game is missing", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Counter-Strike",
+        };
+
+        this.releaseDate = "";
+        this.developers = [];
+        this.genres = [];
+        this.description = "Best game";
+
+        const instantiatedGames = [
+          Game.fromSteamApp(
+            steamApp,
+            this.releaseDate,
+            this.developers,
+            this.genres,
+            this.description,
+          ),
+        ];
+
+        const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
+
+        this.result = updateMissingProperties(instantiatedGames, htmlDetailsPages);
+      });
+
+      it("one game is returned", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the name of the game is 'Counter-Strike", function () {
+        expect(this.result[0].name).toBe("Counter-Strike");
+      });
+
+      it("the game's properties remain unchanged", function () {
+        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012"));
+        expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
+        expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
+        expect(this.result[0].description).toBe(this.description);
+      });
+    });
+
+    describe("When the game's properties are already there,", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Counter-Strike",
+        };
+
+        this.releaseDate = "21 July 2019";
+        this.developers = ["Valve", "Hopoo Games"];
+        this.genres = ["Action", "Adventure"];
+        this.description = "Best game";
+
+        const instantiatedGames = [
+          Game.fromSteamApp(
+            steamApp,
+            this.releaseDate,
+            this.developers,
+            this.genres,
+            this.description,
+          ),
+        ];
+
+        const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
+
+        this.result = updateMissingProperties(instantiatedGames, htmlDetailsPages);
+      });
+
+      it("one game is returned", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it("the name of the game is 'Counter-Strike", function () {
+        expect(this.result[0].name).toBe("Counter-Strike");
+      });
+
+      it("the game's properties remain unchanged", function () {
+        expect(this.result[0].releaseDate).toBe(this.releaseDate);
+        expect(this.result[0].developers).toEqual(this.developers);
+        expect(this.result[0].genres).toEqual(this.genres);
+        expect(this.result[0].description).toBe(this.description);
+      });
+    });
+  });
+
+  describe(".getSteamDbReleaseDate returns the release date from the provided html page.", function () {
+    describe("When the specific page content does not contain a valid date,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
+      });
+
+      it("the returned value is 'Coming soon'", function () {
+        expect(this.result).toBe("Coming soon");
+      });
+    });
+
+    describe("When the release date is a valid date,", function () {
+      beforeEach(function () {
+        this.date = new Date("11 August 2020");
+
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("a date is returned'", function () {
+        expect(this.result).toBeInstanceOf(Date);
+      });
+
+      it("the returned date is '11 August 2020'", function () {
+        expect(this.result).toEqual(this.date);
+      });
+    });
+
+    describe("When no release date is found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty string", function () {
+        expect(this.result).toBe("");
+      });
+    });
+  });
+
+  describe(".getSteamDbDevelopers returns the developers from the provided html page.", function () {
+    describe("When the developers are found,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("one developer is returned", function () {
+        expect(this.result.length).toBe(1);
+      });
+
+      it('the developer is "Hopoo Games"', function () {
+        expect(this.result[0]).toBe("Hopoo Games");
+      });
+    });
+
+    describe("When no developers are found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  describe(".getSteamDbGenres returns the genres from the provided html page.", function () {
+    describe("When the genres are found,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbGenres(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("two genres are returned", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first genre is 'Action'", function () {
+        expect(this.result[0]).toBe("Action");
+      });
+
+      it("the second genre is 'Indie'", function () {
+        expect(this.result[1]).toBe("Indie");
+      });
+    });
+
+    describe("When no genres are found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  describe(".getSteamDbDescription returns the description from the provided html page.", function () {
+    describe("When the description is found,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("the returned value is the page's game description'", function () {
+        expect(this.result).toEqual(
+          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
+        );
+      });
+    });
+
+    describe("When no description is found", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty string", function () {
+        expect(this.result).toEqual("");
       });
     });
   });
