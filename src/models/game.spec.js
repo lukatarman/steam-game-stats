@@ -1,4 +1,5 @@
 import { Game } from "./game.js";
+import { getOneGameWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
 import { getOneSampleApp } from "./steam.app.mocks.js";
 
@@ -444,13 +445,6 @@ describe("game.js", function () {
   describe(".updateGameDetails updates a game's details based on the provided object", function () {
     describe("When the release date is provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: new Date("23 July 2023"),
           developers: [],
@@ -458,13 +452,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -480,13 +468,6 @@ describe("game.js", function () {
 
     describe("When the release date is not provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -494,13 +475,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -510,19 +485,12 @@ describe("game.js", function () {
       });
 
       it("the game's release date stays the same", function () {
-        expect(this.result.releaseDate).toBe(this.releaseDate);
+        expect(this.result.releaseDate).toBe("");
       });
     });
 
     describe("When the developers are provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: ["Valve", "Hopoo Games"],
@@ -530,13 +498,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -552,13 +514,6 @@ describe("game.js", function () {
 
     describe("When the developers are not provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -566,13 +521,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -582,19 +531,12 @@ describe("game.js", function () {
       });
 
       it("the game's developers stay the same", function () {
-        expect(this.result.developers).toBe(this.developers);
+        expect(this.result.developers).toEqual([]);
       });
     });
 
     describe("When the genres are provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -602,13 +544,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -624,13 +560,6 @@ describe("game.js", function () {
 
     describe("When the genres are not provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -638,13 +567,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -654,19 +577,12 @@ describe("game.js", function () {
       });
 
       it("the game's genres stay the same", function () {
-        expect(this.result.genres).toBe(this.genres);
+        expect(this.result.genres).toEqual([]);
       });
     });
 
     describe("When the description is provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -674,13 +590,7 @@ describe("game.js", function () {
           description: "This game is awesome!",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -696,13 +606,6 @@ describe("game.js", function () {
 
     describe("When the description is not provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         this.propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -710,13 +613,7 @@ describe("game.js", function () {
           description: "",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(this.propertiesObject);
       });
@@ -725,20 +622,13 @@ describe("game.js", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("All the provided properties on the game are changed", function () {
-        expect(this.result.releaseDate).toBe(this.releaseDate);
+      it("the game's description stays the same", function () {
+        expect(this.result.releaseDate).toBe("");
       });
     });
 
     describe("When no new properties are provided", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         const propertiesObject = {
           releaseDate: "",
           developers: [],
@@ -746,38 +636,25 @@ describe("game.js", function () {
           description: "",
         };
 
-        this.game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
-        this.result = this.game.updateGameDetails(propertiesObject);
+        this.result = game.updateGameDetails(propertiesObject);
       });
 
       it("a game is returned.", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("The game's properties stay unchanged.", function () {
-        expect(this.result.releaseDate).toBe(this.releaseDate);
-        expect(this.result.developers).toEqual(this.developers);
-        expect(this.result.genres).toEqual(this.genres);
-        expect(this.result.description).toBe(this.description);
+      it("The game's properties stay the same", function () {
+        expect(this.result.releaseDate).toBe("");
+        expect(this.result.developers).toEqual([]);
+        expect(this.result.genres).toEqual([]);
+        expect(this.result.description).toBe("");
       });
     });
 
     describe("When all the properties are provided,", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "";
-
         const propertiesObject = {
           releaseDate: new Date("23 July 2023"),
           developers: ["Valve", "Hopoo Games"],
@@ -785,13 +662,7 @@ describe("game.js", function () {
           description: "This game is awesome!",
         };
 
-        const game = Game.fromSteamApp(
-          steamApp,
-          this.releaseDate,
-          this.developers,
-          this.genres,
-          this.description,
-        );
+        const game = getOneGameWithoutDetails();
 
         this.result = game.updateGameDetails(propertiesObject);
 
