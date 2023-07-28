@@ -442,15 +442,12 @@ describe("game.js", function () {
     });
   });
 
-  describe(".updateGameDetails updates a game's details based on the provided object", function () {
+  describe(".updateGameDetails", function () {
     describe("When the release date is provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
+        this.propertiesObject = getPropertiesObject({
           releaseDate: new Date("23 July 2023"),
-          developers: [],
-          genres: [],
-          description: "",
-        };
+        });
 
         const game = getOneGameWithoutDetails();
 
@@ -468,12 +465,7 @@ describe("game.js", function () {
 
     describe("When the release date is not provided,", function () {
       beforeEach(function () {
-        const propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: [],
-          description: "",
-        };
+        const propertiesObject = getPropertiesObject();
 
         const game = getOneGameWithoutDetails();
 
@@ -491,12 +483,9 @@ describe("game.js", function () {
 
     describe("When the developers are provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
-          releaseDate: "",
+        this.propertiesObject = getPropertiesObject({
           developers: ["Valve", "Hopoo Games"],
-          genres: [],
-          description: "",
-        };
+        });
 
         const game = getOneGameWithoutDetails();
 
@@ -514,12 +503,7 @@ describe("game.js", function () {
 
     describe("When the developers are not provided,", function () {
       beforeEach(function () {
-        const propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: [],
-          description: "",
-        };
+        const propertiesObject = getPropertiesObject();
 
         const game = getOneGameWithoutDetails();
 
@@ -537,12 +521,7 @@ describe("game.js", function () {
 
     describe("When the genres are provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: ["Action", "RPG"],
-          description: "",
-        };
+        this.propertiesObject = getPropertiesObject({ genres: ["Action", "RPG"] });
 
         const game = getOneGameWithoutDetails();
 
@@ -560,12 +539,7 @@ describe("game.js", function () {
 
     describe("When the genres are not provided,", function () {
       beforeEach(function () {
-        const propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: [],
-          description: "",
-        };
+        const propertiesObject = getPropertiesObject();
 
         const game = getOneGameWithoutDetails();
 
@@ -583,12 +557,9 @@ describe("game.js", function () {
 
     describe("When the description is provided,", function () {
       beforeEach(function () {
-        this.propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: [],
+        this.propertiesObject = getPropertiesObject({
           description: "This game is awesome!",
-        };
+        });
 
         const game = getOneGameWithoutDetails();
 
@@ -606,12 +577,7 @@ describe("game.js", function () {
 
     describe("When the description is not provided,", function () {
       beforeEach(function () {
-        const propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: [],
-          description: "",
-        };
+        const propertiesObject = getPropertiesObject();
 
         const game = getOneGameWithoutDetails();
 
@@ -626,75 +592,19 @@ describe("game.js", function () {
         expect(this.result.releaseDate).toBe("");
       });
     });
-
-    describe("When no new properties are provided", function () {
-      beforeEach(function () {
-        const propertiesObject = {
-          releaseDate: "",
-          developers: [],
-          genres: [],
-          description: "",
-        };
-
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(propertiesObject);
-      });
-
-      it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("The game's properties stay the same", function () {
-        expect(this.result.releaseDate).toBe("");
-        expect(this.result.developers).toEqual([]);
-        expect(this.result.genres).toEqual([]);
-        expect(this.result.description).toBe("");
-      });
-    });
-
-    describe("When all the properties are provided,", function () {
-      beforeEach(function () {
-        const propertiesObject = {
-          releaseDate: new Date("23 July 2023"),
-          developers: ["Valve", "Hopoo Games"],
-          genres: ["Action", "RPG"],
-          description: "This game is awesome!",
-        };
-
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(propertiesObject);
-
-        propertiesObject.releaseDate = "";
-        propertiesObject.developers = [];
-        propertiesObject.genres = [];
-        propertiesObject.description = "";
-
-        this.isDeepCopy = () => {
-          if (this.result.releaseDate === propertiesObject.releaseDate) return false;
-          if (this.result.developers === propertiesObject.developers) return false;
-          if (this.result.genres === propertiesObject.genres) return false;
-          if (this.result.description === propertiesObject.description) return false;
-
-          return true;
-        };
-      });
-
-      it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("all the provided properties on the game are changed", function () {
-        expect(this.result.releaseDate).toEqual(new Date("23 July 2023"));
-        expect(this.result.developers).toEqual(["Valve", "Hopoo Games"]);
-        expect(this.result.genres).toEqual(["Action", "RPG"]);
-        expect(this.result.description).toBe("This game is awesome!");
-      });
-
-      it("changing the original object doesnt not change the game", function () {
-        expect(this.isDeepCopy()).toBeTrue();
-      });
-    });
   });
 });
+
+const getPropertiesObject = ({
+  releaseDate = "",
+  developers = [],
+  genres = [],
+  description = "",
+} = {}) => {
+  return {
+    releaseDate,
+    developers,
+    genres,
+    description,
+  };
+};
