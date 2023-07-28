@@ -442,4 +442,132 @@ describe("game.js", function () {
       });
     });
   });
+
+  describe(".updateMissingProperties updates the game with the provided properties.", function () {
+    describe("When all the properties are provided", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Test Game",
+        };
+
+        this.releaseDate = "";
+        this.developers = [];
+        this.genres = [];
+        this.description = "";
+
+        this.propertiesObject = {
+          releaseDate: new Date("23 July 2023"),
+          developers: ["Valve", "Hopoo Games"],
+          genres: ["Action", "RPG"],
+          description: "This game is awesome!",
+        };
+
+        const game = Game.fromSteamApp(
+          steamApp,
+          this.releaseDate,
+          this.developers,
+          this.genres,
+          this.description,
+        );
+
+        this.result = game.updateMissingProperties(this.propertiesObject);
+      });
+
+      it("a game is returned.", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("All the provided properties on the game are changed", function () {
+        expect(this.result.releaseDate).toBe(this.propertiesObject.releaseDate);
+        expect(this.result.developers).toEqual(this.propertiesObject.developers);
+        expect(this.result.genres).toEqual(this.propertiesObject.genres);
+        expect(this.result.description).toBe(this.propertiesObject.description);
+      });
+    });
+
+    describe("When only one property is provided", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Test Game",
+        };
+
+        this.releaseDate = "";
+        this.developers = [];
+        this.genres = [];
+        this.description = "";
+
+        this.propertiesObject = {
+          releaseDate: "",
+          developers: ["Valve", "Hopoo Games"],
+          genres: [],
+          description: "",
+        };
+
+        const game = Game.fromSteamApp(
+          steamApp,
+          this.releaseDate,
+          this.developers,
+          this.genres,
+          this.description,
+        );
+
+        this.result = game.updateMissingProperties(this.propertiesObject);
+      });
+
+      it("a game is returned.", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("only the value of the provided property changes.", function () {
+        expect(this.result.releaseDate).toBe(this.releaseDate);
+        expect(this.result.developers).toEqual(this.propertiesObject.developers);
+        expect(this.result.genres).toEqual(this.genres);
+        expect(this.result.description).toBe(this.description);
+      });
+    });
+
+    describe("When no new properties are provided", function () {
+      beforeEach(function () {
+        const steamApp = {
+          appid: 1,
+          name: "Test Game",
+        };
+
+        this.releaseDate = "";
+        this.developers = [];
+        this.genres = [];
+        this.description = "";
+
+        const propertiesObject = {
+          releaseDate: "",
+          developers: [],
+          genres: [],
+          description: "",
+        };
+
+        this.game = Game.fromSteamApp(
+          steamApp,
+          this.releaseDate,
+          this.developers,
+          this.genres,
+          this.description,
+        );
+
+        this.result = this.game.updateMissingProperties(propertiesObject);
+      });
+
+      it("a game is returned.", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("The game's properties stay unchanged.", function () {
+        expect(this.result.releaseDate).toBe(this.releaseDate);
+        expect(this.result.developers).toEqual(this.developers);
+        expect(this.result.genres).toEqual(this.genres);
+        expect(this.result.description).toBe(this.description);
+      });
+    });
+  });
 });

@@ -6,7 +6,8 @@ export class Game {
   name;
   releaseDate;
   developers;
-  image;
+  genres;
+  description;
   imageUrl;
   playerHistory;
 
@@ -90,5 +91,14 @@ export class Game {
 
       return dateA - dateB;
     });
+  }
+
+  updateMissingProperties(details) {
+    if (details.releaseDate !== "") this.releaseDate = details.releaseDate;
+    if (details.developers.length !== 0) this.developers = details.developers;
+    if (details.genres.length !== 0) this.genres = details.genres;
+    if (details.description !== "") this.description = details.description;
+
+    return this;
   }
 }
