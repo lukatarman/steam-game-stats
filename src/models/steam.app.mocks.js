@@ -1,3 +1,10 @@
+export const getOneSampleApp = () => {
+  return {
+    appid: 1,
+    name: "Test Game",
+  };
+};
+
 export const getThreeSteamwebUntriedFilteredSteamApps = () => {
   return [
     {
