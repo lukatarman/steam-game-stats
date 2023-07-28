@@ -163,3 +163,120 @@ export const getTrendingGamesMockData = () => {
     },
   ];
 };
+
+export const getSixGamesWithMissingProperties = () => {
+  return [
+    {
+      id: 1,
+      name: "Risk of Train",
+      releaseDate: "",
+      developers: ["Valve"],
+      genres: ["Action"],
+      description: "Best game",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Risk of Rain",
+      releaseDate: "21.09.1989",
+      developers: [],
+      genres: ["Action"],
+      description: "Best game",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "Risk of Strain",
+      releaseDate: "21.09.1989",
+      developers: ["Valve"],
+      genres: [],
+      description: "Best game",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: "Risk of Brain",
+      releaseDate: "",
+      developers: ["Valve"],
+      genres: ["Action"],
+      description: "",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 5,
+      name: "Risk of Cane",
+      releaseDate: "21.09.1989",
+      developers: ["Valve"],
+      genres: ["Action"],
+      description: "Test",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "Risk of Cane",
+      releaseDate: "",
+      developers: [],
+      genres: [],
+      description: "",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+    {
+      id: 7,
+      name: "Risk of Gain",
+      releaseDate: "",
+      developers: [],
+      genres: [],
+      description: "",
+      playerHistory: [
+        {
+          year: "2023",
+          month: "2",
+          averagePlayers: "2",
+          trackedPlayers: [{ players: 2 }],
+        },
+      ],
+    },
+  ];
+};
