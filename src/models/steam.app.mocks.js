@@ -1,4 +1,4 @@
-export const getOneSampleApp = () => {
+export const getOneSampleSteamApp = () => {
   return {
     appid: 1,
     name: "Test Game",

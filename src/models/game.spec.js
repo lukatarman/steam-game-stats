@@ -1,9 +1,9 @@
 import { Game } from "./game.js";
 import { getOneGameWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
-import { getOneSampleApp } from "./steam.app.mocks.js";
+import { getOneSampleSteamApp } from "./steam.app.mocks.js";
 
-describe("game.js", function () {
+fdescribe("game.js", function () {
   describe("Game", function () {
     describe(".fromSteamApp", function () {
       describe("is called with no arguments, ", function () {
@@ -393,7 +393,7 @@ describe("game.js", function () {
 
     describe(".pushSteamchartsPlayerHistory adds player histories from Steamcharts to existing entries while keeping the order intact.", function () {
       beforeEach(function () {
-        const steamApp = getOneSampleApp();
+        const steamApp = getOneSampleSteamApp();
 
         this.releaseDate = "";
         this.developers = [];
