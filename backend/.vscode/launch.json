@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug App",
+      "program": "${workspaceFolder}/src/main.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node",
+      "runtimeArgs": [
+        "--inspect"
+      ],
+    },
+    {
+      "name": "Debug Jasmine Unit Tests",
+      "type": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "--no-lazy",
+      ],
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "../node_modules/jasmine/bin/jasmine.js",
+      "args": [
+        "--config=jasmine.json",
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "steam-game-stats",
+      "path": "../"
+    },
+    {
+      "name": "backend",
+      "path": "../backend"
+    },
+    {
+      "name": "frontend",
+      "path": "../frontend"
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "node_modules/": false,
+      "backend/": true,
+      "frontend/": true
+    }
+  }
+}
