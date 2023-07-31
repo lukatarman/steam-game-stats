@@ -20,6 +20,46 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
+  async getGamesWithoutDetails(amount) {
+    return (
+      await this.#dbClient
+        .get("games")
+        .aggregate([
+          {
+            $match: {
+              $or: [
+                { releaseDate: { $eq: "" } },
+                { developers: { $eq: [] } },
+                { genres: { $eq: [] } },
+                { description: { $eq: "" } },
+              ],
+            },
+          },
+          { $limit: amount },
+        ])
+        .toArray()
+    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
+  }
+
+  async updateGameDetails(games) {
+    await Promise.all(
+      games.map((game) =>
+        this.#dbClient.updateOne(
+          "games",
+          { id: { $eq: game.id } },
+          {
+            $set: {
+              releaseDate: game.releaseDate,
+              developers: game.developers,
+              genres: game.genres,
+              description: game.description,
+            },
+          },
+        ),
+      ),
+    );
+  }
+
   async getXgamesWithUncheckedPlayerHistory(amount) {
     return (
       await this.#dbClient
