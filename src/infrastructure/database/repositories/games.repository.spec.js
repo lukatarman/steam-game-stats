@@ -4,7 +4,6 @@ import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
 import {
   getGamesWithEmptyPlayerHistories,
   getGamesWithTrackedPlayersNoDate,
-  getSixGamesWithMissingProperties,
   getTrendingGamesMockData,
 } from "../../../models/game.mocks.js";
 import { getGamesRepositoryMock } from "./games.repository.mock.js";
@@ -255,15 +254,15 @@ describe("GamesRepository", function () {
             id: 239140,
             name: "Dying Light",
             releaseDate: "21.09.1989",
-            developers: ["Valve"],
-            genres: ["Action"],
+            developers: ["Techland"],
+            genres: ["Action", "RPG"],
             description: "Best game",
           },
           {
             id: 311210,
             name: "Call of Duty: Black Ops III",
             releaseDate: "21.09.1989",
-            developers: ["Valve"],
+            developers: ["Treyarch"],
             genres: ["Action", "RPG"],
             description: "Best one",
           },
@@ -271,7 +270,7 @@ describe("GamesRepository", function () {
             id: 232090,
             name: "Killing Floor 2",
             releaseDate: "21.09.1989",
-            developers: ["Valve"],
+            developers: ["Tripwire Interactive"],
             genres: [],
             description: "",
           },
@@ -292,7 +291,7 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the game 'Dying Light' has the correct updated values", function () {
+      it("the first game is 'Dying Light'", function () {
         expect(this.result[0].id).toBe(this.games[0].id);
         expect(this.result[0].name).toBe(this.games[0].name);
         expect(this.result[0].releaseDate).toBe(this.games[0].releaseDate);
@@ -301,7 +300,7 @@ describe("GamesRepository", function () {
         expect(this.result[0].description).toBe(this.games[0].description);
       });
 
-      it("the game 'Call of Duty: Black Ops III' has the correct updated values", function () {
+      it("the second game is 'Call of Duty: Black Ops III'", function () {
         expect(this.result[1].id).toBe(this.games[1].id);
         expect(this.result[1].name).toBe(this.games[1].name);
         expect(this.result[1].releaseDate).toBe(this.games[1].releaseDate);
@@ -309,7 +308,7 @@ describe("GamesRepository", function () {
         expect(this.result[1].genres).toEqual(this.games[1].genres);
         expect(this.result[1].description).toBe(this.games[1].description);
       });
-      it("the game 'Killing Floor 2' has the correct updated values", function () {
+      it("the third game is 'Killing Floor 2'", function () {
         expect(this.result[2].id).toBe(this.games[2].id);
         expect(this.result[2].name).toBe(this.games[2].name);
         expect(this.result[2].genres).toEqual(this.games[2].genres);
