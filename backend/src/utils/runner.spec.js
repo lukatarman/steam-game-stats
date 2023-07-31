@@ -5,13 +5,13 @@ describe("runner.js", () => {
   describe("runs one function in a loop for one iteration", () => {
     let counter = 0;
 
-    beforeAll(() => {
+    beforeAll(async () => {
       const func = () => counter++;
       const iterations = 1;
       const options = { iterationDelay: 0 };
       const runner = new Runner([func], options, iterations);
 
-      runner.run();
+      await runner.run();
     });
 
     it("should increment the coutner by 1", () => {
@@ -22,13 +22,13 @@ describe("runner.js", () => {
   describe("runs one function in a loop for multiple iterations", () => {
     let counter = 0;
 
-    beforeAll(() => {
+    beforeAll(async () => {
       const func = () => counter++;
       const iterations = 5;
       const options = { iterationDelay: 0 };
       const runner = new Runner([func], options, iterations);
 
-      runner.run();
+      await runner.run();
     });
 
     it("should increment the coutner by 5", () => {
@@ -53,7 +53,7 @@ describe("runner.js", () => {
       const options = { iterationDelay: 0 };
       const runner = new Runner([funcOne, funcTwo], iterations, iterations);
 
-      runner.run();
+      await runner.run();
       await delay(280);
     });
 
@@ -100,7 +100,7 @@ describe("runner.js", () => {
       function checkIfHasDuplicates(arr) {
         return new Set(arr).size !== arr.length;
       }
-      runner.run();
+      await runner.run();
       await delay(130);
       const results = [counterOne, counterTwo, counterThree, counterFour];
 
