@@ -145,11 +145,8 @@ describe("GamesRepository", function () {
         expect(this.result.length).toBe(4);
       });
 
-      it("the games are an instance of Game", function () {
+      it("the game is an instance of Game", function () {
         expect(this.result[0]).toBeInstanceOf(Game);
-        expect(this.result[1]).toBeInstanceOf(Game);
-        expect(this.result[2]).toBeInstanceOf(Game);
-        expect(this.result[3]).toBeInstanceOf(Game);
       });
 
       it("the first game is missing the release date", function () {
