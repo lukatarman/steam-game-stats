@@ -159,7 +159,7 @@ describe("GamesRepository", function () {
         expect(this.result[1].developers).toEqual([]);
       });
 
-      it("the third game is missing genres", function () {
+      it("the third game is missing the genres", function () {
         expect(this.result[2].id).toBe(881100);
         expect(this.result[2].genres).toEqual([]);
       });
