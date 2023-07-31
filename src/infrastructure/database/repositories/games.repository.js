@@ -20,7 +20,7 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
-  async getGamesWithMissingProperties(amount) {
+  async getGamesWithoutDetails(amount) {
     return (
       await this.#dbClient
         .get("games")
@@ -41,7 +41,7 @@ export class GamesRepository {
     ).map((dbEntry) => Game.fromDbEntry(dbEntry));
   }
 
-  async updateMissingGamesProperties(games) {
+  async updateGameDetails(games) {
     await Promise.all(
       games.map((game) =>
         this.#dbClient.updateOne(
