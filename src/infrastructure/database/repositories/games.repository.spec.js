@@ -147,26 +147,50 @@ describe("GamesRepository", function () {
       it("the first game is 'Dying Light'", function () {
         expect(this.result[0].id).toBe(239140);
         expect(this.result[0].name).toBe("Dying Light");
+        expect(this.result[0].releaseDate).toBe("");
+        expect(this.result[0].developers).toEqual([]);
+        expect(this.result[0].genres).toEqual([]);
+        expect(this.result[0].description).toBe("");
       });
 
       it("the second game is 'Call of Duty: Black Ops III'", function () {
         expect(this.result[1].id).toBe(311210);
         expect(this.result[1].name).toBe("Call of Duty: Black Ops III");
+        expect(this.result[1].releaseDate).toBe("");
+        expect(this.result[1].developers).toEqual([]);
+        expect(this.result[1].genres).toEqual([]);
+        expect(this.result[1].description).toBe("");
       });
 
       it("the third game is 'Killing Floor 2'", function () {
         expect(this.result[2].id).toBe(232090);
         expect(this.result[2].name).toBe("Killing Floor 2");
+        expect(this.result[2].releaseDate).toBe("");
+        expect(this.result[2].developers).toEqual([]);
+        expect(this.result[2].genres).toEqual(["Indie", "RPG", "Strategy"]);
+        expect(this.result[2].description).toBe(
+          "Killing Floor 2 is a challenging gothic roguelike turn-based RPG about the psychological stresses of adventuring. Recruit, train, and lead a team of flawed heroes against unimaginable horrors, stress, disease, and the ever-encroaching dark. Can you keep your heroes together when all hope is lost?",
+        );
       });
 
       it("the fourth game is 'Noita'", function () {
         expect(this.result[3].id).toBe(881100);
         expect(this.result[3].name).toBe("Noita");
+        expect(this.result[3].releaseDate).toBe("14 Oct 2020");
+        expect(this.result[3].developers).toEqual(["Nolla Games"]);
+        expect(this.result[3].genres).toEqual([]);
+        expect(this.result[3].description).toBe(
+          "Noita is a magical action roguelite set in a world where every pixel is physically simulated. Fight, explore, melt, burn, freeze and evaporate your way through the procedurally generated world using spells you've created yourself.",
+        );
       });
 
       it("the fifth game is 'Portal 2'", function () {
         expect(this.result[4].id).toBe(620);
         expect(this.result[4].name).toBe("Portal 2");
+        expect(this.result[4].releaseDate).toBe("17 Apr 2011");
+        expect(this.result[4].developers).toEqual(["Valve"]);
+        expect(this.result[4].genres).toEqual(["Action", "Adventure"]);
+        expect(this.result[4].description).toBe("");
       });
     });
 
