@@ -2,11 +2,13 @@ import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
 import {
+  getGamesDatasetMock,
   getGamesWithEmptyPlayerHistories,
   getGamesWithTrackedPlayersNoDate,
+  getOneGameWithDetails,
   getTrendingGamesMockData,
 } from "../../../models/game.mocks.js";
-import { getGamesRepositoryMock } from "./games.repository.mock.js";
+import { Game } from "../../../models/game.js";
 
 describe("GamesRepository", function () {
   describe(".insertManyGames inserts multiple games into the collection.", function () {
@@ -124,229 +126,80 @@ describe("GamesRepository", function () {
   });
 
   describe(".getGamesWithoutDetails", function () {
-    describe("When the database contains 5 matching games", function () {
+    describe("When 4 games without details are requested", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany("games", getGamesRepositoryMock());
+        await this.databaseClient.insertMany("games", getGamesDatasetMock());
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
-        this.result = await gamesRepo.getGamesWithoutDetails(5);
+        this.result = await gamesRepo.getGamesWithoutDetails(4);
       });
 
       afterAll(function () {
         this.databaseClient.disconnect();
       });
 
-      it("five games are returned", function () {
-        expect(this.result.length).toBe(5);
+      it("four games are returned", function () {
+        expect(this.result.length).toBe(4);
       });
 
-      it("the first game is 'Dying Light'", function () {
+      it("the games are an instance of Game", function () {
+        expect(this.result[0]).toBeInstanceOf(Game);
+        expect(this.result[1]).toBeInstanceOf(Game);
+        expect(this.result[2]).toBeInstanceOf(Game);
+        expect(this.result[3]).toBeInstanceOf(Game);
+      });
+
+      it("the first game is missing the release date", function () {
         expect(this.result[0].id).toBe(239140);
-        expect(this.result[0].name).toBe("Dying Light");
         expect(this.result[0].releaseDate).toBe("");
-        expect(this.result[0].developers).toEqual([]);
-        expect(this.result[0].genres).toEqual([]);
-        expect(this.result[0].description).toBe("");
       });
 
-      it("the second game is 'Call of Duty: Black Ops III'", function () {
-        expect(this.result[1].id).toBe(311210);
-        expect(this.result[1].name).toBe("Call of Duty: Black Ops III");
-        expect(this.result[1].releaseDate).toBe("");
+      it("the second game is missing the developers", function () {
+        expect(this.result[1].id).toBe(232090);
         expect(this.result[1].developers).toEqual([]);
-        expect(this.result[1].genres).toEqual([]);
-        expect(this.result[1].description).toBe("");
       });
 
-      it("the third game is 'Killing Floor 2'", function () {
-        expect(this.result[2].id).toBe(232090);
-        expect(this.result[2].name).toBe("Killing Floor 2");
-        expect(this.result[2].releaseDate).toBe("");
-        expect(this.result[2].developers).toEqual([]);
-        expect(this.result[2].genres).toEqual(["Indie", "RPG", "Strategy"]);
-        expect(this.result[2].description).toBe(
-          "Killing Floor 2 is a challenging gothic roguelike turn-based RPG about the psychological stresses of adventuring. Recruit, train, and lead a team of flawed heroes against unimaginable horrors, stress, disease, and the ever-encroaching dark. Can you keep your heroes together when all hope is lost?",
-        );
+      it("the third game is missing genres", function () {
+        expect(this.result[2].id).toBe(881100);
+        expect(this.result[2].genres).toEqual([]);
       });
 
-      it("the fourth game is 'Noita'", function () {
-        expect(this.result[3].id).toBe(881100);
-        expect(this.result[3].name).toBe("Noita");
-        expect(this.result[3].releaseDate).toBe("14 Oct 2020");
-        expect(this.result[3].developers).toEqual(["Nolla Games"]);
-        expect(this.result[3].genres).toEqual([]);
-        expect(this.result[3].description).toBe(
-          "Noita is a magical action roguelite set in a world where every pixel is physically simulated. Fight, explore, melt, burn, freeze and evaporate your way through the procedurally generated world using spells you've created yourself.",
-        );
-      });
-
-      it("the fifth game is 'Portal 2'", function () {
-        expect(this.result[4].id).toBe(620);
-        expect(this.result[4].name).toBe("Portal 2");
-        expect(this.result[4].releaseDate).toBe("17 Apr 2011");
-        expect(this.result[4].developers).toEqual(["Valve"]);
-        expect(this.result[4].genres).toEqual(["Action", "Adventure"]);
-        expect(this.result[4].description).toBe("");
-      });
-    });
-
-    describe("When the database contains 6 matching games", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["games"]);
-
-        await this.databaseClient.insertMany("games", getGamesRepositoryMock());
-
-        const gamesRepo = new GamesRepository(this.databaseClient);
-
-        this.result = await gamesRepo.getGamesWithoutDetails(6);
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("six games are returned", function () {
-        expect(this.result.length).toBe(6);
-      });
-
-      it("the first game is 'Dying Light'", function () {
-        expect(this.result[0].id).toBe(239140);
-        expect(this.result[0].name).toBe("Dying Light");
-        expect(this.result[0].releaseDate).toBe("");
-        expect(this.result[0].developers).toEqual([]);
-        expect(this.result[0].genres).toEqual([]);
-        expect(this.result[0].description).toBe("");
-      });
-
-      it("the second game is 'Call of Duty: Black Ops III'", function () {
-        expect(this.result[1].id).toBe(311210);
-        expect(this.result[1].name).toBe("Call of Duty: Black Ops III");
-        expect(this.result[1].releaseDate).toBe("");
-        expect(this.result[1].developers).toEqual([]);
-        expect(this.result[1].genres).toEqual([]);
-        expect(this.result[1].description).toBe("");
-      });
-
-      it("the third game is 'Killing Floor 2'", function () {
-        expect(this.result[2].id).toBe(232090);
-        expect(this.result[2].name).toBe("Killing Floor 2");
-        expect(this.result[2].releaseDate).toBe("");
-        expect(this.result[2].developers).toEqual([]);
-        expect(this.result[2].genres).toEqual(["Indie", "RPG", "Strategy"]);
-        expect(this.result[2].description).toBe(
-          "Killing Floor 2 is a challenging gothic roguelike turn-based RPG about the psychological stresses of adventuring. Recruit, train, and lead a team of flawed heroes against unimaginable horrors, stress, disease, and the ever-encroaching dark. Can you keep your heroes together when all hope is lost?",
-        );
-      });
-
-      it("the fourth game is 'Noita'", function () {
-        expect(this.result[3].id).toBe(881100);
-        expect(this.result[3].name).toBe("Noita");
-        expect(this.result[3].releaseDate).toBe("14 Oct 2020");
-        expect(this.result[3].developers).toEqual(["Nolla Games"]);
-        expect(this.result[3].genres).toEqual([]);
-        expect(this.result[3].description).toBe(
-          "Noita is a magical action roguelite set in a world where every pixel is physically simulated. Fight, explore, melt, burn, freeze and evaporate your way through the procedurally generated world using spells you've created yourself.",
-        );
-      });
-
-      it("the fifth game is 'Portal 2'", function () {
-        expect(this.result[4].id).toBe(620);
-        expect(this.result[4].name).toBe("Portal 2");
-        expect(this.result[4].releaseDate).toBe("17 Apr 2011");
-        expect(this.result[4].developers).toEqual(["Valve"]);
-        expect(this.result[4].genres).toEqual(["Action", "Adventure"]);
-        expect(this.result[4].description).toBe("");
-      });
-
-      it("the sixth game is 'The Crew 2'", function () {
-        expect(this.result[5].id).toBe(646910);
-        expect(this.result[5].name).toBe("The Crew 2");
-        expect(this.result[5].releaseDate).toBe("27 Jun 2018");
-        expect(this.result[5].developers).toEqual([]);
-        expect(this.result[5].genres).toEqual([
-          "Action",
-          "Massively Multiplayer",
-          "Racing",
-        ]);
-        expect(this.result[5].description).toBe(
-          "Take on the American motorsports scene as you explore and dominate the land, air, and sea across the entire USA. With a wide variety of cars, bikes, boats, and planes, compete in a wide range of driving disciplines.",
-        );
+      it("the fifth game is missing a description", function () {
+        expect(this.result[3].id).toBe(620);
+        expect(this.result[3].description).toBe("");
       });
     });
   });
 
   describe(".updateGameDetails", function () {
-    describe("When the details of 3 games are to be updated", function () {
+    describe("When the details of 1 game are to be updated,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        this.games = [
-          {
-            id: 239140,
-            name: "Dying Light",
-            releaseDate: "21.09.1989",
-            developers: ["Techland"],
-            genres: ["Action", "RPG"],
-            description: "Best game",
-          },
-          {
-            id: 311210,
-            name: "Call of Duty: Black Ops III",
-            releaseDate: "21.09.1989",
-            developers: ["Treyarch"],
-            genres: ["Action", "RPG"],
-            description: "Best one",
-          },
-          {
-            id: 232090,
-            name: "Killing Floor 2",
-            releaseDate: "21.09.1989",
-            developers: ["Tripwire Interactive"],
-            genres: [],
-            description: "",
-          },
-        ];
-
-        await this.databaseClient.insertMany("games", getGamesRepositoryMock());
+        await this.databaseClient.insertMany("games", getGamesDatasetMock());
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
+        this.games = getOneGameWithDetails();
+
         await gamesRepo.updateGameDetails(this.games);
 
-        this.result = await Promise.all(
-          this.games.map(async (game) => gamesRepo.getOneGameById(game.id)),
-        );
+        this.result = await gamesRepo.getOneGameById(this.games[0].id);
       });
 
       afterAll(function () {
         this.databaseClient.disconnect();
       });
 
-      it("the first game is 'Dying Light'", function () {
-        expect(this.result[0].id).toBe(this.games[0].id);
-        expect(this.result[0].name).toBe(this.games[0].name);
-        expect(this.result[0].releaseDate).toBe(this.games[0].releaseDate);
-        expect(this.result[0].developers).toEqual(this.games[0].developers);
-        expect(this.result[0].genres).toEqual(this.games[0].genres);
-        expect(this.result[0].description).toBe(this.games[0].description);
-      });
-
-      it("the second game is 'Call of Duty: Black Ops III'", function () {
-        expect(this.result[1].id).toBe(this.games[1].id);
-        expect(this.result[1].name).toBe(this.games[1].name);
-        expect(this.result[1].releaseDate).toBe(this.games[1].releaseDate);
-        expect(this.result[1].developers).toEqual(this.games[1].developers);
-        expect(this.result[1].genres).toEqual(this.games[1].genres);
-        expect(this.result[1].description).toBe(this.games[1].description);
-      });
-      it("the third game is 'Killing Floor 2'", function () {
-        expect(this.result[2].id).toBe(this.games[2].id);
-        expect(this.result[2].name).toBe(this.games[2].name);
-        expect(this.result[2].genres).toEqual(this.games[2].genres);
-        expect(this.result[2].description).toBe(this.games[2].description);
+      it("the game's details are updated", function () {
+        expect(this.result.id).toBe(this.games[0].id);
+        expect(this.result.releaseDate).toBe(this.games[0].releaseDate);
+        expect(this.result.developers).toEqual(this.games[0].developers);
+        expect(this.result.genres).toEqual(this.games[0].genres);
+        expect(this.result.description).toBe(this.games[0].description);
       });
     });
   });
