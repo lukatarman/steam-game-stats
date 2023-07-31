@@ -93,11 +93,13 @@ export class Game {
     });
   }
 
-  updateMissingProperties(details) {
-    if (details.releaseDate !== "") this.releaseDate = details.releaseDate;
-    if (details.developers.length !== 0) this.developers = details.developers;
-    if (details.genres.length !== 0) this.genres = details.genres;
-    if (details.description !== "") this.description = details.description;
+  updateGameDetails(details) {
+    const detailsDeepCopy = JSON.parse(JSON.stringify(details));
+
+    if (detailsDeepCopy.releaseDate !== "") this.releaseDate = details.releaseDate;
+    if (detailsDeepCopy.developers.length !== 0) this.developers = details.developers;
+    if (detailsDeepCopy.genres.length !== 0) this.genres = details.genres;
+    if (detailsDeepCopy.description !== "") this.description = details.description;
 
     return this;
   }
