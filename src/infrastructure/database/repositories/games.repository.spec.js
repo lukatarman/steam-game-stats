@@ -245,7 +245,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".updateGameDetails", function () {
-    describe("When 3 games with updated properties are persisted to the database,", function () {
+    describe("When the details of 3 games are to be updated", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
