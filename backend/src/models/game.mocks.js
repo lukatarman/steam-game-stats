@@ -17,6 +17,12 @@ export const getOneSteamAppInstantiatedGame = () => {
   return Game.fromSteamApp(steamApp, releaseDate, developers, genres, description);
 };
 
+export const getXsteamchartsInstantiatedGames = (amount) => {
+  return Array.from({ length: amount }).map((x, index) =>
+    Game.fromSteamcharts({ appid: index + 1, name: `Game #${index + 1}` }),
+  );
+};
+
 export const getOneGameWithDetails = () => {
   return [
     {
