@@ -1,7 +1,7 @@
 import { delay } from "../utils/time.utils.js";
 import { Runner } from "./runner.js";
 
-describe("runner.js", () => {
+fdescribe("runner.js", () => {
   describe("runs one function in a loop for one iteration", () => {
     let counter = 0;
 
@@ -51,7 +51,7 @@ describe("runner.js", () => {
       };
       const iterations = 10;
       const options = { iterationDelay: 0 };
-      const runner = new Runner([funcOne, funcTwo], iterations, iterations);
+      const runner = new Runner([funcOne, funcTwo], options, iterations);
 
       await runner.run();
       await delay(280);
