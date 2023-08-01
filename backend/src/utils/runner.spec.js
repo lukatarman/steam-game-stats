@@ -1,7 +1,7 @@
 import { delay } from "../utils/time.utils.js";
 import { Runner } from "./runner.js";
 
-fdescribe("runner.js", () => {
+describe("runner.js", () => {
   describe("runs one function in a loop for one iteration", () => {
     let counter = 0;
 
