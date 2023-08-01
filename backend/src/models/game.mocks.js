@@ -6,6 +6,17 @@ export const getOneGameWithoutDetails = () => {
   return Game.fromSteamApp(getOneSampleSteamApp(), "", [], [], "");
 };
 
+export const getOneSteamAppInstantiatedGame = () => {
+  const steamApp = getOneSampleSteamApp();
+
+  const releaseDate = "21 July 2019";
+  const developers = ["Valve", "Hopoo Games"];
+  const genres = ["Action", "Adventure"];
+  const description = "Best game";
+
+  return Game.fromSteamApp(steamApp, releaseDate, developers, genres, description);
+};
+
 export const getGamesWithEmptyPlayerHistories = () => {
   return [
     {
