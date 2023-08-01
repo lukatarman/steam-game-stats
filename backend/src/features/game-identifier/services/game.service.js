@@ -109,7 +109,7 @@ export function assignType(result, steamApp) {
   return steamApp;
 }
 
-export function updateMissingProperties(games, htmlDetailsPages) {
+export function updateMissingDetails(games, htmlDetailsPages) {
   return games.map((game, i) => {
     const page = htmlDetailsPages[i];
 
@@ -125,7 +125,7 @@ export function updateMissingProperties(games, htmlDetailsPages) {
     if (game.genres.length === 0) details.genres = getSteamDbGenres(page);
     if (game.description === "") details.description = getSteamDbDescription(page);
 
-    return game.updateMissingProperties(details);
+    return game.updateGameDetails(details);
   });
 }
 
