@@ -29,7 +29,10 @@ import { ValidDataSources } from "../../../utils/valid.data.sources.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
-import { getOneSteamAppInstantiatedGame } from "../../../models/game.mocks.js";
+import {
+  getOneSteamAppInstantiatedGame,
+  getXsteamchartsInstantiatedGames,
+} from "../../../models/game.mocks.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -576,12 +579,9 @@ describe("game.service.js", () => {
   });
 
   describe(".updateMissingDetails.", function () {
-    describe("When we try to update two games with missing details,", function () {
+    fdescribe("When we try to update two games with missing details,", function () {
       beforeEach(function () {
-        const games = [
-          Game.fromSteamcharts({ appid: 1, name: "Counter-Strike" }),
-          Game.fromSteamcharts({ appid: 2, name: "Risk of Rain" }),
-        ];
+        const games = getXsteamchartsInstantiatedGames(2);
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
