@@ -675,17 +675,21 @@ describe("game.service.js", () => {
   });
 
   describe(".getSteamDbDevelopers.", function () {
-    describe("When we provide a html page that contains a developer,", function () {
+    describe("When we provide a html page that contains two developers,", function () {
       beforeEach(function () {
-        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsSteamDb);
+        this.result = getSteamDbDevelopers(counterStrikeHtmlDetailsSteamDb);
       });
 
-      it("one developer is returned", function () {
-        expect(this.result.length).toBe(1);
+      it("two developers are returned", function () {
+        expect(this.result.length).toBe(2);
       });
 
-      it('the developer is "Hopoo Games"', function () {
-        expect(this.result[0]).toBe("Hopoo Games");
+      it("the developer is 'Valve'", function () {
+        expect(this.result[0]).toBe("Valve");
+      });
+
+      it("the developer is 'Hidden Path Entertainment'", function () {
+        expect(this.result[1]).toBe("Hidden Path Entertainment");
       });
     });
 
@@ -736,7 +740,7 @@ describe("game.service.js", () => {
         this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
       });
 
-      it("the returned value is the page's game description'", function () {
+      it("the returned value is the game's description'", function () {
         expect(this.result).toEqual(
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
