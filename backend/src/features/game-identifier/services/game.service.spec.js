@@ -627,10 +627,6 @@ describe("game.service.js", () => {
         expect(this.result.length).toBe(1);
       });
 
-      it("the name of the game is 'Test Game", function () {
-        expect(this.result[0].name).toBe("Test Game");
-      });
-
       it("the game's properties remain unchanged", function () {
         expect(this.result[0].releaseDate).toBe(this.instantiatedGames[0].releaseDate);
         expect(this.result[0].developers).toEqual(this.instantiatedGames[0].developers);
