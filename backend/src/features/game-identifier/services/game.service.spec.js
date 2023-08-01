@@ -579,7 +579,7 @@ describe("game.service.js", () => {
   });
 
   describe(".updateMissingDetails.", function () {
-    fdescribe("When we try to update two games with missing details,", function () {
+    describe("When we try to update two games with missing details,", function () {
       beforeEach(function () {
         const games = getXsteamchartsInstantiatedGames(2);
 
