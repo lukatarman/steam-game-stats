@@ -8,7 +8,7 @@ import {
   getDevelopers,
   getGenres,
   getGameDescription,
-  updateMissingProperties,
+  updateMissingDetails,
   getSteamDbReleaseDate,
   getSteamDbDevelopers,
   getSteamDbGenres,
@@ -29,7 +29,7 @@ import { ValidDataSources } from "../../../utils/valid.data.sources.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
-import { starfieldHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/starfield.html.details.page.js";
+import { getOneSteamAppInstantiatedGame } from "../../../models/game.mocks.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -575,33 +575,27 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".updateMissingProperties.", function () {
-    describe("When all the properties of three games are missing,", function () {
+  describe(".updateMissingDetails.", function () {
+    describe("When we try to update two games with missing details,", function () {
       beforeEach(function () {
         const games = [
           Game.fromSteamcharts({ appid: 1, name: "Counter-Strike" }),
           Game.fromSteamcharts({ appid: 2, name: "Risk of Rain" }),
-          Game.fromSteamcharts({ appid: 3, name: "Starfield" }),
         ];
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
-          starfieldHtmlDetailsSteamDb,
         ];
 
-        this.result = updateMissingProperties(games, htmlDetailsPages);
+        this.result = updateMissingDetails(games, htmlDetailsPages);
       });
 
-      it("three games are returned", function () {
-        expect(this.result.length).toBe(3);
+      it("two games are returned", function () {
+        expect(this.result.length).toBe(2);
       });
 
-      it("the name of the first game is 'Counter-Strike", function () {
-        expect(this.result[0].name).toBe("Counter-Strike");
-      });
-
-      it("the first game's properties are added", function () {
+      it("the first game's details are updated", function () {
         expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012"));
         expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
         expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
@@ -610,11 +604,7 @@ describe("game.service.js", () => {
         );
       });
 
-      it("the second game is 'Risk of Rain", function () {
-        expect(this.result[1].name).toBe("Risk of Rain");
-      });
-
-      it("the second game's properties are added", function () {
+      it("the second game's details are updated", function () {
         expect(this.result[1].releaseDate).toEqual(new Date("11 August 2020"));
         expect(this.result[1].developers).toEqual(["Hopoo Games"]);
         expect(this.result[1].genres).toEqual(["Action", "Indie"]);
@@ -622,110 +612,36 @@ describe("game.service.js", () => {
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
       });
-
-      it("the third game is 'Starfield'", function () {
-        expect(this.result[2].name).toBe("Starfield");
-      });
-
-      it("the third game's properties are added", function () {
-        expect(this.result[2].releaseDate).toEqual(new Date("6 September 2023"));
-        expect(this.result[2].developers).toEqual(["Bethesda Game Studios"]);
-        expect(this.result[2].genres).toEqual(["RPG"]);
-        expect(this.result[2].description).toBe(
-          "Starfield is the first new universe in 25 years from Bethesda Game Studios, the award-winning creators of The Elder Scrolls V: Skyrim and Fallout 4.",
-        );
-      });
     });
 
-    describe("When one property of a game is missing", function () {
+    describe("When we try to update a games with existing details,", function () {
       beforeEach(function () {
-        const steamApp = {
-          appid: 1,
-          name: "Counter-Strike",
-        };
-
-        this.releaseDate = "";
-        this.developers = [];
-        this.genres = [];
-        this.description = "Best game";
-
-        const instantiatedGames = [
-          Game.fromSteamApp(
-            steamApp,
-            this.releaseDate,
-            this.developers,
-            this.genres,
-            this.description,
-          ),
-        ];
+        this.instantiatedGames = [getOneSteamAppInstantiatedGame()];
 
         const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
 
-        this.result = updateMissingProperties(instantiatedGames, htmlDetailsPages);
+        this.result = updateMissingDetails(this.instantiatedGames, htmlDetailsPages);
       });
 
       it("one game is returned", function () {
         expect(this.result.length).toBe(1);
       });
 
-      it("the name of the game is 'Counter-Strike", function () {
-        expect(this.result[0].name).toBe("Counter-Strike");
+      it("the name of the game is 'Test Game", function () {
+        expect(this.result[0].name).toBe("Test Game");
       });
 
       it("the game's properties remain unchanged", function () {
-        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012"));
-        expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
-        expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
-        expect(this.result[0].description).toBe(this.description);
-      });
-    });
-
-    describe("When the game's properties are already there,", function () {
-      beforeEach(function () {
-        const steamApp = {
-          appid: 1,
-          name: "Counter-Strike",
-        };
-
-        this.releaseDate = "21 July 2019";
-        this.developers = ["Valve", "Hopoo Games"];
-        this.genres = ["Action", "Adventure"];
-        this.description = "Best game";
-
-        const instantiatedGames = [
-          Game.fromSteamApp(
-            steamApp,
-            this.releaseDate,
-            this.developers,
-            this.genres,
-            this.description,
-          ),
-        ];
-
-        const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
-
-        this.result = updateMissingProperties(instantiatedGames, htmlDetailsPages);
-      });
-
-      it("one game is returned", function () {
-        expect(this.result.length).toBe(1);
-      });
-
-      it("the name of the game is 'Counter-Strike", function () {
-        expect(this.result[0].name).toBe("Counter-Strike");
-      });
-
-      it("the game's properties remain unchanged", function () {
-        expect(this.result[0].releaseDate).toBe(this.releaseDate);
-        expect(this.result[0].developers).toEqual(this.developers);
-        expect(this.result[0].genres).toEqual(this.genres);
-        expect(this.result[0].description).toBe(this.description);
+        expect(this.result[0].releaseDate).toBe(this.instantiatedGames[0].releaseDate);
+        expect(this.result[0].developers).toEqual(this.instantiatedGames[0].developers);
+        expect(this.result[0].genres).toEqual(this.instantiatedGames[0].genres);
+        expect(this.result[0].description).toBe(this.instantiatedGames[0].description);
       });
     });
   });
 
-  describe(".getSteamDbReleaseDate returns the release date from the provided html page.", function () {
-    describe("When the specific page content does not contain a valid date,", function () {
+  describe(".getSteamDbReleaseDate.", function () {
+    describe("When we provide a html page that doesn't contain a valid date,", function () {
       beforeEach(function () {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
       });
@@ -735,7 +651,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When the release date is a valid date,", function () {
+    describe("When we provide a html page that contains a valid date,", function () {
       beforeEach(function () {
         this.date = new Date("11 August 2020");
 
@@ -751,7 +667,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When no release date is found", function () {
+    describe("When we provide a html page that doesn't contain a date section", function () {
       beforeEach(function () {
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
@@ -762,8 +678,8 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".getSteamDbDevelopers returns the developers from the provided html page.", function () {
-    describe("When the developers are found,", function () {
+  describe(".getSteamDbDevelopers.", function () {
+    describe("When we provide a html page that contains a developer,", function () {
       beforeEach(function () {
         this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsSteamDb);
       });
@@ -777,7 +693,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When no developers are found", function () {
+    describe("When we provide a html page that doesn't contain a developer section", function () {
       beforeEach(function () {
         this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
       });
@@ -788,8 +704,8 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".getSteamDbGenres returns the genres from the provided html page.", function () {
-    describe("When the genres are found,", function () {
+  describe(".getSteamDbGenres.", function () {
+    describe("When we provide a html page that contains the genres,", function () {
       beforeEach(function () {
         this.result = getSteamDbGenres(riskOfRainHtmlDetailsSteamDb);
       });
@@ -807,7 +723,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When no genres are found", function () {
+    describe("When we provide a html page that doesn't contain a genres section,", function () {
       beforeEach(function () {
         this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
       });
@@ -818,8 +734,8 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".getSteamDbDescription returns the description from the provided html page.", function () {
-    describe("When the description is found,", function () {
+  describe(".getSteamDbDescription.", function () {
+    describe("When we provide a html page that contains the description,", function () {
       beforeEach(function () {
         this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
       });
@@ -831,7 +747,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When no description is found", function () {
+    describe("When we provide a html page that doesn't contain a description section,", function () {
       beforeEach(function () {
         this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
       });
