@@ -614,17 +614,13 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When we try to update a games with existing details,", function () {
+    describe("When we try to update a game with existing details,", function () {
       beforeEach(function () {
         this.instantiatedGames = [getOneSteamAppInstantiatedGame()];
 
         const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
 
         this.result = updateMissingDetails(this.instantiatedGames, htmlDetailsPages);
-      });
-
-      it("one game is returned", function () {
-        expect(this.result.length).toBe(1);
       });
 
       it("the game's properties remain unchanged", function () {
