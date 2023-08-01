@@ -2,10 +2,13 @@ import { GamesRepository } from "./games.repository.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { daysToMs, hoursToMs } from "../../../utils/time.utils.js";
 import {
+  getGamesDatasetMock,
   getGamesWithEmptyPlayerHistories,
   getGamesWithTrackedPlayersNoDate,
+  getOneGameWithDetails,
   getTrendingGamesMockData,
 } from "../../../models/game.mocks.js";
+import { Game } from "../../../models/game.js";
 
 describe("GamesRepository", function () {
   describe(".insertManyGames inserts multiple games into the collection.", function () {
@@ -122,8 +125,84 @@ describe("GamesRepository", function () {
     });
   });
 
-  describe(".getXgamesWithUncheckedPlayerHistory returns an array of games with unchecked player histories.", function () {
-    describe("If the amount of 3 is passed in, with two valid documents", function () {
+  describe(".getGamesWithoutDetails", function () {
+    describe("When 4 games without details are requested", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getGamesDatasetMock());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.result = await gamesRepo.getGamesWithoutDetails(4);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("four games are returned", function () {
+        expect(this.result.length).toBe(4);
+      });
+
+      it("the game is an instance of Game", function () {
+        expect(this.result[0]).toBeInstanceOf(Game);
+      });
+
+      it("the first game is missing the release date", function () {
+        expect(this.result[0].id).toBe(239140);
+        expect(this.result[0].releaseDate).toBe("");
+      });
+
+      it("the second game is missing the developers", function () {
+        expect(this.result[1].id).toBe(232090);
+        expect(this.result[1].developers).toEqual([]);
+      });
+
+      it("the third game is missing the genres", function () {
+        expect(this.result[2].id).toBe(881100);
+        expect(this.result[2].genres).toEqual([]);
+      });
+
+      it("the fifth game is missing a description", function () {
+        expect(this.result[3].id).toBe(620);
+        expect(this.result[3].description).toBe("");
+      });
+    });
+  });
+
+  describe(".updateGameDetails", function () {
+    describe("When the details of 1 game are to be updated,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
+
+        await this.databaseClient.insertMany("games", getGamesDatasetMock());
+
+        const gamesRepo = new GamesRepository(this.databaseClient);
+
+        this.games = getOneGameWithDetails();
+
+        await gamesRepo.updateGameDetails(this.games);
+
+        this.result = await gamesRepo.getOneGameById(this.games[0].id);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the game's details are updated", function () {
+        expect(this.result.id).toBe(this.games[0].id);
+        expect(this.result.releaseDate).toBe(this.games[0].releaseDate);
+        expect(this.result.developers).toEqual(this.games[0].developers);
+        expect(this.result.genres).toEqual(this.games[0].genres);
+        expect(this.result.description).toBe(this.games[0].description);
+      });
+    });
+  });
+
+  describe(".getXgamesWithUncheckedPlayerHistory.", function () {
+    describe("When two games are found,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
