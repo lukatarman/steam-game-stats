@@ -11,8 +11,8 @@ on:
     branches: [master]
     paths: ["backend/**"]
 
-validate-unit-test:
-  build:
+jobs:
+  validate-unit-tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,8 +30,7 @@ validate-unit-test:
       - run: cd backend && npm run prettier:check
       - run: cd backend && npm test-unit
 
-validate-integration-test:
-  build:
+  validate-integration-tests:
     runs-on: ubuntu-latest
 
     strategy:
