@@ -631,4 +631,126 @@ describe("game.service.js", () => {
       });
     });
   });
+
+  describe(".getSteamDbReleaseDate.", function () {
+    describe("When we provide a html page that doesn't contain a valid date,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
+      });
+
+      it("the returned value is 'Coming soon'", function () {
+        expect(this.result).toBe("Coming soon");
+      });
+    });
+
+    describe("When we provide a html page that contains a valid date,", function () {
+      beforeEach(function () {
+        this.date = new Date("11 August 2020");
+
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("a date is returned'", function () {
+        expect(this.result).toBeInstanceOf(Date);
+      });
+
+      it("the returned date is '11 August 2020'", function () {
+        expect(this.result).toEqual(this.date);
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a date section", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty string", function () {
+        expect(this.result).toBe("");
+      });
+    });
+  });
+
+  describe(".getSteamDbDevelopers.", function () {
+    describe("When we provide a html page that contains two developers,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDevelopers(counterStrikeHtmlDetailsSteamDb);
+      });
+
+      it("two developers are returned", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the developer is 'Valve'", function () {
+        expect(this.result[0]).toBe("Valve");
+      });
+
+      it("the developer is 'Hidden Path Entertainment'", function () {
+        expect(this.result[1]).toBe("Hidden Path Entertainment");
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a developer section", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  describe(".getSteamDbGenres.", function () {
+    describe("When we provide a html page that contains the genres,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbGenres(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("two genres are returned", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first genre is 'Action'", function () {
+        expect(this.result[0]).toBe("Action");
+      });
+
+      it("the second genre is 'Indie'", function () {
+        expect(this.result[1]).toBe("Indie");
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a genres section,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty array", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+  });
+
+  describe(".getSteamDbDescription.", function () {
+    describe("When we provide a html page that contains the description,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("the returned value is the game's description'", function () {
+        expect(this.result).toEqual(
+          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
+        );
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a description section,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("the returned value is an empty string", function () {
+        expect(this.result).toEqual("");
+      });
+    });
+  });
 });
