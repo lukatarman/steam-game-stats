@@ -1,5 +1,5 @@
 import httpClient from "axios";
-import { DatabaseClient } from "./infrastructure/database/database.client.js";
+import { DatabaseClient } from "./infrastructure/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
 import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps.aggregator.js";
 import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
@@ -9,11 +9,11 @@ import { Runner } from "./utils/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
 import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
 import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
-import { GamesRepository } from "./infrastructure/database/repositories/games.repository.js";
-import { SteamAppsRepository } from "./infrastructure/database/repositories/steam.apps.repository.js";
-import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/database/repositories/steam.apps.update.timestamps.repository.js";
-import { PlayerHistoryRepository } from "./infrastructure/database/repositories/player.history.repository.js";
-import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
+import { GamesRepository } from "./infrastructure/repositories/games.repository.js";
+import { SteamAppsRepository } from "./infrastructure/repositories/steam.apps.repository.js";
+import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/repositories/steam.apps.update.timestamps.repository.js";
+import { PlayerHistoryRepository } from "./infrastructure/repositories/player.history.repository.js";
+import { HistoryChecksRepository } from "./infrastructure/repositories/history.checks.repository.js";
 
 // our entry point = main
 async function main() {
@@ -39,6 +39,7 @@ async function main() {
     currentPlayersUpdateIntervalDelay: hoursToMs(2),
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
+    missingPropertiesBatchSize: 20,
   };
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,

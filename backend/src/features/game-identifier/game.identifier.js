@@ -3,6 +3,7 @@ import {
   updateTypeSideEffectFree,
   identifyGames,
   assignType,
+  updateMissingProperties,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -27,6 +28,10 @@ export class GameIdentifier {
     this.#historyChecksRepository = historyChecksRepository;
     this.#options = options;
   }
+
+  // todo
+  // Separate release date property checking into own method
+  // details: https://github.com/lukatarman/steam-game-stats-backend/issues/138
 
   tryViaSteamWeb = async () => {
     const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
@@ -107,5 +112,34 @@ export class GameIdentifier {
     }
 
     return updatedSteamApps;
+  }
+
+  getMissingGameProperties = async () => {
+    const games = await this.#gamesRepository.getMissingGameProperties(
+      this.#options.missingPropertiesBatchSize,
+    );
+
+    if (games.length === 0) return;
+
+    const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(games);
+
+    const updatedGames = updateMissingProperties(games, htmlDetailsPages);
+
+    this.#persistMissingProperties(updatedGames);
+  };
+
+  async #getSteamWebHtmlDetailsPages(games) {
+    const htmlDetailsPages = [];
+
+    for (let game of games) {
+      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game));
+      await delay(this.#options.unitDelay);
+    }
+
+    return htmlDetailsPages;
+  }
+
+  async #persistMissingProperties(games) {
+    await this.#gamesRepository.updateMissingGamesProperties(games);
   }
 }
