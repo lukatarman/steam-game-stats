@@ -39,7 +39,7 @@ async function main() {
     currentPlayersUpdateIntervalDelay: hoursToMs(2),
     updateIntervalDelay: hoursToMs(12),
     iterationDelay: 5000,
-    missingPropertiesBatchSize: 20,
+    missingDetailsBatchSize: 20,
   };
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,

@@ -114,9 +114,9 @@ export class GameIdentifier {
     return updatedSteamApps;
   }
 
-  getMissingGameProperties = async () => {
+  getGamesWithoutDetails = async () => {
     const games = await this.#gamesRepository.getGamesWithoutDetails(
-      this.#options.missingPropertiesBatchSize,
+      this.#options.missingDetailsBatchSize,
     );
 
     if (games.length === 0) return;
@@ -128,7 +128,7 @@ export class GameIdentifier {
     this.#persistMissingProperties(updatedGames);
   };
 
-  async #getSteamWebHtmlDetailsPages(games) {
+  async #getSteamDbHtmlDetailsPage(games) {
     const htmlDetailsPages = [];
 
     for (let game of games) {
@@ -140,6 +140,6 @@ export class GameIdentifier {
   }
 
   async #persistMissingProperties(games) {
-    await this.#gamesRepository.updateMissingGamesProperties(games);
+    await this.#gamesRepository.updateGameDetails(games);
   }
 }

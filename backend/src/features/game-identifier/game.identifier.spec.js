@@ -784,11 +784,11 @@ describe("game.identifier.js", function () {
     });
   });
 
-  describe(".getMissingGameProperties.", function () {
+  describe(".getGamesWithoutDetails.", function () {
     describe("Finds no missing game properties in the database and stops", function () {
       beforeEach(async function () {
         this.options = {
-          missingPropertiesBatchSize: 1,
+          missingDetailsBatchSize: 1,
         };
 
         this.steamClientMock = createSteamMock([]);
@@ -804,16 +804,16 @@ describe("game.identifier.js", function () {
           this.options,
         );
 
-        await this.identifier.getMissingGameProperties();
+        await this.identifier.getGamesWithoutDetails();
       });
 
-      it("getMissingGameProperties was called once", function () {
-        expect(this.gamesRepository.getMissingGameProperties).toHaveBeenCalledTimes(1);
+      it("getGamesWithoutDetails was called once", function () {
+        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledTimes(1);
       });
 
-      it("getMissingGameProperties was called with 'this.options.missingPropertiesBatchSize'", function () {
-        expect(this.gamesRepository.getMissingGameProperties).toHaveBeenCalledWith(
-          this.options.missingPropertiesBatchSize,
+      it("getGamesWithoutDetails was called with 'this.options.missingDetailsBatchSize'", function () {
+        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledWith(
+          this.options.missingDetailsBatchSize,
         );
       });
 
@@ -821,17 +821,15 @@ describe("game.identifier.js", function () {
         expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
 
-      it("updateMissingGamesProperties was not called", function () {
-        expect(this.gamesRepository.updateMissingGamesProperties).toHaveBeenCalledTimes(
-          0,
-        );
+      it("updateGameDetails was not called", function () {
+        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledTimes(0);
       });
     });
 
     describe("Finds two games with missing properties", function () {
       beforeEach(async function () {
         this.options = {
-          missingPropertiesBatchSize: 2,
+          missingDetailsBatchSize: 2,
           unitDelay: 0,
         };
 
@@ -873,21 +871,21 @@ describe("game.identifier.js", function () {
           this.options,
         );
 
-        await this.identifier.getMissingGameProperties();
+        await this.identifier.getGamesWithoutDetails();
       });
 
-      it("getMissingGameProperties was called once", function () {
-        expect(this.gamesRepository.getMissingGameProperties).toHaveBeenCalledTimes(1);
+      it("getGamesWithoutDetails was called once", function () {
+        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledTimes(1);
       });
 
-      it("getMissingGameProperties was called with 'this.options.missingPropertiesBatchSize'", function () {
-        expect(this.gamesRepository.getMissingGameProperties).toHaveBeenCalledWith(
-          this.options.missingPropertiesBatchSize,
+      it("getGamesWithoutDetails was called with 'this.options.missingDetailsBatchSize'", function () {
+        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledWith(
+          this.options.missingDetailsBatchSize,
         );
       });
 
-      it("getMissingGameProperties was called before getSteamDbHtmlDetailsPage", function () {
-        expect(this.gamesRepository.getMissingGameProperties).toHaveBeenCalledBefore(
+      it("getGamesWithoutDetails was called before getSteamDbHtmlDetailsPage", function () {
+        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledBefore(
           this.steamClientMock.getSteamDbHtmlDetailsPage,
         );
       });
@@ -905,16 +903,14 @@ describe("game.identifier.js", function () {
         );
       });
 
-      it("getSteamDbHtmlDetailsPage was called before updateMissingGamesProperties", function () {
+      it("getSteamDbHtmlDetailsPage was called before updateGameDetails", function () {
         expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledBefore(
-          this.gamesRepository.updateMissingGamesProperties,
+          this.gamesRepository.updateGameDetails,
         );
       });
 
-      it("updateMissingGamesProperties was called once", function () {
-        expect(this.gamesRepository.updateMissingGamesProperties).toHaveBeenCalledTimes(
-          1,
-        );
+      it("updateGameDetails was called once", function () {
+        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -945,8 +941,8 @@ function createSteamAppsRepositoryMock(steamWebDbRet, steamchartsWebDbRet) {
 function createGamesRepositoryMock(gamesRepoRet) {
   return jasmine.createSpyObj("GamesRepository", {
     insertManyGames: Promise.resolve(undefined),
-    getMissingGameProperties: Promise.resolve(gamesRepoRet),
-    updateMissingGamesProperties: Promise.resolve(undefined),
+    getGamesWithoutDetails: Promise.resolve(gamesRepoRet),
+    updateGameDetails: Promise.resolve(undefined),
   });
 }
 
