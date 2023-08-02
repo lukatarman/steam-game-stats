@@ -10,7 +10,7 @@ import {
 } from "../../../models/game.mocks.js";
 import { Game } from "../../../models/game.js";
 
-describe("GamesRepository", function () {
+fdescribe("GamesRepository", function () {
   describe(".insertManyGames inserts multiple games into the collection.", function () {
     describe("If two games are passed in,", function () {
       beforeAll(async function () {

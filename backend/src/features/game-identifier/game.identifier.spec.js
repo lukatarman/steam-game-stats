@@ -5,15 +5,14 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details
 import { swordsAndSoldiersBetaSteamcharts } from "../../../assets/steamcharts-details-pages/swords.and.soldiers.beta.error.html.details.page.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { Game } from "../../models/game.js";
-
 import { SteamApp } from "../../models/steam.app.js";
 import {
   discoverGamesFromSteamWeb,
   updateTypeSideEffectFree,
 } from "./services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
-import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
-import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-ages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-ages/risk.of.rain.html.details.page.js";
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {

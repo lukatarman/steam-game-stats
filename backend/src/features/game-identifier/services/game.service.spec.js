@@ -26,13 +26,13 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { ValidDataSources } from "../../../utils/valid.data.sources.js";
-import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
-import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
-import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import {
   getOneSteamAppInstantiatedGame,
   getXsteamchartsInstantiatedGames,
 } from "../../../models/game.mocks.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-ages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-ages/risk.of.rain.html.details.page.js";
+import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-ages/karmazoo.html.details.page.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {

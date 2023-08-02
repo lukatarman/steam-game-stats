@@ -3,7 +3,7 @@ import {
   updateTypeSideEffectFree,
   identifyGames,
   assignType,
-  updateMissingProperties,
+  updateMissingDetails,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
