@@ -14,6 +14,7 @@ import { SteamAppsRepository } from "./infrastructure/database/repositories/stea
 import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/database/repositories/steam.apps.update.timestamps.repository.js";
 import { PlayerHistoryRepository } from "./infrastructure/database/repositories/player.history.repository.js";
 import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
+import { MongoServerSelectionError } from "mongodb";
 
 // our entry point = main
 async function main() {
@@ -23,7 +24,28 @@ async function main() {
     databaseName: "game-stats",
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
   };
-  const databaseClient = await new DatabaseClient().init(databaseOptions);
+
+  let databaseClient;
+  try {
+    databaseClient = await new DatabaseClient().init(databaseOptions);
+  } catch (error) {
+    if (error instanceof MongoServerSelectionError) {
+      /**
+       * @todo https://github.com/lukatarman/steam-game-stats/issues/39
+       */
+      console.error(`[ERROR]: db connection failed`);
+      console.error(`[ERROR]: error message: ${error.message}`);
+      console.error(`[ERROR]: verify connection string: ${databaseOptions.url}`);
+      console.error(`[ERROR]: verify the db is running`);
+      console.error(`[ERROR]: performing graceful application shutdown`);
+      process.exit(0);
+    }
+
+    console.error(`[ERROR]: unknown error, add handling`);
+    console.error(`[ERROR]: performing shutdown with error response`);
+    process.exit(1);
+  }
+
   const gamesRepository = new GamesRepository(databaseClient);
   const steamAppsRepository = new SteamAppsRepository(databaseClient);
   const steamAppsUpdateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
