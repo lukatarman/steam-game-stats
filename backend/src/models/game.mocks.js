@@ -6,6 +6,23 @@ export const getOneGameWithoutDetails = () => {
   return Game.fromSteamApp(getOneSampleSteamApp(), "", [], [], "");
 };
 
+export const getOneSteamAppInstantiatedGame = () => {
+  const steamApp = getOneSampleSteamApp();
+
+  const releaseDate = "21 July 2019";
+  const developers = ["Valve", "Hopoo Games"];
+  const genres = ["Action", "Adventure"];
+  const description = "Best game";
+
+  return Game.fromSteamApp(steamApp, releaseDate, developers, genres, description);
+};
+
+export const getXsteamchartsInstantiatedGames = (amount) => {
+  return Array.from({ length: amount }).map((x, index) =>
+    Game.fromSteamcharts({ appid: index + 1, name: `Game #${index + 1}` }),
+  );
+};
+
 export const getOneGameWithDetails = () => {
   return [
     {

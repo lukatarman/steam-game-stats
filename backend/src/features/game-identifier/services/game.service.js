@@ -40,11 +40,15 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
 export function getReleaseDate(page) {
   const dom = new JSDOM(page);
 
-  const releaseDate = dom.window.document.querySelector(".release_date .date");
+  const releaseDateString = dom.window.document.querySelector(".release_date .date");
 
-  if (!releaseDate) return "";
+  if (!releaseDateString) return "";
 
-  return new Date(releaseDate.textContent.trim());
+  const releaseDate = new Date(releaseDateString.textContent.trim());
+
+  if (releaseDate == "Invalid Date") return releaseDateString;
+
+  return releaseDate;
 }
 
 export function getDevelopers(page) {
@@ -103,4 +107,82 @@ export function identifyGames(updatedSteamApps) {
 export function assignType(result, steamApp) {
   if (result) steamApp.appType = SteamApp.validTypes.game;
   return steamApp;
+}
+
+export function updateMissingDetails(games, htmlDetailsPages) {
+  return games.map((game, i) => {
+    const page = htmlDetailsPages[i];
+
+    const details = {
+      releaseDate: "",
+      developers: [],
+      genres: [],
+      description: "",
+    };
+
+    if (game.releaseDate === "") details.releaseDate = getSteamDbReleaseDate(page);
+    if (game.developers.length === 0) details.developers = getSteamDbDevelopers(page);
+    if (game.genres.length === 0) details.genres = getSteamDbGenres(page);
+    if (game.description === "") details.description = getSteamDbDescription(page);
+
+    return game.updateGameDetails(details);
+  });
+}
+
+export function getSteamDbReleaseDate(page) {
+  const dom = new JSDOM(page);
+
+  const releaseDateElement = dom.window.document.querySelector(
+    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
+  );
+
+  if (!releaseDateElement) return "";
+
+  const releaseDateString = releaseDateElement.textContent;
+
+  const releaseDate = new Date(
+    releaseDateString.slice(0, releaseDateString.indexOf("–") - 1),
+  );
+
+  if (releaseDate == "Invalid Date") return releaseDateString;
+
+  return releaseDate;
+}
+
+export function getSteamDbDevelopers(page) {
+  const dom = new JSDOM(page);
+
+  const developers = dom.window.document.querySelector(
+    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
+  );
+
+  if (!developers) return [];
+
+  return Array.from(developers.children).map((developer) => developer.textContent);
+}
+
+export function getSteamDbGenres(page) {
+  const dom = new JSDOM(page);
+
+  const domTableBody = dom.window.document.querySelector("#info tbody");
+
+  if (!domTableBody) return [];
+
+  const genresNodes = Array.from(domTableBody.children).filter(
+    (tableEntry) => tableEntry.children[0].textContent === "Store Genres",
+  )[0].children[1].childNodes;
+
+  return Array.from(genresNodes)
+    .filter((genre) => genre.constructor.name === "Text")
+    .map((genre) => genre.nodeValue.replace(",", "").trim());
+}
+
+export function getSteamDbDescription(page) {
+  const dom = new JSDOM(page);
+
+  const description = dom.window.document.querySelector(".header-description");
+
+  if (!description) return "";
+
+  return description.textContent;
 }

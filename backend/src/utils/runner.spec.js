@@ -51,7 +51,7 @@ describe("runner.js", () => {
       };
       const iterations = 10;
       const options = { iterationDelay: 0 };
-      const runner = new Runner([funcOne, funcTwo], iterations, iterations);
+      const runner = new Runner([funcOne, funcTwo], options, iterations);
 
       await runner.run();
       await delay(280);

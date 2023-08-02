@@ -115,15 +115,15 @@ export class GameIdentifier {
   }
 
   getMissingGameProperties = async () => {
-    const games = await this.#gamesRepository.getMissingGameProperties(
+    const games = await this.#gamesRepository.getGamesWithoutDetails(
       this.#options.missingPropertiesBatchSize,
     );
 
     if (games.length === 0) return;
 
-    const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(games);
+    const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPage(games);
 
-    const updatedGames = updateMissingProperties(games, htmlDetailsPages);
+    const updatedGames = updateMissingDetails(games, htmlDetailsPages);
 
     this.#persistMissingProperties(updatedGames);
   };

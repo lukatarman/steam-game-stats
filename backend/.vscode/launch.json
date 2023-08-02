@@ -26,7 +26,8 @@
       ],
       "program": "../node_modules/jasmine/bin/jasmine.js",
       "args": [
-        "--config=jasmine.json",
+        "--config=jasmine-unit.json",
+        "--config=jasmine-integration.json",
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
