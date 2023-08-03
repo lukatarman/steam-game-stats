@@ -114,13 +114,13 @@ describe("runner.js", () => {
 
   describe("when one running function throws an expected error,", function () {
     beforeAll(function () {
-      this.expectedErrorThrower = async function () {
+      const expectedErrorThrower = async function () {
         throw new ExpectedError();
       };
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
       this.result = new XXXRunner(this.logger, delayMock, 0, 2).run(
-        [this.expectedErrorThrower],
+        [expectedErrorThrower],
         [ExpectedError],
       );
     });
@@ -140,44 +140,36 @@ describe("runner.js", () => {
         throw new UnexpectedError();
       };
 
-      this.runner = new XXXRunner(
+      this.result = new XXXRunner(
         { warn: () => {} },
         delayMock,
         { iterationDelay: 0 },
         2,
-      );
+      ).run([this.unexpectedErrorThrower], [ExpectedError]);
     });
 
     it("the unexpected errror rethrown", async function () {
-      try {
-        await this.runner.run([this.unexpectedErrorThrower], [ExpectedError]);
-        fail("run: an error run should have been thrown");
-      } catch (error) {
-        expect(error).toBeInstanceOf(UnexpectedError);
-      }
+      await expectAsync(this.result).toBeRejected();
     });
   });
 
   describe("when one of two running functions throws an expected error,", function () {
-    let funcs;
     let counterFuncOne = 0;
     let counterFuncTwo = 0;
 
     beforeAll(function () {
-      funcs = {
-        funcOne: async function () {
-          counterFuncOne++;
-          throw new ExpectedError();
-        },
-        funcTwo: async function () {
-          counterFuncTwo++;
-        },
+      const funcOne = async function () {
+        counterFuncOne++;
+        throw new ExpectedError();
+      };
+      const funcTwo = async function () {
+        counterFuncTwo++;
       };
 
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
       this.result = new XXXRunner(this.logger, delayMock, 0, 2).run(
-        [funcs.funcOne, funcs.funcTwo],
+        [funcOne, funcTwo],
         [ExpectedError],
       );
     });
