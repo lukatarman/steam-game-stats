@@ -1,5 +1,5 @@
 import { delay } from "../utils/time.utils.js";
-import { Runner } from "./runner.js";
+import { Runner, XXXRunner } from "./runner.js";
 
 describe("runner.js", () => {
   describe("runs one function in a loop for one iteration", () => {
@@ -116,13 +116,14 @@ describe("runner.js", () => {
     beforeEach(function () {
       jasmine.clock().install();
 
-      const expectedErrorThrower = async function () {
+      this.expectedErrorThrower = async function () {
         delay(2000);
         jasmine.clock().tick(2000);
         throw new ExpectedError();
       };
+      this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-      this.runner = new Runner([expectedErrorThrower], { iterationDelay: 0 }, 2);
+      this.runner = new XXXRunner(this.logger, { iterationDelay: 0 }, 2);
     });
 
     afterEach(function () {
@@ -131,10 +132,20 @@ describe("runner.js", () => {
 
     it("the expected errror is catched", async function () {
       try {
-        await this.runner.runSafe([ExpectedError]);
+        await this.runner.run([this.expectedErrorThrower], [ExpectedError]);
       } catch (error) {
         fail(`expected error should have been catched; error: ${error}`);
       }
+    });
+
+    it("a warn message is logged", async function () {
+      try {
+        await this.runner.run([this.expectedErrorThrower], [ExpectedError]);
+      } catch (error) {
+        fail(`expected error should have been catched; error: ${error}`);
+      }
+
+      expect(this.logger.warn).toHaveBeenCalled();
     });
   });
 });
