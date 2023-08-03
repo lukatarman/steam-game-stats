@@ -64,13 +64,18 @@ export class Runner {
 export class XXXRunner {
   #logger;
   #delayFn;
-  #options;
   #iterations;
+  #iterationDelay;
 
-  constructor(logger, delayFn, options, iterations = Number.POSITIVE_INFINITY) {
+  constructor(
+    logger,
+    delayFn,
+    iterationDelay = 0,
+    iterations = Number.POSITIVE_INFINITY,
+  ) {
     this.#delayFn = delayFn;
     this.#logger = logger;
-    this.#options = options;
+    this.#iterationDelay = iterationDelay;
     this.#iterations = iterations;
   }
 
@@ -100,7 +105,7 @@ export class XXXRunner {
         this.#logger.warn(`${func.name}: ${error.message}`);
       }
 
-      if (this.#options.iterationDelay) await this.#delayFn(this.#options.iterationDelay);
+      if (this.#iterationDelay > 0) await this.#delayFn(this.#iterationDelay);
     }
   }
 }
