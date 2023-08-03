@@ -112,6 +112,32 @@ describe("runner.js", () => {
     });
   });
 
+  describe("runs one function in a loop", () => {
+    describe("for one iteration", () => {
+      it("and calls the function once", async () => {
+        const funcSpy = jasmine.createSpy("funcSpy");
+        const result = new XXXRunner({ warn: () => {} }, delayMock, 0, 1).run(
+          [funcSpy],
+          [],
+        );
+        await expectAsync(result).toBeResolved();
+        expect(funcSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("for two iteration", () => {
+      it("and calls the function twice", async () => {
+        const funcSpy = jasmine.createSpy("funcSpy");
+        const result = new XXXRunner({ warn: () => {} }, delayMock, 0, 2).run(
+          [funcSpy],
+          [],
+        );
+        await expectAsync(result).toBeResolved();
+        expect(funcSpy).toHaveBeenCalledTimes(2);
+      });
+    });
+  });
+
   describe("when one running function throws an expected error,", function () {
     beforeAll(function () {
       const expectedErrorThrower = async function () {

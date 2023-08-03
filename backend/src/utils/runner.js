@@ -73,8 +73,8 @@ export class XXXRunner {
     iterationDelay = 0,
     iterations = Number.POSITIVE_INFINITY,
   ) {
-    this.#delayFn = delayFn;
     this.#logger = logger;
+    this.#delayFn = delayFn;
     this.#iterationDelay = iterationDelay;
     this.#iterations = iterations;
   }
