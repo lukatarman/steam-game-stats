@@ -148,6 +148,33 @@ describe("runner.js", () => {
       expect(this.logger.warn).toHaveBeenCalled();
     });
   });
+
+  describe("when one running function throws an unexpected error,", function () {
+    beforeEach(function () {
+      jasmine.clock().install();
+
+      this.unexpectedErrorThrower = async function () {
+        delay(2000);
+        jasmine.clock().tick(2000);
+        throw new UnexpectedError();
+      };
+
+      this.runner = new XXXRunner({ warn: () => {} }, { iterationDelay: 0 }, 2);
+    });
+
+    afterEach(function () {
+      jasmine.clock().uninstall();
+    });
+
+    it("the unexpected errror rethrown", async function () {
+      try {
+        await this.runner.run([this.unexpectedErrorThrower], [ExpectedError]);
+        fail("run: an error run should have been thrown");
+      } catch (error) {
+        expect(error).toBeInstanceOf(UnexpectedError);
+      }
+    });
+  });
 });
 
 class ExpectedError extends Error {
@@ -156,3 +183,8 @@ class ExpectedError extends Error {
   }
 }
 
+class UnexpectedError extends Error {
+  constructor() {
+    super("unexpected error");
+  }
+}
