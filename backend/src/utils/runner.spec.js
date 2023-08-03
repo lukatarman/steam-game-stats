@@ -113,49 +113,30 @@ describe("runner.js", () => {
   });
 
   describe("when one running function throws an expected error,", function () {
-    beforeEach(function () {
-      jasmine.clock().install();
-
+    beforeAll(function () {
       this.expectedErrorThrower = async function () {
-        delay(2000);
-        jasmine.clock().tick(2000);
         throw new ExpectedError();
       };
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-      this.runner = new XXXRunner(this.logger, delayMock, 0, 2);
-    });
-
-    afterEach(function () {
-      jasmine.clock().uninstall();
+      this.result = new XXXRunner(this.logger, delayMock, 0, 2).run(
+        [this.expectedErrorThrower],
+        [ExpectedError],
+      );
     });
 
     it("the expected errror is catched", async function () {
-      try {
-        await this.runner.run([this.expectedErrorThrower], [ExpectedError]);
-      } catch (error) {
-        fail(`expected error should have been catched; error: ${error}`);
-      }
+      await expectAsync(this.result).toBeResolved();
     });
 
     it("a warn message is logged", async function () {
-      try {
-        await this.runner.run([this.expectedErrorThrower], [ExpectedError]);
-      } catch (error) {
-        fail(`expected error should have been catched; error: ${error}`);
-      }
-
       expect(this.logger.warn).toHaveBeenCalled();
     });
   });
 
   describe("when one running function throws an unexpected error,", function () {
     beforeEach(function () {
-      jasmine.clock().install();
-
       this.unexpectedErrorThrower = async function () {
-        delay(2000);
-        jasmine.clock().tick(2000);
         throw new UnexpectedError();
       };
 
@@ -165,10 +146,6 @@ describe("runner.js", () => {
         { iterationDelay: 0 },
         2,
       );
-    });
-
-    afterEach(function () {
-      jasmine.clock().uninstall();
     });
 
     it("the unexpected errror rethrown", async function () {
@@ -187,19 +164,13 @@ describe("runner.js", () => {
     let counterFuncTwo = 0;
 
     beforeAll(function () {
-      jasmine.clock().install();
-
       funcs = {
         funcOne: async function () {
           counterFuncOne++;
-          delay(2000);
-          jasmine.clock().tick(2000);
           throw new ExpectedError();
         },
         funcTwo: async function () {
           counterFuncTwo++;
-          delay(2000);
-          jasmine.clock().tick(2000);
         },
       };
 
@@ -209,10 +180,6 @@ describe("runner.js", () => {
         [funcs.funcOne, funcs.funcTwo],
         [ExpectedError],
       );
-    });
-
-    afterAll(function () {
-      jasmine.clock().uninstall();
     });
 
     it("the expected errror is catched", async function () {
