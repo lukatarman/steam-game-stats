@@ -32,4 +32,34 @@ export class Runner {
       if (this.#options.iterationDelay) await delay(this.#options.iterationDelay);
     }
   }
+
+  async runSafe(expectedErrors) {
+    const execPromises = [];
+    for (let exec of this.#executables) {
+      execPromises.push(this.#runFuncForNumberOfIterationsSafe(exec, expectedErrors));
+    }
+
+    await Promise.all(execPromises);
+  }
+
+  async #runFuncForNumberOfIterationsSafe(func, expectedErrorTypes) {
+    // Counting down from a property of an object increases the time needed to perform
+    // the first iterations in the loop compared to using a primitive. The tests of this
+    // function rely on very short iteration times. If they are slowed down some tests are
+    // failing unexpextedly. Don't refactor next two lines.
+    let iterations = this.#iterations;
+    while (iterations--) {
+      try {
+        await func();
+      } catch (error) {
+        const thrownErrorTypeIndex = expectedErrorTypes.findIndex(
+          (expectedErrorType) => error instanceof expectedErrorType,
+        );
+        if (thrownErrorTypeIndex === -1) throw error;
+        console.warn(`[WARN]: ${func.name}: ${error.message}`);
+      }
+
+      if (this.#options.iterationDelay) await delay(this.#options.iterationDelay);
+    }
+  }
 }

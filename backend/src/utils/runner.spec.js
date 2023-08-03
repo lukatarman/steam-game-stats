@@ -111,4 +111,37 @@ describe("runner.js", () => {
       expect(counterHasDuplicates).toBe(false);
     });
   });
+
+  describe("when one running function throws an expected error,", function () {
+    beforeEach(function () {
+      jasmine.clock().install();
+
+      const expectedErrorThrower = async function () {
+        delay(2000);
+        jasmine.clock().tick(2000);
+        throw new ExpectedError();
+      };
+
+      this.runner = new Runner([expectedErrorThrower], { iterationDelay: 0 }, 2);
+    });
+
+    afterEach(function () {
+      jasmine.clock().uninstall();
+    });
+
+    it("the expected errror is catched", async function () {
+      try {
+        await this.runner.runSafe([ExpectedError]);
+      } catch (error) {
+        fail(`expected error should have been catched; error: ${error}`);
+      }
+    });
+  });
 });
+
+class ExpectedError extends Error {
+  constructor() {
+    super("expected error");
+  }
+}
+
