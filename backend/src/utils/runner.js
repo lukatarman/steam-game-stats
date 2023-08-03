@@ -12,12 +12,9 @@ export class Runner {
   }
 
   async run() {
-    const execPromises = [];
-    for (let exec of this.#executables) {
-      execPromises.push(this.#runFuncForNumberOfIterations(exec));
-    }
-
-    await Promise.all(execPromises);
+    await Promise.all([
+      this.#executables.map((func) => this.#runFuncForNumberOfIterations(func)),
+    ]);
   }
 
   async #runFuncForNumberOfIterations(func) {
@@ -66,10 +63,12 @@ export class Runner {
 
 export class XXXRunner {
   #logger;
+  #delayFn;
   #options;
   #iterations;
 
-  constructor(logger, options, iterations = Number.POSITIVE_INFINITY) {
+  constructor(logger, delayFn, options, iterations = Number.POSITIVE_INFINITY) {
+    this.#delayFn = delayFn;
     this.#logger = logger;
     this.#options = options;
     this.#iterations = iterations;
@@ -101,7 +100,7 @@ export class XXXRunner {
         this.#logger.warn(`${func.name}: ${error.message}`);
       }
 
-      if (this.#options.iterationDelay) await delay(this.#options.iterationDelay);
+      if (this.#options.iterationDelay) await this.#delayFn(this.#options.iterationDelay);
     }
   }
 }

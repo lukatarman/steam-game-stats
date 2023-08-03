@@ -123,7 +123,7 @@ describe("runner.js", () => {
       };
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-      this.runner = new XXXRunner(this.logger, { iterationDelay: 0 }, 2);
+      this.runner = new XXXRunner(this.logger, delayMock, { iterationDelay: 0 }, 2);
     });
 
     afterEach(function () {
@@ -159,7 +159,12 @@ describe("runner.js", () => {
         throw new UnexpectedError();
       };
 
-      this.runner = new XXXRunner({ warn: () => {} }, { iterationDelay: 0 }, 2);
+      this.runner = new XXXRunner(
+        { warn: () => {} },
+        delayMock,
+        { iterationDelay: 0 },
+        2,
+      );
     });
 
     afterEach(function () {
@@ -200,7 +205,7 @@ describe("runner.js", () => {
 
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-      this.result = new XXXRunner(this.logger, { iterationDelay: 0 }, 2).run(
+      this.result = new XXXRunner(this.logger, delayMock, { iterationDelay: 0 }, 2).run(
         [funcs.funcOne, funcs.funcTwo],
         [ExpectedError],
       );
@@ -224,6 +229,10 @@ describe("runner.js", () => {
     });
   });
 });
+
+function delayMock(iterationDelay) {
+  return Promise.resolve();
+}
 
 class ExpectedError extends Error {
   constructor() {
