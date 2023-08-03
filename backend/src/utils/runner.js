@@ -12,9 +12,12 @@ export class Runner {
   }
 
   async run() {
-    await Promise.all([
-      this.#executables.map((func) => this.#runFuncForNumberOfIterations(func)),
-    ]);
+    const execPromises = [];
+    for (let exec of this.#executables) {
+      execPromises.push(this.#runFuncForNumberOfIterations(exec));
+    }
+
+    await Promise.all(execPromises);
   }
 
   async #runFuncForNumberOfIterations(func) {
