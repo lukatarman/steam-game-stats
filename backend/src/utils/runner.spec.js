@@ -175,6 +175,54 @@ describe("runner.js", () => {
       }
     });
   });
+
+  describe("when one of two running functions throws an expected error,", function () {
+    let funcs;
+    let counterFuncOne = 0;
+    let counterFuncTwo = 0;
+
+    beforeAll(function () {
+      jasmine.clock().install();
+
+      funcs = {
+        funcOne: async function () {
+          counterFuncOne++;
+          delay(2000);
+          jasmine.clock().tick(2000);
+          throw new ExpectedError();
+        },
+        funcTwo: async function () {
+          counterFuncTwo++;
+          delay(2000);
+          jasmine.clock().tick(2000);
+        },
+      };
+
+      this.logger = jasmine.createSpyObj("logger", ["warn"]);
+
+      this.result = new XXXRunner(this.logger, { iterationDelay: 0 }, 2).run(
+        [funcs.funcOne, funcs.funcTwo],
+        [ExpectedError],
+      );
+    });
+
+    afterAll(function () {
+      jasmine.clock().uninstall();
+    });
+
+    it("the expected errror is catched", async function () {
+      await expectAsync(this.result).toBeResolved();
+    });
+
+    it("a warn message is logged", async function () {
+      expect(this.logger.warn).toHaveBeenCalled();
+    });
+
+    it("funcOne and funcTwo are executed twice", async function () {
+      expect(counterFuncOne).toBe(2);
+      expect(counterFuncTwo).toBe(2);
+    });
+  });
 });
 
 class ExpectedError extends Error {
