@@ -1,125 +1,11 @@
-import { delay } from "../utils/time.utils.js";
-import { Runner, XXXRunner } from "./runner.js";
+import { Runner } from "./runner.js";
 
 describe("runner.js", () => {
-  describe("runs one function in a loop for one iteration", () => {
-    let counter = 0;
-
-    beforeAll(async () => {
-      const func = () => counter++;
-      const iterations = 1;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner([func], options, iterations);
-
-      await runner.run();
-    });
-
-    it("should increment the coutner by 1", () => {
-      expect(counter).toBe(1);
-    });
-  });
-
-  describe("runs one function in a loop for multiple iterations", () => {
-    let counter = 0;
-
-    beforeAll(async () => {
-      const func = () => counter++;
-      const iterations = 5;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner([func], options, iterations);
-
-      await runner.run();
-    });
-
-    it("should increment the coutner by 5", () => {
-      expect(counter).toBe(5);
-    });
-  });
-
-  describe("runs multiple functions in parallel for 280 miliseconds", () => {
-    let counterOne = 0;
-    let counterTwo = 0;
-
-    beforeAll(async () => {
-      const funcOne = async () => {
-        await delay(80);
-        counterOne++;
-      };
-      const funcTwo = async () => {
-        await delay(80);
-        counterTwo++;
-      };
-      const iterations = 10;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner([funcOne, funcTwo], iterations, iterations);
-
-      await runner.run();
-      await delay(280);
-    });
-
-    it("should increment coutner one by 3", () => {
-      expect(counterOne).toBe(3);
-    });
-
-    it("should increment coutner two by 3", () => {
-      expect(counterTwo).toBe(3);
-    });
-  });
-
-  describe("runs multiple functions with different delays in parallel for 130 miliseconds", () => {
-    let counterOne = 0;
-    let counterTwo = 0;
-    let counterThree = 0;
-    let counterFour = 0;
-    let counterHasDuplicates = true;
-
-    beforeAll(async () => {
-      const funcOne = async () => {
-        await delay(10);
-        counterOne++;
-      };
-      const funcTwo = async () => {
-        await delay(30);
-        counterTwo++;
-      };
-      const funcThree = async () => {
-        await delay(50);
-        counterThree++;
-      };
-      const funcFour = async () => {
-        await delay(90);
-        counterFour++;
-      };
-      const iterations = 10;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner(
-        [funcOne, funcTwo, funcThree, funcFour],
-        options,
-        iterations,
-      );
-      function checkIfHasDuplicates(arr) {
-        return new Set(arr).size !== arr.length;
-      }
-      await runner.run();
-      await delay(130);
-      const results = [counterOne, counterTwo, counterThree, counterFour];
-
-      counterHasDuplicates = checkIfHasDuplicates(results);
-    });
-
-    it("the different functions should run different amount of times", () => {
-      expect(counterHasDuplicates).toBe(false);
-    });
-  });
-
   describe("runs one function in a loop", () => {
     describe("for one iteration", () => {
       it("and calls the function once", async () => {
         const funcSpy = jasmine.createSpy("funcSpy");
-        const result = new XXXRunner({ warn: () => {} }, delayMock, 0, 1).run(
-          [funcSpy],
-          [],
-        );
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 1).run([funcSpy], []);
         await expectAsync(result).toBeResolved();
         expect(funcSpy).toHaveBeenCalledTimes(1);
       });
@@ -128,12 +14,39 @@ describe("runner.js", () => {
     describe("for two iteration", () => {
       it("and calls the function twice", async () => {
         const funcSpy = jasmine.createSpy("funcSpy");
-        const result = new XXXRunner({ warn: () => {} }, delayMock, 0, 2).run(
-          [funcSpy],
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 2).run([funcSpy], []);
+        await expectAsync(result).toBeResolved();
+        expect(funcSpy).toHaveBeenCalledTimes(2);
+      });
+    });
+  });
+
+  describe("runs two functions in a loop", () => {
+    describe("for one iteration", () => {
+      it("and calls the functions once", async () => {
+        const funcOneSpy = jasmine.createSpy("funcOneSpy");
+        const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 1).run(
+          [funcOneSpy, funcTwoSpy],
           [],
         );
         await expectAsync(result).toBeResolved();
-        expect(funcSpy).toHaveBeenCalledTimes(2);
+        expect(funcOneSpy).toHaveBeenCalledTimes(1);
+        expect(funcTwoSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("for two iteration", () => {
+      it("and calls the functions once", async () => {
+        const funcOneSpy = jasmine.createSpy("funcOneSpy");
+        const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 2).run(
+          [funcOneSpy, funcTwoSpy],
+          [],
+        );
+        await expectAsync(result).toBeResolved();
+        expect(funcOneSpy).toHaveBeenCalledTimes(2);
+        expect(funcTwoSpy).toHaveBeenCalledTimes(2);
       });
     });
   });
@@ -145,7 +58,7 @@ describe("runner.js", () => {
       };
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-      this.result = new XXXRunner(this.logger, delayMock, 0, 2).run(
+      this.result = new Runner(this.logger, delayMock, 0, 2).run(
         [expectedErrorThrower],
         [ExpectedError],
       );
@@ -166,7 +79,7 @@ describe("runner.js", () => {
         throw new UnexpectedError();
       };
 
-      this.result = new XXXRunner(
+      this.result = new Runner(
         { warn: () => {} },
         delayMock,
         { iterationDelay: 0 },
@@ -194,7 +107,7 @@ describe("runner.js", () => {
 
       this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-      this.result = new XXXRunner(this.logger, delayMock, 0, 2).run(
+      this.result = new Runner(this.logger, delayMock, 0, 2).run(
         [funcOne, funcTwo],
         [ExpectedError],
       );

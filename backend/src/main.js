@@ -3,7 +3,7 @@ import { DatabaseClient } from "./infrastructure/database/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
 import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps.aggregator.js";
 import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
-import { hoursToMs } from "./utils/time.utils.js";
+import { delay, hoursToMs } from "./utils/time.utils.js";
 import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";
 import { Runner } from "./utils/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
@@ -87,25 +87,25 @@ async function main() {
   const webServer = new WebServer(gameQueriesRouter);
   await webServer.start();
 
-  const runner = new Runner(
-    [
-      steamAppsAggregator.collectSteamApps,
-      gameIdentifier.tryViaSteamWeb,
-      gameIdentifier.tryViaSteamchartsWeb,
-      /**
-       * @todo batch delay must be performed by runner
-       */
-      playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
-      playerHistoryAggregator.addCurrentPlayers,
-    ],
-    options,
-  );
+  const runnables = [
+    steamAppsAggregator.collectSteamApps,
+    gameIdentifier.tryViaSteamWeb,
+    gameIdentifier.tryViaSteamchartsWeb,
+    /**
+     * @todo batch delay must be performed by runner
+     */
+    playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
+    playerHistoryAggregator.addCurrentPlayers,
+  ];
+  const { AxiosError } = httpClient;
+  const expectedErrorsTypes = [AxiosError];
+  const runner = new Runner(console, delay, options.iterationDelay);
 
   try {
     /**
      * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
      */
-    await runner.run();
+    await runner.run(runnables, expectedErrorsTypes);
   } catch (error) {
     console.error(error);
   }
@@ -116,4 +116,9 @@ async function main() {
   console.info("done...");
 }
 
-main().catch((error) => console.log(error));
+main().catch((error) => {
+  console.error(`[ERROR]: unexpected error caught by main, add handling`);
+  console.error(error);
+  console.error(`[ERROR]: performing shutdown with error response`);
+  process.exit(1);
+});
