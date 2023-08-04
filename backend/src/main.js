@@ -67,6 +67,7 @@ async function main() {
     steamClient,
     steamAppsUpdateTimestampRepository,
     steamAppsRepository,
+    logger,
     options,
   );
   const gameIdentifier = new GameIdentifier(
