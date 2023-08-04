@@ -618,7 +618,7 @@ describe("game.service.js", () => {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
       });
 
-      it("the returned value is an empty string", function () {
+      it("an empty string is returned", function () {
         expect(this.result).toBe("");
       });
     });
@@ -644,7 +644,7 @@ describe("game.service.js", () => {
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
-      it("the returned value is an empty string", function () {
+      it("an empty string is returned", function () {
         expect(this.result).toBe("");
       });
     });
@@ -674,7 +674,7 @@ describe("game.service.js", () => {
         this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
-      it("the returned value is an empty array", function () {
+      it("an empty array is returned", function () {
         expect(this.result).toEqual([]);
       });
     });
@@ -704,7 +704,7 @@ describe("game.service.js", () => {
         this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
-      it("the returned value is an empty array", function () {
+      it("an empty array is returned", function () {
         expect(this.result).toEqual([]);
       });
     });
@@ -728,7 +728,7 @@ describe("game.service.js", () => {
         this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
-      it("the returned value is an empty string", function () {
+      it("an empty string is returned", function () {
         expect(this.result).toEqual("");
       });
     });
