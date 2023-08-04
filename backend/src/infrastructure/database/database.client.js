@@ -3,6 +3,11 @@ import { MongoClient } from "mongodb";
 export class DatabaseClient {
   #collections;
   #connection;
+  #logger;
+
+  constructor(logger) {
+    this.#logger = logger;
+  }
 
   async init(options) {
     const urlToDb = `${options.url}/${options.databaseName}`;
@@ -11,10 +16,19 @@ export class DatabaseClient {
       useUnifiedTopology: true,
     });
 
+    this.#logger.info("db connection established");
+
     const database = this.#connection.db(options.databaseName);
 
     this.#collections = new Map();
     options.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
+
+    const formated = (await database.listCollections().toArray())
+      .map((col) => col.name)
+      .join(", ");
+
+    this.#logger.info(`db name: ${options.databaseName}`);
+    this.#logger.info(`db collections: ${formated}`);
 
     return this;
   }

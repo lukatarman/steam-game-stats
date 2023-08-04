@@ -12,6 +12,7 @@ import {
   updateTypeSideEffectFree,
 } from "./services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
+import { createLoggerMock } from "../../utils/logger.mock.js";
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
@@ -33,6 +34,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 
@@ -105,6 +107,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 
@@ -233,6 +236,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 
@@ -370,6 +374,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 
@@ -473,6 +478,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 
@@ -554,6 +560,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 
@@ -690,6 +697,7 @@ describe("game.identifier.js", function () {
           this.steamAppsRepository,
           this.gamesRepository,
           this.historyChecksRepository,
+          createLoggerMock(),
           this.options,
         );
 

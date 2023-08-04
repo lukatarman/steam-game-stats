@@ -93,14 +93,17 @@ export class Game {
     });
   }
 
-  updateGameDetails(details) {
-    const detailsDeepCopy = JSON.parse(JSON.stringify(details));
+  updateGameDetails(newReleaseDate, newDevelopers, newGenres, newDescription) {
+    if (newReleaseDate !== "" && this.releaseDate === "")
+      this.releaseDate = newReleaseDate;
 
-    if (detailsDeepCopy.releaseDate !== "") this.releaseDate = details.releaseDate;
-    if (detailsDeepCopy.developers.length !== 0) this.developers = details.developers;
-    if (detailsDeepCopy.genres.length !== 0) this.genres = details.genres;
-    if (detailsDeepCopy.description !== "") this.description = details.description;
+    if (newDevelopers.length !== 0 && this.developers.length === 0)
+      this.developers = Array.from(newDevelopers);
 
-    return this;
+    if (newGenres.length !== 0 && this.genres.length === 0)
+      this.genres = Array.from(newGenres);
+
+    if (newDescription !== "" && this.description === "")
+      this.description = newDescription;
   }
 }
