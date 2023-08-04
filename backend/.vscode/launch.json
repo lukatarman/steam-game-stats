@@ -25,10 +25,23 @@
         "<node_internals>/**"
       ],
       "program": "../node_modules/jasmine/bin/jasmine.js",
-      "args": [
-        "--config=jasmine-unit.json",
-        "--config=jasmine-integration.json",
+      "args": ["--config=jasmine-unit.json"],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+    },
+    {
+      "name": "Debug Jasmine Integration Tests",
+      "type": "node",
+      "runtimeArgs": [
+        "--inspect",
+        "--no-lazy",
       ],
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "../node_modules/jasmine/bin/jasmine.js",
+      "args": ["--config=jasmine-integration.json"],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
     }
