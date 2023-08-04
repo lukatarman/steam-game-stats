@@ -12,6 +12,7 @@ export class GameIdentifier {
   #steamAppsRepository;
   #gamesRepository;
   #historyChecksRepository;
+  #logger;
   #options;
 
   constructor(
@@ -19,20 +20,29 @@ export class GameIdentifier {
     steamAppsRepository,
     gamesRepository,
     historyChecksRepository,
+    logger,
     options,
   ) {
     this.#steamClient = steamClient;
     this.#steamAppsRepository = steamAppsRepository;
     this.#gamesRepository = gamesRepository;
     this.#historyChecksRepository = historyChecksRepository;
+    this.#logger = logger;
     this.#options = options;
   }
 
   tryViaSteamWeb = async () => {
+    this.#logger.info("identifying games via steam web");
+
     const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
-    if (steamApps.length === 0) return;
+    if (steamApps.length === 0) {
+      this.#logger.info(
+        `no steam apps in db, retry in: ${this.#options.iterationDelay} ms`,
+      );
+      return;
+    }
 
     const [games, updatedSteamApps] = await this.#identifyViaSteamWeb(steamApps);
 
@@ -62,6 +72,7 @@ export class GameIdentifier {
 
   async #persist(games, updatedSteamApps) {
     if (games.length !== 0) {
+      this.#logger.info(`persiting ${games.length} identified games`);
       await this.#gamesRepository.insertManyGames(games);
       await this.#historyChecksRepository.insertManyHistoryChecks(
         HistoryCheck.manyFromGames(games),
@@ -71,11 +82,18 @@ export class GameIdentifier {
   }
 
   tryViaSteamchartsWeb = async () => {
+    this.#logger.info("identifying games via steamcharts web");
+
     const steamApps =
       await this.#steamAppsRepository.getSteamchartsUntriedFilteredSteamApps(
         this.#options.batchSize,
       );
-    if (steamApps.length === 0) return;
+    if (steamApps.length === 0) {
+      this.#logger.info(
+        `no steam apps in db, retry in: ${this.#options.iterationDelay} ms`,
+      );
+      return;
+    }
 
     const updatedSteamApps = await this.#updateStatusViaSteamchartsWeb(steamApps);
     const games = identifyGames(updatedSteamApps);
@@ -100,9 +118,10 @@ export class GameIdentifier {
         );
 
         assignType(result, steamApp);
-      } catch (error) {
+      } catch (_) {
         // The catch block is empty because in some cases we are expecting the request to return an error.
         // This just means that this app has no entry on steamcharts, so we don't do anything with it.
+        this.#logger.info(`no entry on steamcharts web for appid: ${steamApp.appid}`);
       }
     }
 

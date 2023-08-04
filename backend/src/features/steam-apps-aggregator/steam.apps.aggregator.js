@@ -5,17 +5,20 @@ export class SteamAppsAggregator {
   #steamAppsUpdateTimestampsRepository;
   #steamAppsRepository;
   #steamClient;
+  #logger;
   #options;
 
   constructor(
     steamClient,
     steamAppsUpdateTimestampsRepository,
     steamAppsRepository,
+    logger,
     options,
   ) {
     this.#steamClient = steamClient;
     this.#steamAppsUpdateTimestampsRepository = steamAppsUpdateTimestampsRepository;
     this.#steamAppsRepository = steamAppsRepository;
+    this.#logger = logger;
     this.#options = options;
   }
 
@@ -33,6 +36,8 @@ export class SteamAppsAggregator {
   };
 
   async #collectFirstTime() {
+    this.#logger.info("collecting steam apps first time");
+
     const steamApps = await this.#steamClient.getAppList();
 
     await this.#steamAppsRepository.insertManySteamApps(steamApps);
@@ -42,6 +47,8 @@ export class SteamAppsAggregator {
   }
 
   async #collectSteamApps() {
+    this.#logger.info("collecting steam apps");
+
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb = await this.#steamAppsRepository.getAllSteamApps();
     /**

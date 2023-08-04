@@ -3,6 +3,7 @@ import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
 import { gamesMock } from "../../../assets/small.data.set.js";
 import { hoursToMs } from "../../utils/time.utils.js";
 import { SteamApp } from "../../models/steam.app.js";
+import { createLoggerMock } from "../../utils/logger.mock.js";
 
 describe("SteamAppsAggregator", () => {
   describe(".collectSteamApps()", () => {
@@ -27,6 +28,7 @@ describe("SteamAppsAggregator", () => {
           steamClientMock,
           steamAppsUpdateTimestampsRepositoryMock,
           steamAppsRepositoryMock,
+          createLoggerMock(),
           {},
         );
 
@@ -101,6 +103,7 @@ describe("SteamAppsAggregator", () => {
             steamClientMock,
             steamAppsUpdateTimestampsRepositoryMock,
             steamAppsRepositoryMock,
+            createLoggerMock(),
             {
               updateIntervalDelay: 100,
             },
@@ -186,6 +189,7 @@ describe("SteamAppsAggregator", () => {
             steamClientMock,
             steamAppsUpdateTimestampsRepositoryMock,
             steamAppsRepositoryMock,
+            createLoggerMock(),
             {
               updateIntervalDelay: 100,
             },
@@ -262,6 +266,7 @@ describe("SteamAppsAggregator", () => {
           steamClientMock,
           steamAppsUpdateTimestampsRepositoryMock,
           steamAppsRepositoryMock,
+          createLoggerMock(),
           {
             updateIntervalDelay: hoursToMs(12),
           },

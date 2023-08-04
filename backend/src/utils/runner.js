@@ -39,7 +39,9 @@ export class Runner {
           (expectedErrorType) => error instanceof expectedErrorType,
         );
         if (thrownErrorTypeIndex === -1) throw error;
-        this.#logger.warn(`${func.name}: ${error.message}`);
+        this.#logger.warn(
+          `runner catched an expected error from the function: '${func.name}', with the message: '${error.message}'`,
+        );
       }
 
       if (this.#iterationDelay > 0) await this.#delayFn(this.#iterationDelay);
