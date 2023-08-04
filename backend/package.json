@@ -4,8 +4,8 @@
   "description": "Steam game stats backend.",
   "main": "src/main.js",
   "scripts": {
-    "test-unit": "jasmine --config=jasmine-unit.json",
-    "test-integration": "jasmine --config=jasmine-integration.json",
+    "unit-test": "jasmine --config=jasmine-unit.json",
+    "integration-test": "jasmine --config=jasmine-integration.json",
     "start": "node src/main.js",
     "prettier:check": "prettier --check .",
     "prettier": "prettier --write ."
