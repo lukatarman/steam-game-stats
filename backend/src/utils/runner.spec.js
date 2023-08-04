@@ -1,114 +1,145 @@
-import { delay } from "../utils/time.utils.js";
 import { Runner } from "./runner.js";
 
 describe("runner.js", () => {
-  describe("runs one function in a loop for one iteration", () => {
-    let counter = 0;
-
-    beforeAll(async () => {
-      const func = () => counter++;
-      const iterations = 1;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner([func], options, iterations);
-
-      await runner.run();
+  describe("runs one function in a loop", () => {
+    describe("for one iteration", () => {
+      it("and calls the function once", async () => {
+        const funcSpy = jasmine.createSpy("funcSpy");
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 1).run([funcSpy], []);
+        await expectAsync(result).toBeResolved();
+        expect(funcSpy).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it("should increment the coutner by 1", () => {
-      expect(counter).toBe(1);
-    });
-  });
-
-  describe("runs one function in a loop for multiple iterations", () => {
-    let counter = 0;
-
-    beforeAll(async () => {
-      const func = () => counter++;
-      const iterations = 5;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner([func], options, iterations);
-
-      await runner.run();
-    });
-
-    it("should increment the coutner by 5", () => {
-      expect(counter).toBe(5);
+    describe("for two iteration", () => {
+      it("and calls the function twice", async () => {
+        const funcSpy = jasmine.createSpy("funcSpy");
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 2).run([funcSpy], []);
+        await expectAsync(result).toBeResolved();
+        expect(funcSpy).toHaveBeenCalledTimes(2);
+      });
     });
   });
 
-  describe("runs multiple functions in parallel for 280 miliseconds", () => {
-    let counterOne = 0;
-    let counterTwo = 0;
-
-    beforeAll(async () => {
-      const funcOne = async () => {
-        await delay(80);
-        counterOne++;
-      };
-      const funcTwo = async () => {
-        await delay(80);
-        counterTwo++;
-      };
-      const iterations = 10;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner([funcOne, funcTwo], options, iterations);
-
-      await runner.run();
-      await delay(280);
+  describe("runs two functions in a loop", () => {
+    describe("for one iteration", () => {
+      it("and calls the functions once", async () => {
+        const funcOneSpy = jasmine.createSpy("funcOneSpy");
+        const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 1).run(
+          [funcOneSpy, funcTwoSpy],
+          [],
+        );
+        await expectAsync(result).toBeResolved();
+        expect(funcOneSpy).toHaveBeenCalledTimes(1);
+        expect(funcTwoSpy).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it("should increment coutner one by 3", () => {
-      expect(counterOne).toBe(3);
-    });
-
-    it("should increment coutner two by 3", () => {
-      expect(counterTwo).toBe(3);
+    describe("for two iteration", () => {
+      it("and calls the functions once", async () => {
+        const funcOneSpy = jasmine.createSpy("funcOneSpy");
+        const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
+        const result = new Runner({ warn: () => {} }, delayMock, 0, 2).run(
+          [funcOneSpy, funcTwoSpy],
+          [],
+        );
+        await expectAsync(result).toBeResolved();
+        expect(funcOneSpy).toHaveBeenCalledTimes(2);
+        expect(funcTwoSpy).toHaveBeenCalledTimes(2);
+      });
     });
   });
 
-  describe("runs multiple functions with different delays in parallel for 130 miliseconds", () => {
-    let counterOne = 0;
-    let counterTwo = 0;
-    let counterThree = 0;
-    let counterFour = 0;
-    let counterHasDuplicates = true;
+  describe("when one running function throws an expected error,", function () {
+    beforeAll(function () {
+      const expectedErrorThrower = async function () {
+        throw new ExpectedError();
+      };
+      this.logger = jasmine.createSpyObj("logger", ["warn"]);
 
-    beforeAll(async () => {
-      const funcOne = async () => {
-        await delay(10);
-        counterOne++;
-      };
-      const funcTwo = async () => {
-        await delay(30);
-        counterTwo++;
-      };
-      const funcThree = async () => {
-        await delay(50);
-        counterThree++;
-      };
-      const funcFour = async () => {
-        await delay(90);
-        counterFour++;
-      };
-      const iterations = 10;
-      const options = { iterationDelay: 0 };
-      const runner = new Runner(
-        [funcOne, funcTwo, funcThree, funcFour],
-        options,
-        iterations,
+      this.result = new Runner(this.logger, delayMock, 0, 2).run(
+        [expectedErrorThrower],
+        [ExpectedError],
       );
-      function checkIfHasDuplicates(arr) {
-        return new Set(arr).size !== arr.length;
-      }
-      await runner.run();
-      await delay(130);
-      const results = [counterOne, counterTwo, counterThree, counterFour];
-
-      counterHasDuplicates = checkIfHasDuplicates(results);
     });
 
-    it("the different functions should run different amount of times", () => {
-      expect(counterHasDuplicates).toBe(false);
+    it("the expected errror is catched", async function () {
+      await expectAsync(this.result).toBeResolved();
+    });
+
+    it("a warn message is logged", async function () {
+      expect(this.logger.warn).toHaveBeenCalled();
+    });
+  });
+
+  describe("when one running function throws an unexpected error,", function () {
+    beforeEach(function () {
+      this.unexpectedErrorThrower = async function () {
+        throw new UnexpectedError();
+      };
+
+      this.result = new Runner(
+        { warn: () => {} },
+        delayMock,
+        { iterationDelay: 0 },
+        2,
+      ).run([this.unexpectedErrorThrower], [ExpectedError]);
+    });
+
+    it("the unexpected errror rethrown", async function () {
+      await expectAsync(this.result).toBeRejected();
+    });
+  });
+
+  describe("when one of two running functions throws an expected error,", function () {
+    let counterFuncOne = 0;
+    let counterFuncTwo = 0;
+
+    beforeAll(function () {
+      const funcOne = async function () {
+        counterFuncOne++;
+        throw new ExpectedError();
+      };
+      const funcTwo = async function () {
+        counterFuncTwo++;
+      };
+
+      this.logger = jasmine.createSpyObj("logger", ["warn"]);
+
+      this.result = new Runner(this.logger, delayMock, 0, 2).run(
+        [funcOne, funcTwo],
+        [ExpectedError],
+      );
+    });
+
+    it("the expected errror is catched", async function () {
+      await expectAsync(this.result).toBeResolved();
+    });
+
+    it("a warn message is logged", async function () {
+      expect(this.logger.warn).toHaveBeenCalled();
+    });
+
+    it("funcOne and funcTwo are executed twice", async function () {
+      expect(counterFuncOne).toBe(2);
+      expect(counterFuncTwo).toBe(2);
     });
   });
 });
+
+function delayMock(iterationDelay) {
+  return Promise.resolve();
+}
+
+class ExpectedError extends Error {
+  constructor() {
+    super("expected error");
+  }
+}
+
+class UnexpectedError extends Error {
+  constructor() {
+    super("unexpected error");
+  }
+}
