@@ -576,7 +576,7 @@ describe("game.service.js", () => {
   });
 
   describe(".updateMissingDetails.", function () {
-    fdescribe("When we try to update two games with missing details,", function () {
+    describe("When we try to update two games with missing details,", function () {
       beforeEach(function () {
         const games = getXsteamchartsInstantiatedGames(2);
 
@@ -618,8 +618,8 @@ describe("game.service.js", () => {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
       });
 
-      it("the returned value is 'Coming soon'", function () {
-        expect(this.result).toBe("Coming soon");
+      it("the returned value is an empty string", function () {
+        expect(this.result).toBe("");
       });
     });
 
