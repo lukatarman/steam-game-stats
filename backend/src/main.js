@@ -75,6 +75,7 @@ async function main() {
     steamAppsRepository,
     gamesRepository,
     historyChecksRepository,
+    logger,
     options,
   );
   const playerHistoryAggregator = new PlayerHistoryAggregator(
