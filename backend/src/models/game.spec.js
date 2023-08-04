@@ -1,5 +1,8 @@
 import { Game } from "./game.js";
-import { getOneGameWithoutDetails } from "./game.mocks.js";
+import {
+  getOneGameWithoutDetails,
+  getOneSteamAppInstantiatedGame,
+} from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
 import { getOneSampleSteamApp } from "./steam.app.mocks.js";
 
@@ -443,153 +446,205 @@ describe("game.js", function () {
   });
 
   describe(".updateGameDetails", function () {
-    describe("When the release date is provided,", function () {
+    describe("When we try to update a missing release date with a date", function () {
       beforeEach(function () {
-        this.propertiesObject = getPropertiesObject({
-          releaseDate: new Date("23 July 2023"),
-        });
+        this.releaseDate = new Date("23 July 2023");
 
-        const game = getOneGameWithoutDetails();
+        this.game = getOneGameWithoutDetails();
 
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.game.updateGameDetails(this.releaseDate, [], [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
       });
 
       it("the game's release date is updated", function () {
-        expect(this.result.releaseDate).toBe(this.propertiesObject.releaseDate);
+        expect(this.game.releaseDate).toBe(this.releaseDate);
       });
     });
 
-    describe("When the release date is not provided,", function () {
+    describe("When we try to update a missing release date, with no date", function () {
       beforeEach(function () {
-        const propertiesObject = getPropertiesObject();
+        this.game = getOneGameWithoutDetails();
 
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(propertiesObject);
+        this.game.updateGameDetails("", [], [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date does not change", function () {
+        expect(this.game.releaseDate).toBe("");
+      });
+    });
+
+    describe("When we try to update an existing release date, with a date", function () {
+      beforeEach(function () {
+        this.game = getOneSteamAppInstantiatedGame();
+
+        this.game.updateGameDetails("22 July 2019", [], [], "");
+      });
+
+      it("a game is returned.", function () {
+        expect(this.game).toBeInstanceOf(Game);
       });
 
       it("the game's release date stays the same", function () {
-        expect(this.result.releaseDate).toBe("");
+        expect(this.game.releaseDate).toBe("21 July 2019");
       });
     });
 
-    describe("When the developers are provided,", function () {
+    describe("When we try to update missing developers with valid developers", function () {
       beforeEach(function () {
-        this.propertiesObject = getPropertiesObject({
-          developers: ["Valve", "Hopoo Games"],
-        });
+        this.developers = ["Valve", "Test Dev"];
 
-        const game = getOneGameWithoutDetails();
+        this.game = getOneGameWithoutDetails();
 
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.game.updateGameDetails("", this.developers, [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
       });
 
       it("the game's developers are updated", function () {
-        expect(this.result.developers).toBe(this.propertiesObject.developers);
+        expect(this.game.developers).toEqual(this.developers);
       });
     });
 
-    describe("When the developers are not provided,", function () {
+    describe("When we try to update missing developers, with no developers", function () {
       beforeEach(function () {
-        const propertiesObject = getPropertiesObject();
+        this.game = getOneGameWithoutDetails();
 
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(propertiesObject);
+        this.game.updateGameDetails("", [], [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's developers stay the same", function () {
-        expect(this.result.developers).toEqual([]);
+      it("the game's developers don't change", function () {
+        expect(this.game.developers).toEqual([]);
       });
     });
 
-    describe("When the genres are provided,", function () {
+    describe("When we try to update existing developers, with valid developers", function () {
       beforeEach(function () {
-        this.propertiesObject = getPropertiesObject({ genres: ["Action", "RPG"] });
+        this.game = getOneSteamAppInstantiatedGame();
 
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.game.updateGameDetails("", ["Test Dev"], [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date stays the same", function () {
+        expect(this.game.developers).toEqual(["Valve", "Hopoo Games"]);
+      });
+    });
+
+    describe("When we try to update the missing genres with valid genres", function () {
+      beforeEach(function () {
+        this.genres = ["RPG", "Strategy"];
+
+        this.game = getOneGameWithoutDetails();
+
+        this.game.updateGameDetails("", [], this.genres, "");
+      });
+
+      it("a game is returned.", function () {
+        expect(this.game).toBeInstanceOf(Game);
       });
 
       it("the game's genres are updated", function () {
-        expect(this.result.genres).toBe(this.propertiesObject.genres);
+        expect(this.game.genres).toEqual(this.genres);
       });
     });
 
-    describe("When the genres are not provided,", function () {
+    describe("When we try to update missing genres, with no genres", function () {
       beforeEach(function () {
-        const propertiesObject = getPropertiesObject();
+        this.game = getOneGameWithoutDetails();
 
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(propertiesObject);
+        this.game.updateGameDetails("", [], [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's genres stay the same", function () {
-        expect(this.result.genres).toEqual([]);
+      it("the game's genres don't change", function () {
+        expect(this.game.genres).toEqual([]);
       });
     });
 
-    describe("When the description is provided,", function () {
+    describe("When we try to update existing genres, with valid genres", function () {
       beforeEach(function () {
-        this.propertiesObject = getPropertiesObject({
-          description: "This game is awesome!",
-        });
+        this.game = getOneSteamAppInstantiatedGame();
 
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(this.propertiesObject);
+        this.game.updateGameDetails("", [], ["Test Genre"], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date stays the same", function () {
+        expect(this.game.genres).toEqual(["Action", "Adventure"]);
+      });
+    });
+
+    describe("When we try to update the missing description with a description", function () {
+      beforeEach(function () {
+        this.description = "Test description";
+
+        this.game = getOneGameWithoutDetails();
+
+        this.game.updateGameDetails("", [], [], this.description);
+      });
+
+      it("a game is returned.", function () {
+        expect(this.game).toBeInstanceOf(Game);
       });
 
       it("the game's description is updated", function () {
-        expect(this.result.description).toBe(this.propertiesObject.description);
+        expect(this.game.description).toBe(this.description);
       });
     });
 
-    describe("When the description is not provided,", function () {
+    describe("When we try to update a missing description, with no description", function () {
       beforeEach(function () {
-        const propertiesObject = getPropertiesObject();
+        this.game = getOneGameWithoutDetails();
 
-        const game = getOneGameWithoutDetails();
-
-        this.result = game.updateGameDetails(propertiesObject);
+        this.game.updateGameDetails("", [], [], "");
       });
 
       it("a game is returned.", function () {
-        expect(this.result).toBeInstanceOf(Game);
+        expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's description stays the same", function () {
-        expect(this.result.releaseDate).toBe("");
+      it("the game's description don't change", function () {
+        expect(this.game.description).toEqual("");
+      });
+    });
+
+    describe("When we try to update existing description, with a description", function () {
+      beforeEach(function () {
+        this.description = "Test description";
+
+        this.game = getOneSteamAppInstantiatedGame();
+
+        this.game.updateGameDetails("", [], [], this.description);
+      });
+
+      it("a game is returned.", function () {
+        expect(this.game).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date stays the same", function () {
+        expect(this.game.description).toEqual("Best game");
       });
     });
   });

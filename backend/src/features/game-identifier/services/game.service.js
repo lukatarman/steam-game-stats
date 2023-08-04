@@ -113,19 +113,12 @@ export function updateMissingDetails(games, htmlDetailsPages) {
   return games.map((game, i) => {
     const page = htmlDetailsPages[i];
 
-    const details = {
-      releaseDate: "",
-      developers: [],
-      genres: [],
-      description: "",
-    };
-
-    if (game.releaseDate === "") details.releaseDate = getSteamDbReleaseDate(page);
-    if (game.developers.length === 0) details.developers = getSteamDbDevelopers(page);
-    if (game.genres.length === 0) details.genres = getSteamDbGenres(page);
-    if (game.description === "") details.description = getSteamDbDescription(page);
-
-    return game.updateGameDetails(details);
+    game.updateGameDetails(
+      getSteamDbReleaseDate(page),
+      getSteamDbDevelopers(page),
+      getSteamDbGenres(page),
+      getSteamDbDescription(page),
+    );
   });
 }
 
