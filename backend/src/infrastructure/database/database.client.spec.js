@@ -2,6 +2,7 @@ import { Collection } from "mongodb";
 import { initiateInMemoryDatabase } from "./in.memory.database.client.js";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { DatabaseClient } from "./database.client.js";
+import { createLoggerMock } from "../../utils/logger.mock.js";
 
 describe("DatabaseClient", function () {
   describe(".init initiates the databased with the provided options", function () {
@@ -15,7 +16,9 @@ describe("DatabaseClient", function () {
           collections: ["games"],
         };
 
-        this.databaseClient = await new DatabaseClient().init(databaseOptions);
+        this.databaseClient = await new DatabaseClient(createLoggerMock()).init(
+          databaseOptions,
+        );
 
         this.result = await this.databaseClient.getAll("games");
       });
