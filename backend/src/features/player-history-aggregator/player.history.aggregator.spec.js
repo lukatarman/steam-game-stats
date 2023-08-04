@@ -5,6 +5,7 @@ import { twoGamesWithUncheckedPlayerHistory } from "../../../assets/db-responses
 import { HistoryCheck } from "../../models/history.check.js";
 import { Game } from "../../models/game.js";
 import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
+import { createLoggerMock } from "../../utils/logger.mock.js";
 
 describe("PlayerHistoryAggregator", function () {
   describe(".addPlayerHistoryFromSteamcharts", function () {
@@ -30,6 +31,7 @@ describe("PlayerHistoryAggregator", function () {
           this.gamesRepositoryMock,
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
+          createLoggerMock(),
           { unitDelay: 0, batchSize: 1 },
         );
 
@@ -117,6 +119,7 @@ describe("PlayerHistoryAggregator", function () {
           this.gamesRepositoryMock,
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
+          createLoggerMock(),
           { unitDelay: 0, batchSize: 2 },
         );
 
@@ -193,6 +196,7 @@ describe("PlayerHistoryAggregator", function () {
           this.gamesRepositoryMock,
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
+          createLoggerMock(),
           { unitDelay: 0, batchSize: 1 },
         );
 
@@ -239,6 +243,7 @@ describe("PlayerHistoryAggregator", function () {
           this.gamesRepositoryMock,
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
+          createLoggerMock(),
           { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
         );
 
@@ -289,6 +294,7 @@ describe("PlayerHistoryAggregator", function () {
           this.gamesRepositoryMock,
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
+          createLoggerMock(),
           { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
         );
 

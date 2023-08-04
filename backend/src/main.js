@@ -83,6 +83,7 @@ async function main() {
     gamesRepository,
     historyChecksRepository,
     playerHistoryRepository,
+    logger,
     options,
   );
   const gameQueriesController = new GameQueriesController(gamesRepository);
