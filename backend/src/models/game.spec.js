@@ -446,7 +446,7 @@ describe("game.js", function () {
   });
 
   describe(".updateGameDetails", function () {
-    describe("When we try to update a missing release date with a date", function () {
+    describe("When we try to update a missing release date,", function () {
       beforeEach(function () {
         this.releaseDate = new Date("23 July 2023");
 
@@ -464,7 +464,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update an existing release date, with a date", function () {
+    describe("When we try to update an existing release date,", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -480,7 +480,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update missing developers with developers", function () {
+    describe("When we try to update missing developers,", function () {
       beforeEach(function () {
         this.developers = ["Valve", "Test Dev"];
 
@@ -498,7 +498,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update existing developers, with developers", function () {
+    describe("When we try to update existing developers,", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -514,7 +514,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update the missing genres with genres", function () {
+    describe("When we try to update the missing genres,", function () {
       beforeEach(function () {
         this.genres = ["RPG", "Strategy"];
 
@@ -532,7 +532,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update existing genres, with genres", function () {
+    describe("When we try to update existing genres,", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -548,7 +548,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update the missing description with a description", function () {
+    describe("When we try to update the missing description,", function () {
       beforeEach(function () {
         this.description = "Test description";
 
@@ -566,7 +566,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update an existing description, with a description", function () {
+    describe("When we try to update an existing description,", function () {
       beforeEach(function () {
         this.description = "Test description";
 
