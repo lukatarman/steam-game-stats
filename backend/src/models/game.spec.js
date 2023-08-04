@@ -509,7 +509,7 @@ describe("game.js", function () {
         expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's release date stays the same", function () {
+      it("the game's developers stay the same", function () {
         expect(this.game.developers).toEqual(["Valve", "Hopoo Games"]);
       });
     });
@@ -543,7 +543,7 @@ describe("game.js", function () {
         expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's release date stays the same", function () {
+      it("the game's genres stay the same", function () {
         expect(this.game.genres).toEqual(["Action", "Adventure"]);
       });
     });
@@ -568,11 +568,9 @@ describe("game.js", function () {
 
     describe("When we try to update an existing description,", function () {
       beforeEach(function () {
-        this.description = "Test description";
-
         this.game = getOneSteamAppInstantiatedGame();
 
-        this.game.updateGameDetails("", [], [], this.description);
+        this.game.updateGameDetails("", [], [], "Test description");
       });
 
       it("a game is returned.", function () {
