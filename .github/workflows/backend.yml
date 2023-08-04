@@ -12,7 +12,7 @@ on:
     paths: ["backend/**"]
 
 jobs:
-  build:
+  validate-unit-tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -28,4 +28,21 @@ jobs:
           cache: "npm"
       - run: cd backend && npm install
       - run: cd backend && npm run prettier:check
-      - run: cd backend && npm test
+      - run: cd backend && npm run unit-test
+
+  validate-integration-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.12.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: cd backend && npm install
+      - run: cd backend && npm run integration-test
