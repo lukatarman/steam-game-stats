@@ -464,7 +464,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update a missing release date, with no date", function () {
+    describe("When we try to update a missing release date, with an empty string", function () {
       beforeEach(function () {
         this.game = getOneGameWithoutDetails();
 
@@ -480,7 +480,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update an existing release date, with a date", function () {
+    describe("When we try to update an existing release date, with a missing date", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -496,7 +496,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update missing developers with valid developers", function () {
+    describe("When we try to update missing developers with developers", function () {
       beforeEach(function () {
         this.developers = ["Valve", "Test Dev"];
 
@@ -514,7 +514,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update missing developers, with no developers", function () {
+    describe("When we try to update existing developers, with missing developers", function () {
       beforeEach(function () {
         this.game = getOneGameWithoutDetails();
 
