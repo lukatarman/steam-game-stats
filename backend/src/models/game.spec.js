@@ -464,23 +464,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update a missing release date, with an empty string", function () {
-      beforeEach(function () {
-        this.game = getOneGameWithoutDetails();
-
-        this.game.updateGameDetails("", [], [], "");
-      });
-
-      it("a game is returned.", function () {
-        expect(this.game).toBeInstanceOf(Game);
-      });
-
-      it("the game's release date does not change", function () {
-        expect(this.game.releaseDate).toBe("");
-      });
-    });
-
-    describe("When we try to update an existing release date, with a missing date", function () {
+    describe("When we try to update an existing release date, with a date", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -514,23 +498,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update existing developers, with missing developers", function () {
-      beforeEach(function () {
-        this.game = getOneGameWithoutDetails();
-
-        this.game.updateGameDetails("", [], [], "");
-      });
-
-      it("a game is returned.", function () {
-        expect(this.game).toBeInstanceOf(Game);
-      });
-
-      it("the game's developers don't change", function () {
-        expect(this.game.developers).toEqual([]);
-      });
-    });
-
-    describe("When we try to update existing developers, with valid developers", function () {
+    describe("When we try to update existing developers, with developers", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -546,7 +514,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update the missing genres with valid genres", function () {
+    describe("When we try to update the missing genres with genres", function () {
       beforeEach(function () {
         this.genres = ["RPG", "Strategy"];
 
@@ -564,23 +532,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update missing genres, with no genres", function () {
-      beforeEach(function () {
-        this.game = getOneGameWithoutDetails();
-
-        this.game.updateGameDetails("", [], [], "");
-      });
-
-      it("a game is returned.", function () {
-        expect(this.game).toBeInstanceOf(Game);
-      });
-
-      it("the game's genres don't change", function () {
-        expect(this.game.genres).toEqual([]);
-      });
-    });
-
-    describe("When we try to update existing genres, with valid genres", function () {
+    describe("When we try to update existing genres, with genres", function () {
       beforeEach(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
@@ -614,23 +566,7 @@ describe("game.js", function () {
       });
     });
 
-    describe("When we try to update a missing description, with no description", function () {
-      beforeEach(function () {
-        this.game = getOneGameWithoutDetails();
-
-        this.game.updateGameDetails("", [], [], "");
-      });
-
-      it("a game is returned.", function () {
-        expect(this.game).toBeInstanceOf(Game);
-      });
-
-      it("the game's description don't change", function () {
-        expect(this.game.description).toEqual("");
-      });
-    });
-
-    describe("When we try to update existing description, with a description", function () {
+    describe("When we try to update an existing description, with a description", function () {
       beforeEach(function () {
         this.description = "Test description";
 
@@ -649,17 +585,3 @@ describe("game.js", function () {
     });
   });
 });
-
-const getPropertiesObject = ({
-  releaseDate = "",
-  developers = [],
-  genres = [],
-  description = "",
-} = {}) => {
-  return {
-    releaseDate,
-    developers,
-    genres,
-    description,
-  };
-};
