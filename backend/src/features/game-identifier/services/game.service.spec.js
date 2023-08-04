@@ -578,34 +578,34 @@ describe("game.service.js", () => {
   describe(".updateMissingDetails.", function () {
     describe("When we try to update two games with missing details,", function () {
       beforeEach(function () {
-        const games = getXsteamchartsInstantiatedGames(2);
+        this.games = getXsteamchartsInstantiatedGames(2);
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
         ];
 
-        this.result = updateMissingDetails(games, htmlDetailsPages);
+        updateMissingDetails(this.games, htmlDetailsPages);
       });
 
       it("two games are returned", function () {
-        expect(this.result.length).toBe(2);
+        expect(this.games.length).toBe(2);
       });
 
       it("the first game's details are updated", function () {
-        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012"));
-        expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
-        expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
-        expect(this.result[0].description).toBe(
+        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012"));
+        expect(this.games[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
+        expect(this.games[0].genres).toEqual(["Action", "Free to Play"]);
+        expect(this.games[0].description).toBe(
           "Counter-Strike: Global Offensive (CS: GO) expands upon the team-based action gameplay that it pioneered when it was launched 19 years ago. CS: GO features new maps, characters, weapons, and game modes, and delivers updated versions of the classic CS content (de_dust2, etc.).",
         );
       });
 
       it("the second game's details are updated", function () {
-        expect(this.result[1].releaseDate).toEqual(new Date("11 August 2020"));
-        expect(this.result[1].developers).toEqual(["Hopoo Games"]);
-        expect(this.result[1].genres).toEqual(["Action", "Indie"]);
-        expect(this.result[1].description).toBe(
+        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020"));
+        expect(this.games[1].developers).toEqual(["Hopoo Games"]);
+        expect(this.games[1].genres).toEqual(["Action", "Indie"]);
+        expect(this.games[1].description).toBe(
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
       });
