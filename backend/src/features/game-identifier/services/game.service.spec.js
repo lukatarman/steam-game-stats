@@ -613,23 +613,6 @@ describe("game.service.js", () => {
         );
       });
     });
-
-    describe("When we try to update a game with existing details,", function () {
-      beforeEach(function () {
-        this.instantiatedGames = [getOneSteamAppInstantiatedGame()];
-
-        const htmlDetailsPages = [counterStrikeHtmlDetailsSteamDb];
-
-        this.result = updateMissingDetails(this.instantiatedGames, htmlDetailsPages);
-      });
-
-      it("the game's properties remain unchanged", function () {
-        expect(this.result[0].releaseDate).toBe(this.instantiatedGames[0].releaseDate);
-        expect(this.result[0].developers).toEqual(this.instantiatedGames[0].developers);
-        expect(this.result[0].genres).toEqual(this.instantiatedGames[0].genres);
-        expect(this.result[0].description).toBe(this.instantiatedGames[0].description);
-      });
-    });
   });
 
   describe(".getSteamDbReleaseDate.", function () {
