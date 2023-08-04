@@ -15,6 +15,7 @@ import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/database/r
 import { PlayerHistoryRepository } from "./infrastructure/database/repositories/player.history.repository.js";
 import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
 import { MongoServerSelectionError } from "mongodb";
+import { logger } from "./utils/logger.js";
 
 // our entry point = main
 async function main() {
@@ -33,16 +34,16 @@ async function main() {
       /**
        * @todo https://github.com/lukatarman/steam-game-stats/issues/39
        */
-      console.error(`[ERROR]: db connection failed`);
-      console.error(`[ERROR]: error message: ${error.message}`);
-      console.error(`[ERROR]: verify connection string: ${databaseOptions.url}`);
-      console.error(`[ERROR]: verify the db is running`);
-      console.error(`[ERROR]: performing graceful application shutdown`);
+      logger.error("db connection failed");
+      logger.error(error, `error message: ${error.message}`);
+      logger.error(`verify connection string: ${databaseOptions.url}`);
+      logger.error("verify the db is running");
+      logger.error("performing graceful application shutdown");
       process.exit(0);
     }
 
-    console.error(`[ERROR]: unknown error, add handling`);
-    console.error(`[ERROR]: performing shutdown with error response`);
+    logger.error("unknown error, add handling");
+    logger.error("performing shutdown with error response");
     process.exit(1);
   }
 
@@ -99,7 +100,7 @@ async function main() {
   ];
   const { AxiosError } = httpClient;
   const expectedErrorsTypes = [AxiosError];
-  const runner = new Runner(console, delay, options.iterationDelay);
+  const runner = new Runner(logger, delay, options.iterationDelay);
 
   try {
     /**
@@ -107,18 +108,17 @@ async function main() {
      */
     await runner.run(runnables, expectedErrorsTypes);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 
   /**
    * @todo https://github.com/lukatarman/steam-game-stats/issues/39
    */
-  console.info("done...");
+  logger.info("done...");
 }
 
 main().catch((error) => {
-  console.error(`[ERROR]: unexpected error caught by main, add handling`);
-  console.error(error);
-  console.error(`[ERROR]: performing shutdown with error response`);
+  logger.fatal(error, "unexpected error caught by main, add handling");
+  logger.fatal("performing shutdown with error response");
   process.exit(1);
 });
