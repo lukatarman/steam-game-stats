@@ -28,7 +28,7 @@ async function main() {
 
   let databaseClient;
   try {
-    databaseClient = await new DatabaseClient().init(databaseOptions);
+    databaseClient = await new DatabaseClient(logger).init(databaseOptions);
   } catch (error) {
     if (error instanceof MongoServerSelectionError) {
       /**
