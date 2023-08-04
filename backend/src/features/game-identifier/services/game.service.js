@@ -137,7 +137,7 @@ export function getSteamDbReleaseDate(page) {
     releaseDateString.slice(0, releaseDateString.indexOf("–") - 1),
   );
 
-  if (releaseDate == "Invalid Date") return releaseDateString;
+  if (releaseDate == "Invalid Date") return "";
 
   return releaseDate;
 }
