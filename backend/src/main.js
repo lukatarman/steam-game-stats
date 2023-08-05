@@ -21,8 +21,8 @@ import { logger } from "./utils/logger.js";
 async function main() {
   // setup phase
   const databaseOptions = {
-    url: "mongodb://localhost:27017",
-    databaseName: "game-stats",
+    url: process.env.DB_ENDPOINT || "mongodb://localhost:27017",
+    databaseName: process.env.DB_NAME || "game-stats",
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
   };
 
