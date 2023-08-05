@@ -25,7 +25,8 @@ jobs:
           cache: "npm"
       - name: Install backend dependencies
         run: npm ci -w backend
-      - name: Check if prettier was run
+      - name: Prettier check
         run: npm run -w backend prettier:check
-        
+      - name: Unit tests
+        run: npm run -w backend unit-test
       
