@@ -25,6 +25,10 @@ class Logger {
     return pinoLogger.warn(`${this.#caller} ${msg}`);
   }
 
+  fatal(msg) {
+    return pinoLogger.fatal(`${this.#caller} ${msg}`);
+  }
+
   get #caller() {
     const e = new Error();
     const frame = e.stack.split("\n")[3];
