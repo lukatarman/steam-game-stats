@@ -19,6 +19,7 @@ build
 .env.production.local
 todo.md
 .mongodb
+.secrets
 
 npm-debug.log*
 yarn-debug.log*
