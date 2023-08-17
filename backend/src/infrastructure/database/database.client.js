@@ -9,28 +9,29 @@ export class DatabaseClient {
     this.#logger = logger;
   }
 
-  async init(options) {
-    const urlToDb = `${options.url}/${options.databaseName}`;
-    this.#connection = await MongoClient.connect(urlToDb, {
+  async init(dbConfig) {
+    const url = `${this.#constructUrl(dbConfig)}/${dbConfig.name}`;
+    this.#connection = await MongoClient.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    this.#logger.info("db connection established");
-
-    const database = this.#connection.db(options.databaseName);
+    const database = this.#connection.db(dbConfig.name);
 
     this.#collections = new Map();
-    options.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
+    dbConfig.collections.forEach((c) => this.#collections.set(c, database.collection(c)));
 
-    const formated = (await database.listCollections().toArray())
-      .map((col) => col.name)
-      .join(", ");
+    const pingResult = await database.command({ ping: 1 });
 
-    this.#logger.info(`db name: ${options.databaseName}`);
-    this.#logger.info(`db collections: ${formated}`);
+    this.#logger.info("db connection established");
+    this.#logger.info(`db ping result: ${pingResult}`);
 
     return this;
+  }
+
+  #constructUrl({ host, username, password }) {
+    const urlParts = host.split("//");
+    return `${urlParts[0]}//${username}:${password}@${urlParts[1]}`;
   }
 
   async disconnect() {

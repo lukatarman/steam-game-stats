@@ -16,27 +16,22 @@ import { PlayerHistoryRepository } from "./infrastructure/database/repositories/
 import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
 import { MongoServerSelectionError } from "mongodb";
 import { logger } from "./utils/logger.js";
+import { config } from "./utils/config.loader.js";
 
 // our entry point = main
 async function main() {
   // setup phase
-  const databaseOptions = {
-    url: process.env.DB_ENDPOINT || "mongodb://localhost:27017",
-    databaseName: process.env.DB_NAME || "game-stats",
-    collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
-  };
-
   let databaseClient;
   try {
-    databaseClient = await new DatabaseClient(logger).init(databaseOptions);
+    databaseClient = await new DatabaseClient(logger).init(config.db);
   } catch (error) {
     if (error instanceof MongoServerSelectionError) {
       /**
        * @todo https://github.com/lukatarman/steam-game-stats/issues/39
        */
       logger.error("db connection failed");
-      logger.error(error, `error message: ${error.message}`);
-      logger.error(`verify connection string: ${databaseOptions.url}`);
+      logger.error(`error message: ${error.message}`);
+      logger.error(`verify connection string: ${config.db.host}`);
       logger.error("verify the db is running");
       logger.error("performing graceful application shutdown");
       process.exit(0);
