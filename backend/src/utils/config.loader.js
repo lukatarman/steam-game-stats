@@ -30,4 +30,7 @@ export const config = {
     iterationDelay: 5000,
     expectedErrorTypes: [AxiosError],
   },
+  logger: {
+    level: process.env.LOG_LEVEL,
+  },
 };

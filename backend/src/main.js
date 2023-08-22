@@ -17,10 +17,12 @@ import { HistoryChecksRepository } from "./infrastructure/database/repositories/
 import { MongoServerSelectionError } from "mongodb";
 import { logger } from "./utils/logger.js";
 import { config } from "./utils/config.loader.js";
+import { Logger } from "./utils/logger.js";
 
 // our entry point = main
 async function main() {
   // setup phase
+  const logger = new Logger(config.logger.level);
   let databaseClient;
   try {
     databaseClient = await new DatabaseClient(logger).init(config.db);
@@ -83,7 +85,7 @@ async function main() {
   );
   const gameQueriesController = new GameQueriesController(gamesRepository);
   const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
-  const webServer = new WebServer(gameQueriesRouter);
+  const webServer = new WebServer(gameQueriesRouter, logger);
   await webServer.start();
 
   const runnables = [
