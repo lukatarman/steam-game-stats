@@ -24,6 +24,7 @@ export class DatabaseClient {
     const pingResult = await database.command({ ping: 1 });
 
     this.#logger.info("db connection established");
+    this.#logger.debugc("db connection url: %s", dbConfig.host);
     this.#logger.debugc("db ping result: %o", pingResult);
 
     return this;

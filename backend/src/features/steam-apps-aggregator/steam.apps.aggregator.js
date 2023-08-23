@@ -36,7 +36,7 @@ export class SteamAppsAggregator {
   };
 
   async #collectFirstTime() {
-    this.#logger.info("collecting steam apps first time");
+    this.#logger.debugc("collecting steam apps first time");
 
     const steamApps = await this.#steamClient.getAppList();
 
@@ -47,7 +47,7 @@ export class SteamAppsAggregator {
   }
 
   async #collectSteamApps() {
-    this.#logger.info("collecting steam apps");
+    this.#logger.debugc("collecting steam apps");
 
     const steamAppsApi = await this.#steamClient.getAppList();
     const steamAppsDb = await this.#steamAppsRepository.getAllSteamApps();

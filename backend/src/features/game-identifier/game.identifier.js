@@ -32,13 +32,13 @@ export class GameIdentifier {
   }
 
   tryViaSteamWeb = async () => {
-    this.#logger.info("identifying games via steam web");
+    this.#logger.debugc("identifying games via steam web");
 
     const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
     );
     if (steamApps.length === 0) {
-      this.#logger.info(
+      this.#logger.debugc(
         `no steam apps in db, retry in: ${this.#options.iterationDelay} ms`,
       );
       return;
@@ -72,7 +72,7 @@ export class GameIdentifier {
 
   async #persist(games, updatedSteamApps) {
     if (games.length !== 0) {
-      this.#logger.info(`persiting ${games.length} identified games`);
+      this.#logger.debugc(`persiting ${games.length} identified games`);
       await this.#gamesRepository.insertManyGames(games);
       await this.#historyChecksRepository.insertManyHistoryChecks(
         HistoryCheck.manyFromGames(games),
@@ -82,14 +82,14 @@ export class GameIdentifier {
   }
 
   tryViaSteamchartsWeb = async () => {
-    this.#logger.info("identifying games via steamcharts web");
+    this.#logger.debugc("identifying games via steamcharts web");
 
     const steamApps =
       await this.#steamAppsRepository.getSteamchartsUntriedFilteredSteamApps(
         this.#options.batchSize,
       );
     if (steamApps.length === 0) {
-      this.#logger.info(
+      this.#logger.debugc(
         `no steam apps in db, retry in: ${this.#options.iterationDelay} ms`,
       );
       return;
@@ -121,7 +121,7 @@ export class GameIdentifier {
       } catch (_) {
         // The catch block is empty because in some cases we are expecting the request to return an error.
         // This just means that this app has no entry on steamcharts, so we don't do anything with it.
-        this.#logger.info(`no entry on steamcharts web for appid: ${steamApp.appid}`);
+        this.#logger.debugc(`no entry on steamcharts web for appid: ${steamApp.appid}`);
       }
     }
 
