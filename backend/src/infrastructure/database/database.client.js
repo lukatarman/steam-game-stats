@@ -32,7 +32,7 @@ export class DatabaseClient {
 
   #constructUrl({ host, username, password }) {
     const urlParts = host.split("//");
-    return `${urlParts[0]}//${username}:${password}@${urlParts[1]}`;
+    return `${urlParts[0]}//${username}:${encodeURIComponent(password)}@${urlParts[1]}`;
   }
 
   async disconnect() {
