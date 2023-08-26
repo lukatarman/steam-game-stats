@@ -4,8 +4,9 @@
   "description": "Application for steam games statistics",
   "scripts": {
     "build:backend": "docker build -t steam-game-stats-backend:latest  -f backend/Dockerfile .",
-    "run:backend": "docker run -d --name steam-backend steam-game-stats-backend:latest",
-    "rm:backend": "docker container rm steam-backend"
+    "start:backend:local-db": "docker compose --env-file ./config/local-db.env up -d",
+    "start:backend:cloud-db": "docker compose --env-file ./config/cloud-db.env up -d",
+    "stop": "docker compose --env-file ./config/local-db.env down"
   },
   "repository": {
     "type": "git",
