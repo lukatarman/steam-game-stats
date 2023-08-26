@@ -5,6 +5,10 @@
       "path": "../"
     },
     {
+      "name": "db",
+      "path": "../db"
+    },
+    {
       "name": "backend",
       "path": "../backend"
     },
@@ -16,6 +20,7 @@
   "settings": {
     "files.exclude": {
       "node_modules/": false,
+      "db/": true,
       "backend/": true,
       "frontend/": true
     }
