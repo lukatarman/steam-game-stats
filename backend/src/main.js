@@ -88,6 +88,7 @@ async function main() {
 }
 
 main().catch((error) => {
+  const logger = new Logger(config.logger.level);
   logger.fatal(error, "unexpected error caught by main, add handling");
   logger.fatal("performing shutdown with error response");
   process.exit(1);
