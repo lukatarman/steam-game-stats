@@ -13,7 +13,7 @@ export const config = {
   db: {
     host: process.env.DB_ENDPOINT,
     name: process.env.DB_NAME,
-    username: process.env.DB_USER,
+    username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
   },
