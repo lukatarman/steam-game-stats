@@ -18,16 +18,18 @@ export const config = {
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
   },
   features: {
-    batchSize: 5,
-    batchDelay: 5000,
-    unitDelay: 800,
-    currentPlayersUpdateIntervalDelay: hoursToMs(2),
-    updateIntervalDelay: hoursToMs(12),
-    iterationDelay: 5000,
+    batchSize: process.env.FEATURES_BATCH_SIZE,
+    batchDelay: process.env.FEATURES_BATCH_DELAY,
+    unitDelay: process.env.FEATURES_UNIT_DELAY,
+    currentPlayersUpdateIntervalDelay: hoursToMs(
+      process.env.FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY,
+    ),
+    updateIntervalDelay: hoursToMs(process.env.FEATURES_UPDATE_INTERVAL_DELAY),
+    iterationDelay: process.env.FEATURES_ITERATION_DELAY,
   },
   runner: {
     delayFn: delay,
-    iterationDelay: 5000,
+    iterationDelay: process.env.RUNNER_ITERATION_DELAY,
     expectedErrorTypes: [AxiosError],
   },
   logger: {
