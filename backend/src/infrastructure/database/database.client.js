@@ -11,6 +11,10 @@ export class DatabaseClient {
 
   async init(dbConfig) {
     const url = `${this.#constructUrl(dbConfig)}/${dbConfig.name}`;
+    this.#logger.debugc(
+      "db full connection url: %s",
+      this.#constructUrlPasswordRedacted(dbConfig),
+    );
     this.#connection = await MongoClient.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -33,6 +37,11 @@ export class DatabaseClient {
   #constructUrl({ host, username, password }) {
     const urlParts = host.split("//");
     return `${urlParts[0]}//${username}:${encodeURIComponent(password)}@${urlParts[1]}`;
+  }
+
+  #constructUrlPasswordRedacted({ host, username }) {
+    const urlParts = host.split("//");
+    return `${urlParts[0]}//${username}:<redacted>@${urlParts[1]}`;
   }
 
   async disconnect() {
