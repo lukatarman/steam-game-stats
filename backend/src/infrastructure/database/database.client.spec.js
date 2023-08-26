@@ -11,9 +11,10 @@ describe("DatabaseClient", function () {
         const mongoServer = await MongoMemoryServer.create();
 
         const databaseOptions = {
-          url: mongoServer.getUri(),
-          databaseName: "game-stats",
+          host: mongoServer.getUri(),
+          name: "game-stats",
           collections: ["games"],
+          authOn: false,
         };
 
         this.databaseClient = await new DatabaseClient(createLoggerMock()).init(

@@ -6,9 +6,10 @@ export const initiateInMemoryDatabase = async (collections) => {
   const mongoServer = await MongoMemoryServer.create();
 
   const databaseOptions = {
-    url: mongoServer.getUri(),
-    databaseName: "game-stats",
+    host: mongoServer.getUri(),
+    name: "game-stats",
     collections: collections,
+    authOn: false,
   };
 
   const databaseClient = await new DatabaseClient(createLoggerMock()).init(

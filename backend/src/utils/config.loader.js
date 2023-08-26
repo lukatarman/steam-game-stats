@@ -16,20 +16,21 @@ export const config = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
+    authOn: process.env.DB_AUTH_ON === "true",
   },
   features: {
-    batchSize: process.env.FEATURES_BATCH_SIZE,
-    batchDelay: process.env.FEATURES_BATCH_DELAY,
-    unitDelay: process.env.FEATURES_UNIT_DELAY,
+    batchSize: Number(process.env.FEATURES_BATCH_SIZE),
+    batchDelay: Number(process.env.FEATURES_BATCH_DELAY),
+    unitDelay: Number(process.env.FEATURES_UNIT_DELAY),
     currentPlayersUpdateIntervalDelay: hoursToMs(
-      process.env.FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY,
+      Nubmer(process.env.FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY),
     ),
-    updateIntervalDelay: hoursToMs(process.env.FEATURES_UPDATE_INTERVAL_DELAY),
-    iterationDelay: process.env.FEATURES_ITERATION_DELAY,
+    updateIntervalDelay: hoursToMs(Number(process.env.FEATURES_UPDATE_INTERVAL_DELAY)),
+    iterationDelay: Number(process.env.FEATURES_ITERATION_DELAY),
   },
   runner: {
     delayFn: delay,
-    iterationDelay: process.env.RUNNER_ITERATION_DELAY,
+    iterationDelay: Number(process.env.RUNNER_ITERATION_DELAY),
     expectedErrorTypes: [AxiosError],
   },
   logger: {
