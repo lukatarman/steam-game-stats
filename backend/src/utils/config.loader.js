@@ -23,7 +23,7 @@ export const config = {
     batchDelay: Number(process.env.FEATURES_BATCH_DELAY),
     unitDelay: Number(process.env.FEATURES_UNIT_DELAY),
     currentPlayersUpdateIntervalDelay: hoursToMs(
-      Nubmer(process.env.FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY),
+      Number(process.env.FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY),
     ),
     updateIntervalDelay: hoursToMs(Number(process.env.FEATURES_UPDATE_INTERVAL_DELAY)),
     iterationDelay: Number(process.env.FEATURES_ITERATION_DELAY),

@@ -13,7 +13,7 @@ export class WebServer {
   async start() {
     this.#server.log.info("starting server...");
     try {
-      await this.#server.listen(3000);
+      await this.#server.listen(3000, "0.0.0.0");
     } catch (err) {
       this.#server.log.error(err);
       process.exit(1);
