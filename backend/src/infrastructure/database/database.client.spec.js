@@ -1,25 +1,11 @@
 import { Collection } from "mongodb";
 import { initiateInMemoryDatabase } from "./in.memory.database.client.js";
-import { MongoMemoryServer } from "mongodb-memory-server";
-import { DatabaseClient } from "./database.client.js";
-import { createLoggerMock } from "../../utils/logger.mock.js";
 
 describe("DatabaseClient", function () {
   describe(".init initiates the databased with the provided options", function () {
     describe("When the correct options are provided", function () {
       beforeAll(async function () {
-        const mongoServer = await MongoMemoryServer.create();
-
-        const databaseOptions = {
-          host: mongoServer.getUri(),
-          name: "game-stats",
-          collections: ["games"],
-          authOn: false,
-        };
-
-        this.databaseClient = await new DatabaseClient(createLoggerMock()).init(
-          databaseOptions,
-        );
+        this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
         this.result = await this.databaseClient.getAll("games");
       });
