@@ -4,8 +4,8 @@ import cors from "@fastify/cors";
 export class WebServer {
   #server;
 
-  constructor(gameQueriesRouter, logger) {
-    this.#server = Fastify({ logger: logger.config });
+  constructor(gameQueriesRouter, _logger) {
+    this.#server = Fastify({ logger: _logger.config });
 
     this.#server.register(cors, gameQueriesRouter.routes);
   }
