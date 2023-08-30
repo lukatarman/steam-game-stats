@@ -24,5 +24,55 @@
       "backend/": true,
       "frontend/": true
     }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Docker: attach and debug backend",
+        "type": "node",
+        "request": "attach",
+        "remoteRoot": "/app/steam-game-stats/backend",
+        "localRoot": "${workspaceFolder}/backend",
+        "port": 9229,
+        "address": "localhost",
+        "preLaunchTask": "Debug: docker compose up",
+        "postDebugTask": "docker compose down"
+      },
+    ],
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Debug: docker compose up",
+        "type": "docker-compose",
+        "dockerCompose": {
+          "up": {
+            "detached": true,
+            "build": true,
+          },
+          "files": [
+            "${workspaceFolder}/docker-compose.debug.yaml"
+          ],
+          "envFile": "${workspaceFolder}/config/local-db.env",
+        },
+        "problemMatcher": {
+          "base": "$tsc-watch",
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "Building",
+            "endsPattern": "Debugger listening on"
+          }
+        }
+      },
+      {
+        "label": "docker compose down",
+        "type": "docker-compose",
+        "dockerCompose": {
+          "down": {},
+        }
+      }
+    ]
   }
 }
