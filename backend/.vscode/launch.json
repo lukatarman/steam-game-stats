@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Backend",
+      "name": "Local: debug backend",
       "program": "${workspaceFolder}/src/main.js",
       "request": "launch",
       "skipFiles": [
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "name": "Debug Backend Unit Tests",
+      "name": "Local: debug backend unit tests",
       "type": "node",
       "runtimeArgs": [
         "--inspect",
@@ -32,7 +32,7 @@
       "internalConsoleOptions": "openOnSessionStart"
     },
     {
-      "name": "Debug Backend Integration Tests",
+      "name": "Local: debug backend integration tests",
       "type": "node",
       "runtimeArgs": [
         "--inspect",
