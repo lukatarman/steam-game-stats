@@ -53,6 +53,7 @@
             "build": true,
           },
           "files": [
+            "${workspaceFolder}/docker-compose.yaml",
             "${workspaceFolder}/docker-compose.debug.yaml"
           ],
           "envFile": "${workspaceFolder}/config/local-db.env",
