@@ -36,8 +36,8 @@
         "localRoot": "${workspaceFolder}/backend",
         "port": 9229,
         "address": "localhost",
-        "preLaunchTask": "Debug: docker compose up",
-        "postDebugTask": "docker compose down"
+        "preLaunchTask": "Docker: start backend in debug with local-db",
+        "postDebugTask": "Docker: stop"
       },
     ],
   },
@@ -45,7 +45,7 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "Debug: docker compose up",
+        "label": "Docker: start backend in debug with local-db",
         "type": "docker-compose",
         "dockerCompose": {
           "up": {
@@ -68,7 +68,35 @@
         }
       },
       {
-        "label": "docker compose down",
+        "label": "Docker: start backend with local-db",
+        "type": "docker-compose",
+        "dockerCompose": {
+          "up": {
+            "detached": true,
+            "build": true,
+          },
+          "files": [
+            "${workspaceFolder}/docker-compose.yaml",
+          ],
+          "envFile": "${workspaceFolder}/config/local-db.env",
+        }
+      },
+      {
+        "label": "Docker: start backend with cloud-db",
+        "type": "docker-compose",
+        "dockerCompose": {
+          "up": {
+            "detached": true,
+            "build": true,
+          },
+          "files": [
+            "${workspaceFolder}/docker-compose.yaml",
+          ],
+          "envFile": "${workspaceFolder}/config/cloud-db.env",
+        }
+      },
+      {
+        "label": "Docker: stop",
         "type": "docker-compose",
         "dockerCompose": {
           "down": {},
