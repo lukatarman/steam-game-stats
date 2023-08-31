@@ -84,15 +84,14 @@ RUNNER_ITERATION_DELAY=30000                     # ms
 
 ## Running the Application
 
-The Docker Compose setup contains the backend and the database. Adding the frontend to the setup is pending.
+The application is packaged in containers using Docker Compose. The current setup contains the backend and the database. Adding the frontend to the setup is pending.
 
-Before you start the application the first time you have to build the application image:
+There are two simple ways to start the containers:
 
-```bash
-npm run build:backend
-```
+1. NPM Scripts
+1. VSCode Tasks
 
-Whenever you make any changes to the code you need to rebuild the image by running the command above.
+### NPM Scripts
 
 Start application using the local db:
 
@@ -113,3 +112,18 @@ npm stop
 ```
 
 The rest api is exposed under [http://localhost:3000](http://localhost:3000).
+
+### VSCode Tasks
+
+- open the "Show All Commands" search bar
+- type "`run task`" and hit enter
+- type "`Docker:`" and select start with local-db or cloud-db or stop
+- the task with `debug` in its name is used for the debugging configuration
+
+## Debugging
+
+The debugging configuration is only available for VSCode. You can debug the backend, unit tests and integration tests locally from the VSCode debugger menu by selecting one of the three configurations starting with "`Local: ...`".
+
+For debugging the application in the Docker container select the configuration starting with "`Docker: ...`". This configuration will rebuild the backend image, start the Docker Compose setup with Node.js in debug mode and attach itself to it so that you can set breakpoints in VSCode. When you are finished debugging detach the debugger and the configuration will stop and clean up the containers.
+
+The Docker debugging configuration uses the `local-db.env` file for the db setup. For more info on the debugging configuration check the `launch` and `tasks` sections in `.vscode/steam-game-stats.code-workspace`.
