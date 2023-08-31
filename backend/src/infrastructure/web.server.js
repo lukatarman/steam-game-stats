@@ -1,12 +1,11 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { loggerConfig } from "../utils/logger.js";
 
 export class WebServer {
   #server;
 
-  constructor(gameQueriesRouter) {
-    this.#server = Fastify({ logger: loggerConfig });
+  constructor(gameQueriesRouter, _logger) {
+    this.#server = Fastify({ logger: _logger.config });
 
     this.#server.register(cors, gameQueriesRouter.routes);
   }
@@ -14,7 +13,7 @@ export class WebServer {
   async start() {
     this.#server.log.info("starting server...");
     try {
-      await this.#server.listen(3000);
+      await this.#server.listen(3000, "0.0.0.0");
     } catch (err) {
       this.#server.log.error(err);
       process.exit(1);

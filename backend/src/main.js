@@ -3,7 +3,6 @@ import { DatabaseClient } from "./infrastructure/database/database.client.js";
 import { SteamClient } from "./infrastructure/steam.client.js";
 import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps.aggregator.js";
 import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
-import { delay, hoursToMs } from "./utils/time.utils.js";
 import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";
 import { Runner } from "./utils/runner.js";
 import { WebServer } from "./infrastructure/web.server.js";
@@ -14,39 +13,15 @@ import { SteamAppsRepository } from "./infrastructure/database/repositories/stea
 import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/database/repositories/steam.apps.update.timestamps.repository.js";
 import { PlayerHistoryRepository } from "./infrastructure/database/repositories/player.history.repository.js";
 import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
-import { MongoServerSelectionError } from "mongodb";
-import { logger } from "./utils/logger.js";
+import { config } from "./utils/config.loader.js";
+import { Logger } from "./utils/logger.js";
 
 // our entry point = main
 async function main() {
-  // setup phase
-  const databaseOptions = {
-    url: process.env.DB_ENDPOINT || "mongodb://localhost:27017",
-    databaseName: process.env.DB_NAME || "game-stats",
-    collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
-  };
+  const logger = new Logger(config.logger.level);
+  const databaseClient = await new DatabaseClient(logger).init(config.db);
 
-  let databaseClient;
-  try {
-    databaseClient = await new DatabaseClient(logger).init(databaseOptions);
-  } catch (error) {
-    if (error instanceof MongoServerSelectionError) {
-      /**
-       * @todo https://github.com/lukatarman/steam-game-stats/issues/39
-       */
-      logger.error("db connection failed");
-      logger.error(error, `error message: ${error.message}`);
-      logger.error(`verify connection string: ${databaseOptions.url}`);
-      logger.error("verify the db is running");
-      logger.error("performing graceful application shutdown");
-      process.exit(0);
-    }
-
-    logger.error("unknown error, add handling");
-    logger.error("performing shutdown with error response");
-    process.exit(1);
-  }
-
+  // repositories
   const gamesRepository = new GamesRepository(databaseClient);
   const steamAppsRepository = new SteamAppsRepository(databaseClient);
   const steamAppsUpdateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
@@ -54,21 +29,16 @@ async function main() {
   );
   const playerHistoryRepository = new PlayerHistoryRepository(databaseClient);
   const historyChecksRepository = new HistoryChecksRepository(databaseClient);
+
+  // http client
   const steamClient = new SteamClient(httpClient);
-  const options = {
-    batchSize: 5,
-    batchDelay: 5000,
-    unitDelay: 800,
-    currentPlayersUpdateIntervalDelay: hoursToMs(2),
-    updateIntervalDelay: hoursToMs(12),
-    iterationDelay: 5000,
-  };
+
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,
     steamAppsUpdateTimestampRepository,
     steamAppsRepository,
     logger,
-    options,
+    config.features,
   );
   const gameIdentifier = new GameIdentifier(
     steamClient,
@@ -76,7 +46,7 @@ async function main() {
     gamesRepository,
     historyChecksRepository,
     logger,
-    options,
+    config.features,
   );
   const playerHistoryAggregator = new PlayerHistoryAggregator(
     steamClient,
@@ -84,11 +54,13 @@ async function main() {
     historyChecksRepository,
     playerHistoryRepository,
     logger,
-    options,
+    config.features,
   );
+
+  // rest + web server
   const gameQueriesController = new GameQueriesController(gamesRepository);
   const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
-  const webServer = new WebServer(gameQueriesRouter);
+  const webServer = new WebServer(gameQueriesRouter, logger);
   await webServer.start();
 
   const runnables = [
@@ -101,26 +73,22 @@ async function main() {
     playerHistoryAggregator.addPlayerHistoryFromSteamcharts,
     playerHistoryAggregator.addCurrentPlayers,
   ];
-  const { AxiosError } = httpClient;
-  const expectedErrorsTypes = [AxiosError];
-  const runner = new Runner(logger, delay, options.iterationDelay);
+  const runner = new Runner(logger, config.runner.delayFn, config.runner.iterationDelay);
 
   try {
     /**
      * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
      */
-    await runner.run(runnables, expectedErrorsTypes);
+    await runner.run(runnables, config.runner.expectedErrorTypes);
   } catch (error) {
     logger.error(error);
   }
 
-  /**
-   * @todo https://github.com/lukatarman/steam-game-stats/issues/39
-   */
   logger.info("done...");
 }
 
 main().catch((error) => {
+  const logger = new Logger(config.logger.level);
   logger.fatal(error, "unexpected error caught by main, add handling");
   logger.fatal("performing shutdown with error response");
   process.exit(1);

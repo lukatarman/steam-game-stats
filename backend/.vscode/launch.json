@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug App",
+      "name": "Local: debug backend",
       "program": "${workspaceFolder}/src/main.js",
       "request": "launch",
       "skipFiles": [
@@ -11,39 +11,43 @@
       "type": "node",
       "runtimeArgs": [
         "--inspect"
-      ],
+      ]
     },
     {
-      "name": "Debug Jasmine Unit Tests",
+      "name": "Local: debug backend unit tests",
       "type": "node",
       "runtimeArgs": [
         "--inspect",
-        "--no-lazy",
+        "--no-lazy"
       ],
       "request": "launch",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "program": "../node_modules/jasmine/bin/jasmine.js",
-      "args": ["--config=jasmine-unit.json"],
+      "args": [
+        "--config=jasmine-unit.json"
+      ],
       "console": "internalConsole",
-      "internalConsoleOptions": "openOnSessionStart",
+      "internalConsoleOptions": "openOnSessionStart"
     },
     {
-      "name": "Debug Jasmine Integration Tests",
+      "name": "Local: debug backend integration tests",
       "type": "node",
       "runtimeArgs": [
         "--inspect",
-        "--no-lazy",
+        "--no-lazy"
       ],
       "request": "launch",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "program": "../node_modules/jasmine/bin/jasmine.js",
-      "args": ["--config=jasmine-integration.json"],
+      "args": [
+        "--config=jasmine-integration.json"
+      ],
       "console": "internalConsole",
-      "internalConsoleOptions": "openOnSessionStart",
-    }
+      "internalConsoleOptions": "openOnSessionStart"
+    },
   ]
 }

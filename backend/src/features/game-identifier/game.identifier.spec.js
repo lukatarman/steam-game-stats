@@ -17,7 +17,7 @@ import { createLoggerMock } from "../../utils/logger.mock.js";
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
     describe("gets zero steamApps from the database and stops. So,", function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         this.options = {
           batchSize: 1,
           unitDelay: 0,
@@ -38,7 +38,7 @@ describe("game.identifier.js", function () {
           this.options,
         );
 
-        this.identifier.tryViaSteamWeb();
+        await this.identifier.tryViaSteamWeb();
       });
 
       it("getSteamWebUntriedFilteredSteamApps was called once", function () {
@@ -461,7 +461,7 @@ describe("game.identifier.js", function () {
 
   describe(".tryViaSteamchartsWeb", function () {
     describe("gets zero steamApps from the database and stops. So,", function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         this.options = {
           batchSize: 1,
           unitDelay: 0,
@@ -482,7 +482,7 @@ describe("game.identifier.js", function () {
           this.options,
         );
 
-        this.identifier.tryViaSteamchartsWeb();
+        await this.identifier.tryViaSteamchartsWeb();
       });
 
       it("getSteamchartsUntriedFilteredSteamApps was called once", function () {

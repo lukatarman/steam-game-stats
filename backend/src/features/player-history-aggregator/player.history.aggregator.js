@@ -27,14 +27,14 @@ export class PlayerHistoryAggregator {
   }
 
   addPlayerHistoryFromSteamcharts = async () => {
-    this.#logger.info("adding player history from steamcharts web");
+    this.#logger.debugc("adding player history from steamcharts web");
 
     const uncheckedGames =
       await this.#gamesRepository.getXgamesWithUncheckedPlayerHistory(
         this.#options.batchSize,
       );
     if (uncheckedGames.length === 0) {
-      this.#logger.info(
+      this.#logger.debugc(
         `no unchecked games in db, retry in: ${this.#options.iterationDelay} ms`,
       );
       return;
@@ -44,12 +44,12 @@ export class PlayerHistoryAggregator {
       uncheckedGames,
     );
 
-    this.#logger.info(`updating history checks for game batch`);
+    this.#logger.debugc(`updating history checks for game batch`);
     const historyChecks = HistoryCheck.manyFromSteamchartsPages(gamesPagesMap);
     await this.#historyChecksRepository.updateHistoryChecks(historyChecks);
 
     const games = addPlayerHistoriesFromSteamcharts(gamesPagesMap);
-    this.#logger.info(
+    this.#logger.debugc(
       `updating player history of games with ids: ${this.#formatedGameIds(games)}`,
     );
     await this.#playerHistoryRepository.updatePlayerHistoriesById(games);
@@ -66,7 +66,7 @@ export class PlayerHistoryAggregator {
         gamesPagesMap.set(game, page);
       } catch (error) {
         gamesPagesMap.set(game, "");
-        this.#logger.info(`no details page on steamcharts for gameId: ${game.id}`);
+        this.#logger.debugc(`no details page on steamcharts for gameId: ${game.id}`);
       }
     }
 
@@ -74,7 +74,7 @@ export class PlayerHistoryAggregator {
   }
 
   addCurrentPlayers = async () => {
-    this.#logger.info("adding current players for games via steam api");
+    this.#logger.debugc("adding current players for games via steam api");
 
     const games = await this.#gamesRepository.getXgamesCheckedMoreThanYmsAgo(
       this.#options.batchSize,
@@ -82,14 +82,14 @@ export class PlayerHistoryAggregator {
     );
 
     if (games.length === 0) {
-      this.#logger.info("no games to check in current interval");
+      this.#logger.debugc("no games to check in current interval");
       return;
     }
 
     const players = await this.#steamClient.getAllCurrentPlayersConcurrently(games);
 
     games.forEach((game, i) => game.pushCurrentPlayers(players[i]));
-    this.#logger.info(
+    this.#logger.debugc(
       `updating player history of games with ids: ${this.#formatedGameIds(games)}`,
     );
     await this.#playerHistoryRepository.updatePlayerHistoriesById(games);

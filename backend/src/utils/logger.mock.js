@@ -1,3 +1,10 @@
 export function createLoggerMock() {
-  return jasmine.createSpyObj("Logger", ["info", "warn", "error", "fatal"]);
+  return jasmine.createSpyObj("Logger", [
+    "info",
+    "error",
+    "warn",
+    "debug",
+    "debugc",
+    "fatal",
+  ]);
 }
