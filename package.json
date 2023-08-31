@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Application for steam games statistics",
   "scripts": {
-    "build:backend": "docker build -t steam-game-stats-backend:latest  -f backend/Dockerfile .",
     "debug:backend:local-db": "docker compose -f docker-compose.yaml -f docker-compose.debug.yaml --env-file ./config/local-db.env up --build -d",
     "start:backend:local-db": "docker compose --env-file ./config/local-db.env up --build -d",
     "start:backend:cloud-db": "docker compose --env-file ./config/cloud-db.env up --build -d",
