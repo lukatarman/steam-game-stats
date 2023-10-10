@@ -37,7 +37,7 @@ export class DatabaseClient {
   #constructUrl({ host, username, password, authOn, isLocal }) {
     if (authOn === false) return host;
     if (isLocal === true) return host;
-    console.log("test");
+
     const urlParts = host.split("//");
     return `${urlParts[0]}//${username}:${encodeURIComponent(password)}@${urlParts[1]}`;
   }
