@@ -44,11 +44,9 @@ export function getReleaseDate(page) {
 
   if (!releaseDateElement) return "";
 
-  const releaseDateString = releaseDateElement.textContent.trim();
+  const releaseDate = new Date(releaseDateElement.textContent.trim());
 
-  const releaseDate = new Date(releaseDateString);
-
-  if (releaseDate == "Invalid Date") return releaseDateString;
+  if (releaseDate == "Invalid Date") return "";
 
   return releaseDate;
 }

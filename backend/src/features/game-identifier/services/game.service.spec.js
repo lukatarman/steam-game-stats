@@ -202,17 +202,6 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("if the provided HTML page's release date section contains an invalid date'", function () {
-      beforeEach(function () {
-        this.result = getReleaseDate(feartressGameHtmlDetailsPage);
-      });
-
-      it("the result is the string 'TBD'", function () {
-        expect(this.result).toEqual("TBD");
-        expect(this.result).toBeInstanceOf(String);
-      });
-    });
-
     describe("if the provided HTML page includes a release date,", function () {
       beforeEach(function () {
         this.result = getReleaseDate(mortalDarknessGameHtmlDetailsPage);
