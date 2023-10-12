@@ -17,7 +17,6 @@ export const config = {
     password: process.env.DB_PASSWORD,
     collections: ["games", "steam_apps", "update_timestamps", "history_checks"],
     authOn: process.env.DB_AUTH_ON === "true",
-    isLocal: process.env.DB_LOCAL === "true",
   },
   features: {
     batchSize: Number(process.env.FEATURES_BATCH_SIZE),

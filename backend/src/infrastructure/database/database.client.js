@@ -35,17 +35,19 @@ export class DatabaseClient {
   }
 
   #constructUrl({ host, username, password, authOn, isLocal }) {
-    if (authOn === false || isLocal === true) return host;
-
     const urlParts = host.split("//");
-    return `${urlParts[0]}//${username}:${encodeURIComponent(password)}@${urlParts[1]}`;
+
+    return authOn === false || isLocal === true
+      ? host
+      : `${urlParts[0]}//${username}:${encodeURIComponent(password)}@${urlParts[1]}`;
   }
 
   #constructUrlPasswordRedacted({ host, username, authOn, isLocal }) {
-    if (authOn === false || isLocal === true) return host;
-
     const urlParts = host.split("//");
-    return `${urlParts[0]}//${username}:<redacted>@${urlParts[1]}`;
+
+    return authOn === false || isLocal === true
+      ? host
+      : `${urlParts[0]}//${username}:${encodeURIComponent(password)}@${urlParts[1]}`;
   }
 
   async disconnect() {
