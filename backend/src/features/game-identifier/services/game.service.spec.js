@@ -202,7 +202,7 @@ describe("game.service.js", () => {
       });
     });
 
-    fdescribe("if the provided HTML page's release date section contains an invalid date'", function () {
+    describe("if the provided HTML page's release date section contains an invalid date'", function () {
       beforeEach(function () {
         this.result = getReleaseDate(feartressGameHtmlDetailsPage);
       });
