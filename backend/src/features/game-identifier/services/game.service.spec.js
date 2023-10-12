@@ -192,13 +192,24 @@ describe("game.service.js", () => {
   });
 
   describe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
-    describe("if the provided HTML page does not include a release date,", function () {
+    describe("if the provided HTML page does not include a release date section,", function () {
       beforeEach(function () {
         this.result = getReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
       it("the result is an empty string", function () {
         expect(this.result).toBe("");
+      });
+    });
+
+    fdescribe("if the provided HTML page's release date section contains an invalid date'", function () {
+      beforeEach(function () {
+        this.result = getReleaseDate(feartressGameHtmlDetailsPage);
+      });
+
+      it("the result is the string 'TBD'", function () {
+        expect(this.result).toEqual("TBD");
+        expect(this.result).toBeInstanceOf(String);
       });
     });
 
