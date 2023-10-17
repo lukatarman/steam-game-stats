@@ -40,13 +40,13 @@ export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
 export function getReleaseDate(page) {
   const dom = new JSDOM(page);
 
-  const releaseDateString = dom.window.document.querySelector(".release_date .date");
+  const releaseDateElement = dom.window.document.querySelector(".release_date .date");
 
-  if (!releaseDateString) return "";
+  if (!releaseDateElement) return "";
 
-  const releaseDate = new Date(releaseDateString.textContent.trim());
+  const releaseDate = new Date(releaseDateElement.textContent.trim());
 
-  if (releaseDate == "Invalid Date") return releaseDateString;
+  if (releaseDate == "Invalid Date") return "";
 
   return releaseDate;
 }
