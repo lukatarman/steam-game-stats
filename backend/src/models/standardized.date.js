@@ -25,6 +25,6 @@ export class StandardizedDate {
         this.date.getMinutes(),
         this.date.getSeconds(),
       ),
-    ).toISOString();
+    );
   }
 }
