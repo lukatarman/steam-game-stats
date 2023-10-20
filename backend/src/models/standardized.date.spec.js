@@ -4,7 +4,7 @@ describe("StandardizedDate", function () {
   describe(".getUTCDate.", function () {
     describe("When a valid date is passed in,", function () {
       beforeEach(function () {
-        const date = new Date("September 1 2012 EST");
+        const date = new Date("September 1 2012");
 
         this.result = StandardizedDate.getUTCDate(date);
       });
