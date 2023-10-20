@@ -4,7 +4,7 @@ export class StandardizedDate {
   constructor(rawDate) {
     const date = new Date(rawDate);
 
-    this.date = date == "Invalid Date" ? "" : new Date(date);
+    this.date = date == "Invalid Date" ? "" : date;
   }
 
   static getUTCDate(date) {
