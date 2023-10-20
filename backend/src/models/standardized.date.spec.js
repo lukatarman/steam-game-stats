@@ -1,6 +1,6 @@
 import { StandardizedDate } from "./standardized.date.js";
 
-fdescribe("StandardizedDate", function () {
+describe("StandardizedDate", function () {
   describe(".getUTCDate.", function () {
     describe("When a valid date is passed in,", function () {
       beforeEach(function () {
