@@ -11,13 +11,11 @@ export class TrackedPlayers {
   }
 
   #fixDate(dateAsString) {
-    const date = new Date(dateAsString);
-
     if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
       return StandardizedDate.getUTCDate(dateAsString).date;
     }
 
-    return date;
+    return new Date(dateAsString);
   }
 
   static manyFromDbEntry(trackedPlayersArray) {
