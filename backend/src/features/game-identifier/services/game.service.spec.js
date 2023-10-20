@@ -210,8 +210,8 @@ describe("game.service.js", () => {
       it("the result is a date", function () {
         expect(this.result).toBeInstanceOf(Date);
       });
-      it("the result is 'Aug 2023'", function () {
-        expect(this.result).toEqual(new Date(this.result));
+      it("the result is the correct date'", function () {
+        expect(this.result.toISOString()).toEqual("2023-08-01T00:00:00.000Z");
       });
     });
   });
@@ -593,7 +593,9 @@ describe("game.service.js", () => {
       });
 
       it("the first game's details are updated", function () {
-        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012"));
+        expect(this.games[0].releaseDate.toISOString()).toEqual(
+          "2012-08-21T00:00:00.000Z",
+        );
         expect(this.games[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
         expect(this.games[0].genres).toEqual(["Action", "Free to Play"]);
         expect(this.games[0].description).toBe(
@@ -602,7 +604,9 @@ describe("game.service.js", () => {
       });
 
       it("the second game's details are updated", function () {
-        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020"));
+        expect(this.games[1].releaseDate.toISOString()).toEqual(
+          "2020-08-11T00:00:00.000Z",
+        );
         expect(this.games[1].developers).toEqual(["Hopoo Games"]);
         expect(this.games[1].genres).toEqual(["Action", "Indie"]);
         expect(this.games[1].description).toBe(
@@ -634,8 +638,8 @@ describe("game.service.js", () => {
         expect(this.result).toBeInstanceOf(Date);
       });
 
-      it("the returned date is '11 August 2020'", function () {
-        expect(this.result).toEqual(this.date);
+      it("the result is the correct date", function () {
+        expect(this.result.toISOString()).toEqual("2020-08-11T00:00:00.000Z");
       });
     });
 
