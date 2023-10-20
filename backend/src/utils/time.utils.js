@@ -23,11 +23,3 @@ export function msPassedSince(date) {
 
   return msPassedSince;
 }
-
-export function fixDate(dateVariable) {
-  const date = new Date(dateVariable);
-
-  if (date === "Invalid date") return "";
-
-  return date.toLocaleString("en-GB", { timeZone: "UTC" });
-}
