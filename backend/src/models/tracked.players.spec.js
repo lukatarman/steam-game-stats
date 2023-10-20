@@ -37,7 +37,7 @@ describe("TrackedPlayers", function () {
         this.players = new TrackedPlayers("24", date);
       });
 
-      it("the ISO format of the result is the correct date.", function () {
+      it("the result is the correct date", function () {
         expect(this.players.date.toISOString()).toEqual("2000-09-01T00:00:00.000Z");
       });
     });
