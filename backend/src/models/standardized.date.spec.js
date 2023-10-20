@@ -4,13 +4,13 @@ fdescribe("StandardizedDate", function () {
   describe(".getUTCDate.", function () {
     describe("When a valid date is passed in,", function () {
       beforeEach(function () {
-        const date = new Date("September 1 2012");
+        const date = new Date("September 1 2012 EST");
 
         this.result = StandardizedDate.getUTCDate(date);
       });
 
-      it("the result is the the correct date in the ISO format.", function () {
-        expect(this.result.date).toBe("2012-09-01T00:00:00.000Z");
+      it("the ISO format of the result is the correct date.", function () {
+        expect(this.result.date.toISOString()).toBe("2012-09-01T00:00:00.000Z");
       });
     });
 
