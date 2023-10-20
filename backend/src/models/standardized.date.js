@@ -1,7 +1,9 @@
 export class StandardizedDate {
   date;
 
-  constructor(date) {
+  constructor(rawDate) {
+    const date = new Date(rawDate);
+
     this.date = date == "Invalid Date" ? "" : new Date(date);
   }
 
