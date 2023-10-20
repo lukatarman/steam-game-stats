@@ -5,8 +5,8 @@ export class StandardizedDate {
     this.date = date == "Invalid Date" ? "" : new Date(date);
   }
 
-  static getUTCDate(rawDate) {
-    const standardizedDate = new StandardizedDate(rawDate);
+  static getUTCDate(date) {
+    const standardizedDate = new StandardizedDate(date);
 
     if (standardizedDate.date === "") return standardizedDate;
 
