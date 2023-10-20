@@ -9,7 +9,7 @@ describe("StandardizedDate", function () {
         this.result = StandardizedDate.getUTCDate(date);
       });
 
-      it("the ISO format of the result is the correct date.", function () {
+      it("the result is the correct date.", function () {
         expect(this.result.date.toISOString()).toBe("2012-09-01T00:00:00.000Z");
       });
     });
