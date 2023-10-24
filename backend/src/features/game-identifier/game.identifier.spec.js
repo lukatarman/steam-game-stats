@@ -926,8 +926,6 @@ describe(".updateGamesWithoutDetails.", function () {
   });
 });
 
-// getGamesWithoutDetails, updateGameDetails;
-
 function createSteamMock(args) {
   const spyObj = jasmine.createSpyObj("steamClient", [
     "getSteamAppHtmlDetailsPage",
