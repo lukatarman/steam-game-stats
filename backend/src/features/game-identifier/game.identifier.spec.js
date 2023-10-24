@@ -793,7 +793,7 @@ describe("game.identifier.js", function () {
   });
 });
 
-fdescribe(".updateGamesWithoutDetails.", function () {
+describe(".updateGamesWithoutDetails.", function () {
   describe("Finds no missing game properties in the database and stops", function () {
     beforeEach(async function () {
       this.options = {
