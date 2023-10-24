@@ -1,7 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Game } from "../../../models/game.js";
 import { SteamApp } from "../../../models/steam.app.js";
-import { StandardizedDate } from "../../../models/standardized.date.js";
 
 export function getSteamAppType(httpDetailsPage) {
   const dom = new JSDOM(httpDetailsPage);
@@ -45,9 +44,11 @@ export function getReleaseDate(page) {
 
   if (!releaseDateElement) return "";
 
-  const releaseDate = new Date(releaseDateElement.textContent.trim());
+  const releaseDateString = `${releaseDateElement.textContent.trim()} UTC`;
 
-  return StandardizedDate.getUTCDate(releaseDate).date;
+  const releaseDate = new Date(releaseDateString);
+
+  return releaseDate == "Invalid Date" ? "" : releaseDate;
 }
 
 export function getDevelopers(page) {
@@ -132,11 +133,14 @@ export function getSteamDbReleaseDate(page) {
 
   const releaseDateString = releaseDateElement.textContent;
 
-  const releaseDate = new Date(
-    releaseDateString.slice(0, releaseDateString.indexOf("–") - 1),
-  );
+  const fixedReleaseDateString = `${releaseDateElement.textContent.slice(
+    0,
+    releaseDateString.indexOf("–") - 1,
+  )} UTC`;
 
-  return StandardizedDate.getUTCDate(releaseDate).date;
+  const releaseDate = new Date(fixedReleaseDateString);
+
+  return releaseDate == "Invalid Date" ? "" : releaseDate;
 }
 
 export function getSteamDbDevelopers(page) {

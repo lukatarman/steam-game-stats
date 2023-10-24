@@ -1,5 +1,3 @@
-import { StandardizedDate } from "./standardized.date.js";
-
 export class TrackedPlayers {
   date;
   players;
@@ -14,7 +12,7 @@ export class TrackedPlayers {
     const date = new Date(dateAsString);
 
     if (date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0) {
-      return StandardizedDate.getUTCDate(dateAsString).date;
+      return new Date(`${dateAsString} UTC`);
     }
 
     return date;
