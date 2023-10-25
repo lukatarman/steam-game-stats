@@ -32,17 +32,13 @@ describe("TrackedPlayers", function () {
 
     describe("when a date without specified hours, minutes or seconds is provided", function () {
       beforeEach(function () {
-        const currentDate = new Date("September 2000");
-        const twelveHoursInMs = 12 * 60 * 60 * 1000;
+        const date = new Date("September 2000");
 
-        const datePlusTwelveHoursInMs = Date.parse(currentDate) + twelveHoursInMs;
-
-        this.currentDatePlusTwelveHours = new Date(datePlusTwelveHoursInMs);
-        this.players = new TrackedPlayers("24", "September 2000");
+        this.players = new TrackedPlayers("24", date);
       });
 
-      it("12 hours are added to it due to database discrepancies.", function () {
-        expect(this.players.date).toEqual(this.currentDatePlusTwelveHours);
+      it("the result is the correct date", function () {
+        expect(this.players.date.toISOString()).toEqual("2000-09-01T00:00:00.000Z");
       });
     });
   });
