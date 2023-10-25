@@ -154,7 +154,7 @@ export class GameIdentifier {
     const htmlDetailsPages = [];
 
     for (let game of games) {
-      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game));
+      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game.id));
       await delay(this.#options.unitDelay);
     }
 
