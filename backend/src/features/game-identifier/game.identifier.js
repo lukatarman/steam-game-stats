@@ -3,6 +3,7 @@ import {
   updateTypeSideEffectFree,
   identifyGames,
   assignType,
+  updateMissingDetails,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -126,5 +127,42 @@ export class GameIdentifier {
     }
 
     return updatedSteamApps;
+  }
+
+  updateGamesWithoutDetails = async () => {
+    this.#logger.debugc("updating games without details");
+
+    const games = await this.#gamesRepository.getGamesWithoutDetails(
+      this.#options.batchSize,
+    );
+
+    if (games.length === 0) {
+      this.#logger.debugc(
+        `no games without details in db, retrying in ${this.#options.iterationDelay}`,
+      );
+      return;
+    }
+
+    const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPage(games);
+
+    const updatedGames = updateMissingDetails(games, htmlDetailsPages);
+
+    this.#persistMissingProperties(updatedGames);
+  };
+
+  async #getSteamDbHtmlDetailsPage(games) {
+    const htmlDetailsPages = [];
+
+    for (let game of games) {
+      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game));
+      await delay(this.#options.unitDelay);
+    }
+
+    return htmlDetailsPages;
+  }
+
+  async #persistMissingProperties(games) {
+    this.#logger.debugc(`persisting ${games.length} games with updated details`);
+    await this.#gamesRepository.updateGameDetails(games);
   }
 }
