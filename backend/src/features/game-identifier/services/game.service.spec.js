@@ -13,6 +13,7 @@ import {
   getSteamDbDevelopers,
   getSteamDbGenres,
   getSteamDbDescription,
+  updateMissingReleaseDates,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -593,7 +594,6 @@ describe("game.service.js", () => {
       });
 
       it("the first game's details are updated", function () {
-        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012"));
         expect(this.games[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
         expect(this.games[0].genres).toEqual(["Action", "Free to Play"]);
         expect(this.games[0].description).toBe(
@@ -602,50 +602,11 @@ describe("game.service.js", () => {
       });
 
       it("the second game's details are updated", function () {
-        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020"));
         expect(this.games[1].developers).toEqual(["Hopoo Games"]);
         expect(this.games[1].genres).toEqual(["Action", "Indie"]);
         expect(this.games[1].description).toBe(
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
-      });
-    });
-  });
-
-  describe(".getSteamDbReleaseDate.", function () {
-    describe("When we provide a html page that doesn't contain a valid date,", function () {
-      beforeEach(function () {
-        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toBe("");
-      });
-    });
-
-    describe("When we provide a html page that contains a valid date,", function () {
-      beforeEach(function () {
-        this.date = new Date("11 August 2020");
-
-        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
-      });
-
-      it("a date is returned'", function () {
-        expect(this.result).toBeInstanceOf(Date);
-      });
-
-      it("the returned date is '11 August 2020'", function () {
-        expect(this.result).toEqual(this.date);
-      });
-    });
-
-    describe("When we provide a html page that doesn't contain a date section", function () {
-      beforeEach(function () {
-        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toBe("");
       });
     });
   });
@@ -730,6 +691,71 @@ describe("game.service.js", () => {
 
       it("an empty string is returned", function () {
         expect(this.result).toEqual("");
+      });
+    });
+  });
+
+  describe(".updateMissingReleaseDates.", function () {
+    describe("When we try to update two games with missing release dates,", function () {
+      beforeEach(function () {
+        this.games = getXsteamchartsInstantiatedGames(2);
+
+        const htmlDetailsPages = [
+          counterStrikeHtmlDetailsSteamDb,
+          riskOfRainHtmlDetailsSteamDb,
+        ];
+
+        updateMissingReleaseDates(this.games, htmlDetailsPages);
+      });
+
+      it("two games are returned", function () {
+        expect(this.games.length).toBe(2);
+      });
+
+      it("the first game's details are updated", function () {
+        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012"));
+      });
+
+      it("the second game's details are updated", function () {
+        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020"));
+      });
+    });
+  });
+
+  describe(".getSteamDbReleaseDate.", function () {
+    describe("When we provide a html page that doesn't contain a valid date,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
+      });
+
+      it("an empty string is returned", function () {
+        expect(this.result).toBe("");
+      });
+    });
+
+    describe("When we provide a html page that contains a valid date,", function () {
+      beforeEach(function () {
+        this.date = new Date("11 August 2020");
+
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("a date is returned'", function () {
+        expect(this.result).toBeInstanceOf(Date);
+      });
+
+      it("the returned date is '11 August 2020'", function () {
+        expect(this.result).toEqual(this.date);
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a date section", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("an empty string is returned", function () {
+        expect(this.result).toBe("");
       });
     });
   });
