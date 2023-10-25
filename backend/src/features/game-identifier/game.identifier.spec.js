@@ -966,7 +966,7 @@ describe(".updateGamesWithoutReleaseDates.", function () {
     });
   });
 
-  fdescribe("Finds two games with missing release dates", function () {
+  describe("Finds two games with missing release dates", function () {
     beforeEach(async function () {
       this.options = {
         batchSize: 2,
