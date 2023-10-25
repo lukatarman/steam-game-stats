@@ -582,4 +582,40 @@ describe("game.js", function () {
       });
     });
   });
+
+  describe(".updateReleaseDate", function () {
+    describe("When we try to update a missing release date,", function () {
+      beforeEach(function () {
+        this.releaseDate = new Date("23 July 2023");
+
+        this.game = getOneGameWithoutDetails();
+
+        this.game.updateReleaseDate(this.releaseDate, [], [], "");
+      });
+
+      it("a game is returned.", function () {
+        expect(this.game).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date is updated", function () {
+        expect(this.game.releaseDate).toBe(this.releaseDate);
+      });
+    });
+
+    describe("When we try to update an existing release date,", function () {
+      beforeEach(function () {
+        this.game = getOneSteamAppInstantiatedGame();
+
+        this.game.updateReleaseDate("22 July 2019", [], [], "");
+      });
+
+      it("a game is returned.", function () {
+        expect(this.game).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date stays the same", function () {
+        expect(this.game.releaseDate).toBe("21 July 2019");
+      });
+    });
+  });
 });
