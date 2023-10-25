@@ -1085,6 +1085,7 @@ function createGamesRepositoryMock(gamesRepoRet) {
     updateGameDetails: Promise.resolve(undefined),
     getGamesWithoutReleaseDates: Promise.resolve(gamesRepoRet),
     updateReleaseDates: Promise.resolve(undefined),
+
   });
 }
 

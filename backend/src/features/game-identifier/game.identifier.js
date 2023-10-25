@@ -146,6 +146,7 @@ export class GameIdentifier {
 
     const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
 
+
     const updatedGames = updateMissingDetails(games, htmlDetailsPages);
 
     this.#persistMissingProperties(updatedGames);
