@@ -288,7 +288,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 2218750,
       name: "Halls of Torment",
-      releaseDate: "To be announced",
+      releaseDate: "",
       developers: ["Chasing Carrots"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/2218750/header.jpg",
@@ -550,7 +550,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 620,
       name: "Portal 2",
-      releaseDate: "17 Apr 2011",
+      releaseDate: "",
       developers: ["Valve"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/620/header.jpg",
@@ -576,7 +576,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 646910,
       name: "The Crew 2",
-      releaseDate: "27 Jun 2018",
+      releaseDate: "",
       developers: [],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/646910/header.jpg",
