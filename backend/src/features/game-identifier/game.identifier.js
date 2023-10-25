@@ -139,7 +139,7 @@ export class GameIdentifier {
 
     if (games.length === 0) {
       this.#logger.debugc(
-        `no games without details in db, retrying in ${this.#options.iterationDelay}`,
+        `no games without details in db, retrying in ${this.#options.iterationDelay} ms`,
       );
       return;
     }
@@ -178,7 +178,7 @@ export class GameIdentifier {
       this.#logger.debugc(
         `no games without release dates in db, retrying in ${
           this.#options.iterationDelay
-        }`,
+        } ms`,
       );
       return;
     }
