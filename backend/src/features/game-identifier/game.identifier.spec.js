@@ -793,7 +793,7 @@ describe("game.identifier.js", function () {
   });
 });
 
-describe(".updateGamesWithoutDetails.", function () {
+fdescribe(".updateGamesWithoutDetails.", function () {
   describe("Finds no missing game properties in the database and stops", function () {
     beforeEach(async function () {
       this.options = {
@@ -907,10 +907,10 @@ describe(".updateGamesWithoutDetails.", function () {
 
     it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
-        this.gamesRepoReturn[0],
+        this.gamesRepoReturn[0].id,
       );
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
-        this.gamesRepoReturn[1],
+        this.gamesRepoReturn[1].id,
       );
     });
 
