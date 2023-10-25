@@ -167,7 +167,7 @@ export class GameIdentifier {
     await this.#gamesRepository.updateGameDetails(games);
   }
 
-  updateGamesWithoutReleaseDate = async () => {
+  updateGamesWithoutReleaseDates = async () => {
     this.#logger.debugc("updating games without details");
 
     const games = await this.#gamesRepository.getGamesWithoutReleaseDates(
@@ -189,17 +189,6 @@ export class GameIdentifier {
 
     this.#persistReleaseDates(updatedGames);
   };
-
-  async #getSteamDbHtmlDetailsPages(games) {
-    const htmlDetailsPages = [];
-
-    for (let game of games) {
-      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game));
-      await delay(this.#options.unitDelay);
-    }
-
-    return htmlDetailsPages;
-  }
 
   #persistReleaseDates = async (games) => {
     this.#logger.debugc(`persisting ${games.length} games with updated release dates`);
