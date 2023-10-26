@@ -782,7 +782,7 @@ describe("game.service.js", () => {
         expect(this.result).toBeInstanceOf(Date);
       });
 
-      it("the returned date is '11 August 2020'", function () {
+      it("the correct date is returned", function () {
         expect(this.result).toEqual(this.date);
       });
     });
