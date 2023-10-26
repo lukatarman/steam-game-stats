@@ -761,7 +761,7 @@ describe("game.service.js", () => {
   });
 
   describe(".getSteamDbReleaseDate.", function () {
-    describe("When we provide a html page that doesn't contain a valid date,", function () {
+    describe("When we provide a html page that doesn't contain a valid release date,", function () {
       beforeEach(function () {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
       });
@@ -771,7 +771,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("When we provide a html page that contains a valid date,", function () {
+    describe("When we provide a html page that contains a valid release date,", function () {
       beforeEach(function () {
         this.date = new Date("11 August 2020");
 
