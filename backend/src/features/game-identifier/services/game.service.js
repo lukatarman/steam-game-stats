@@ -174,9 +174,8 @@ export function getSteamDbReleaseDate(page) {
 
   const releaseDateString = releaseDateElement.textContent;
 
-  const releaseDate = new Date(
-    releaseDateString.slice(0, releaseDateString.indexOf("–") - 1),
-  );
+  const releaseDate = new Date(`
+    ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
 
   if (releaseDate == "Invalid Date") return "";
 
