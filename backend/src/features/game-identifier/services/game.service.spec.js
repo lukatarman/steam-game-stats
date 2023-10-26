@@ -750,11 +750,11 @@ describe("game.service.js", () => {
         expect(this.games.length).toBe(2);
       });
 
-      it("the first game's details are updated", function () {
+      it("the first game's release date is updated", function () {
         expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012"));
       });
 
-      it("the second game's details are updated", function () {
+      it("the second game's release date is updated", function () {
         expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020"));
       });
     });
