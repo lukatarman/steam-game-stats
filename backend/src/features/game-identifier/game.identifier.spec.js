@@ -13,6 +13,9 @@ import {
 } from "./services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../utils/logger.mock.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { getXGamesWithoutDetails } from "../../models/game.mocks.js";
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
@@ -791,14 +794,129 @@ describe("game.identifier.js", function () {
   });
 });
 
+describe(".updateGamesWithoutDetails.", function () {
+  describe("Finds no missing game properties in the database and stops", function () {
+    beforeEach(async function () {
+      this.options = {
+        batchSize: 1,
+      };
+
+      this.steamClientMock = createSteamMock([]);
+      this.steamAppsRepository = createSteamAppsRepositoryMock();
+      this.gamesRepository = createGamesRepositoryMock([]);
+      this.historyChecksRepository = createHistoryChecksRepositoryMock();
+
+      this.identifier = new GameIdentifier(
+        this.steamClientMock,
+        this.steamAppsRepository,
+        this.gamesRepository,
+        this.historyChecksRepository,
+        createLoggerMock(),
+        this.options,
+      );
+
+      await this.identifier.updateGamesWithoutDetails();
+    });
+
+    it("getGamesWithoutDetails was called once", function () {
+      expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledTimes(1);
+    });
+
+    it("getGamesWithoutDetails was called with 'this.options.batchSize'", function () {
+      expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledWith(
+        this.options.batchSize,
+      );
+    });
+
+    it("getSteamDbHtmlDetailsPage was not called", function () {
+      expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledTimes(0);
+    });
+
+    it("updateGameDetails was not called", function () {
+      expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("Finds two games with missing properties", function () {
+    beforeEach(async function () {
+      this.options = {
+        batchSize: 2,
+        unitDelay: 0,
+      };
+
+      this.gamesRepoReturn = getXGamesWithoutDetails(2);
+
+      this.steamClientMock = createSteamMock([
+        counterStrikeHtmlDetailsSteamDb,
+        riskOfRainHtmlDetailsSteamDb,
+      ]);
+      this.steamAppsRepository = createSteamAppsRepositoryMock();
+      this.gamesRepository = createGamesRepositoryMock(this.gamesRepoReturn);
+      this.historyChecksRepository = createHistoryChecksRepositoryMock();
+
+      this.identifier = new GameIdentifier(
+        this.steamClientMock,
+        this.steamAppsRepository,
+        this.gamesRepository,
+        this.historyChecksRepository,
+        createLoggerMock(),
+        this.options,
+      );
+
+      await this.identifier.updateGamesWithoutDetails();
+    });
+
+    it("getGamesWithoutDetails was called once", function () {
+      expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledTimes(1);
+    });
+
+    it("getGamesWithoutDetails was called with 'this.options.batchSize'", function () {
+      expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledWith(
+        this.options.batchSize,
+      );
+    });
+
+    it("getGamesWithoutDetails was called before getSteamDbHtmlDetailsPage", function () {
+      expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledBefore(
+        this.steamClientMock.getSteamDbHtmlDetailsPage,
+      );
+    });
+
+    it("getSteamDbHtmlDetailsPage was called twice", function () {
+      expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledTimes(2);
+    });
+
+    it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
+      expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
+        this.gamesRepoReturn[0].id,
+      );
+      expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
+        this.gamesRepoReturn[1].id,
+      );
+    });
+
+    it("getSteamDbHtmlDetailsPage was called before updateGameDetails", function () {
+      expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledBefore(
+        this.gamesRepository.updateGameDetails,
+      );
+    });
+
+    it("updateGameDetails was called once", function () {
+      expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
 function createSteamMock(args) {
   const spyObj = jasmine.createSpyObj("steamClient", [
     "getSteamAppHtmlDetailsPage",
     "getSteamchartsGameHtmlDetailsPage",
+    "getSteamDbHtmlDetailsPage",
   ]);
 
   spyObj.getSteamAppHtmlDetailsPage.and.returnValues(...args);
   spyObj.getSteamchartsGameHtmlDetailsPage.and.returnValues(...args);
+  spyObj.getSteamDbHtmlDetailsPage.and.returnValues(...args);
 
   return spyObj;
 }
@@ -811,9 +929,11 @@ function createSteamAppsRepositoryMock(steamWebDbRet, steamchartsWebDbRet) {
   });
 }
 
-function createGamesRepositoryMock() {
+function createGamesRepositoryMock(gamesRepoRet) {
   return jasmine.createSpyObj("GamesRepository", {
     insertManyGames: Promise.resolve(undefined),
+    getGamesWithoutDetails: Promise.resolve(gamesRepoRet),
+    updateGameDetails: Promise.resolve(undefined),
   });
 }
 
