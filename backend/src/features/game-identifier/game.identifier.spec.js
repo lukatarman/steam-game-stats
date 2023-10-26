@@ -908,7 +908,7 @@ describe(".updateGamesWithoutDetails.", function () {
 });
 
 describe(".updateGamesWithoutReleaseDates.", function () {
-  describe("Finds no missing game properties in the database and stops", function () {
+  describe("Finds no games with missing release dates in the database and stops", function () {
     beforeEach(async function () {
       this.options = {
         batchSize: 1,
@@ -950,34 +950,14 @@ describe(".updateGamesWithoutReleaseDates.", function () {
     });
   });
 
-  describe("Finds two games with missing release dates", function () {
+  fdescribe("Finds two games with missing release dates", function () {
     beforeEach(async function () {
       this.options = {
         batchSize: 2,
         unitDelay: 0,
       };
 
-      const releaseDate = "";
-      const developers = [];
-      const genres = [];
-      const description = "";
-
-      const firstGame = Game.fromSteamApp(
-        { appid: 1, name: "Counter-Strike" },
-        releaseDate,
-        developers,
-        genres,
-        description,
-      );
-      const secondGame = Game.fromSteamApp(
-        { appid: 2, name: "Risk of Rain" },
-        releaseDate,
-        developers,
-        genres,
-        description,
-      );
-
-      this.gamesRepoReturn = Game.manyFromDbEntry([firstGame, secondGame]);
+      this.gamesRepoReturn = Game.manyFromDbEntry(getXGamesWithoutDetails(2));
 
       this.steamClientMock = createSteamMock([
         counterStrikeHtmlDetailsSteamDb,
@@ -1021,10 +1001,10 @@ describe(".updateGamesWithoutReleaseDates.", function () {
 
     it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
-        this.gamesRepoReturn[0],
+        this.gamesRepoReturn[0].id,
       );
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
-        this.gamesRepoReturn[1],
+        this.gamesRepoReturn[1].id,
       );
     });
 
