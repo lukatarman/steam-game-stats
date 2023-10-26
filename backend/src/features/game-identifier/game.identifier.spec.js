@@ -844,23 +844,6 @@ describe(".updateGamesWithoutDetails.", function () {
         unitDelay: 0,
       };
 
-      const developers = [];
-      const genres = [];
-      const description = "";
-
-      const firstGame = Game.fromSteamApp(
-        { appid: 1, name: "Counter-Strike" },
-        developers,
-        genres,
-        description,
-      );
-      const secondGame = Game.fromSteamApp(
-        { appid: 2, name: "Risk of Rain" },
-        developers,
-        genres,
-        description,
-      );
-
       this.gamesRepoReturn = getXGamesWithoutDetails(2);
 
       this.steamClientMock = createSteamMock([
