@@ -751,11 +751,11 @@ describe("game.service.js", () => {
       });
 
       it("the first game's release date is updated", function () {
-        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012"));
+        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012 UTC"));
       });
 
       it("the second game's release date is updated", function () {
-        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020"));
+        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020 UTC"));
       });
     });
   });
@@ -773,7 +773,7 @@ describe("game.service.js", () => {
 
     describe("When we provide a html page that contains a valid release date,", function () {
       beforeEach(function () {
-        this.date = new Date("11 August 2020");
+        this.date = new Date("11 August 2020 UTC");
 
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
       });
