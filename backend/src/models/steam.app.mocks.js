@@ -1,10 +1,16 @@
-export const getOneSampleSteamApp = () => {
-  return {
-    appid: 1,
-    name: "Test Game",
-  };
+import { SteamApp } from "./steam.app.js";
+
+export const getXSampleSteamApps = (amount) => {
+  return Array.from({ length: amount }, (x, index) =>
+    SteamApp.oneFromSteamApi({ appid: index + 1, name: `Game #${index + 1}` }),
+  );
 };
 
+export const getXsteamchartsInstantiatedGames = (amount) => {
+  return Array.from({ length: amount }).map((x, index) =>
+    Game.fromSteamcharts({ appid: index + 1, name: `Game #${index + 1}` }),
+  );
+};
 export const getThreeSteamwebUntriedFilteredSteamApps = () => {
   return [
     {
