@@ -15,6 +15,7 @@ import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../utils/logger.mock.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { getXGamesWithoutDetails } from "../../models/game.mocks.js";
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
@@ -843,27 +844,7 @@ describe(".updateGamesWithoutDetails.", function () {
         unitDelay: 0,
       };
 
-      const releaseDate = "";
-      const developers = [];
-      const genres = [];
-      const description = "";
-
-      const firstGame = Game.fromSteamApp(
-        { appid: 1, name: "Counter-Strike" },
-        releaseDate,
-        developers,
-        genres,
-        description,
-      );
-      const secondGame = Game.fromSteamApp(
-        { appid: 2, name: "Risk of Rain" },
-        releaseDate,
-        developers,
-        genres,
-        description,
-      );
-
-      this.gamesRepoReturn = Game.manyFromDbEntry([firstGame, secondGame]);
+      this.gamesRepoReturn = getXGamesWithoutDetails(2);
 
       this.steamClientMock = createSteamMock([
         counterStrikeHtmlDetailsSteamDb,
