@@ -886,7 +886,7 @@ describe(".updateGamesWithoutDetails.", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledTimes(2);
     });
 
-    it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
+    it("getSteamDbHtmlDetailsPage was called with the correct ids", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
         this.gamesRepoReturn[0].id,
       );
@@ -999,7 +999,7 @@ describe(".updateGamesWithoutReleaseDates.", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledTimes(2);
     });
 
-    it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
+    it("getSteamDbHtmlDetailsPage was called with the correct ids", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
         this.gamesRepoReturn[0].id,
       );
