@@ -5,7 +5,6 @@ import {
   assignType,
   updateMissingDetails,
   updateMissingReleaseDates,
-
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -156,7 +155,7 @@ export class GameIdentifier {
     const htmlDetailsPages = [];
 
     for (let game of games) {
-      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game));
+      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game.id));
 
       await delay(this.#options.unitDelay);
     }
