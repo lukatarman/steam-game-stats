@@ -44,11 +44,9 @@ export function getReleaseDate(page) {
 
   if (!releaseDateElement) return "";
 
-  const releaseDate = new Date(releaseDateElement.textContent.trim());
+  const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
 
-  if (releaseDate == "Invalid Date") return "";
-
-  return releaseDate;
+  return releaseDate == "Invalid Date" ? "" : releaseDate;
 }
 
 export function getDevelopers(page) {

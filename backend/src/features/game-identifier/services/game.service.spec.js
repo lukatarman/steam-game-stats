@@ -211,8 +211,8 @@ describe("game.service.js", () => {
       it("the result is a date", function () {
         expect(this.result).toBeInstanceOf(Date);
       });
-      it("the result is 'Aug 2023'", function () {
-        expect(this.result).toEqual(new Date(this.result));
+      it("the result is the correct date'", function () {
+        expect(this.result.toISOString()).toEqual("2023-08-01T00:00:00.000Z");
       });
     });
   });
@@ -607,6 +607,44 @@ describe("game.service.js", () => {
         expect(this.games[1].description).toBe(
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
+      });
+    });
+  });
+
+  describe(".getSteamDbReleaseDate.", function () {
+    describe("When we provide a html page that doesn't contain a valid date,", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
+      });
+
+      it("an empty string is returned", function () {
+        expect(this.result).toBe("");
+      });
+    });
+
+    describe("When we provide a html page that contains a valid date,", function () {
+      beforeEach(function () {
+        this.date = new Date("11 August 2020");
+
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
+      });
+
+      it("a date is returned'", function () {
+        expect(this.result).toBeInstanceOf(Date);
+      });
+
+      it("the result is the correct date", function () {
+        expect(this.result.toISOString()).toEqual("2020-08-11T00:00:00.000Z");
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a date section", function () {
+      beforeEach(function () {
+        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+      });
+
+      it("an empty string is returned", function () {
+        expect(this.result).toBe("");
       });
     });
   });

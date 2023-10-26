@@ -15,6 +15,8 @@ import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../utils/logger.mock.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { getXGamesWithoutDetails } from "../../models/game.mocks.js";
+
 
 describe("game.identifier.js", function () {
   describe(".tryViaSteamWeb", function () {
@@ -860,7 +862,7 @@ describe(".updateGamesWithoutDetails.", function () {
         description,
       );
 
-      this.gamesRepoReturn = Game.manyFromDbEntry([firstGame, secondGame]);
+      this.gamesRepoReturn = getXGamesWithoutDetails(2);
 
       this.steamClientMock = createSteamMock([
         counterStrikeHtmlDetailsSteamDb,
@@ -904,10 +906,10 @@ describe(".updateGamesWithoutDetails.", function () {
 
     it("getSteamDbHtmlDetailsPage was called with the correct games", function () {
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
-        this.gamesRepoReturn[0],
+        this.gamesRepoReturn[0].id,
       );
       expect(this.steamClientMock.getSteamDbHtmlDetailsPage).toHaveBeenCalledWith(
-        this.gamesRepoReturn[1],
+        this.gamesRepoReturn[1].id,
       );
     });
 
@@ -1085,7 +1087,6 @@ function createGamesRepositoryMock(gamesRepoRet) {
     updateGameDetails: Promise.resolve(undefined),
     getGamesWithoutReleaseDates: Promise.resolve(gamesRepoRet),
     updateReleaseDates: Promise.resolve(undefined),
-
   });
 }
 

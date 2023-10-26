@@ -67,6 +67,7 @@ async function main() {
     steamAppsAggregator.collectSteamApps,
     gameIdentifier.tryViaSteamWeb,
     gameIdentifier.tryViaSteamchartsWeb,
+    gameIdentifier.updateGamesWithoutDetails,
     /**
      * @todo batch delay must be performed by runner
      */

@@ -1,13 +1,19 @@
 import { daysToMs } from "../utils/time.utils.js";
 import { Game } from "./game.js";
-import { getOneSampleSteamApp } from "./steam.app.mocks.js";
+import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
 export const getOneGameWithoutDetails = () => {
-  return Game.fromSteamApp(getOneSampleSteamApp(), "", [], [], "");
+  return Game.fromSteamApp(getXSampleSteamApps(1), "", [], [], "");
+};
+
+export const getXGamesWithoutDetails = (amount) => {
+  const steamApps = getXSampleSteamApps(amount);
+
+  return steamApps.map((app, i) => Game.fromSteamApp(steamApps[i], "", [], [], ""));
 };
 
 export const getOneSteamAppInstantiatedGame = () => {
-  const steamApp = getOneSampleSteamApp();
+  const steamApp = getXSampleSteamApps(1);
 
   const releaseDate = "21 July 2019";
   const developers = ["Valve", "Hopoo Games"];
@@ -18,7 +24,7 @@ export const getOneSteamAppInstantiatedGame = () => {
 };
 
 export const getXsteamchartsInstantiatedGames = (amount) => {
-  return Array.from({ length: amount }).map((x, index) =>
+  return Array.from({ length: amount }, (x, index) =>
     Game.fromSteamcharts({ appid: index + 1, name: `Game #${index + 1}` }),
   );
 };
