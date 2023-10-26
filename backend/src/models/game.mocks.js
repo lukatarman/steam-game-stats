@@ -2,10 +2,6 @@ import { daysToMs } from "../utils/time.utils.js";
 import { Game } from "./game.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
-export const getOneGameWithoutDetails = () => {
-  return Game.fromSteamApp(getXSampleSteamApps(1), "", [], [], "");
-};
-
 export const getXGamesWithoutDetails = (amount) => {
   const steamApps = getXSampleSteamApps(amount);
 
