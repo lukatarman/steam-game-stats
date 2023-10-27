@@ -223,7 +223,7 @@ describe("GamesRepository", function () {
         expect(this.result[2]).toBeInstanceOf(Game);
       });
 
-      it("the first game is missing the release date", function () {
+      it("the first game has the correct date", function () {
         expect(this.result[0].id).toBe(227300);
         expect(this.result[0].releaseDate).toEqual(new Date("Thu Oct 17 2999"));
       });
