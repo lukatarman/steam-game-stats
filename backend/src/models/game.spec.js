@@ -540,7 +540,7 @@ describe("game.js", function () {
         expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's release date stays the same", function () {
+      it("the game's description stays the same", function () {
         expect(this.game.description).toEqual("Best game");
       });
     });
