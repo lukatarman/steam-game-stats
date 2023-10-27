@@ -6,7 +6,7 @@
   "scripts": {
     "unit-test": "jasmine --config=jasmine-unit.json",
     "integration-test": "jasmine --config=jasmine-integration.json",
-    "start": "node --max-old-space-size=384 src/main.js",
+    "start": "node src/main.js",
     "prettier:check": "prettier --check .",
     "prettier": "prettier --write ."
   },
