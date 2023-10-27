@@ -65,7 +65,7 @@ export class GamesRepository {
         .aggregate([
           {
             $match: {
-              releaseDate: { $eq: "" },
+              $or: [{ releaseDate: { $eq: "" } }, { releaseDate: { $gt: new Date() } }],
             },
           },
           { $limit: amount },

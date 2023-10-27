@@ -198,7 +198,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".getGamesWithoutReleaseDates", function () {
-    describe("When 3 games without release dates are requested", function () {
+    fdescribe("When 3 games without valid release dates are requested", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
@@ -224,17 +224,17 @@ describe("GamesRepository", function () {
       });
 
       it("the first game is missing the release date", function () {
-        expect(this.result[0].id).toBe(2218750);
-        expect(this.result[0].releaseDate).toBe("");
+        expect(this.result[0].id).toBe(227300);
+        expect(this.result[0].releaseDate).toEqual(new Date("Thu Oct 17 2999"));
       });
 
       it("the second game is missing the release date", function () {
-        expect(this.result[1].id).toBe(239140);
+        expect(this.result[1].id).toBe(2218750);
         expect(this.result[1].releaseDate).toBe("");
       });
 
       it("the third game is missing the release date", function () {
-        expect(this.result[2].id).toBe(620);
+        expect(this.result[2].id).toBe(239140);
         expect(this.result[2].releaseDate).toBe("");
       });
     });
