@@ -132,7 +132,7 @@ export function getSteamDbReleaseDate(page) {
   const releaseDateString = releaseDateElement.textContent;
 
   const releaseDate = new Date(
-    releaseDateString.slice(0, releaseDateString.indexOf("–") - 1),
+    `${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`,
   );
 
   if (releaseDate == "Invalid Date") return "";
@@ -182,23 +182,4 @@ export function updateMissingReleaseDates(games, htmlDetailsPages) {
   return games.map((game, i) => {
     game.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i]));
   });
-}
-
-export function getSteamDbReleaseDate(page) {
-  const dom = new JSDOM(page);
-
-  const releaseDateElement = dom.window.document.querySelector(
-    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
-  );
-
-  if (!releaseDateElement) return "";
-
-  const releaseDateString = releaseDateElement.textContent;
-
-  const releaseDate = new Date(`
-    ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
-
-  if (releaseDate == "Invalid Date") return "";
-
-  return releaseDate;
 }
