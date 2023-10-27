@@ -198,7 +198,7 @@ describe("GamesRepository", function () {
   });
 
   describe(".getGamesWithoutReleaseDates", function () {
-    fdescribe("When 3 games without valid release dates are requested", function () {
+    describe("When 3 games without valid release dates are requested", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
