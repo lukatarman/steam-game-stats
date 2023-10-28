@@ -120,26 +120,6 @@ export function updateMissingDetails(games, htmlDetailsPages) {
   });
 }
 
-export function getSteamDbReleaseDate(page) {
-  const { document } = parseHTML(page);
-
-  const releaseDateElement = document.querySelector(
-    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
-  );
-
-  if (!releaseDateElement) return "";
-
-  const releaseDateString = releaseDateElement.textContent;
-
-  const releaseDate = new Date(
-    `${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`,
-  );
-
-  if (releaseDate == "Invalid Date") return "";
-
-  return releaseDate;
-}
-
 export function getSteamDbDevelopers(page) {
   const { document } = parseHTML(page);
 
@@ -182,4 +162,23 @@ export function updateMissingReleaseDates(games, htmlDetailsPages) {
   return games.map((game, i) => {
     game.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i]));
   });
+}
+
+export function getSteamDbReleaseDate(page) {
+  const { document } = parseHTML(page);
+
+  const releaseDateElement = document.querySelector(
+    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
+  );
+
+  if (!releaseDateElement) return "";
+
+  const releaseDateString = releaseDateElement.textContent;
+
+  const releaseDate = new Date(`
+    ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
+
+  if (releaseDate == "Invalid Date") return "";
+
+  return releaseDate;
 }
