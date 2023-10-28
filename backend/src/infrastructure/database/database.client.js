@@ -10,7 +10,7 @@ export class DatabaseClient {
   }
 
   async init(dbConfig) {
-    const url = `${this.#constructUrl(dbConfig)}`;
+    const url = this.#constructUrl(dbConfig);
     this.#logger.debugc(
       "db full connection url: %s",
       this.#constructUrlPasswordRedacted(dbConfig),
