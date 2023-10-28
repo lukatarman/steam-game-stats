@@ -29,8 +29,11 @@ export const config = {
     iterationDelay: Number(process.env.FEATURES_ITERATION_DELAY),
   },
   runner: {
-    delayFn: delay,
-    iterationDelay: Number(process.env.RUNNER_ITERATION_DELAY),
+    options: {
+      delayFn: delay,
+      iterationDelay: Number(process.env.RUNNER_ITERATION_DELAY),
+      syncOn: process.env.RUNNER_SYNC_ON === "true",
+    },
     expectedErrorTypes: [AxiosError],
   },
   logger: {
