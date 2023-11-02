@@ -1,6 +1,6 @@
 ---
 name: New Issue
-about: Use default issue template
+about: Create a new issue
 title: "*Issue title*"
 labels: ''
 assignees: ''
