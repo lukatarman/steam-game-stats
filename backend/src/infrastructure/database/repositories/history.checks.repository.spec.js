@@ -1,4 +1,4 @@
-import { ValidDataSources } from "../../../utils/valid.data.sources.js";
+import { ValidDataSources } from "../../../models/valid.data.sources.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { HistoryChecksRepository } from "./history.checks.repository.js";
 

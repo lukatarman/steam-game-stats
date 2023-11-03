@@ -65,6 +65,7 @@ export class GameIdentifier {
     const detailsPages = [];
     for (let steamApp of steamApps) {
       detailsPages.push(
+        // TODO https://github.com/lukatarman/steam-game-stats/issues/192
         await this.#steamClient.getSteamAppHtmlDetailsPage(steamApp.appid),
       );
       await delay(this.#options.unitDelay);
@@ -115,6 +116,7 @@ export class GameIdentifier {
       await delay(this.#options.unitDelay);
 
       try {
+        // TODO https://github.com/lukatarman/steam-game-stats/issues/192
         const result = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
           steamApp.appid,
         );
@@ -146,18 +148,26 @@ export class GameIdentifier {
       return;
     }
 
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
+      games.map((game) => game.id),
+    );
+
     const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
 
-    const updatedGames = updateMissingDetails(games, htmlDetailsPages);
+    const appsWithoutPages = this.#recordFailedAttempts(htmlDetailsPages, steamApps);
 
-    this.#persistMissingProperties(updatedGames);
+    updateMissingDetails(games, htmlDetailsPages);
+
+    this.#persistMissingProperties(games, appsWithoutPages);
   };
 
   async #getSteamDbHtmlDetailsPages(games) {
     const htmlDetailsPages = [];
 
     for (let game of games) {
-      htmlDetailsPages.push(await this.#steamClient.getSteamDbHtmlDetailsPage(game.id));
+      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+      const htmlPage = await this.#steamClient.getSteamDbHtmlDetailsPage(game.id);
+      htmlDetailsPages.push({ page: htmlPage, id: game.id });
 
       await delay(this.#options.unitDelay);
     }
@@ -165,7 +175,24 @@ export class GameIdentifier {
     return htmlDetailsPages;
   }
 
-  async #persistMissingProperties(games) {
+  #recordFailedAttempts(htmlDetailsPages, steamApps) {
+    return htmlDetailsPages
+      .filter((page) => page.page === "")
+      .map((page) => {
+        const steamApp = steamApps.find((steamApp) => steamApp.appid === page.id);
+        const steamAppCopy = steamApp.copy();
+        steamAppCopy.triedViaSteamDb();
+
+        return steamAppCopy;
+      });
+  }
+
+  async #persistMissingProperties(games, appsWithoutPages) {
+    if (appsWithoutPages.length !== 0) {
+      this.#logger.debugc(`persisting ${appsWithoutPages.length} apps without pages`);
+      this.#steamAppsRepository.updateSteamAppsById(appsWithoutPages);
+    }
+
     this.#logger.debugc(`persisting ${games.length} games with updated details`);
     await this.#gamesRepository.updateGameDetails(games);
   }
@@ -186,14 +213,25 @@ export class GameIdentifier {
       return;
     }
 
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
+      games.map((game) => game.id),
+    );
+
     const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
 
-    const updatedGames = updateMissingReleaseDates(games, htmlDetailsPages);
+    const appsWithoutPages = this.#recordFailedAttempts(htmlDetailsPages, steamApps);
 
-    this.#persistReleaseDates(updatedGames);
+    updateMissingReleaseDates(games, htmlDetailsPages);
+
+    this.#persistReleaseDates(games, appsWithoutPages);
   };
 
-  #persistReleaseDates = async (games) => {
+  #persistReleaseDates = async (games, appsWithoutPages) => {
+    if (appsWithoutPages.length !== 0) {
+      this.#logger.debugc(`persisting ${appsWithoutPages.length} apps without pages`);
+      this.#steamAppsRepository.updateSteamAppsById(appsWithoutPages);
+    }
+
     this.#logger.debugc(`persisting ${games.length} games with updated release dates`);
 
     await this.#gamesRepository.updateReleaseDates(games);

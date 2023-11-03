@@ -26,11 +26,12 @@ import { SteamApp } from "../../../models/steam.app.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
-import { ValidDataSources } from "../../../utils/valid.data.sources.js";
+import { ValidDataSources } from "../../../models/valid.data.sources.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import { getXsteamchartsInstantiatedGames } from "../../../models/game.mocks.js";
+import { createHtmlDetailsPages } from "../../../../assets/html.details.pages.mock.js";
 
 describe("game.service.js", () => {
   describe(".getSteamAppType", () => {
@@ -421,12 +422,6 @@ describe("game.service.js", () => {
         );
       });
 
-      it("the second array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
-        expect(this.updatedSteamApps[1].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-      });
-
       it("the third array entry in updatedSteamApps has a property 'triedVia', and it's value is 'steamWeb'", function () {
         expect(this.updatedSteamApps[2].triedVia[0]).toBe(
           ValidDataSources.validDataSources.steamWeb,
@@ -581,10 +576,10 @@ describe("game.service.js", () => {
       beforeAll(function () {
         this.games = getXsteamchartsInstantiatedGames(2);
 
-        const htmlDetailsPages = [
+        const htmlDetailsPages = createHtmlDetailsPages([
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
-        ];
+        ]);
 
         updateMissingDetails(this.games, htmlDetailsPages);
       });
@@ -738,10 +733,10 @@ describe("game.service.js", () => {
       beforeAll(function () {
         this.games = getXsteamchartsInstantiatedGames(2);
 
-        const htmlDetailsPages = [
+        const htmlDetailsPages = createHtmlDetailsPages([
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
-        ];
+        ]);
 
         updateMissingReleaseDates(this.games, htmlDetailsPages);
       });

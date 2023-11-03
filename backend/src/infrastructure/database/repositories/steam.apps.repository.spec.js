@@ -1,7 +1,9 @@
+import { getXGamesWithoutDetails } from "../../../models/game.mocks.js";
 import { SteamApp } from "../../../models/steam.app.js";
 import {
   getThreeSteamchartsUntriedFilteredSteamApps,
   getThreeSteamwebUntriedFilteredSteamApps,
+  getXSampleSteamApps,
 } from "../../../models/steam.app.mocks.js";
 import { initiateInMemoryDatabase } from "../in.memory.database.client.js";
 import { SteamAppsRepository } from "./steam.apps.repository.js";
@@ -449,6 +451,43 @@ describe("SteamAppsRepository", function () {
         expect(this.result[2].name).toBe("Risk of Gain");
         expect(this.result[2].type).toBe("unknown");
         expect(this.result[2].triedVia[0]).toBe("steamWeb");
+      });
+    });
+  });
+
+  describe(".getSteamAppsById", function () {
+    describe("if two steam apps match the provided games", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+
+        await insertManyApps(this.databaseClient, getXSampleSteamApps(2));
+
+        const games = getXGamesWithoutDetails(2);
+
+        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+
+        this.result = await steamAppsRepo.getSteamAppsById(games.map((game) => game.id));
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("two steam apps are returned", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the steam apps are an instance of SteamApp", function () {
+        expect(this.result[0]).toBeInstanceOf(SteamApp);
+        expect(this.result[1]).toBeInstanceOf(SteamApp);
+      });
+
+      it("the first steam app has the correct values", function () {
+        expect(this.result[0].appid).toBe(1);
+      });
+
+      it("the second steam app has the correct values", function () {
+        expect(this.result[1].appid).toBe(2);
       });
     });
   });

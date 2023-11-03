@@ -1,5 +1,5 @@
 import { SteamApp } from "../../../models/steam.app.js";
-import { ValidDataSources } from "../../../utils/valid.data.sources.js";
+import { ValidDataSources } from "../../../models/valid.data.sources.js";
 
 export class SteamAppsRepository {
   #dbClient;
@@ -66,5 +66,17 @@ export class SteamAppsRepository {
       .toArray();
 
     return SteamApp.manyFromDbEntries(response);
+  }
+
+  async getSteamAppsById(ids) {
+    const response = await Promise.all(ids.map((id) => this.#getSteamAppById(id)));
+
+    return SteamApp.manyFromDbEntries(response);
+  }
+
+  async #getSteamAppById(id) {
+    return await this.#dbClient.get("steam_apps").findOne({
+      appid: id,
+    });
   }
 }

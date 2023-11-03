@@ -34,24 +34,33 @@ export class SteamClient {
   }
 
   async getSteamAppHtmlDetailsPage(id) {
+    // TODO https://github.com/lukatarman/steam-game-stats/issues/192
     // We add the try catch block here to not crash the whole backend when our application comes accross
     // errors written into the Steam API
     try {
       const url = `https://store.steampowered.com/app/${id}`;
 
       return (await this.#httpClient.get(url)).data;
-    } catch (err) {}
+    } catch (err) {
+      return "";
+    }
   }
 
   async getSteamchartsGameHtmlDetailsPage(id) {
+    // TODO https://github.com/lukatarman/steam-game-stats/issues/192
     const url = `https://steamcharts.com/app/${id}`;
 
     return (await this.#httpClient.get(url)).data;
   }
 
   async getSteamDbHtmlDetailsPage(id) {
-    const url = `https://steamdb.info/app/${id}/info/`;
+    // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+    try {
+      const url = `https://steamdb.info/app/${id}/info/`;
 
-    return (await this.#httpClient.get(url)).data;
+      return (await this.#httpClient.get(url)).data;
+    } catch (error) {
+      return "";
+    }
   }
 }

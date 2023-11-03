@@ -1,4 +1,4 @@
-import { ValidDataSources } from "../utils/valid.data.sources.js";
+import { ValidDataSources } from "../models/valid.data.sources.js";
 
 export class SteamApp {
   appid;
@@ -10,7 +10,6 @@ export class SteamApp {
     "downloadableContent",
     "unknown",
   ]);
-  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamcharts"]);
 
   copy() {
     const copy = new SteamApp();
@@ -30,6 +29,10 @@ export class SteamApp {
     this.triedVia.push(ValidDataSources.validDataSources.steamcharts);
   }
 
+  triedViaSteamDb() {
+    this.triedVia.push(ValidDataSources.validDataSources.steamDb);
+  }
+
   isGame() {
     return this.type === SteamApp.validTypes.game;
   }
@@ -39,14 +42,6 @@ export class SteamApp {
   }
 
   static #createValidTypesEnum(values) {
-    const enumObject = {};
-    for (const val of values) {
-      enumObject[val] = val;
-    }
-    return Object.freeze(enumObject);
-  }
-
-  static #createValidDataSourcesEnum(values) {
     const enumObject = {};
     for (const val of values) {
       enumObject[val] = val;
