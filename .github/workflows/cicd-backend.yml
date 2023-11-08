@@ -1,10 +1,7 @@
-name: Validate, build and push backend.
+name: Validate and deploy backend.
 
 on:
   push:
-    branches: [master]
-    paths: ["backend/**"]
-  pull_request:
     branches: [master]
     paths: ["backend/**"]
 
@@ -49,3 +46,14 @@ jobs:
           push: true
           file: backend/Dockerfile
           tags: sjakusch/steam-game-stats-backend:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy on Render
+        if: github.ref == 'refs/heads/master'
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"

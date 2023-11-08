@@ -1,0 +1,30 @@
+name: Validate backend.
+
+on:
+  pull_request:
+    branches: [master]
+    paths: ["backend/**"]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.12.1]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install backend dependencies
+        run: npm ci -w backend
+      - name: Prettier check
+        run: npm run -w backend prettier:check
+      - name: Unit tests
+        run: npm run -w backend unit-test
+      - name: Integration tests
+        run: npm run -w backend integration-test
