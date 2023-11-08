@@ -2,6 +2,12 @@
 
 "Steam Game Stats" application monorepo.
 
+##Project details
+
+The Steam Game Stats application collects current steam platform player numbers through the steam api. The historic player numbers are collected by crawling through various online sources. This data is stored in our database, facilitating custom game statistics queries. This allows us to highlight key metrics, such as trending games, personalized game recommendations based on user preferences, most popular games, and other useful insights. Please note that some of these features are still in development."
+
+Some of these features are still pending.
+
 ## Development Setup
 
 For development and testing the application locally use the Docker Compose setup. Either connect to a MongoDB running in a container or to a remote MongoDB instance. See details below on how to do that.
