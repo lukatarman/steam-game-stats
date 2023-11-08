@@ -1,6 +1,6 @@
 # Steam Game Stats
 
-"Steam Game Stats" project monorepo.
+"Steam Game Stats" application monorepo.
 
 ## Development Setup
 
