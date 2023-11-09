@@ -29,6 +29,7 @@ async function main() {
   );
   const playerHistoryRepository = new PlayerHistoryRepository(databaseClient);
   const historyChecksRepository = new HistoryChecksRepository(databaseClient);
+  logger.info("repositories setup finished");
 
   // http client
   const steamClient = new SteamClient(httpClient);
@@ -56,6 +57,7 @@ async function main() {
     logger,
     config.features,
   );
+  logger.info("features setup finished");
 
   // rest + web server
   const gameQueriesController = new GameQueriesController(gamesRepository);
@@ -75,11 +77,13 @@ async function main() {
     playerHistoryAggregator.addCurrentPlayers,
   ];
   const runner = new Runner(logger, config.runner.options);
+  logger.info("runner setup finished");
 
   try {
     /**
      * @todo fix bug - https://github.com/lukatarman/steam-game-stats/issues/40
      */
+    logger.info("starting runner with: %o", runnables);
     await runner.run(runnables, config.runner.expectedErrorTypes);
   } catch (error) {
     logger.error(error);
