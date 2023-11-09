@@ -19,7 +19,6 @@ import { Logger } from "./utils/logger.js";
 // our entry point = main
 async function main() {
   const logger = new Logger(config.logger.level);
-  logger.info("logger initialized");
   const databaseClient = await new DatabaseClient(logger).init(config.db);
 
   // repositories
