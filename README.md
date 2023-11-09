@@ -1,5 +1,7 @@
 # Steam Game Stats
 
+HELLO WORLD
+
 ## Project details
 
 The Steam Game Stats application collects current steam platform player numbers through the steam api. The historic player numbers are collected by crawling through various online sources. This data is stored in our database, facilitating custom game statistics queries. This allows us to highlight key metrics, such as trending games, personalized game recommendations based on user preferences, most popular games, and other useful insights. Please note that some of these features are still in development.
