@@ -126,7 +126,7 @@ describe("runner.js", () => {
     });
 
     describe("when one running function throws an unexpected error,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.unexpectedErrorThrower = async function () {
           throw new UnexpectedError();
         };

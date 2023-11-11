@@ -10,7 +10,7 @@ import { createLoggerMock } from "../../utils/logger.mock.js";
 describe("PlayerHistoryAggregator", function () {
   describe(".addPlayerHistoryFromSteamcharts", function () {
     describe("finds the player history for one game in a batch of one and updates the game data", function () {
-      beforeEach(async function () {
+      beforeAll(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
@@ -96,7 +96,7 @@ describe("PlayerHistoryAggregator", function () {
     });
 
     describe("finds the player history for one game in a batch of two and updates the game data", () => {
-      beforeEach(async function () {
+      beforeAll(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
@@ -184,7 +184,7 @@ describe("PlayerHistoryAggregator", function () {
     });
 
     describe("finds no games in the database and finishes", () => {
-      beforeEach(async function () {
+      beforeAll(async function () {
         this.steamClientMock = createSteamMock([], "");
 
         this.gamesRepositoryMock = createGamesRepositoryMock([]);
@@ -231,7 +231,7 @@ describe("PlayerHistoryAggregator", function () {
 
   describe(".addCurrentPlayers()", () => {
     describe("does not have any games to check for current player numbers", function () {
-      beforeEach(async function () {
+      beforeAll(async function () {
         this.gamesRepositoryMock = createGamesRepositoryMock("", []);
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
         this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
@@ -269,7 +269,7 @@ describe("PlayerHistoryAggregator", function () {
     });
 
     describe("gets current players for one game in a batch of one, and adds the players", function () {
-      beforeEach(async function () {
+      beforeAll(async function () {
         jasmine.clock().mockDate(new Date());
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
@@ -301,7 +301,7 @@ describe("PlayerHistoryAggregator", function () {
         await agg.addCurrentPlayers();
       });
 
-      afterEach(function () {
+      afterAll(function () {
         jasmine.clock().uninstall();
       });
 

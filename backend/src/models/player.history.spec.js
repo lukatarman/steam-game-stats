@@ -4,7 +4,7 @@ import { TrackedPlayers } from "./tracked.players.js";
 describe("PlayerHistory", function () {
   describe(".manyFromDbEntry creates a list of PlayerHistory instances from a list of PlayerHistory database documents.", function () {
     describe("When a list of history objects is passed in, ", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         const firstDate = new Date("December 2022");
         const secondDate = new Date("November 2022");
 
@@ -62,7 +62,7 @@ describe("PlayerHistory", function () {
     });
 
     describe("When no documents are provided,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = PlayerHistory.manyFromDbEntry([]);
       });
 
@@ -74,7 +74,7 @@ describe("PlayerHistory", function () {
 
   describe(".fromRawData creates a new PlayerHistory instance.", function () {
     describe("When players and a date are passed in,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.players = 62;
         this.date = "September 2014";
 
@@ -109,14 +109,14 @@ describe("PlayerHistory", function () {
 
   describe(".newMonthlyEntry creates a new PlayerHistory instance for the current month.", function () {
     describe("When players are passed in,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         jasmine.clock().mockDate(new Date());
 
         this.players = 42;
         this.result = PlayerHistory.newMonthlyEntry(this.players);
       });
 
-      afterEach(function () {
+      afterAll(function () {
         jasmine.clock().uninstall();
       });
 
@@ -148,7 +148,7 @@ describe("PlayerHistory", function () {
 
   describe(".pushTrackedPlayers adds an new instance of tracked players to PlayerHistory and calculates the average players property.", function () {
     describe("When players are passed in,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         jasmine.clock().mockDate(new Date());
 
         this.players = 10;
@@ -158,7 +158,7 @@ describe("PlayerHistory", function () {
         this.result.pushTrackedPlayers(this.players);
       });
 
-      afterEach(function () {
+      afterAll(function () {
         jasmine.clock().uninstall();
       });
 
@@ -180,7 +180,7 @@ describe("PlayerHistory", function () {
     });
 
     describe("When players and a date are passed in,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.players = 10;
         this.date = "October 2020";
 
@@ -206,7 +206,7 @@ describe("PlayerHistory", function () {
   });
 
   describe(".calcAveragePlayers calculates the PlayerHistory's average players. When the method runs,", function () {
-    beforeEach(function () {
+    beforeAll(function () {
       const firstPlayers = "102";
       const secondPlayers = "53";
       const pastDate = "August 2019";

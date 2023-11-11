@@ -17,7 +17,7 @@ describe("SteamAppsAggregator", () => {
     });
 
     describe("collects steam apps for the first time and finishes", () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         steamClientMock = createSteamMock(smallestGamesMock);
 
         steamAppsUpdateTimestampsRepositoryMock =
@@ -92,7 +92,7 @@ describe("SteamAppsAggregator", () => {
       let steamAppsDifference;
 
       describe("while finding new games and finishes", () => {
-        beforeEach(async () => {
+        beforeAll(async () => {
           steamClientMock = createSteamMock(gamesMock);
 
           steamAppsUpdateTimestampsRepositoryMock =
@@ -178,7 +178,7 @@ describe("SteamAppsAggregator", () => {
       });
 
       describe("without new games and finishes", () => {
-        beforeEach(async () => {
+        beforeAll(async () => {
           steamClientMock = createSteamMock(smallestGamesMock);
 
           steamAppsUpdateTimestampsRepositoryMock =
@@ -253,7 +253,7 @@ describe("SteamAppsAggregator", () => {
     });
 
     describe("executes successfully by not performing any updates", () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         steamClientMock = createSteamMock(smallestGamesMock);
 
         steamAppsUpdateTimestampsRepositoryMock =
@@ -275,7 +275,7 @@ describe("SteamAppsAggregator", () => {
         await agg.collectSteamApps();
       });
 
-      afterEach(function () {
+      afterAll(function () {
         jasmine.clock().uninstall();
       });
 
