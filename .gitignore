@@ -22,6 +22,7 @@ build
 todo.md
 .mongodb
 .secrets
+local
 
 npm-debug.log*
 yarn-debug.log*

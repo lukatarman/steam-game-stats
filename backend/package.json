@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "0.0.1",
+  "version": "0.37.15",
   "description": "Steam game stats backend.",
   "main": "src/main.js",
   "scripts": {
