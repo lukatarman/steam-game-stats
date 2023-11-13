@@ -6,7 +6,7 @@ import { SteamApp } from "./steam.app.js";
 describe("SteamApp", function () {
   describe(".copy", function () {
     describe("creates a copy of a steamApp instance. When this is done,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.app = {
           name: "Castlevania",
           appid: 1,
@@ -33,7 +33,7 @@ describe("SteamApp", function () {
 
   describe(".triedViaSteamWeb", function () {
     describe("pushes 'steamWeb' into the triedVia property. When this is done,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.app = {
           name: "Castlevania",
           appid: 1,
@@ -52,7 +52,7 @@ describe("SteamApp", function () {
 
   describe(".triedViaSteamchartsWeb", function () {
     describe("pushes 'steamCharts' into the triedVia property. When this is done,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.app = {
           name: "Castlevania",
           appid: 1,
@@ -74,7 +74,7 @@ describe("SteamApp", function () {
   describe(".isGame", function () {
     describe("checks if the type property of the class instance equals 'games'. So, ", function () {
       describe("if an app's type property equals 'game'", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.app = {
             name: "Castlevania",
             appid: 1,
@@ -90,7 +90,7 @@ describe("SteamApp", function () {
       });
 
       describe("if an app's type property does not equal 'game'", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.app = {
             name: "Castlevania",
             appid: 1,
@@ -109,7 +109,7 @@ describe("SteamApp", function () {
 
   describe(".appType", function () {
     describe("sets the 'type' property to whatever was passed in as an argument. When this is done,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.app = {
           name: "Castlevania",
           appid: 1,
@@ -130,7 +130,7 @@ describe("SteamApp", function () {
 
   describe(".manyFromSteamApi returns an array of SteamApp instances.", function () {
     describe("When two apps are passed into it,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.apps = [
           {
             name: "Castlevania",
@@ -161,7 +161,7 @@ describe("SteamApp", function () {
 
   describe(".oneFromSteamApi returns an instance of steamApp.", function () {
     describe("When an 'app' object is passed in, the returned instance", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.app = {
           name: "Castlevania",
           appid: 1,
@@ -186,7 +186,7 @@ describe("SteamApp", function () {
 
   describe(".manyFromDbEntries returns an array of SteamApp instances.", function () {
     describe("When dbEntries is passed into it,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.dbEntries = [
           {
             name: "Castlevania",
@@ -224,7 +224,7 @@ describe("SteamApp", function () {
 
   describe(".oneFromDbEntry returns an instance of SteamApp.", function () {
     describe("When a dbEntry is passed in, the resulting SteamApp instance", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.dbEntry = {
           name: "Castlevania",
           appid: 1,
@@ -264,7 +264,7 @@ describe("SteamApp", function () {
 
   describe(".diff", function () {
     describe("finds the diff of two arrays of steam apps successfully in a big data set", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.array = SteamApp.diff(gamesMock, smallestGamesMock);
       });
 
@@ -274,7 +274,7 @@ describe("SteamApp", function () {
     });
 
     describe("finds the diff of two arrays of steam apps in a tiny data set", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.appsFromApi = [
           {
             appid: 9821,

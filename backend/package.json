@@ -4,6 +4,8 @@
   "description": "Steam game stats backend.",
   "main": "src/main.js",
   "scripts": {
+    "unit-test:report": "jasmine --config=jasmine-unit.json --reporter=jasmine-console-reporter",
+    "integration-test:report": "jasmine --config=jasmine-integration.json --reporter=jasmine-console-reporter",
     "unit-test": "jasmine --config=jasmine-unit.json",
     "integration-test": "jasmine --config=jasmine-integration.json",
     "start": "node src/main.js",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "eslint": "8.11.0",
     "jasmine": "4.0.2",
+    "jasmine-console-reporter": "3.1.0",
     "mongodb-memory-server": "8.12.2",
     "pino-pretty": "10.2.0",
     "prettier": "2.6.0"

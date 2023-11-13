@@ -13,7 +13,7 @@ describe("game.js", function () {
       });
 
       describe("is called with incomplete arguments, ", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             id: 123,
             name: "test game",
@@ -26,7 +26,7 @@ describe("game.js", function () {
       });
 
       describe("is called with appropriate attributes, the returned value", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             appid: 123,
             name: "test game",
@@ -103,7 +103,7 @@ describe("game.js", function () {
       });
 
       describe("is called with appropriate attributes, but the releaseDate and Developers are empty the returned value", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             appid: 123,
             name: "test game",
@@ -161,7 +161,7 @@ describe("game.js", function () {
       });
 
       describe("is called with incomplete arguments, ", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             id: 123,
             name: "test game",
@@ -174,7 +174,7 @@ describe("game.js", function () {
       });
 
       describe("is called with appropriate attributes, the returned value", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             appid: 123,
             name: "test game",
@@ -233,7 +233,7 @@ describe("game.js", function () {
       });
 
       describe("is called with incomplete arguments, ", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             id: 123,
             name: "test game",
@@ -246,7 +246,7 @@ describe("game.js", function () {
       });
 
       describe("is called with appropriate attributes, the returned value", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.testObject = {
             id: 123,
             name: "test game",
@@ -310,7 +310,7 @@ describe("game.js", function () {
     describe(".pushCurrentPlayers creates a new player history entry or updates an existing one.", function () {
       describe("When this month's player history entry already exists,", function () {
         describe("players are added to the existing entry.", function () {
-          beforeEach(function () {
+          beforeAll(function () {
             this.currentPlayers = 45;
 
             const playerHistory = [
@@ -350,7 +350,7 @@ describe("game.js", function () {
 
       describe("When this month's player history entry does not exist yet", function () {
         describe("An entry for the current month is created. So,", function () {
-          beforeEach(function () {
+          beforeAll(function () {
             this.currentPlayers = 33;
 
             const playerHistory = [
@@ -392,7 +392,7 @@ describe("game.js", function () {
     });
 
     describe(".pushSteamchartsPlayerHistory adds player histories from Steamcharts to existing entries while keeping the order intact.", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         const steamApp = getXSampleSteamApps(1);
 
         this.releaseDate = "";
@@ -444,7 +444,7 @@ describe("game.js", function () {
 
   describe(".updateGameDetails", function () {
     describe("When we try to update missing developers,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.developers = ["Valve", "Test Dev"];
 
         this.game = getXGamesWithoutDetails(1)[0];
@@ -462,7 +462,7 @@ describe("game.js", function () {
     });
 
     describe("When we try to update existing developers,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
         this.game.updateGameDetails(["Test Dev"], [], "");
@@ -478,7 +478,7 @@ describe("game.js", function () {
     });
 
     describe("When we try to update the missing genres,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.genres = ["RPG", "Strategy"];
 
         this.game = getXGamesWithoutDetails(1)[0];
@@ -496,7 +496,7 @@ describe("game.js", function () {
     });
 
     describe("When we try to update existing genres,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
         this.game.updateGameDetails([], ["Test Genre"], "");
@@ -512,7 +512,7 @@ describe("game.js", function () {
     });
 
     describe("When we try to update the missing description,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.description = "Test description";
 
         this.game = getXGamesWithoutDetails(1)[0];
@@ -530,7 +530,7 @@ describe("game.js", function () {
     });
 
     describe("When we try to update an existing description,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
         this.game.updateGameDetails([], [], "Test description");
@@ -548,7 +548,7 @@ describe("game.js", function () {
 
   describe(".updateReleaseDate", function () {
     describe("When we try to update a missing release date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.releaseDate = new Date("23 July 2023");
 
         this.game = getXGamesWithoutDetails(1)[0];
@@ -566,7 +566,7 @@ describe("game.js", function () {
     });
 
     describe("When we try to update an existing release date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.game = getOneSteamAppInstantiatedGame();
 
         this.game.updateReleaseDate("22 July 2019");

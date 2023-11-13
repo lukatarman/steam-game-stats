@@ -3,13 +3,13 @@ import { TrackedPlayers } from "./tracked.players.js";
 describe("TrackedPlayers", function () {
   describe("Instantiates the TrackedPlayers class.", function () {
     describe("When no date is provided", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         jasmine.clock().mockDate(new Date());
 
         this.players = new TrackedPlayers("24");
       });
 
-      afterEach(function () {
+      afterAll(function () {
         jasmine.clock().uninstall();
       });
 
@@ -19,7 +19,7 @@ describe("TrackedPlayers", function () {
     });
 
     describe("when a date with specified hour, minute or seconds is provided", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.currentDate = new Date("11:24 September 2000");
 
         this.players = new TrackedPlayers("24", "11:24 September 2000");
@@ -31,7 +31,7 @@ describe("TrackedPlayers", function () {
     });
 
     describe("when a date without specified hours, minutes or seconds is provided", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         const date = new Date("September 2000");
 
         this.players = new TrackedPlayers("24", date);
@@ -51,7 +51,7 @@ describe("TrackedPlayers", function () {
 
   describe(".manyFromDbEntry creates a list of TrackedPlayers instances from a list of PlayerHistory objects", function () {
     describe("When an list of PlayerHistory objects is passed in,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         jasmine.clock().mockDate(new Date());
 
         this.currentDate = new Date();
@@ -70,7 +70,7 @@ describe("TrackedPlayers", function () {
         this.result = TrackedPlayers.manyFromDbEntry(this.trackedPlayersArray);
       });
 
-      afterEach(function () {
+      afterAll(function () {
         jasmine.clock().uninstall();
       });
 
@@ -100,7 +100,7 @@ describe("TrackedPlayers", function () {
     });
 
     describe("When the passed in array is empty,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = TrackedPlayers.manyFromDbEntry([]);
       });
 

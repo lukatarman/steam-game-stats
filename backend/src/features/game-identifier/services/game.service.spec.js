@@ -85,7 +85,7 @@ describe("game.service.js", () => {
 
   describe(".discoverGamesFromSteamWeb", function () {
     describe("discovers one game out of a batch of one stemApp, so", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.steamApps = [
           {
             appid: 1,
@@ -111,7 +111,7 @@ describe("game.service.js", () => {
     });
 
     describe("discovers one game out of a batch of two steamApps, so", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.steamApps = [
           {
             appid: 1,
@@ -145,7 +145,7 @@ describe("game.service.js", () => {
     });
 
     describe("discovers two games out of a batch of three steamApps, so", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.steamApps = [
           {
             appid: 1,
@@ -194,7 +194,7 @@ describe("game.service.js", () => {
 
   describe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
     describe("if the provided HTML page does not include a release date section,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -204,7 +204,7 @@ describe("game.service.js", () => {
     });
 
     describe("if the provided HTML page includes a release date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getReleaseDate(mortalDarknessGameHtmlDetailsPage);
       });
 
@@ -219,7 +219,7 @@ describe("game.service.js", () => {
 
   describe(".getDevelopers checks for developers in the provided HTML page.", function () {
     describe("if the provided HTML page does not include any developers,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -229,7 +229,7 @@ describe("game.service.js", () => {
     });
 
     describe("if the provided HTML page includes one developer,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getDevelopers(mortalDarknessGameHtmlDetailsPage);
       });
 
@@ -243,7 +243,7 @@ describe("game.service.js", () => {
     });
 
     describe("if the provided HTML page includes two developers,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getDevelopers(crusaderKingsDetailsPage);
       });
 
@@ -263,7 +263,7 @@ describe("game.service.js", () => {
 
   describe(".getGenres checks for genres in the provided HTML page.", function () {
     describe("if the provided HTML page does not include any genres,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getGenres(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -273,7 +273,7 @@ describe("game.service.js", () => {
     });
 
     describe("if the provided HTML page includes genres,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getGenres(mortalDarknessGameHtmlDetailsPage);
       });
 
@@ -291,7 +291,7 @@ describe("game.service.js", () => {
 
   describe(".getDescription checks for a game's description in the provided HTML page.", function () {
     describe("if the provided HTML page does not include a game description,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getGameDescription(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -301,7 +301,7 @@ describe("game.service.js", () => {
     });
 
     describe("if the provided HTML page includes a description,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getGameDescription(mortalDarknessGameHtmlDetailsPage);
       });
 
@@ -315,7 +315,7 @@ describe("game.service.js", () => {
 
   describe(".updateTypeSideEffectFree", function () {
     describe("discovers one steamApp out of a batch of one, so", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.apps = [
           {
             appid: 1,
@@ -357,7 +357,7 @@ describe("game.service.js", () => {
     });
 
     describe("discovers one game and one downloadable content out of a batch of three steamApps, so", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.apps = [
           {
             appid: 1,
@@ -462,7 +462,7 @@ describe("game.service.js", () => {
   describe(".identifyGames", function () {
     describe("checks which steam apps are games and instantiates them, so", function () {
       describe("when no games out of a batch of one steamApp is passed in,", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.updatedSteamApps = [
             {
               appid: 1,
@@ -480,7 +480,7 @@ describe("game.service.js", () => {
       });
 
       describe("when one game out of a batch of two steamApps is passed in,", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.updatedSteamApps = [
             {
               appid: 1,
@@ -508,7 +508,7 @@ describe("game.service.js", () => {
       });
 
       describe("when two games out of a batch of three steamApps is passed in,", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.updatedSteamApps = [
             {
               appid: 1,
@@ -549,7 +549,7 @@ describe("game.service.js", () => {
   describe(".assignType", function () {
     describe("checks if result contains a value. If so, sets the type property to 'games'. So", function () {
       describe("when result does not contain a value,", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.app = { id: 1, name: "Feartress" };
           this.steamApp = SteamApp.oneFromSteamApi(this.app);
 
@@ -562,7 +562,7 @@ describe("game.service.js", () => {
       });
 
       describe("when the result contains a value,", function () {
-        beforeEach(function () {
+        beforeAll(function () {
           this.app = { id: 1, name: "Feartress" };
           this.steamApp = SteamApp.oneFromSteamApi(this.app);
 
@@ -578,7 +578,7 @@ describe("game.service.js", () => {
 
   describe(".updateMissingDetails.", function () {
     describe("When we try to update two games with missing details,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.games = getXsteamchartsInstantiatedGames(2);
 
         const htmlDetailsPages = [
@@ -613,7 +613,7 @@ describe("game.service.js", () => {
 
   describe(".getSteamDbReleaseDate.", function () {
     describe("When we provide a html page that doesn't contain a valid date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
       });
 
@@ -623,7 +623,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that contains a valid date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.date = new Date("11 August 2020 UTC");
 
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
@@ -639,7 +639,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that doesn't contain a date section", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -651,7 +651,7 @@ describe("game.service.js", () => {
 
   describe(".getSteamDbDevelopers.", function () {
     describe("When we provide a html page that contains two developers,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbDevelopers(counterStrikeHtmlDetailsSteamDb);
       });
 
@@ -669,7 +669,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that doesn't contain a developer section", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -681,7 +681,7 @@ describe("game.service.js", () => {
 
   describe(".getSteamDbGenres.", function () {
     describe("When we provide a html page that contains the genres,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbGenres(riskOfRainHtmlDetailsSteamDb);
       });
 
@@ -699,7 +699,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that doesn't contain a genres section,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -711,7 +711,7 @@ describe("game.service.js", () => {
 
   describe(".getSteamDbDescription.", function () {
     describe("When we provide a html page that contains the description,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
       });
 
@@ -723,7 +723,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that doesn't contain a description section,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
       });
 
@@ -735,7 +735,7 @@ describe("game.service.js", () => {
 
   describe(".updateMissingReleaseDates.", function () {
     describe("When we try to update two games with missing release dates,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.games = getXsteamchartsInstantiatedGames(2);
 
         const htmlDetailsPages = [
@@ -762,7 +762,7 @@ describe("game.service.js", () => {
 
   describe(".getSteamDbReleaseDate.", function () {
     describe("When we provide a html page that doesn't contain a valid release date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
       });
 
@@ -772,7 +772,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that contains a valid release date,", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.date = new Date("11 August 2020 UTC");
 
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
@@ -788,7 +788,7 @@ describe("game.service.js", () => {
     });
 
     describe("When we provide a html page that doesn't contain a date section", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
       });
 

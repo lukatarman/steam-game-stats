@@ -7,7 +7,7 @@ import { PlayerHistory } from "../../../models/player.history.js";
 describe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histories from Steamcharts to each game object", function () {
     describe("When a map of games and its corresponding Steamcharts pages is provided the player histories are parsed from the pages, so that", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         const map = new Map();
         const firstPage = eldenRingHttpDetailsSteamcharts;
         const secondPage = crushTheCastleHtmlDetailsSteamcharts;
@@ -55,7 +55,7 @@ describe("player.history.service.js", function () {
     });
 
     describe("When the gamesPagesMap's page value is an empty string", function () {
-      beforeEach(function () {
+      beforeAll(function () {
         const map = new Map();
 
         const game = {
