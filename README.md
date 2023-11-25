@@ -1,6 +1,14 @@
 # Steam Game Stats
 
-## Project details
+## Table of Contents
+
+1. [Project Details](#project-details)
+1. [Development Setup](#development-setup)
+1. [Running the Application](#running-the-application)
+1. [Debugging](#debugging)
+1. [Project Workflow](docs/project-workflow.md)
+
+## Project Details
 
 The Steam Game Stats application collects current steam platform player numbers through the steam api. The historic player numbers are collected by crawling through various online sources. This data is stored in our database, facilitating custom game statistics queries. This allows us to highlight key metrics, such as trending games, personalized game recommendations based on user preferences, most popular games, and other useful insights. Please note that some of these features are still in development.
 
@@ -126,7 +134,3 @@ The debugging configuration is only available for VSCode. You can debug the back
 For debugging the application in the Docker container select the configuration starting with "`Docker: ...`". This configuration will rebuild the backend image, start the Docker Compose setup with Node.js in debug mode and attach itself to it so that you can set breakpoints in VSCode. When you are finished debugging detach the debugger and the configuration will stop and clean up the containers.
 
 The Docker debugging configuration uses the `local-db.env` file for the db setup. For more info on the debugging configuration check the `launch` and `tasks` sections in `.vscode/steam-game-stats.code-workspace`.
-
-## Creating Issues
-
-If you would like to create an issue with a template, simply click "Get started" when creating an issue. If you would like to create an issue without a template, click on "Open a blank issue"
