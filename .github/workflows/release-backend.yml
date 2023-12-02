@@ -1,0 +1,44 @@
+name: Release backend.
+
+on:
+  push:
+    branches: [master]
+    paths: ["backend/**"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Bump version
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@v10.1.1'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag-prefix: 'backend/'
+          PACKAGEJSON_DIR: 'backend'
+          commit-message: 'chore(release): bump version'
+
+      - name: Create image tags
+        id: meta
+        run: |
+          version=$(echo ${{ steps.version-bump.outputs.newTag }} | cut -d 'v' -f2)
+          tag1="sjakusch/steam-game-stats-backend:${version}"
+          tag2="sjakusch/steam-game-stats-backend:latest"
+          echo "tags=${tag1},${tag2}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          file: backend/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Deploy on Render
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
