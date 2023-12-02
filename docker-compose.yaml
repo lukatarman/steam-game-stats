@@ -30,5 +30,5 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./db/data:/data/db
+      - ./db/data:/data
       - ./db/init-mongodb.sh:/docker-entrypoint-initdb.d/init-mongodb.sh:ro

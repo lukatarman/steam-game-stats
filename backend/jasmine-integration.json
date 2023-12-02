@@ -1,5 +1,5 @@
 {
-  "spec_dir": "src/infrastructure",
+  "spec_dir": "src/core/repositories",
   "spec_files": ["**/*spec.js"],
   "helpers": ["helpers/**/*.?(m)js"],
   "env": {
