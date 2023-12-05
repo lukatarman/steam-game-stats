@@ -6,6 +6,7 @@ import { HistoryCheck } from "../../models/history.check.js";
 import { Game } from "../../models/game.js";
 import { addPlayerHistoriesFromSteamcharts } from "./services/player.history.service.js";
 import { createLoggerMock } from "../../utils/logger.mock.js";
+import { createConfigMock } from "../../utils/config.loader.mock.js";
 
 describe("PlayerHistoryAggregator", function () {
   describe(".addPlayerHistoryFromSteamcharts", function () {
@@ -32,7 +33,7 @@ describe("PlayerHistoryAggregator", function () {
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
           createLoggerMock(),
-          { unitDelay: 0, batchSize: 1 },
+          createConfigMock().features,
         );
 
         await this.agg.addPlayerHistoryFromSteamcharts();
@@ -42,6 +43,12 @@ describe("PlayerHistoryAggregator", function () {
         expect(
           this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .getSteamWebUntriedFilteredSteamApps with the correct batch size", function () {
+        expect(
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
+        ).toHaveBeenCalledWith(1);
       });
 
       it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", function () {
@@ -120,7 +127,7 @@ describe("PlayerHistoryAggregator", function () {
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
           createLoggerMock(),
-          { unitDelay: 0, batchSize: 2 },
+          createConfigMock(2).features,
         );
 
         await this.agg.addPlayerHistoryFromSteamcharts();
@@ -130,6 +137,12 @@ describe("PlayerHistoryAggregator", function () {
         expect(
           this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .getSteamWebUntriedFilteredSteamApps with the correct batch size", function () {
+        expect(
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
+        ).toHaveBeenCalledWith(2);
       });
 
       it("calls .getXgamesWithUncheckedPlayerHistory before .getSteamchartsGameHtmlDetailsPage", function () {
@@ -197,7 +210,7 @@ describe("PlayerHistoryAggregator", function () {
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
           createLoggerMock(),
-          { unitDelay: 0, batchSize: 1 },
+          createConfigMock().features,
         );
 
         await this.agg.addPlayerHistoryFromSteamcharts();
@@ -207,6 +220,18 @@ describe("PlayerHistoryAggregator", function () {
         expect(
           this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls .getSteamWebUntriedFilteredSteamApps with the correct batch size", function () {
+        expect(
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
+        ).toHaveBeenCalledWith(1);
+      });
+
+      it(".getXgamesWithUncheckedPlayerHistory has been called with the correct batch size", function () {
+        expect(
+          this.gamesRepositoryMock.getXgamesWithUncheckedPlayerHistory,
+        ).toHaveBeenCalledWith(createConfigMock().features.batchSize);
       });
 
       it("does not call .getSteamchartsGameHtmlDetailsPage", function () {
@@ -244,7 +269,7 @@ describe("PlayerHistoryAggregator", function () {
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
           createLoggerMock(),
-          { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
+          createConfigMock().features,
         );
 
         await agg.addCurrentPlayers();
@@ -254,6 +279,15 @@ describe("PlayerHistoryAggregator", function () {
         expect(
           this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
         ).toHaveBeenCalledTimes(1);
+      });
+
+      it(".getXgamesCheckedMoreThanYmsAgo has been called with the correct arguments", function () {
+        expect(
+          this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
+        ).toHaveBeenCalledWith(
+          createConfigMock().features.batchSize,
+          createConfigMock().features.currentPlayersUpdateIntervalDelay,
+        );
       });
 
       it("does not call .getAllCurrentPlayersConcurrently ever", function () {
@@ -295,7 +329,7 @@ describe("PlayerHistoryAggregator", function () {
           this.historyChecksRepositoryMock,
           this.playerHistoryRepositoryMock,
           createLoggerMock(),
-          { batchSize: 1, currentPlayersUpdateIntervalDelay: 0 },
+          createConfigMock().features,
         );
 
         await agg.addCurrentPlayers();
@@ -311,7 +345,16 @@ describe("PlayerHistoryAggregator", function () {
         ).toHaveBeenCalledTimes(1);
       });
 
-      it("calls .getXgamesCheckedMoreThanYmsAgo  before .getAllCurrentPlayersConcurrently", function () {
+      it("calls .getXgamesCheckedMoreThanYmsAgo with the correct arguments", function () {
+        expect(
+          this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
+        ).toHaveBeenCalledWith(
+          createConfigMock().features.batchSize,
+          createConfigMock().features.currentPlayersUpdateIntervalDelay,
+        );
+      });
+
+      it("calls .getXgamesCheckedMoreThanYmsAgo before .getAllCurrentPlayersConcurrently", function () {
         expect(
           this.gamesRepositoryMock.getXgamesCheckedMoreThanYmsAgo,
         ).toHaveBeenCalledBefore(this.steamClientMock.getAllCurrentPlayersConcurrently);

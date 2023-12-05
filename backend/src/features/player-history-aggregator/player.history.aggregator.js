@@ -35,7 +35,7 @@ export class PlayerHistoryAggregator {
       );
     if (uncheckedGames.length === 0) {
       this.#logger.debugc(
-        `no unchecked games in db, retry in: ${this.#options.iterationDelay} ms`,
+        `no unchecked games in db, retry in: ${this.#options.globalIterationDelay} ms`,
       );
       return;
     }

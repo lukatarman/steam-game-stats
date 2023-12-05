@@ -12,7 +12,7 @@ describe("SteamAppsAggregator", () => {
     let steamAppsRepositoryMock;
     let updateTimestamp;
 
-    beforeEach(() => {
+    beforeAll(() => {
       updateTimestamp = { updatedOn: new Date("2020") };
     });
 

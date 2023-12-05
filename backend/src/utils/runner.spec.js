@@ -5,10 +5,10 @@ describe("runner.js", () => {
   describe(".run()", () => {
     describe("calls .runSync() if sync option is set to true", () => {
       beforeAll(function () {
-        this.runner = new Runner(createLoggerMock(), options(delayMock, 0, 2, true));
+        this.runner = new Runner(createLoggerMock(), options(delayMock, 2, 0, true));
 
-        spyOn(this.runner, "runAsync").and.callFake(() => {});
-        spyOn(this.runner, "runSync").and.callFake(() => {});
+        spyOn(this.runner, "runAsync");
+        spyOn(this.runner, "runSync");
 
         this.runner.run([], []);
       });
@@ -20,24 +20,24 @@ describe("runner.js", () => {
       it(".runAsync() was not called", function () {
         expect(this.runner.runAsync).not.toHaveBeenCalled();
       });
-    });
 
-    describe("calls .runPallalel() if sync option is set to false", () => {
-      beforeAll(function () {
-        this.runner = new Runner(createLoggerMock(), options(delayMock, 0, 2, false));
+      describe("calls .runAsync() if sync option is set to false", () => {
+        beforeAll(function () {
+          this.runner = new Runner(createLoggerMock(), options(delayMock, 2, 0, false));
 
-        spyOn(this.runner, "runAsync").and.callFake(() => {});
-        spyOn(this.runner, "runSync").and.callFake(() => {});
+          spyOn(this.runner, "runAsync");
+          spyOn(this.runner, "runSync");
 
-        this.runner.run([], []);
-      });
+          this.runner.run([], []);
+        });
 
-      it(".runSync() was not called", function () {
-        expect(this.runner.runSync).not.toHaveBeenCalled();
-      });
+        it(".runSync() was not called", function () {
+          expect(this.runner.runSync).not.toHaveBeenCalled();
+        });
 
-      it(".runAsync() was called", function () {
-        expect(this.runner.runAsync).toHaveBeenCalled();
+        it(".runAsync() was called", function () {
+          expect(this.runner.runAsync).toHaveBeenCalled();
+        });
       });
     });
   });
@@ -48,7 +48,7 @@ describe("runner.js", () => {
         it("and calls the function once", async () => {
           const funcSpy = jasmine.createSpy("funcSpy");
           const result = new Runner(createLoggerMock(), options()).runAsync(
-            [funcSpy],
+            [{ func: funcSpy }],
             [],
           );
 
@@ -57,44 +57,81 @@ describe("runner.js", () => {
         });
       });
 
-      describe("for two iteration", () => {
-        it("and calls the function twice", async () => {
-          const funcSpy = jasmine.createSpy("funcSpy");
-          const result = new Runner(
-            createLoggerMock(),
-            options(delayMock, 0, 2),
-          ).runAsync([funcSpy], []);
+      describe("for two iterations", () => {
+        describe("with a set delay", () => {
+          beforeAll(async function () {
+            this.funcSpy = jasmine.createSpy("funcSpy");
+            this.delaySpy = jasmine.createSpy("delaySpy");
 
-          await expectAsync(result).toBeResolved();
-          expect(funcSpy).toHaveBeenCalledTimes(2);
+            const runner = new Runner(createLoggerMock(), options(this.delaySpy, 2));
+
+            this.runnerResult = runner.runAsync(
+              [{ func: this.funcSpy, delay: 2000 }],
+              [],
+            );
+
+            await this.runnerResult;
+          });
+
+          it("the function was called with the correct argument", function () {
+            expect(this.delaySpy).toHaveBeenCalledWith(2000);
+          });
+
+          it("the function ran two times", async function () {
+            await expectAsync(this.runnerResult).toBeResolved();
+            expect(this.funcSpy).toHaveBeenCalledTimes(2);
+          });
+        });
+
+        describe("with the default delay", () => {
+          beforeAll(async function () {
+            this.funcSpy = jasmine.createSpy("funcSpy");
+            this.delaySpy = jasmine.createSpy("delaySpy");
+
+            const runner = new Runner(createLoggerMock(), options(this.delaySpy, 2));
+
+            this.runnerResult = runner.runAsync([{ func: this.funcSpy }], []);
+
+            await this.runnerResult;
+          });
+
+          it("the function was called with the correct argument", function () {
+            expect(this.delaySpy).toHaveBeenCalledWith(5000);
+          });
+
+          it("the function ran two times", async function () {
+            await expectAsync(this.runnerResult).toBeResolved();
+            expect(this.funcSpy).toHaveBeenCalledTimes(2);
+          });
         });
       });
     });
 
-    describe("runs two functions in a loop", () => {
-      describe("for one iteration", () => {
-        it("and calls the functions once", async () => {
-          const funcOneSpy = jasmine.createSpy("funcOneSpy");
-          const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
-          const result = new Runner(createLoggerMock(), options()).runAsync(
-            [funcOneSpy, funcTwoSpy],
+    describe("runs two functions in a loop", function () {
+      describe("for one iteration", function () {
+        beforeAll(function () {
+          this.funcOneSpy = jasmine.createSpy("funcOneSpy");
+          this.funcTwoSpy = jasmine.createSpy("funcTwoSpy");
+          this.result = new Runner(createLoggerMock(), options()).runAsync(
+            [{ func: this.funcOneSpy }, { func: this.funcTwoSpy }],
             [],
           );
-
-          await expectAsync(result).toBeResolved();
-          expect(funcOneSpy).toHaveBeenCalledTimes(1);
-          expect(funcTwoSpy).toHaveBeenCalledTimes(1);
+        });
+        it("and calls the functions once", async function () {
+          await expectAsync(this.result).toBeResolved();
+          expect(this.funcOneSpy).toHaveBeenCalledTimes(1);
+          expect(this.funcTwoSpy).toHaveBeenCalledTimes(1);
         });
       });
 
-      describe("for two iteration", () => {
+      describe("for two iterations", () => {
         it("and calls the functions twice", async () => {
           const funcOneSpy = jasmine.createSpy("funcOneSpy");
           const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
           const result = new Runner(
             createLoggerMock(),
-            options(delayMock, 0, 2),
-          ).runAsync([funcOneSpy, funcTwoSpy], []);
+            options(delayMock, 2, 0),
+          ).runAsync([{ func: funcOneSpy }, { func: funcTwoSpy }], []);
 
           await expectAsync(result).toBeResolved();
           expect(funcOneSpy).toHaveBeenCalledTimes(2);
@@ -110,13 +147,13 @@ describe("runner.js", () => {
         };
         this.logger = createLoggerMock();
 
-        this.result = new Runner(this.logger, options(delayMock, 0, 2)).runAsync(
-          [expectedErrorThrower],
+        this.result = new Runner(this.logger, options(delayMock, 2)).runAsync(
+          [{ func: expectedErrorThrower }],
           [ExpectedError],
         );
       });
 
-      it("the expected errror is catched", async function () {
+      it("the expected error is caught", async function () {
         await expectAsync(this.result).toBeResolved();
       });
 
@@ -131,13 +168,13 @@ describe("runner.js", () => {
           throw new UnexpectedError();
         };
 
-        this.result = new Runner(createLoggerMock(), options(delayMock, 0, 2)).runAsync(
-          [this.unexpectedErrorThrower],
+        this.result = new Runner(createLoggerMock(), options(delayMock, 2)).runAsync(
+          [{ func: this.unexpectedErrorThrower }],
           [ExpectedError],
         );
       });
 
-      it("the unexpected errror rethrown", async function () {
+      it("the unexpected error is thrown", async function () {
         await expectAsync(this.result).toBeRejected();
       });
     });
@@ -157,13 +194,13 @@ describe("runner.js", () => {
 
         this.logger = createLoggerMock();
 
-        this.result = new Runner(this.logger, options(delayMock, 0, 2)).runAsync(
-          [funcOne, funcTwo],
+        this.result = new Runner(this.logger, options(delayMock, 2)).runAsync(
+          [{ func: funcOne }, { func: funcTwo }],
           [ExpectedError],
         );
       });
 
-      it("the expected errror is catched", async function () {
+      it("the expected error is caught", async function () {
         await expectAsync(this.result).toBeResolved();
       });
 
@@ -185,7 +222,7 @@ describe("runner.js", () => {
           const funcOneSpy = jasmine.createSpy("funcOneSpy");
           const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
           const result = new Runner(createLoggerMock(), options()).runSync(
-            [funcOneSpy, funcTwoSpy],
+            [{ func: funcOneSpy }, { func: funcTwoSpy }],
             [],
           );
 
@@ -200,8 +237,8 @@ describe("runner.js", () => {
         it("and calls the functions twice sequentially", async () => {
           const funcOneSpy = jasmine.createSpy("funcOneSpy");
           const funcTwoSpy = jasmine.createSpy("funcTwoSpy");
-          const result = new Runner(createLoggerMock(), options(delayMock, 0, 2)).runSync(
-            [funcOneSpy, funcTwoSpy],
+          const result = new Runner(createLoggerMock(), options(delayMock, 2, 0)).runSync(
+            [{ func: funcOneSpy }, { func: funcTwoSpy }],
             [],
           );
 
@@ -226,7 +263,7 @@ describe("runner.js", () => {
       describe("when one of two running functions throws an expected error,", function () {
         let funcOneSpy;
         let funcTwoSpy;
-        beforeAll(function () {
+        beforeAll(async function () {
           funcOneSpy = jasmine
             .createSpy("funcOneSpy")
             .and.throwError(new ExpectedError());
@@ -234,13 +271,15 @@ describe("runner.js", () => {
 
           this.logger = createLoggerMock();
 
-          this.result = new Runner(this.logger, options(delayMock, 0, 2)).runSync(
-            [funcOneSpy, funcTwoSpy],
+          this.result = new Runner(this.logger, options(delayMock, 2, 0)).runSync(
+            [{ func: funcOneSpy }, { func: funcTwoSpy }],
             [ExpectedError],
           );
+
+          await this.result;
         });
 
-        it("the expected errror is catched", async function () {
+        it("the expected error is caught", async function () {
           await expectAsync(this.result).toBeResolved();
         });
 
@@ -274,19 +313,19 @@ describe("runner.js", () => {
 
 function options(
   delayFn = delayMock,
-  iterationDelay = 0,
   iterations = 1,
+  globalIterationDelay = undefined,
   syncOn = false,
 ) {
   return {
     delayFn,
-    iterationDelay,
     iterations,
+    globalIterationDelay,
     syncOn,
   };
 }
 
-function delayMock(iterationDelay) {
+function delayMock() {
   return Promise.resolve();
 }
 
@@ -295,7 +334,6 @@ class ExpectedError extends Error {
     super("expected error");
   }
 }
-
 class UnexpectedError extends Error {
   constructor() {
     super("unexpected error");
