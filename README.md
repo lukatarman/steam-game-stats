@@ -37,7 +37,7 @@ DB_ENDPOINT="mongodb://mongodb:27017"
 DB_USERNAME="<local-db-username>"                # pick a username
 DB_PASSWORD="<local-db-password>"                # generate using: openssl rand -base64 16
 DB_NAME="<local-db-name>"                        # pick a db name
-DB_AUTH_ON="true"
+DB_AUTH_ON="false"
 
 MONGO_INITDB_ROOT_USERNAME="root"
 MONGO_INITDB_ROOT_PASSWORD="<local-db-password>" # generate using: openssl rand -base64 16
@@ -50,9 +50,8 @@ FEATURES_BATCH_DELAY=5000                        # ms
 FEATURES_UNIT_DELAY=800                          # ms
 FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY=2 # h
 FEATURES_UPDATE_INTERVAL_DELAY=12                # h
-FEATURES_ITERATION_DELAY=5000                    # ms
 
-RUNNER_ITERATION_DELAY=5000                      # ms
+RUNNER_GLOBAL_ITERATION_DELAY=5000               # ms
 ```
 
 **Step 3.2**, cloud setup:
@@ -84,9 +83,8 @@ FEATURES_BATCH_DELAY=30000                       # ms
 FEATURES_UNIT_DELAY=2000                         # ms
 FEATURES_CURRENT_PLAYERS_UPDATE_INTERVAL_DELAY=2 # h
 FEATURES_UPDATE_INTERVAL_DELAY=12                # h
-FEATURES_ITERATION_DELAY=30000                   # ms
 
-RUNNER_ITERATION_DELAY=30000                     # ms
+RUNNER_GLOBAL_ITERATION_DELAY=10000               # ms
 ```
 
 ## Running the Application

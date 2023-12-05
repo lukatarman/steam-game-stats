@@ -2,7 +2,7 @@ import cloneDeep from "lodash.clonedeep";
 
 const defaultOptions = {
   delayFn: () => Promise.resolve(),
-  iterationDelay: 0,
+  globalIterationDelay: 5000,
   iterations: Number.POSITIVE_INFINITY,
   syncOn: false,
 };
@@ -16,6 +16,10 @@ export class Runner {
 
     if (options.iterations === undefined) {
       options.iterations = Number.POSITIVE_INFINITY;
+    }
+
+    if (options.globalIterationDelay === undefined) {
+      options.globalIterationDelay = 5000;
     }
     this.#options = cloneDeep(options);
   }
@@ -37,28 +41,33 @@ export class Runner {
     await Promise.all(execPromises);
   }
 
-  async #runFuncForNumberOfIterations(func, expectedErrorTypes) {
+  async #runFuncForNumberOfIterations({ func, delay }, expectedErrorTypes) {
     // Counting down from a property of an object increases the time needed to perform
     // the first iterations in the loop compared to using a primitive. The tests of this
     // function rely on very short iteration times. If they are slowed down some tests are
     // failing unexpextedly. Don't refactor next two lines.
+    const iterationDelay = delay || this.#options.globalIterationDelay;
+
     let iterations = this.#options.iterations;
     while (iterations--) {
       try {
         await func();
       } catch (error) {
-        const thrownErrorTypeIndex = expectedErrorTypes.findIndex(
-          (expectedErrorType) => error instanceof expectedErrorType,
-        );
-        if (thrownErrorTypeIndex === -1) throw error;
-        this.#logger.warn(
-          `runner catched an expected error from the function: '${func.name}', with the message: '${error.message}'`,
-        );
+        this.#handleError(func, error, expectedErrorTypes);
       }
 
-      if (this.#options.iterationDelay > 0)
-        await this.#options.delayFn(this.#options.iterationDelay);
+      if (iterationDelay > 0) await this.#options.delayFn(iterationDelay);
     }
+  }
+
+  #handleError(func, error, expectedErrorTypes) {
+    const thrownErrorTypeIndex = expectedErrorTypes.findIndex(
+      (expectedErrorType) => error instanceof expectedErrorType,
+    );
+    if (thrownErrorTypeIndex === -1) throw error;
+    this.#logger.warn(
+      `runner caught an expected error from the function: '${func.name}', with the message: '${error.message}'`,
+    );
   }
 
   async runSync(executables, expectedErrorTypes) {
@@ -70,20 +79,16 @@ export class Runner {
 
   async #runFuncsOnce(executables, expectedErrorTypes) {
     for (let i = 0; i < executables.length; i++) {
+      const func = executables[i].func;
+
       try {
-        await executables[i]();
+        await func();
       } catch (error) {
-        const thrownErrorTypeIndex = expectedErrorTypes.findIndex(
-          (expectedErrorType) => error instanceof expectedErrorType,
-        );
-        if (thrownErrorTypeIndex === -1) throw error;
-        this.#logger.warn(
-          `runner catched an expected error from the function: '${executables[i].name}', with the message: '${error.message}'`,
-        );
+        this.#handleError(func, error, expectedErrorTypes);
       }
 
-      if (this.#options.iterationDelay > 0)
-        await this.#options.delayFn(this.#options.iterationDelay);
+      if (this.#options.globalIterationDelay > 0)
+        await this.#options.delayFn(this.#options.globalIterationDelay);
     }
   }
 }

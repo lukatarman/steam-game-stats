@@ -8,47 +8,54 @@ import {
 
 describe("time.utils.js", () => {
   describe(".delay", () => {
-    let timePassed;
-
-    describe("0 is passed in as an argument", () => {
-      beforeAll(async () => {
-        const timestampOne = new Date().getTime();
-        await delay(0);
-        const timestampTwo = new Date().getTime();
-        timePassed = timestampTwo - timestampOne;
+    describe("when we wait for a delay of 0", () => {
+      beforeAll(async function () {
+        jasmine.clock().install();
+        this.result = delay(0);
       });
 
-      it("the function waits for a negligable time", () => {
-        expect(timePassed).toBeLessThanOrEqual(30);
-        expect(timePassed).toBeGreaterThanOrEqual(0);
-      });
-    });
-
-    describe("a value of 100 is passed in as an argument", () => {
-      beforeAll(async () => {
-        const timestamOne = new Date().getTime();
-        await delay(100);
-        const timestampTwo = new Date().getTime();
-        timePassed = timestampTwo - timestamOne;
+      afterAll(async function () {
+        jasmine.clock().uninstall();
       });
 
-      it("the function waits 100ms", () => {
-        expect(timePassed).toBeLessThanOrEqual(130);
-        expect(timePassed).toBeGreaterThanOrEqual(95);
+      it("the function waits for a negligable time", async function () {
+        await expectAsync(this.result).toBePending();
+        jasmine.clock().tick(0);
+        await expectAsync(this.result).toBeResolved();
       });
     });
 
-    describe("a value of 500 is passed in as an argument", () => {
-      beforeAll(async () => {
-        const timestamOne = new Date().getTime();
-        await delay(500);
-        const timestampTwo = new Date().getTime();
-        timePassed = timestampTwo - timestamOne;
+    describe("when we wait for a delay of 100ms", () => {
+      beforeAll(async function () {
+        jasmine.clock().install();
+        this.result = delay(100);
       });
 
-      it("the function waits 500ms", () => {
-        expect(timePassed).toBeLessThanOrEqual(530);
-        expect(timePassed).toBeGreaterThanOrEqual(495);
+      afterAll(async function () {
+        jasmine.clock().uninstall();
+      });
+
+      it("the function waits for 100ms before executing", async function () {
+        await expectAsync(this.result).toBePending();
+        jasmine.clock().tick(101);
+        await expectAsync(this.result).toBeResolved();
+      });
+    });
+
+    describe("when we wait for a delay of 500ms", () => {
+      beforeAll(async function () {
+        jasmine.clock().install();
+        this.result = delay(500);
+      });
+
+      afterAll(async function () {
+        jasmine.clock().uninstall();
+      });
+
+      it("the function waits for 500ms before executing", async function () {
+        await expectAsync(this.result).toBePending();
+        jasmine.clock().tick(501);
+        await expectAsync(this.result).toBeResolved();
       });
     });
   });
