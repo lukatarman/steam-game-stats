@@ -1,6 +1,6 @@
 import { gamesMock } from "../../assets/small.data.set.js";
 import { smallestGamesMock } from "../../assets/smallest.data.set.js";
-import { ValidDataSources } from "../utils/valid.data.sources.js";
+import { ValidDataSources } from "../models/valid.data.sources.js";
 import { SteamApp } from "./steam.app.js";
 
 describe("SteamApp", function () {
@@ -68,6 +68,23 @@ describe("SteamApp", function () {
           ValidDataSources.validDataSources.steamcharts,
         );
       });
+    });
+  });
+
+  describe(".triedViaSteamDb", function () {
+    beforeAll(function () {
+      this.app = {
+        name: "Castlevania",
+        appid: 1,
+      };
+
+      this.result = SteamApp.oneFromSteamApi(this.app);
+
+      this.result.triedViaSteamDb();
+    });
+
+    it("the resulting property is 'steamDb'", function () {
+      expect(this.result.triedVia[0]).toBe(ValidDataSources.validDataSources.steamDb);
     });
   });
 

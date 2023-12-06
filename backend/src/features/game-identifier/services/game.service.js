@@ -87,7 +87,7 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
     const copy = steamApps[i].copy();
     const appType = getSteamAppType(page);
 
-    copy.triedViaSteamWeb();
+    if (appType !== "game") copy.triedViaSteamWeb();
 
     copy.appType = appType;
 
@@ -109,10 +109,8 @@ export function assignType(result, steamApp) {
 }
 
 export function updateMissingDetails(games, htmlDetailsPages) {
-  return games.map((game, i) => {
-    const page = htmlDetailsPages[i];
-
-    game.updateGameDetails(
+  htmlDetailsPages.forEach(({ page }, i) => {
+    games[i].updateGameDetails(
       getSteamDbDevelopers(page),
       getSteamDbGenres(page),
       getSteamDbDescription(page),
@@ -159,8 +157,8 @@ export function getSteamDbDescription(page) {
 }
 
 export function updateMissingReleaseDates(games, htmlDetailsPages) {
-  return games.map((game, i) => {
-    game.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i]));
+  games.forEach((game, i) => {
+    game.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i].page));
   });
 }
 

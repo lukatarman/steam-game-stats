@@ -62,6 +62,7 @@ export class PlayerHistoryAggregator {
       await delay(this.#options.unitDelay);
 
       try {
+        // TODO https://github.com/lukatarman/steam-game-stats/issues/192
         const page = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(game.id);
         gamesPagesMap.set(game, page);
       } catch (error) {

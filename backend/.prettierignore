@@ -1,3 +1,5 @@
 .vscode
-assets
+/assets/*
 db
+
+!assets/html.details.pages.mock.js

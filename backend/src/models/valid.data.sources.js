@@ -1,5 +1,9 @@
 export class ValidDataSources {
-  static validDataSources = this.#createValidDataSourcesEnum(["steamWeb", "steamcharts"]);
+  static validDataSources = this.#createValidDataSourcesEnum([
+    "steamWeb",
+    "steamcharts",
+    "steamDb",
+  ]);
 
   static #createValidDataSourcesEnum(values) {
     const enumObject = {};

@@ -1,4 +1,4 @@
-import { ValidDataSources } from "../utils/valid.data.sources.js";
+import { ValidDataSources } from "../models/valid.data.sources.js";
 import { HistoryCheck } from "./history.check.js";
 
 describe("history.check.js", function () {
