@@ -5,6 +5,7 @@ export class SteamApp {
   name;
   type;
   triedVia;
+  failedVia;
   static validTypes = this.#createValidTypesEnum([
     "game",
     "downloadableContent",
@@ -17,6 +18,7 @@ export class SteamApp {
     copy.name = this.name;
     copy.type = this.type;
     copy.triedVia = this.triedVia.slice();
+    copy.failedVia = this.failedVia.slice();
 
     return copy;
   }
@@ -31,6 +33,18 @@ export class SteamApp {
 
   triedViaSteamDb() {
     this.triedVia.push(ValidDataSources.validDataSources.steamDb);
+  }
+
+  failedViaSteamWeb() {
+    this.failedVia.push(ValidDataSources.validDataSources.steamWeb);
+  }
+
+  failedViaSteamchartsWeb() {
+    this.failedVia.push(ValidDataSources.validDataSources.steamcharts);
+  }
+
+  failedViaSteamDb() {
+    this.failedVia.push(ValidDataSources.validDataSources.steamDb);
   }
 
   isGame() {
@@ -60,6 +74,7 @@ export class SteamApp {
     steamApp.name       = data.name;
     steamApp.type       = SteamApp.validTypes.unknown;
     steamApp.triedVia   = [];
+    steamApp.failedVia  = [];
     return steamApp;
   }
 
@@ -74,6 +89,7 @@ export class SteamApp {
     steamApp.name       = dbEntry.name;
     steamApp.type       = dbEntry.type;
     steamApp.triedVia   = dbEntry.triedVia.slice();
+    steamApp.failedVia  = dbEntry.failedVia.slice();
     return steamApp;
   }
 

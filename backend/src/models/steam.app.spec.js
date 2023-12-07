@@ -28,6 +28,10 @@ describe("SteamApp", function () {
       it("the copy has a property 'triedVia', which is an empty array", function () {
         expect(this.result.triedVia).toEqual([]);
       });
+
+      it("the copy has a property 'failedVia', which is an empty array", function () {
+        expect(this.result.failedVia).toEqual([]);
+      });
     });
   });
 
@@ -85,6 +89,65 @@ describe("SteamApp", function () {
 
     it("the resulting property is 'steamDb'", function () {
       expect(this.result.triedVia[0]).toBe(ValidDataSources.validDataSources.steamDb);
+    });
+  });
+
+  describe(".failedViaSteamWeb", function () {
+    describe("pushes 'steamWeb' into the filedVia property. When this is done,", function () {
+      beforeAll(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.result = SteamApp.oneFromSteamApi(this.app);
+
+        this.result.failedViaSteamWeb();
+      });
+
+      it("the triedVia property array value is 'steamWeb'", function () {
+        expect(this.result.failedVia[0]).toBe(ValidDataSources.validDataSources.steamWeb);
+      });
+    });
+  });
+
+  describe(".failedViaSteamcharts", function () {
+    describe("pushes 'steamcharts' into the filedVia property. When this is done,", function () {
+      beforeAll(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.result = SteamApp.oneFromSteamApi(this.app);
+
+        this.result.failedViaSteamchartsWeb();
+      });
+
+      it("the triedVia property array value is 'steamcharts'", function () {
+        expect(this.result.failedVia[0]).toBe(
+          ValidDataSources.validDataSources.steamcharts,
+        );
+      });
+    });
+  });
+
+  describe(".failedViaSteamDb", function () {
+    describe("pushes 'steamDb' into the filedVia property. When this is done,", function () {
+      beforeAll(function () {
+        this.app = {
+          name: "Castlevania",
+          appid: 1,
+        };
+
+        this.result = SteamApp.oneFromSteamApi(this.app);
+
+        this.result.failedViaSteamDb();
+      });
+
+      it("the triedVia property array value is 'steamDb'", function () {
+        expect(this.result.failedVia[0]).toBe(ValidDataSources.validDataSources.steamDb);
+      });
     });
   });
 
@@ -198,6 +261,10 @@ describe("SteamApp", function () {
       it("has a property called 'triedVia'. It is an empty array.", function () {
         expect(this.result.triedVia).toEqual([]);
       });
+
+      it("has a property called 'failedVia'. It is an empty array.", function () {
+        expect(this.result.failedVia).toEqual([]);
+      });
     });
   });
 
@@ -210,15 +277,20 @@ describe("SteamApp", function () {
             appid: 1,
             type: "game",
             triedVia: [
-              ValidDataSources.validDataSources.steam,
+              ValidDataSources.validDataSources.steamWeb,
               ValidDataSources.validDataSources.steamcharts,
             ],
+            failedVia: [ValidDataSources.steam],
           },
           {
             name: "Elden Ring",
             appid: 2,
             type: "game",
-            triedVia: [ValidDataSources.validDataSources.steam],
+            triedVia: [
+              ValidDataSources.validDataSources.steamWeb,
+              ValidDataSources.validDataSources.steamDb,
+            ],
+            failedVia: [ValidDataSources.validDataSources.steamWeb],
           },
         ];
 
@@ -246,7 +318,8 @@ describe("SteamApp", function () {
           name: "Castlevania",
           appid: 1,
           type: "game",
-          triedVia: ["steam"],
+          triedVia: [ValidDataSources.validDataSources.steamWeb],
+          failedVia: [ValidDataSources.validDataSources.steamWeb],
         };
 
         this.result = SteamApp.oneFromDbEntry(this.dbEntry);
@@ -261,12 +334,21 @@ describe("SteamApp", function () {
       });
 
       it("has the entry 'steam' in the 'triedVia' array", function () {
-        expect(this.result.triedVia[0]).toBe("steam");
+        expect(this.result.triedVia[0]).toBe(ValidDataSources.validDataSources.steamWeb);
       });
 
       it("contains a copy of the dbEntry.triedVia property", function () {
         this.dbEntry.triedVia = [ValidDataSources.validDataSources.steamcharts];
         expect(this.dbEntry.triedVia[0]).not.toBe(this.result.triedVia[0]);
+      });
+
+      it("has the entry 'steam' in the 'failedVIa' array", function () {
+        expect(this.result.failedVia[0]).toBe(ValidDataSources.validDataSources.steamWeb);
+      });
+
+      it("contains a copy of the dbEntry.failed property", function () {
+        this.dbEntry.failedVia = [ValidDataSources.validDataSources.steamcharts];
+        expect(this.dbEntry.failedVia[0]).not.toBe(this.result.failedVia[0]);
       });
 
       it("contains a copy of the dbEntry.triedVia property. All of values of this property are strings", function () {
