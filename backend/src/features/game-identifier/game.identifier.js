@@ -5,6 +5,7 @@ import {
   assignType,
   updateMissingDetails,
   updateMissingReleaseDates,
+  recordAttemptsViaSteamDb,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -104,29 +105,28 @@ export class GameIdentifier {
     this.#persist(games, updatedSteamApps);
   };
 
+  // this method is a mess right now, including the tests. Will be fixed in issue: #198
   async #updateStatusViaSteamchartsWeb(steamApps) {
-    const updatedSteamApps = steamApps
-      .map((steamApp) => steamApp.copy())
-      .map((steamApp) => {
-        steamApp.triedViaSteamchartsWeb();
-        return steamApp;
-      });
+    const updatedSteamApps = [];
 
-    for (let steamApp of updatedSteamApps) {
-      await delay(this.#options.unitDelay);
+    for (let steamApp of steamApps) {
+      const steamAppCopy = steamApp.copy();
+      steamAppCopy.triedViaSteamchartsWeb();
 
-      try {
-        // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-        const result = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
-          steamApp.appid,
-        );
+      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+      const result = await this.#steamClient.getSteamchartsGameHtmlDetailsPage(
+        steamApp.appid,
+      );
 
-        assignType(result, steamApp);
-      } catch (_) {
-        // The catch block is empty because in some cases we are expecting the request to return an error.
-        // This just means that this app has no entry on steamcharts, so we don't do anything with it.
+      if (result === "") {
+        steamAppCopy.failedViaSteamchartsWeb();
         this.#logger.debugc(`no entry on steamcharts web for appid: ${steamApp.appid}`);
       }
+
+      assignType(result, steamAppCopy);
+
+      await delay(this.#options.unitDelay);
+      updatedSteamApps.push(steamAppCopy);
     }
 
     return updatedSteamApps;
@@ -154,11 +154,11 @@ export class GameIdentifier {
 
     const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
 
-    const appsWithoutPages = this.#recordFailedAttempts(htmlDetailsPages, steamApps);
+    const updatedApps = recordAttemptsViaSteamDb(steamApps, htmlDetailsPages);
 
     updateMissingDetails(games, htmlDetailsPages);
 
-    this.#persistMissingProperties(games, appsWithoutPages);
+    this.#persistMissingProperties(games, updatedApps);
   };
 
   async #getSteamDbHtmlDetailsPages(games) {
@@ -173,18 +173,6 @@ export class GameIdentifier {
     }
 
     return htmlDetailsPages;
-  }
-
-  #recordFailedAttempts(htmlDetailsPages, steamApps) {
-    return htmlDetailsPages
-      .filter((page) => page.page === "")
-      .map((page) => {
-        const steamApp = steamApps.find((steamApp) => steamApp.appid === page.id);
-        const steamAppCopy = steamApp.copy();
-        steamAppCopy.triedViaSteamDb();
-
-        return steamAppCopy;
-      });
   }
 
   async #persistMissingProperties(games, appsWithoutPages) {
@@ -219,11 +207,11 @@ export class GameIdentifier {
 
     const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
 
-    const appsWithoutPages = this.#recordFailedAttempts(htmlDetailsPages, steamApps);
+    const updatedApps = recordAttemptsViaSteamDb(steamApps, htmlDetailsPages);
 
     updateMissingReleaseDates(games, htmlDetailsPages);
 
-    this.#persistReleaseDates(games, appsWithoutPages);
+    this.#persistReleaseDates(games, updatedApps);
   };
 
   #persistReleaseDates = async (games, appsWithoutPages) => {
