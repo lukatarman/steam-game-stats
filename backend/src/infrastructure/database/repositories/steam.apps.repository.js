@@ -21,10 +21,10 @@ export class SteamAppsRepository {
     await Promise.all(steamApps.map((steamApp) => this.#updateSteamAppById(steamApp)));
   }
 
-  async #updateSteamAppById({ appid, triedVia, type }) {
+  async #updateSteamAppById({ appid, triedVia, failedVia, type }) {
     await this.#dbClient
       .get("steam_apps")
-      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, type } });
+      .updateOne({ appid: { $eq: appid } }, { $set: { triedVia, failedVia, type } });
   }
 
   async getSteamWebUntriedFilteredSteamApps(amount) {
