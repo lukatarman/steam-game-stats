@@ -87,7 +87,8 @@ export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
     const copy = steamApps[i].copy();
     const appType = getSteamAppType(page);
 
-    if (appType !== "game") copy.triedViaSteamWeb();
+    copy.triedViaSteamWeb();
+    if (page === "") copy.failedViaSteamWeb();
 
     copy.appType = appType;
 
@@ -106,6 +107,18 @@ export function identifyGames(updatedSteamApps) {
 export function assignType(result, steamApp) {
   if (result) steamApp.appType = SteamApp.validTypes.game;
   return steamApp;
+}
+
+export function recordAttemptsViaSteamDb(steamApps, htmlDetailsPages) {
+  return steamApps.map((app) => {
+    const appCopy = app.copy();
+    appCopy.triedViaSteamDb();
+
+    const currentPage = htmlDetailsPages.find((page) => page.id == app.appid);
+    if (currentPage.page === "") appCopy.failedViaSteamDb();
+
+    return appCopy;
+  });
 }
 
 export function updateMissingDetails(games, htmlDetailsPages) {

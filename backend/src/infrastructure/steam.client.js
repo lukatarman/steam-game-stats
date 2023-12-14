@@ -48,9 +48,13 @@ export class SteamClient {
 
   async getSteamchartsGameHtmlDetailsPage(id) {
     // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-    const url = `https://steamcharts.com/app/${id}`;
+    try {
+      const url = `https://steamcharts.com/app/${id}`;
 
-    return (await this.#httpClient.get(url)).data;
+      return (await this.#httpClient.get(url)).data;
+    } catch (err) {
+      return "";
+    }
   }
 
   async getSteamDbHtmlDetailsPage(id) {
