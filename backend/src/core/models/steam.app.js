@@ -23,6 +23,14 @@ export class SteamApp {
     return copy;
   }
 
+  triedIfGameViaSource(source) {
+    this.triedVia.push(source);
+  }
+
+  htmlPageFailedViaSource(source) {
+    this.failedVia.push(source);
+  }
+
   triedViaSteamWeb() {
     this.triedVia.push(ValidDataSources.validDataSources.steamWeb);
   }
@@ -89,7 +97,7 @@ export class SteamApp {
     steamApp.name       = dbEntry.name;
     steamApp.type       = dbEntry.type;
     steamApp.triedVia   = dbEntry.triedVia.slice();
-    steamApp.failedVia  = dbEntry.failedVia.slice();
+    steamApp.failedVia   = dbEntry.failedVia.slice();
     return steamApp;
   }
 

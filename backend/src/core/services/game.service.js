@@ -1,6 +1,69 @@
 import { Game } from "../models/game.js";
 import { SteamApp } from "../models/steam.app.js";
 import { parseHTML } from "linkedom";
+import { ValidDataSources } from "../../../models/valid.data.sources.js";
+
+export function recordHtmlAttempts(steamApps, htmlDetailsPages, source) {
+  return steamApps.map((app, i) => {
+    const appCopy = app.copy();
+    appCopy.triedIfGameViaSource(source);
+
+    if (htmlDetailsPages[i] === "") appCopy.htmlPageFailedViaSource(source);
+
+    return appCopy;
+  });
+}
+
+export function getGames(steamApps, htmlDetailsPages, source) {
+  return htmlDetailsPages
+    .map((page, i) => {
+      if (page === "") return "";
+      if (getType(page, source) !== SteamApp.validTypes.game) return "";
+
+      return Game.fromSteamApp(
+        steamApps[i],
+        getReleaseDate(page),
+        getDevelopers(page),
+        getGenres(page),
+        getGameDescription(page),
+      );
+    })
+    .filter((game) => !!game);
+}
+
+function getType(page, source) {
+  if (source === ValidDataSources.validDataSources.steamWeb)
+    return getSteamWebAppType(page);
+  if (source === ValidDataSources.validDataSources.steamcharts)
+    return getSteamchartsAppType(page);
+}
+
+export function getSteamWebAppType(page) {
+  const { document } = parseHTML(page);
+
+  const breadcrumbElement = document.querySelector(".blockbg");
+
+  if (!breadcrumbElement) return SteamApp.validTypes.unknown;
+
+  const breadcrumbText = breadcrumbElement.children[0].textContent;
+
+  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
+    return SteamApp.validTypes.unknown;
+
+  for (let child of breadcrumbElement.children) {
+    if (child.textContent === "Downloadable Content")
+      return SteamApp.validTypes.downloadableContent;
+  }
+
+  return SteamApp.validTypes.game;
+}
+
+// TODO https://github.com/lukatarman/steam-game-stats/issues/178
+export function getSteamchartsAppType(page) {
+  if (page === "") return SteamApp.validTypes.unknown;
+
+  return SteamApp.validTypes.game;
+}
 
 export function getSteamAppType(httpDetailsPage) {
   const { document } = parseHTML(httpDetailsPage);

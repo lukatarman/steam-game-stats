@@ -9,6 +9,7 @@ import {
 } from "../../services/game.service.js";
 import { delay } from "../../../common/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
+import { ValidDataSources } from "../../models/valid.data.sources.js";
 
 export class GameIdentifier {
   #steamClient;
@@ -33,6 +34,85 @@ export class GameIdentifier {
     this.#logger = logger;
     this.#options = options;
   }
+
+  tryIfGameViaSource = async (source) => {
+    this.#logger.debugc(`identifying games via ${source}`);
+
+    const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
+      this.#options.batchSize,
+    );
+
+    if (this.#steamAppsIsEmpty(steamApps)) return;
+
+    const [games, updatedSteamApps] = await this.#identifyTypes(steamApps, source);
+
+    await this.#persistGameCheckUpdates(games, updatedSteamApps);
+  };
+
+  #steamAppsIsEmpty(steamApps) {
+    if (steamApps.length === 0) return true;
+
+    this.#logger.debugc(
+      `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
+    );
+    return false;
+  }
+
+  async #identifyTypes(steamApps, source) {
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPagesNR64(
+      steamApps,
+      source,
+    );
+
+    const updatedSteamApps = recordHtmlAttempts(steamApps, htmlDetailsPages, source);
+
+    const games = getGames(updatedSteamApps, htmlDetailsPages, source);
+
+    return [games, updatedSteamApps];
+  }
+
+  async #getSteamAppsHtmlDetailsPagesNR64(steamApps) {
+    const detailsPages = [];
+
+    for (let steamApp of steamApps) {
+      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+      detailsPages.push(
+        await this.#steamClient.getSourceHtmlDetailsPage(steamApp.appid, source),
+      );
+      await delay(this.#options.unitDelay);
+    }
+    return detailsPages;
+  }
+
+  async #persistGameCheckUpdates(games, steamApps) {
+    if (games.length !== 0) {
+      this.#logger.debugc(`persiting ${games.length} identified games`);
+      await this.#gamesRepository.insertManyGames(games);
+      await this.#historyChecksRepository.insertManyHistoryChecks(
+        HistoryCheck.manyFromGames(games),
+      );
+    }
+    await this.#steamAppsRepository.updateSteamAppsById(steamApps);
+  }
+
+  //
+
+  tryIfGameViaSteamchartsWeb = async () => {
+    const source = ValidDataSources.validDataSources.steamcharts;
+
+    this.#logger.debugc("identifying games via steamcharts web");
+
+    const steamApps =
+      await this.#steamAppsRepository.getSteamchartsUntriedFilteredSteamApps(
+        this.#options.batchSize,
+      );
+
+    if (this.#steamAppsIsEmpty(steamApps)) return;
+
+    const [games, updatedSteamApps] = await this.#identifyTypes(steamApps, source);
+
+    this.#persistGameCheckUpdates(games, updatedSteamApps);
+  };
 
   tryViaSteamWeb = async () => {
     this.#logger.debugc("identifying games via steam web");
@@ -131,6 +211,8 @@ export class GameIdentifier {
 
     return updatedSteamApps;
   }
+
+  //
 
   updateGamesWithoutDetails = async () => {
     this.#logger.debugc("updating games without details");

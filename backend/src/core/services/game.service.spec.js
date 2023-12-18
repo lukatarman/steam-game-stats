@@ -15,73 +15,125 @@ import {
   getSteamDbDescription,
   updateMissingReleaseDates,
   recordAttemptsViaSteamDb,
+  recordHtmlAttempts,
+  getGames,
 } from "./game.service.js";
-import { animaddicts2gameHtmlDetailsPage } from "../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
-import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
-import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
-import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
-import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
-import { Game } from "../models/game.js";
-import { SteamApp } from "../models/steam.app.js";
-import { ValidDataSources } from "../models/valid.data.sources.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
-import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
-import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
-import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
-import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
-import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
-import { getXsteamchartsInstantiatedGames } from "../models/game.mocks.js";
-import { createHtmlDetailsPages } from "../../../assets/html.details.pages.mock.js";
-import { getXSampleSteamApps } from "../models/steam.app.mocks.js";
+import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
+import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
+import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
+import { padakVideoHtmlDetailsPage } from "../../../../assets/steam-details-pages/padak.video.html.details.page.js";
+import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { Game } from "../../../models/game.js";
+import { SteamApp } from "../../../models/steam.app.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { crusaderKingsDetailsPage } from "../../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
+import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
+import { ValidDataSources } from "../../../models/valid.data.sources.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
+import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
+import { getXsteamchartsInstantiatedGames } from "../../../models/game.mocks.js";
+import { createHtmlDetailsPages } from "../../../../assets/html.details.pages.mock.js";
+import { getXSampleSteamApps } from "../../../models/steam.app.mocks.js";
+import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
+import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
 describe("game.service.js", () => {
-  describe(".getSteamAppType", () => {
-    describe("game is age restricted - there is no .blockbg class on the page", () => {
-      let appType;
+  describe(".recordHtmlAttempts", () => {
+    describe("if one html page is empty", function () {
+      beforeAll(function () {
+        const apps = getXSampleSteamApps(2);
+        const pages = [riskOfRainHtmlDetailsSteamDb, ""];
+        const source = ValidDataSources.validDataSources.steamDb;
 
-      beforeAll(async () => {
-        appType = getSteamAppType(gta5ageRestrictedHtmlDetailsPage);
+        this.result = recordHtmlAttempts(apps, pages, source);
       });
 
-      it("the function returns 'unknown'", () => {
-        expect(appType).toBe(SteamApp.validTypes.unknown);
-      });
-    });
-
-    describe("if there is no 'All Software' or 'All Games' in the first breadcrumb child text", () => {
-      let appType;
-
-      beforeAll(async () => {
-        appType = getSteamAppType(padakVideoHtmlDetailsPage);
+      it("the first attempt is correctly recorded", function () {
+        expect(this.result[0].triedVia).toEqual([
+          ValidDataSources.validDataSources.steamDb,
+        ]);
+        expect(this.result[0].failedVia).toEqual([]);
       });
 
-      it("the function returns 'unknown'", () => {
-        expect(appType).toBe(SteamApp.validTypes.unknown);
-      });
-    });
-
-    describe("if the text 'Downloadable Content' is in one of the breadcrumbs", () => {
-      let appType;
-
-      beforeAll(async () => {
-        appType = getSteamAppType(theSims4dlcHtmlDetailsPage);
-      });
-
-      it("the function returns 'downloadableContent'", () => {
-        expect(appType).toBe(SteamApp.validTypes.downloadableContent);
+      it("the second attempt is correctly recorded", function () {
+        expect(this.result[1].triedVia).toEqual([
+          ValidDataSources.validDataSources.steamDb,
+        ]);
+        expect(this.result[1].failedVia).toEqual([
+          ValidDataSources.validDataSources.steamDb,
+        ]);
       });
     });
+  });
 
-    describe(".blockbg class is on the page, 'All Software' or 'All Games' is in the first breadcrumb and there is no 'Downloadable Content' text in the breadcrumbs", () => {
-      let appType;
+  describe(".getGames", () => {
+    describe("gets two games out of 4 steam apps,", function () {
+      describe("through steam web", function () {
+        describe("with the second steam apps' page being empty, and the third steam app not being a game,", function () {
+          beforeAll(function () {
+            const apps = getXSampleSteamApps(4);
+            const pages = [
+              animaddicts2gameHtmlDetailsPage,
+              "",
+              theSims4dlcHtmlDetailsPage,
+              feartressGameHtmlDetailsPage,
+            ];
+            const source = ValidDataSources.validDataSources.steamWeb;
 
-      beforeAll(async () => {
-        appType = getSteamAppType(feartressGameHtmlDetailsPage);
+            this.result = getGames(apps, pages, source);
+          });
+
+          it("two games are returned", function () {
+            expect(this.result.length).toBe(2);
+          });
+
+          it("the first game is an instance of Game", function () {
+            expect(this.result[0]).toBeInstanceOf(Game);
+          });
+
+          it("the first game has the correct id", function () {
+            expect(this.result[0].id).toBe(1);
+          });
+
+          it("the second game is an instance of Game", function () {
+            expect(this.result[1]).toBeInstanceOf(Game);
+          });
+
+          it("the second game has the correct id", function () {
+            expect(this.result[1].id).toBe(4);
+          });
+        });
       });
 
-      it("the function returns 'game'", () => {
-        expect(appType).toBe(SteamApp.validTypes.game);
+      describe("through steamcharts", function () {
+        describe("with the second and third steam apps' pages being empty", function () {
+          beforeAll(function () {
+            const apps = getXSampleSteamApps(4);
+            const pages = [
+              crushTheCastleHtmlDetailsSteamcharts,
+              "",
+              "",
+              eldenRingHttpDetailsSteamcharts,
+            ];
+            const source = ValidDataSources.validDataSources.steamcharts;
+
+            this.result = getGames(apps, pages, source);
+          });
+
+          it("two games are returned", function () {
+            expect(this.result.length).toBe(2);
+          });
+
+          it("the first game has the correct id", function () {
+            expect(this.result[0].id).toBe(1);
+          });
+
+          it("the second game has the correct id", function () {
+            expect(this.result[1].id).toBe(4);
+          });
+        });
       });
     });
   });
@@ -191,6 +243,56 @@ describe("game.service.js", () => {
 
       it("the first entry in the games array is an instance of game", function () {
         expect(this.games[1]).toBeInstanceOf(Game);
+      });
+    });
+  });
+
+  describe(".getSteamAppType", () => {
+    describe("game is age restricted - there is no .blockbg class on the page", () => {
+      let appType;
+
+      beforeAll(async () => {
+        appType = getSteamAppType(gta5ageRestrictedHtmlDetailsPage);
+      });
+
+      it("the function returns 'unknown'", () => {
+        expect(appType).toBe(SteamApp.validTypes.unknown);
+      });
+    });
+
+    describe("if there is no 'All Software' or 'All Games' in the first breadcrumb child text", () => {
+      let appType;
+
+      beforeAll(async () => {
+        appType = getSteamAppType(padakVideoHtmlDetailsPage);
+      });
+
+      it("the function returns 'unknown'", () => {
+        expect(appType).toBe(SteamApp.validTypes.unknown);
+      });
+    });
+
+    describe("if the text 'Downloadable Content' is in one of the breadcrumbs", () => {
+      let appType;
+
+      beforeAll(async () => {
+        appType = getSteamAppType(theSims4dlcHtmlDetailsPage);
+      });
+
+      it("the function returns 'downloadableContent'", () => {
+        expect(appType).toBe(SteamApp.validTypes.downloadableContent);
+      });
+    });
+
+    describe(".blockbg class is on the page, 'All Software' or 'All Games' is in the first breadcrumb and there is no 'Downloadable Content' text in the breadcrumbs", () => {
+      let appType;
+
+      beforeAll(async () => {
+        appType = getSteamAppType(feartressGameHtmlDetailsPage);
+      });
+
+      it("the function returns 'game'", () => {
+        expect(appType).toBe(SteamApp.validTypes.game);
       });
     });
   });
