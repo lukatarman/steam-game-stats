@@ -1,8 +1,7 @@
 import { getXGamesWithoutDetails } from "../models/game.mocks.js";
 import { SteamApp } from "../models/steam.app.js";
 import {
-  getThreeSteamchartsUntriedFilteredSteamApps,
-  getThreeSteamwebUntriedFilteredSteamApps,
+  getThreeSourceUntriedFilteredSteamAppsNR64,
   getXSampleSteamApps,
 } from "../models/steam.app.mocks.js";
 import { ValidDataSources } from "../models/valid.data.sources.js";
@@ -211,366 +210,224 @@ describe("SteamAppsRepository", function () {
     });
   });
 
-  describe(".getSteamWebUntriedFilteredSteamApps.", function () {
-    describe("If three steam apps out of eigth match the filters, and the amount of 2 is provided", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+  describe(".getSourceUntriedFilteredSteamApps.", function () {
+    describe("via SteamWeb source", function () {
+      describe("If three steam apps out of eigth match the filters,", function () {
+        describe("and the amount of 2 is provided", function () {
+          beforeAll(async function () {
+            this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        await insertManyApps(
-          this.databaseClient,
-          getThreeSteamwebUntriedFilteredSteamApps(),
-        );
+            const source = ValidDataSources.validDataSources.steamWeb;
 
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+            await insertManyApps(
+              this.databaseClient,
+              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+            );
 
-        this.result = await steamAppsRepo.getSteamWebUntriedFilteredSteamApps(2);
-      });
+            const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
+            this.result = await steamAppsRepo.getSourceUntriedFilteredSteamApps(
+              2,
+              source,
+            );
+          });
 
-      it("the result has two games", function () {
-        expect(this.result.length).toBe(2);
-      });
+          afterAll(function () {
+            this.databaseClient.disconnect();
+          });
 
-      it("the first result is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
+          it("the result has two games", function () {
+            expect(this.result.length).toBe(2);
+          });
 
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].type).toBe("unknown");
-        expect(this.result[0].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-        expect(this.result[0].failedVia).toEqual([]);
-      });
+          it("the first result is an instance of SteamApp", function () {
+            expect(this.result[0]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the second result is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
+          it("the first array has the correct values", function () {
+            expect(this.result[0].appid).toBe(2);
+            expect(this.result[0].type).toBe("unknown");
+            expect(this.result[0].triedVia).toEqual([]);
+          });
 
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-        expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia).toEqual([]);
-        expect(this.result[1].failedVia).toEqual([]);
-      });
-    });
+          it("the second result is an instance of SteamApp", function () {
+            expect(this.result[1]).toBeInstanceOf(SteamApp);
+          });
 
-    describe("If three steam apps out of eigth match the filters, and the amount of 4 is provided", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+          it("the second array has the correct values", function () {
+            expect(this.result[1].appid).toBe(4);
+            expect(this.result[1].type).toBe("unknown");
+            expect(this.result[1].triedVia).toEqual([]);
+          });
+        });
 
-        await insertManyApps(
-          this.databaseClient,
-          getThreeSteamwebUntriedFilteredSteamApps(),
-        );
+        describe("and the amount of 0 is provided", function () {
+          beforeAll(async function () {
+            this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+            const source = ValidDataSources.validDataSources.steamWeb;
 
-        this.result = await steamAppsRepo.getSteamWebUntriedFilteredSteamApps(4);
-      });
+            await insertManyApps(
+              this.databaseClient,
+              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+            );
 
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
+            const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
-      it("the resulting array has a length of 3", function () {
-        expect(this.result.length).toBe(3);
-      });
+            this.result = await steamAppsRepo.getSourceUntriedFilteredSteamApps(
+              0,
+              source,
+            );
+          });
 
-      it("the first result is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
+          afterAll(function () {
+            this.databaseClient.disconnect();
+          });
 
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].type).toBe("unknown");
-        expect(this.result[0].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-        expect(this.result[0].failedVia).toEqual([]);
-      });
+          it("the resulting array has a length of 3", function () {
+            expect(this.result.length).toBe(3);
+          });
 
-      it("the second result is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
+          it("the first result is an instance of SteamApp", function () {
+            expect(this.result[0]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-        expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia).toEqual([]);
-        expect(this.result[1].failedVia).toEqual([]);
-      });
+          it("the first array has the correct values", function () {
+            expect(this.result[0].appid).toBe(2);
+            expect(this.result[0].type).toBe("unknown");
+            expect(this.result[0].triedVia).toEqual([]);
+          });
 
-      it("the third result is an instance of SteamApp", function () {
-        expect(this.result[2]).toBeInstanceOf(SteamApp);
-      });
+          it("the second result is an instance of SteamApp", function () {
+            expect(this.result[1]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the third array has the correct values", function () {
-        expect(this.result[2].appid).toBe(8);
-        expect(this.result[2].name).toBe("Risk of Crane");
-        expect(this.result[2].type).toBe("unknown");
-        expect(this.result[2].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-        expect(this.result[2].failedVia).toEqual([]);
+          it("the second array has the correct values", function () {
+            expect(this.result[1].appid).toBe(4);
+            expect(this.result[1].type).toBe("unknown");
+            expect(this.result[1].triedVia).toEqual([]);
+          });
+
+          it("the third result is an instance of SteamApp", function () {
+            expect(this.result[2]).toBeInstanceOf(SteamApp);
+          });
+
+          it("the third array has the correct values", function () {
+            expect(this.result[2].appid).toBe(7);
+            expect(this.result[2].type).toBe("unknown");
+            expect(this.result[2].triedVia).toEqual([]);
+          });
+        });
       });
     });
 
-    describe("If an amount of '0' is provided,", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+    describe("via Steamcharts source", function () {
+      describe("If three steam apps out of eigth match the filters,", function () {
+        describe("and the amount of 2 is provided", function () {
+          beforeAll(async function () {
+            this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        await insertManyApps(
-          this.databaseClient,
-          getThreeSteamwebUntriedFilteredSteamApps(),
-        );
+            const source = ValidDataSources.validDataSources.steamcharts;
 
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+            await insertManyApps(
+              this.databaseClient,
+              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+            );
 
-        this.result = await steamAppsRepo.getSteamWebUntriedFilteredSteamApps(0);
-      });
+            const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
+            this.result = await steamAppsRepo.getSourceUntriedFilteredSteamApps(
+              2,
+              source,
+            );
+          });
 
-      it("the resulting array has a length of 3", function () {
-        expect(this.result.length).toBe(3);
-      });
+          afterAll(function () {
+            this.databaseClient.disconnect();
+          });
 
-      it("the first result is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
+          it("the result has two games", function () {
+            expect(this.result.length).toBe(2);
+          });
 
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].type).toBe("unknown");
-        expect(this.result[0].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-        expect(this.result[0].failedVia).toEqual([]);
-      });
+          it("the first result is an instance of SteamApp", function () {
+            expect(this.result[0]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the second result is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
+          it("the first array has the correct values", function () {
+            expect(this.result[0].appid).toBe(2);
+            expect(this.result[0].type).toBe("unknown");
+            expect(this.result[0].triedVia).toEqual([]);
+          });
 
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-        expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia).toEqual([]);
-        expect(this.result[1].failedVia).toEqual([]);
-      });
+          it("the second result is an instance of SteamApp", function () {
+            expect(this.result[1]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the third result is an instance of SteamApp", function () {
-        expect(this.result[2]).toBeInstanceOf(SteamApp);
-      });
+          it("the second array has the correct values", function () {
+            expect(this.result[1].appid).toBe(4);
+            expect(this.result[1].type).toBe("unknown");
+            expect(this.result[1].triedVia).toEqual([]);
+          });
+        });
 
-      it("the third array has the correct values", function () {
-        expect(this.result[2].appid).toBe(8);
-        expect(this.result[2].name).toBe("Risk of Crane");
-        expect(this.result[2].type).toBe("unknown");
-        expect(this.result[2].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-        expect(this.result[2].failedVia).toEqual([]);
-      });
-    });
-  });
+        describe("and the amount of 0 is provided", function () {
+          beforeAll(async function () {
+            this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-  describe(".getSteamchartsUntriedFilteredSteamApps.", function () {
-    describe("If three steam apps out of ten match the filters, and the amount of 2 is provided", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+            const source = ValidDataSources.validDataSources.steamcharts;
 
-        await insertManyApps(
-          this.databaseClient,
-          getThreeSteamchartsUntriedFilteredSteamApps(),
-        );
+            await insertManyApps(
+              this.databaseClient,
+              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+            );
 
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+            const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
-        this.result = await steamAppsRepo.getSteamchartsUntriedFilteredSteamApps(2);
-      });
+            this.result = await steamAppsRepo.getSourceUntriedFilteredSteamApps(
+              0,
+              source,
+            );
+          });
 
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
+          afterAll(function () {
+            this.databaseClient.disconnect();
+          });
 
-      it("the result has two games", function () {
-        expect(this.result.length).toBe(2);
-      });
+          it("the resulting array has a length of 3", function () {
+            expect(this.result.length).toBe(3);
+          });
 
-      it("the first result is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
+          it("the first result is an instance of SteamApp", function () {
+            expect(this.result[0]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].type).toBe("unknown");
-        expect(this.result[0].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[0].failedVia).toEqual([]);
-      });
+          it("the first array has the correct values", function () {
+            expect(this.result[0].appid).toBe(2);
+            expect(this.result[0].type).toBe("unknown");
+            expect(this.result[0].triedVia).toEqual([]);
+          });
 
-      it("the second result is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
+          it("the second result is an instance of SteamApp", function () {
+            expect(this.result[1]).toBeInstanceOf(SteamApp);
+          });
 
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-        expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[1].failedVia).toEqual([]);
-      });
-    });
+          it("the second array has the correct values", function () {
+            expect(this.result[1].appid).toBe(4);
+            expect(this.result[1].type).toBe("unknown");
+            expect(this.result[1].triedVia).toEqual([]);
+          });
 
-    describe("If three steam apps out of ten match the filters, and the amount of 4 is provided", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+          it("the third result is an instance of SteamApp", function () {
+            expect(this.result[2]).toBeInstanceOf(SteamApp);
+          });
 
-        await insertManyApps(
-          this.databaseClient,
-          getThreeSteamchartsUntriedFilteredSteamApps(),
-        );
-
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
-
-        this.result = await steamAppsRepo.getSteamchartsUntriedFilteredSteamApps(4);
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("the resulting array has a length of 3", function () {
-        expect(this.result.length).toBe(3);
-      });
-
-      it("the first result is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].type).toBe("unknown");
-        expect(this.result[0].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[0].failedVia).toEqual([]);
-      });
-
-      it("the second result is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-        expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[1].failedVia).toEqual([]);
-      });
-
-      it("the third result is an instance of SteamApp", function () {
-        expect(this.result[2]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the third array has the correct values", function () {
-        expect(this.result[2].appid).toBe(3);
-        expect(this.result[2].name).toBe("Risk of Gain");
-        expect(this.result[2].type).toBe("unknown");
-        expect(this.result[2].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[2].failedVia).toEqual([
-          ValidDataSources.validDataSources.steamWeb,
-        ]);
-      });
-    });
-
-    describe("If '0' amount is provided,", function () {
-      beforeAll(async function () {
-        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
-
-        await insertManyApps(
-          this.databaseClient,
-          getThreeSteamchartsUntriedFilteredSteamApps(),
-        );
-
-        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
-
-        this.result = await steamAppsRepo.getSteamchartsUntriedFilteredSteamApps(0);
-      });
-
-      afterAll(function () {
-        this.databaseClient.disconnect();
-      });
-
-      it("the resulting array has a length of 3", function () {
-        expect(this.result.length).toBe(3);
-      });
-
-      it("the first result is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the first array has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Strain");
-        expect(this.result[0].type).toBe("unknown");
-        expect(this.result[0].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[0].failedVia).toEqual([]);
-      });
-
-      it("the second result is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the second array has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
-        expect(this.result[1].name).toBe("Risk of Stain");
-        expect(this.result[1].type).toBe("unknown");
-        expect(this.result[1].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[1].failedVia).toEqual([]);
-      });
-
-      it("the third result is an instance of SteamApp", function () {
-        expect(this.result[2]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the third array has the correct values", function () {
-        expect(this.result[2].appid).toBe(3);
-        expect(this.result[2].name).toBe("Risk of Gain");
-        expect(this.result[2].type).toBe("unknown");
-        expect(this.result[2].triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
-        expect(this.result[2].failedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamWeb,
-        );
+          it("the third array has the correct values", function () {
+            expect(this.result[2].appid).toBe(7);
+            expect(this.result[2].type).toBe("unknown");
+            expect(this.result[2].triedVia).toEqual([]);
+          });
+        });
       });
     });
   });

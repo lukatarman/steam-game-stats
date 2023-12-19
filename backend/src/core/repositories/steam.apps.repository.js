@@ -42,34 +42,13 @@ export class SteamAppsRepository {
     );
   }
 
-  async getSteamWebUntriedFilteredSteamApps(amount) {
-    const response = await this.#steamAppsCollection
+  async getSourceUntriedFilteredSteamApps(amount, source) {
+    const response = await this.#dbClient
+      .get("steam_apps")
       .find({
         $and: [
           { type: SteamApp.validTypes.unknown },
-          { triedVia: { $ne: ValidDataSources.validDataSources.steamWeb } },
-          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
-          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
-          { name: { $not: { $regex: /demo$/, $options: "i" } } },
-        ],
-      })
-      .limit(amount)
-      .toArray();
-
-    return SteamApp.manyFromDbEntries(response);
-  }
-
-  async getSteamchartsUntriedFilteredSteamApps(amount) {
-    const response = await this.#steamAppsCollection
-      .find({
-        $and: [
-          { type: SteamApp.validTypes.unknown },
-          {
-            $and: [
-              { triedVia: { $ne: ValidDataSources.validDataSources.steamcharts } },
-              { triedVia: ValidDataSources.validDataSources.steamWeb },
-            ],
-          },
+          { triedVia: { $ne: source } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },

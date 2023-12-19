@@ -7,13 +7,31 @@ export const getXSampleSteamApps = (amount) => {
   );
 };
 
-export const getThreeSteamwebUntriedFilteredSteamApps = () => {
+export const getThreeSourceUntriedFilteredSteamAppsNR64 = (amount, source) => {
+  return Array.from({ length: amount }, (x, index) =>
+    SteamApp.oneFromSteamApi({ appid: index + 1, name: `Game #${index + 1}` }),
+  ).map((app, index) => {
+    if (isSecondFourthOrSeventhValue(index)) return app;
+
+    app.triedVia.push(source);
+    return app;
+  });
+};
+
+const isSecondFourthOrSeventhValue = (index) => {
+  if (index === 1) return true;
+  if (index === 3) return true;
+  if (index === 6) return true;
+  return false;
+};
+
+export const getThreeSteamwebUntriedFilteredSteamApps = (source) => {
   return [
     {
       appid: 1,
       name: "Risk of Strain",
       type: "unknown",
-      triedVia: [ValidDataSources.validDataSources.steamcharts],
+      triedVia: [source],
       failedVia: [],
     },
     {
@@ -27,49 +45,47 @@ export const getThreeSteamwebUntriedFilteredSteamApps = () => {
       appid: 3,
       name: "Risk of Sprain",
       type: "game",
-      triedVia: [ValidDataSources.validDataSources.steamcharts],
+      triedVia: [source],
       failedVia: [],
     },
     {
       appid: 4,
       name: "Risk of Rain",
       type: "unknown",
-      triedVia: [
-        ValidDataSources.validDataSources.steamcharts,
-        ValidDataSources.validDataSources.steamWeb,
-      ],
+      triedVia: [],
       failedVia: [ValidDataSources.validDataSources.steamWeb],
     },
     {
       appid: 5,
       name: "Risk of Train Soundtrack",
       type: "unknown",
-      triedVia: [ValidDataSources.validDataSources.steamcharts],
+      triedVia: [source],
       failedVia: [],
     },
     {
       appid: 6,
       name: "Risk of Cane DLC",
       type: "unknown",
-      triedVia: [ValidDataSources.validDataSources.steamcharts],
+      triedVia: [source],
       failedVia: [],
     },
     {
       appid: 7,
       name: "Risk of Plain Demo",
       type: "unknown",
-      triedVia: [ValidDataSources.validDataSources.steamcharts],
+      triedVia: [],
       failedVia: [],
     },
     {
       appid: 8,
       name: "Risk of Crane",
       type: "unknown",
-      triedVia: [ValidDataSources.validDataSources.steamcharts],
+      triedVia: [source],
       failedVia: [],
     },
   ];
 };
+
 export const getThreeSteamchartsUntriedFilteredSteamApps = () => {
   return [
     {

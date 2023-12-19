@@ -38,8 +38,9 @@ export class GameIdentifier {
   tryIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
 
-    const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
+    const steamApps = await this.#steamAppsRepository.getSourceUntriedFilteredSteamApps(
       this.#options.batchSize,
+      source,
     );
 
     if (this.#steamAppsIsEmpty(steamApps)) return;
@@ -102,10 +103,10 @@ export class GameIdentifier {
 
     this.#logger.debugc("identifying games via steamcharts web");
 
-    const steamApps =
-      await this.#steamAppsRepository.getSteamchartsUntriedFilteredSteamApps(
-        this.#options.batchSize,
-      );
+    const steamApps = await this.#steamAppsRepository.getSourceUntriedFilteredSteamApps(
+      this.#options.batchSize,
+      source,
+    );
 
     if (this.#steamAppsIsEmpty(steamApps)) return;
 
