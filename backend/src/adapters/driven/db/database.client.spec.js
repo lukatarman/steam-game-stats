@@ -126,7 +126,7 @@ describe("DatabaseClient", function () {
       });
 
       it("the result has two games", function () {
-        expect(this.result.length).toBe(2);
+        expect(this.result).toHaveSize(2);
       });
 
       it("the first aray has the correct values", function () {
@@ -139,6 +139,17 @@ describe("DatabaseClient", function () {
         expect(this.result[1].name).toBe("My Name");
       });
     });
+  });
+
+  describe(".getCount returns the number of documents in a collection", function () {
+    describe("Given one document is in the collection", function () {
+      it("the count will be one", async function () {
+        const dbClient = await initiateInMemoryDatabase(["games"]);
+        await dbClient.insertOne("games", { id: 1, name: "My Game" });
+        expect(await dbClient.getCount("games")).toBe(1);
+      });
+    });
+
   });
 
   describe(".get selects the provided collection.", function () {

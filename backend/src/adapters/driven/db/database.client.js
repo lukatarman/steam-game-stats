@@ -67,6 +67,10 @@ export class DatabaseClient {
     return await this.#collections.get(collectionName).find(filter).toArray();
   }
 
+  async getCount(collectionName, query = {}) {
+    return await this.#collections.get(collectionName).countDocuments(query);
+  }
+
   get(collectionName) {
     return this.#collections.get(collectionName);
   }
