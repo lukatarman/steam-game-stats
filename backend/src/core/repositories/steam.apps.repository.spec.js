@@ -10,7 +10,96 @@ import { initiateInMemoryDatabase } from "../../adapters/driven/db/in.memory.dat
 import { SteamAppsRepository } from "./steam.apps.repository.js";
 
 describe("SteamAppsRepository", function () {
-  describe(".getAllSteamApps gets all documents from the database as instances of SteamApp", function () {
+  describe(".insertManyIfNotExist inserts all the non existing steam apps from a given array", function () {
+    describe("Given no documents", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the operation should throw an error", async function () {
+        await expectAsync(
+          new SteamAppsRepository(this.databaseClient).insertManyIfNotExist(),
+        ).toBeRejected();
+      });
+    });
+
+    describe("Given two steam apps, if one steam app already exist in the database", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+        this.steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+
+        this.newDataset = getXSampleSteamApps(2);
+        const existingDataSet = [this.newDataset[0]];
+        await insertManyApps(this.databaseClient, existingDataSet);
+
+        await this.steamAppsRepo.insertManyIfNotExist(this.newDataset);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the new steam app will be added", async function () {
+        const steamApp = await this.steamAppsRepo.getSteamAppById(
+          this.newDataset[1].appid,
+        );
+        expect(steamApp.appid).toBe(this.newDataset[1].appid);
+      });
+
+      it("a total of 2 steam apps will be in the database", async function () {
+        const allSteamApps = await this.steamAppsRepo.getAllSteamApps();
+        expect(allSteamApps).toHaveSize(2);
+      });
+    });
+
+    describe("Given two steam apps, if both steam apps already exist in the database", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+        this.steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+
+        this.newDataset = getXSampleSteamApps(2);
+        await insertManyApps(this.databaseClient, getXSampleSteamApps(2));
+
+        await this.steamAppsRepo.insertManyIfNotExist(this.newDataset);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("no steam apps will be inserted", async function () {
+        const count = await this.steamAppsRepo.getSteamAppsCount();
+        expect(count).toBe(2);
+      });
+    });
+
+    describe("Given 500 steam apps, if 250 steam apps already exist in the database", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+        this.steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+
+        this.newDataset = getXSampleSteamApps(500);
+        await insertManyApps(this.databaseClient, getXSampleSteamApps(250));
+
+        await this.steamAppsRepo.insertManyIfNotExist(this.newDataset);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("a total of 500 steam apps will be in the database", async function () {
+        const count = await this.steamAppsRepo.getSteamAppsCount();
+        expect(count).toBe(500);
+      });
+    });
+  });
+
+  describe(".getAllSteamApps gets all steam apps from the database as instances of SteamApp", function () {
     describe("If two steam apps exist in the collection", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
