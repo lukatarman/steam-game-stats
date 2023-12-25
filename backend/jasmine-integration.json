@@ -1,6 +1,6 @@
 {
-  "spec_dir": "src/core/repositories",
-  "spec_files": ["**/*spec.js"],
+  "spec_dir": "src",
+  "spec_files": ["core/repositories/**/*spec.js", "adapters/driven/db/**/*spec.js"],
   "helpers": ["helpers/**/*.?(m)js"],
   "env": {
     "stopSpecOnExpectationFailure": false,
