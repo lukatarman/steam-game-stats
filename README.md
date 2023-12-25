@@ -7,6 +7,7 @@
 1. [Running the Application](#running-the-application)
 1. [Debugging](#debugging)
 1. [Project Workflow](docs/project-workflow.md)
+1. [Database Management](docs/database-management.md)
 
 ## Project Details
 
