@@ -31,6 +31,12 @@ export const config = {
     updateIntervalDelay: hoursToMs(Number(process.env.FEATURES_UPDATE_INTERVAL_DELAY)),
     globalIterationDelay: Number(process.env.RUNNER_GLOBAL_ITERATION_DELAY),
   },
+  featureToggles: {
+    steamAppsAggregator: {
+      useCollectSteamAppsDiffOnDbLayer:
+        process.env.FEATURE_TOGGLE_USE_COLLECT_STEAM_APPS_DIFF_ON_DB_LAYER === "true",
+    },
+  },
   runner: {
     options: {
       delayFn: delay,

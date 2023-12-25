@@ -65,8 +65,13 @@ async function main() {
   const webServer = new WebServer(gameQueriesRouter, logger);
   await webServer.start();
 
+  const steamAppsAggregatorRunnable = config.featureToggles.steamAppsAggregator
+    .useCollectSteamAppsDiffOnDbLayer
+    ? { func: steamAppsAggregator.collectSteamAppsDiffOnDbLayer }
+    : { func: steamAppsAggregator.collectSteamApps };
+
   const runnables = [
-    { func: steamAppsAggregator.collectSteamApps },
+    steamAppsAggregatorRunnable,
     { func: gameIdentifier.tryViaSteamWeb },
     { func: gameIdentifier.tryViaSteamchartsWeb },
     { func: gameIdentifier.updateGamesWithoutDetails },
