@@ -168,6 +168,43 @@ describe("SteamAppsAggregator", function () {
         });
       });
     });
+
+    describe("given data is collected n-th (n > 1) time", function () {
+      beforeAll(async function () {
+        jasmine.clock().install();
+        jasmine.clock().mockDate(baseTime);
+
+        this.updateTimestampsRepo =
+          createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
+        this.steamAppsRepo = createSteamAppsRepositoryMock(smallestGamesMock);
+
+        await new SteamAppsAggregator(
+          createSteamMock(gamesMock),
+          this.updateTimestampsRepo,
+          this.steamAppsRepo,
+          createLoggerMock(),
+          {
+            updateIntervalDelay: 100,
+          },
+        ).collectSteamAppsDiffOnDbLayer();
+      });
+
+      afterAll(function () {
+        jasmine.clock().uninstall();
+      });
+
+      it("then the new steam apps are stored in the database and the existing steam apps are left unchanged", function () {
+        expect(this.steamAppsRepo.insertManyIfNotExist).toHaveBeenCalledOnceWith(
+          gamesMock,
+        );
+      });
+
+      it("then an update timestamp is recorded", function () {
+        const newUpdateTimestamp =
+          this.updateTimestampsRepo.insertOneSteamAppsUpdateTimestamp.calls.argsFor(0)[0];
+        expect(newUpdateTimestamp.toString()).toBe(baseTime.toString());
+      });
+    });
   });
 });
 
@@ -186,6 +223,7 @@ function createSteamAppsUpdateTimestampsRepositoryMock(updateTs) {
 
 function createSteamAppsRepositoryMock(steamApps) {
   return jasmine.createSpyObj("DatabaseClient", {
+    insertManyIfNotExist: Promise.resolve(undefined),
     insertManySteamApps: Promise.resolve(undefined),
     getAllSteamApps: Promise.resolve(steamApps),
   });

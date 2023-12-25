@@ -66,4 +66,26 @@ export class SteamAppsAggregator {
       new Date(),
     );
   }
+
+  collectSteamAppsDiffOnDbLayer = async () => {
+    const lastUpdate =
+      await this.#steamAppsUpdateTimestampsRepository.getLastSteamAppsUpdateTimestamp();
+    if (!lastUpdate) {
+      await this.#collectFirstTime();
+      return;
+    }
+
+    const x = this.#options.updateIntervalDelay;
+    if (moreThanXhoursPassedSince(x, lastUpdate.updatedOn))
+      await this.#collectAndPersist();
+  };
+
+  async #collectAndPersist() {
+    this.#logger.debugc("collecting steam apps");
+    const steamApps = await this.#steamClient.getAppList();
+    await this.#steamAppsRepository.insertManyIfNotExist(steamApps);
+    await this.#steamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
+      new Date(),
+    );
+  }
 }
