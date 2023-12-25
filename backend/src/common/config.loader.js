@@ -33,6 +33,9 @@ export const config = {
   },
   featureToggles: {
     steamAppsAggregator: {
+      /**
+       * @TODO remove feature toggle - https://github.com/lukatarman/steam-game-stats/issues/209
+       */
       useCollectSteamAppsDiffOnDbLayer:
         process.env.FEATURE_TOGGLE_USE_COLLECT_STEAM_APPS_DIFF_ON_DB_LAYER === "true",
     },

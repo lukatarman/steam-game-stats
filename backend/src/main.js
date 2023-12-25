@@ -65,6 +65,9 @@ async function main() {
   const webServer = new WebServer(gameQueriesRouter, logger);
   await webServer.start();
 
+  /**
+   * @TODO remove feature toggle - https://github.com/lukatarman/steam-game-stats/issues/209
+   */
   const steamAppsAggregatorRunnable = config.featureToggles.steamAppsAggregator
     .useCollectSteamAppsDiffOnDbLayer
     ? { func: steamAppsAggregator.collectSteamAppsDiffOnDbLayer }
