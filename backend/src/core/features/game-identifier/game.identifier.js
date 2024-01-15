@@ -6,8 +6,10 @@ import {
   updateMissingDetails,
   updateMissingReleaseDates,
   recordAttemptsViaSteamDb,
-} from "../../services/game.service.js";
-import { delay } from "../../../common/time.utils.js";
+  recordHtmlAttempts,
+  getGames,
+} from "./services/game.service.js";
+import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { ValidDataSources } from "../../models/valid.data.sources.js";
 
@@ -72,7 +74,7 @@ export class GameIdentifier {
     return [games, updatedSteamApps];
   }
 
-  async #getSteamAppsHtmlDetailsPagesNR64(steamApps) {
+  async #getSteamAppsHtmlDetailsPagesNR64(steamApps, source) {
     const detailsPages = [];
 
     for (let steamApp of steamApps) {
