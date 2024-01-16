@@ -9,7 +9,7 @@ import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
 describe("game.js", function () {
   describe("Game", function () {
-    fdescribe(".copy", function () {
+    describe(".copy", function () {
       beforeAll(function () {
         const game = getOneGameWithFullDetails();
         this.result = game.copy();

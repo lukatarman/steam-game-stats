@@ -1,16 +1,10 @@
 import { GameIdentifier } from "./game.identifier.js";
-import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
-import { glitchhikersSoundtrackHtmlDetailsPage } from "../../../../assets/steam-details-pages/glitchhikers.soundtrack.html.details.page.js";
-import { eldenRingHttpDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { SteamApp } from "../../models/steam.app.js";
 import {
-  discoverGamesFromSteamWeb,
   getGames,
-  identifyGames,
   recordAttemptsViaSteamDb,
   recordHtmlAttempts,
   updateMissingReleaseDates,
-  updateTypeSideEffectFree,
 } from "../../services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../../common/logger.mock.js";

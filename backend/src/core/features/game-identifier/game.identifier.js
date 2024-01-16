@@ -1,13 +1,12 @@
 import {
-  discoverGamesFromSteamWeb,
-  updateTypeSideEffectFree,
-  identifyGames,
-  assignType,
   updateMissingDetails,
   updateMissingReleaseDates,
   recordAttemptsViaSteamDb,
   recordHtmlAttempts,
   getGames,
+  getIds,
+  recordAttemptsViaSource,
+  updateGamesMissingDetails,
 } from "./services/game.service.js";
 import { delay } from "../../utils/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";

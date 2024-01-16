@@ -65,42 +65,6 @@ export function getSteamchartsAppType(page) {
   return SteamApp.validTypes.game;
 }
 
-export function getSteamAppType(httpDetailsPage) {
-  const { document } = parseHTML(httpDetailsPage);
-
-  const breadcrumbElement = document.querySelector(".blockbg");
-
-  if (!breadcrumbElement) return SteamApp.validTypes.unknown;
-
-  const breadcrumbText = breadcrumbElement.children[0].textContent;
-
-  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
-    return SteamApp.validTypes.unknown;
-
-  for (let child of breadcrumbElement.children) {
-    if (child.textContent === "Downloadable Content")
-      return SteamApp.validTypes.downloadableContent;
-  }
-
-  return SteamApp.validTypes.game;
-}
-
-export function discoverGamesFromSteamWeb(steamApps, htmlDetailsPages) {
-  return htmlDetailsPages
-    .map((page, i) => {
-      if (getSteamAppType(page) === SteamApp.validTypes.game) {
-        return Game.fromSteamApp(
-          steamApps[i],
-          getReleaseDate(page),
-          getDevelopers(page),
-          getGenres(page),
-          getGameDescription(page),
-        );
-      }
-    })
-    .filter((game) => !!game);
-}
-
 export function getReleaseDate(page) {
   const { document } = parseHTML(page);
 
@@ -145,34 +109,23 @@ export function getGameDescription(page) {
   return description.textContent.trim();
 }
 
-export function updateTypeSideEffectFree(steamApps, htmlDetailsPages) {
-  return htmlDetailsPages.map((page, i) => {
-    const copy = steamApps[i].copy();
-    const appType = getSteamAppType(page);
+export function getIds(games) {
+  return games.map((game) => game.id);
+}
 
-    copy.triedViaSteamWeb();
-    if (page === "") copy.failedViaSteamWeb();
+export function recordAttemptsViaSource(steamApps, htmlDetailsPages, source) {
+  return steamApps.map((app) => {
+    const appCopy = app.copy();
+    appCopy.triedIfGameViaSource(source);
 
-    copy.appType = appType;
+    const currentPage = htmlDetailsPages.find((page) => page.id == app.appid);
+    if (currentPage.page === "") appCopy.htmlPageFailedViaSource(source);
 
-    return copy;
+    return appCopy;
   });
 }
 
-export function identifyGames(updatedSteamApps) {
-  const games = updatedSteamApps
-    .filter((steamApp) => steamApp.isGame())
-    .map((steamApp) => Game.fromSteamcharts(steamApp));
-
-  return games;
-}
-
-export function assignType(result, steamApp) {
-  if (result) steamApp.appType = SteamApp.validTypes.game;
-  return steamApp;
-}
-
-export function recordAttemptsViaSteamDb(steamApps, htmlDetailsPages) {
+export function recordAttemptsViaSteamDb(steamApps, htmlDetailsPages, source) {
   return steamApps.map((app) => {
     const appCopy = app.copy();
     appCopy.triedViaSteamDb();
@@ -181,6 +134,20 @@ export function recordAttemptsViaSteamDb(steamApps, htmlDetailsPages) {
     if (currentPage.page === "") appCopy.failedViaSteamDb();
 
     return appCopy;
+  });
+}
+
+export function updateGamesMissingDetails(games, htmlDetailsPages) {
+  return htmlDetailsPages.map(({ page }, i) => {
+    const gameCopy = games[i].copy();
+
+    gameCopy.updateGameDetails(
+      getSteamDbDevelopers(page),
+      getSteamDbGenres(page),
+      getSteamDbDescription(page),
+    );
+
+    return gameCopy;
   });
 }
 
