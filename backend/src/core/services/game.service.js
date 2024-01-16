@@ -125,18 +125,6 @@ export function recordAttemptsViaSource(steamApps, htmlDetailsPages, source) {
   });
 }
 
-export function recordAttemptsViaSteamDb(steamApps, htmlDetailsPages, source) {
-  return steamApps.map((app) => {
-    const appCopy = app.copy();
-    appCopy.triedViaSteamDb();
-
-    const currentPage = htmlDetailsPages.find((page) => page.id == app.appid);
-    if (currentPage.page === "") appCopy.failedViaSteamDb();
-
-    return appCopy;
-  });
-}
-
 export function updateGamesMissingDetails(games, htmlDetailsPages) {
   return htmlDetailsPages.map(({ page }, i) => {
     const gameCopy = games[i].copy();
@@ -148,16 +136,6 @@ export function updateGamesMissingDetails(games, htmlDetailsPages) {
     );
 
     return gameCopy;
-  });
-}
-
-export function updateMissingDetails(games, htmlDetailsPages) {
-  htmlDetailsPages.forEach(({ page }, i) => {
-    games[i].updateGameDetails(
-      getSteamDbDevelopers(page),
-      getSteamDbGenres(page),
-      getSteamDbDescription(page),
-    );
   });
 }
 
@@ -200,8 +178,12 @@ export function getSteamDbDescription(page) {
 }
 
 export function updateMissingReleaseDates(games, htmlDetailsPages) {
-  games.forEach((game, i) => {
-    game.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i].page));
+  return games.map((game, i) => {
+    const gameCopy = game.copy();
+
+    gameCopy.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i].page));
+
+    return gameCopy;
   });
 }
 

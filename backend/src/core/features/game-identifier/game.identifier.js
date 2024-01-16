@@ -1,7 +1,5 @@
 import {
-  updateMissingDetails,
   updateMissingReleaseDates,
-  recordAttemptsViaSteamDb,
   recordHtmlAttempts,
   getGames,
   getIds,
@@ -61,10 +59,7 @@ export class GameIdentifier {
   }
 
   async #identifyTypes(steamApps, source) {
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPagesNR64(
-      steamApps,
-      source,
-    );
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
 
     const updatedSteamApps = recordHtmlAttempts(steamApps, htmlDetailsPages, source);
 
@@ -73,7 +68,7 @@ export class GameIdentifier {
     return [games, updatedSteamApps];
   }
 
-  async #getSteamAppsHtmlDetailsPagesNR64(steamApps, source) {
+  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
     const detailsPages = [];
 
     for (let steamApp of steamApps) {
@@ -104,34 +99,48 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.length === 0) {
-      this.#logger.debugc(
-        `no games without details in db, retrying in ${
-          this.#options.globalIterationDelay
-        } ms`,
-      );
-      return;
-    }
+    if (this.#gamesIsEmpty(games, "details")) return;
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
-      games.map((game) => game.id),
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(getIds(games));
+
+    const [updatedGames, updatedSteamApps] = await this.#updateMissingDetails(
+      games,
+      steamApps,
     );
 
-    const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
-
-    const updatedApps = recordAttemptsViaSteamDb(steamApps, htmlDetailsPages);
-
-    updateMissingDetails(games, htmlDetailsPages);
-
-    this.#persistMissingProperties(games, updatedApps);
+    this.#persistUpdatedDetails(updatedGames, updatedSteamApps);
   };
 
-  async #getSteamDbHtmlDetailsPages(games) {
+  #gamesIsEmpty = (games, message) => {
+    if (games.length === 0) return true;
+
+    this.#logger.debugc(
+      `no games without ${message} in db, retrying in ${
+        this.#options.globalIterationDelay
+      } ms`,
+    );
+
+    return false;
+  };
+
+  async #updateMissingDetails(games, steamApps) {
+    const source = ValidDataSources.validDataSources.steamDb;
+
+    const htmlDetailsPages = await this.#getGamesHtmlDetailsPages(games, source);
+
+    const updatedSteamApps = recordAttemptsViaSource(steamApps, htmlDetailsPages, source);
+
+    const updatedGames = updateGamesMissingDetails(games, htmlDetailsPages);
+
+    return [updatedGames, updatedSteamApps];
+  }
+
+  async #getGamesHtmlDetailsPages(games, source) {
     const htmlDetailsPages = [];
 
     for (let game of games) {
       // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSteamDbHtmlDetailsPage(game.id);
+      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(game.id, source);
       htmlDetailsPages.push({ page: htmlPage, id: game.id });
 
       await delay(this.#options.unitDelay);
@@ -140,11 +149,9 @@ export class GameIdentifier {
     return htmlDetailsPages;
   }
 
-  async #persistMissingProperties(games, appsWithoutPages) {
-    if (appsWithoutPages.length !== 0) {
-      this.#logger.debugc(`persisting ${appsWithoutPages.length} apps without pages`);
-      this.#steamAppsRepository.updateSteamAppsById(appsWithoutPages);
-    }
+  async #persistUpdatedDetails(games, updatedApps) {
+    this.#logger.debugc(`persisting ${updatedApps.length} apps without pages`);
+    this.#steamAppsRepository.updateSteamAppsById(updatedApps);
 
     this.#logger.debugc(`persisting ${games.length} games with updated details`);
     await this.#gamesRepository.updateGameDetails(games);
@@ -157,36 +164,35 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.length === 0) {
-      this.#logger.debugc(
-        `no games without release dates in db, retrying in ${
-          this.#options.iterationDelay
-        } ms`,
-      );
-      return;
-    }
+    if (this.#gamesIsEmpty(games, "release dates")) return;
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
-      games.map((game) => game.id),
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(getIds(games));
+
+    const [updatedGames, updatedSteamApps] = await this.#updateMissingReleaseDates(
+      games,
+      steamApps,
     );
 
-    const htmlDetailsPages = await this.#getSteamDbHtmlDetailsPages(games);
-
-    const updatedApps = recordAttemptsViaSteamDb(steamApps, htmlDetailsPages);
-
-    updateMissingReleaseDates(games, htmlDetailsPages);
-
-    this.#persistReleaseDates(games, updatedApps);
+    this.#persistReleaseDates(updatedGames, updatedSteamApps);
   };
 
-  #persistReleaseDates = async (games, appsWithoutPages) => {
-    if (appsWithoutPages.length !== 0) {
-      this.#logger.debugc(`persisting ${appsWithoutPages.length} apps without pages`);
-      this.#steamAppsRepository.updateSteamAppsById(appsWithoutPages);
-    }
+  async #updateMissingReleaseDates(games, steamApps) {
+    const source = ValidDataSources.validDataSources.steamDb;
+
+    const htmlDetailsPages = await this.#getGamesHtmlDetailsPages(games, source);
+
+    const updatedSteamApps = recordAttemptsViaSource(steamApps, htmlDetailsPages, source);
+
+    const updatedGames = updateMissingReleaseDates(games, htmlDetailsPages);
+
+    return [updatedGames, updatedSteamApps];
+  }
+
+  async #persistReleaseDates(games, steamApps) {
+    this.#logger.debugc(`persisting ${steamApps.length} apps without pages`);
+    this.#steamAppsRepository.updateSteamAppsById(steamApps);
 
     this.#logger.debugc(`persisting ${games.length} games with updated release dates`);
-
     await this.#gamesRepository.updateReleaseDates(games);
-  };
+  }
 }

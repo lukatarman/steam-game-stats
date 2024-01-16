@@ -1,5 +1,3 @@
-import { ValidDataSources } from "./valid.data.sources.js";
-
 export class SteamApp {
   appid;
   name;
@@ -29,30 +27,6 @@ export class SteamApp {
 
   htmlPageFailedViaSource(source) {
     this.failedVia.push(source);
-  }
-
-  triedViaSteamWeb() {
-    this.triedVia.push(ValidDataSources.validDataSources.steamWeb);
-  }
-
-  triedViaSteamchartsWeb() {
-    this.triedVia.push(ValidDataSources.validDataSources.steamcharts);
-  }
-
-  triedViaSteamDb() {
-    this.triedVia.push(ValidDataSources.validDataSources.steamDb);
-  }
-
-  failedViaSteamWeb() {
-    this.failedVia.push(ValidDataSources.validDataSources.steamWeb);
-  }
-
-  failedViaSteamchartsWeb() {
-    this.failedVia.push(ValidDataSources.validDataSources.steamcharts);
-  }
-
-  failedViaSteamDb() {
-    this.failedVia.push(ValidDataSources.validDataSources.steamDb);
   }
 
   isGame() {

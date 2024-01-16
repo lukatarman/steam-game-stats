@@ -3,19 +3,18 @@ import {
   getDevelopers,
   getGenres,
   getGameDescription,
-  updateMissingDetails,
   getSteamDbReleaseDate,
   getSteamDbDevelopers,
   getSteamDbGenres,
   getSteamDbDescription,
   updateMissingReleaseDates,
-  recordAttemptsViaSteamDb,
   recordHtmlAttempts,
   getGames,
   getSteamWebAppType,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
   getSteamchartsAppType,
+  getIds,
 } from "./game.service.js";
 import { animaddicts2gameHtmlDetailsPage } from "../../../../assets/steam-details-pages/animaddicts.2.game.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/feartress.game.html.details.page.js";
@@ -31,7 +30,10 @@ import { ValidDataSources } from "../../../models/valid.data.sources.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
-import { getXsteamchartsInstantiatedGames } from "../../../models/game.mocks.js";
+import {
+  getXGamesWithoutDetails,
+  getXsteamchartsInstantiatedGames,
+} from "../../../models/game.mocks.js";
 import { createHtmlDetailsPages } from "../../../../assets/html.details.pages.mock.js";
 import { getXSampleSteamApps } from "../../../models/steam.app.mocks.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
@@ -46,6 +48,8 @@ describe("game.service.js", () => {
         const source = ValidDataSources.validDataSources.steamDb;
 
         this.result = recordHtmlAttempts(apps, pages, source);
+
+        apps[0].appid = 5;
       });
 
       it("the first attempt is correctly recorded", function () {
@@ -62,6 +66,10 @@ describe("game.service.js", () => {
         expect(this.result[1].failedVia).toEqual([
           ValidDataSources.validDataSources.steamDb,
         ]);
+      });
+
+      it("the resulting steam app is a copy", function () {
+        expect(this.result[0].appid).toBe(1);
       });
     });
   });
@@ -329,124 +337,92 @@ describe("game.service.js", () => {
     });
   });
 
-  describe(".recordAttemptsViaSource", function () {
-    describe("if one of the pages is empty", function () {
+  describe(".getIds", () => {
+    describe("if two games are passed in", function () {
       beforeAll(function () {
-        const source = ValidDataSources.validDataSources.steamDb;
-        this.apps = getXSampleSteamApps(2);
+        const games = getXGamesWithoutDetails(2);
 
-        this.pages = createHtmlDetailsPages([counterStrikeHtmlDetailsSteamDb, ""]);
-
-        this.result = recordAttemptsViaSource(this.apps, this.pages, source);
+        this.result = getIds(games);
       });
 
-      it("the first app has the correct values", function () {
-        expect(this.result[0].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[0].failedVia).toEqual([]);
-      });
-
-      it("the second app has the correct values", function () {
-        expect(this.result[1].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[1].failedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-      });
-    });
-
-    describe("if none of the pages are empty", function () {
-      beforeAll(function () {
-        this.apps = getXSampleSteamApps(2);
-
-        this.pages = createHtmlDetailsPages([
-          counterStrikeHtmlDetailsSteamDb,
-          karmazooHtmlDetailsPageSteamDb,
-        ]);
-
-        this.result = recordAttemptsViaSteamDb(this.apps, this.pages);
-      });
-
-      it("the first app has the correct values", function () {
-        expect(this.result[0].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[0].failedVia).toEqual([]);
-      });
-
-      it("the second app has the correct values", function () {
-        expect(this.result[1].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[1].failedVia).toEqual([]);
+      it("two ids are returned", function () {
+        expect(this.result[0]).toBe(1);
+        expect(this.result[1]).toBe(2);
       });
     });
   });
 
-  describe(".recordAttemptsViaSteamDb", function () {
-    describe("if one of the pages is empty", function () {
-      beforeAll(function () {
-        this.apps = getXSampleSteamApps(2);
+  describe(".recordAttemptsViaSource", function () {
+    describe("via steamDb", function () {
+      describe("if one of the pages is empty", function () {
+        beforeAll(function () {
+          const source = ValidDataSources.validDataSources.steamDb;
+          this.apps = getXSampleSteamApps(2);
 
-        this.pages = createHtmlDetailsPages([counterStrikeHtmlDetailsSteamDb, ""]);
+          this.pages = createHtmlDetailsPages([counterStrikeHtmlDetailsSteamDb, ""]);
 
-        this.result = recordAttemptsViaSteamDb(this.apps, this.pages);
+          this.result = recordAttemptsViaSource(this.apps, this.pages, source);
+
+          this.apps[0].appid = 5;
+          this.apps[1].appid = 5;
+        });
+
+        it("the first app has the correct values", function () {
+          expect(this.result[0].triedVia).toEqual([
+            ValidDataSources.validDataSources.steamDb,
+          ]);
+          expect(this.result[0].failedVia).toEqual([]);
+        });
+
+        it("the second app has the correct values", function () {
+          expect(this.result[1].triedVia).toEqual([
+            ValidDataSources.validDataSources.steamDb,
+          ]);
+          expect(this.result[1].failedVia).toEqual([
+            ValidDataSources.validDataSources.steamDb,
+          ]);
+        });
+
+        it("the resulting apps are copies", function () {
+          expect(this.result[0].appid).toBe(1);
+          expect(this.result[1].appid).toBe(2);
+        });
       });
 
-      it("the first app has the correct values", function () {
-        expect(this.result[0].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[0].failedVia).toEqual([]);
-      });
+      describe("if none of the pages are empty", function () {
+        beforeAll(function () {
+          const source = ValidDataSources.validDataSources.steamDb;
+          this.apps = getXSampleSteamApps(2);
 
-      it("the second app has the correct values", function () {
-        expect(this.result[1].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[1].failedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-      });
-    });
+          this.pages = createHtmlDetailsPages([
+            counterStrikeHtmlDetailsSteamDb,
+            karmazooHtmlDetailsPageSteamDb,
+          ]);
 
-    describe("if none of the pages are empty", function () {
-      beforeAll(function () {
-        this.apps = getXSampleSteamApps(2);
+          this.result = recordAttemptsViaSource(this.apps, this.pages, source);
 
-        this.pages = createHtmlDetailsPages([
-          counterStrikeHtmlDetailsSteamDb,
-          karmazooHtmlDetailsPageSteamDb,
-        ]);
+          this.apps[0].appid = 5;
+          this.apps[1].appid = 5;
+        });
 
-        this.result = recordAttemptsViaSteamDb(this.apps, this.pages);
-      });
+        it("the first app has the correct values", function () {
+          expect(this.result[0].triedVia).toEqual([
+            ValidDataSources.validDataSources.steamDb,
+          ]);
+          expect(this.result[0].failedVia).toEqual([]);
+        });
 
-      it("the first app has the correct values", function () {
-        expect(this.result[0].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[0].failedVia).toEqual([]);
-      });
+        it("the second app has the correct values", function () {
+          expect(this.result[1].triedVia).toEqual([
+            ValidDataSources.validDataSources.steamDb,
+          ]);
+          expect(this.result[1].failedVia).toEqual([]);
+        });
 
-      it("the second app has the correct values", function () {
-        expect(this.result[1].triedVia).toEqual([
-          ValidDataSources.validDataSources.steamDb,
-        ]);
-        expect(this.result[1].failedVia).toEqual([]);
-      });
-    });
-
-    describe("when the result contains a value,", function () {
-      beforeAll(function () {
-        this.app = getXSampleSteamApps(1);
-        this.steamApp = SteamApp.oneFromSteamApi(this.app);
-      });
-
-      it("the function returns the steamApp. The type property is 'game'", function () {
-        expect(this.result.type).toBe(SteamApp.validTypes.game);
+        it("the resulting apps are copies", function () {
+          expect(this.result[0].appid).toBe(1);
+          expect(this.result[1].appid).toBe(2);
+        });
       });
     });
   });
@@ -461,7 +437,7 @@ describe("game.service.js", () => {
           riskOfRainHtmlDetailsSteamDb,
         ]);
 
-        updateGamesMissingDetails(this.games, htmlDetailsPages);
+        this.result = updateGamesMissingDetails(this.games, htmlDetailsPages);
       });
 
       it("two games are returned", function () {
@@ -469,52 +445,17 @@ describe("game.service.js", () => {
       });
 
       it("the first game's details are updated", function () {
-        expect(this.games[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
-        expect(this.games[0].genres).toEqual(["Action", "Free to Play"]);
-        expect(this.games[0].description).toBe(
+        expect(this.result[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
+        expect(this.result[0].genres).toEqual(["Action", "Free to Play"]);
+        expect(this.result[0].description).toBe(
           "Counter-Strike: Global Offensive (CS: GO) expands upon the team-based action gameplay that it pioneered when it was launched 19 years ago. CS: GO features new maps, characters, weapons, and game modes, and delivers updated versions of the classic CS content (de_dust2, etc.).",
         );
       });
 
       it("the second game's details are updated", function () {
-        expect(this.games[1].developers).toEqual(["Hopoo Games"]);
-        expect(this.games[1].genres).toEqual(["Action", "Indie"]);
-        expect(this.games[1].description).toBe(
-          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
-        );
-      });
-    });
-  });
-
-  describe(".updateMissingDetails.", function () {
-    describe("When we try to update two games with missing details,", function () {
-      beforeAll(function () {
-        this.games = getXsteamchartsInstantiatedGames(2);
-
-        const htmlDetailsPages = createHtmlDetailsPages([
-          counterStrikeHtmlDetailsSteamDb,
-          riskOfRainHtmlDetailsSteamDb,
-        ]);
-
-        updateMissingDetails(this.games, htmlDetailsPages);
-      });
-
-      it("two games are returned", function () {
-        expect(this.games.length).toBe(2);
-      });
-
-      it("the first game's details are updated", function () {
-        expect(this.games[0].developers).toEqual(["Valve", "Hidden Path Entertainment"]);
-        expect(this.games[0].genres).toEqual(["Action", "Free to Play"]);
-        expect(this.games[0].description).toBe(
-          "Counter-Strike: Global Offensive (CS: GO) expands upon the team-based action gameplay that it pioneered when it was launched 19 years ago. CS: GO features new maps, characters, weapons, and game modes, and delivers updated versions of the classic CS content (de_dust2, etc.).",
-        );
-      });
-
-      it("the second game's details are updated", function () {
-        expect(this.games[1].developers).toEqual(["Hopoo Games"]);
-        expect(this.games[1].genres).toEqual(["Action", "Indie"]);
-        expect(this.games[1].description).toBe(
+        expect(this.result[1].developers).toEqual(["Hopoo Games"]);
+        expect(this.result[1].genres).toEqual(["Action", "Indie"]);
+        expect(this.result[1].description).toBe(
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
       });
@@ -615,19 +556,19 @@ describe("game.service.js", () => {
           riskOfRainHtmlDetailsSteamDb,
         ]);
 
-        updateMissingReleaseDates(this.games, htmlDetailsPages);
+        this.result = updateMissingReleaseDates(this.games, htmlDetailsPages);
       });
 
       it("two games are returned", function () {
-        expect(this.games.length).toBe(2);
+        expect(this.result.length).toBe(2);
       });
 
       it("the first game's release date is updated", function () {
-        expect(this.games[0].releaseDate).toEqual(new Date("21 August 2012 UTC"));
+        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012 UTC"));
       });
 
       it("the second game's release date is updated", function () {
-        expect(this.games[1].releaseDate).toEqual(new Date("11 August 2020 UTC"));
+        expect(this.result[1].releaseDate).toEqual(new Date("11 August 2020 UTC"));
       });
     });
   });

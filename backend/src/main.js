@@ -1,20 +1,21 @@
 import httpClient from "axios";
-import { DatabaseClient } from "./adapters/driven/db/database.client.js";
-import { SteamClient } from "./adapters/driven/http/steam.client.js";
-import { SteamAppsAggregator } from "./core/features/steam-apps-aggregator/steam.apps.aggregator.js";
-import { GameIdentifier } from "./core/features/game-identifier/game.identifier.js";
-import { PlayerHistoryAggregator } from "./core/features/player-history-aggregator/player.history.aggregator.js";
-import { WebServer } from "./adapters/driving/rest/web.server.js";
-import { GameQueriesController } from "./adapters/driving/rest/game-queries/game.queries.controller.js";
-import { GameQueriesRouter } from "./adapters/driving/rest/game-queries/game.queries.router.js";
-import { GamesRepository } from "./core/repositories/games.repository.js";
-import { SteamAppsRepository } from "./core/repositories/steam.apps.repository.js";
-import { SteamAppsUpdateTimestampsRepository } from "./core/repositories/steam.apps.update.timestamps.repository.js";
-import { PlayerHistoryRepository } from "./core/repositories/player.history.repository.js";
-import { HistoryChecksRepository } from "./core/repositories/history.checks.repository.js";
-import { config } from "./common/config.loader.js";
-import { Logger } from "./common/logger.js";
-import { Runner } from "./adapters/driving/runner/runner.js";
+import { DatabaseClient } from "./infrastructure/database/database.client.js";
+import { SteamClient } from "./infrastructure/steam.client.js";
+import { SteamAppsAggregator } from "./features/steam-apps-aggregator/steam.apps.aggregator.js";
+import { GameIdentifier } from "./features/game-identifier/game.identifier.js";
+import { PlayerHistoryAggregator } from "./features/player-history-aggregator/player.history.aggregator.js";
+import { Runner } from "./utils/runner.js";
+import { WebServer } from "./infrastructure/web.server.js";
+import { GameQueriesController } from "./features/game-queries/game.queries.controller.js";
+import { GameQueriesRouter } from "./features/game-queries/game.queries.router.js";
+import { GamesRepository } from "./infrastructure/database/repositories/games.repository.js";
+import { SteamAppsRepository } from "./infrastructure/database/repositories/steam.apps.repository.js";
+import { SteamAppsUpdateTimestampsRepository } from "./infrastructure/database/repositories/steam.apps.update.timestamps.repository.js";
+import { PlayerHistoryRepository } from "./infrastructure/database/repositories/player.history.repository.js";
+import { HistoryChecksRepository } from "./infrastructure/database/repositories/history.checks.repository.js";
+import { config } from "./utils/config.loader.js";
+import { Logger } from "./utils/logger.js";
+import { ValidDataSources } from "./models/valid.data.sources.js";
 
 // our entry point = main
 async function main() {
@@ -73,11 +74,16 @@ async function main() {
     ? { func: steamAppsAggregator.collectSteamAppsDiffOnDbLayer }
     : { func: steamAppsAggregator.collectSteamApps };
 
+  const steamWeb = ValidDataSources.validDataSources.steamWeb;
+  const steamcharts = ValidDataSources.validDataSources.steamcharts;
+
   const runnables = [
     steamAppsAggregatorRunnable,
-    { func: gameIdentifier.tryViaSteamWeb },
-    { func: gameIdentifier.tryViaSteamchartsWeb },
+    { func: steamAppsAggregator.collectSteamApps },
+    { func: () => gameIdentifier.tryIfGameViaSource(steamWeb) },
+    { func: () => gameIdentifier.tryIfGameViaSource(steamcharts) },
     { func: gameIdentifier.updateGamesWithoutDetails },
+    { func: gameIdentifier.updateGamesWithoutReleaseDates },
     { func: playerHistoryAggregator.addPlayerHistoryFromSteamcharts },
     { func: playerHistoryAggregator.addCurrentPlayers },
   ];
