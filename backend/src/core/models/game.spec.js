@@ -1,10 +1,35 @@
 import { Game } from "./game.js";
-import { getOneSteamAppInstantiatedGame, getXGamesWithoutDetails } from "./game.mocks.js";
+import {
+  getOneGameWithFullDetails,
+  getOneSteamAppInstantiatedGame,
+  getXGamesWithoutDetails,
+} from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
 describe("game.js", function () {
   describe("Game", function () {
+    fdescribe(".copy", function () {
+      beforeAll(function () {
+        const game = getOneGameWithFullDetails();
+        this.result = game.copy();
+      });
+
+      it("the result is a copy of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+        expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
+      });
+
+      it("the result has the correct values", function () {
+        expect(this.result.id).toBe(239140);
+        expect(this.result.name).toBe("Dying Light");
+        expect(this.result.releaseDate).toBe("21.09.1989");
+        expect(this.result.developers).toEqual(["Techland"]);
+        expect(this.result.genres).toEqual(["Action", "RPG"]);
+        expect(this.result.description).toBe("Best game");
+      });
+    });
+
     describe(".fromSteamApp", function () {
       describe("is called with no arguments, ", function () {
         it("an Error is thrown", function () {

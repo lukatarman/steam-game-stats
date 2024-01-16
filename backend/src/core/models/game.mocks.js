@@ -1,5 +1,7 @@
 import { daysToMs } from "../../common/time.utils.js";
 import { Game } from "./game.js";
+import { PlayerHistory } from "./player.history.js";
+import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
 export const getXGamesWithoutDetails = (amount) => {
@@ -36,6 +38,22 @@ export const getOneGameWithDetails = () => {
       description: "Best game",
     },
   ];
+};
+
+export const getOneGameWithFullDetails = () => {
+  const dbEntry = [
+    {
+      id: 239140,
+      name: "Dying Light",
+      releaseDate: "21.09.1989",
+      developers: ["Techland"],
+      genres: ["Action", "RPG"],
+      description: "Best game",
+      playerHistory: getSamplePlayerHistory(),
+    },
+  ];
+
+  return Game.manyFromDbEntry(dbEntry)[0];
 };
 
 export const getGamesWithEmptyPlayerHistories = () => {

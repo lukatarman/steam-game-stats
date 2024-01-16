@@ -11,6 +11,20 @@ export class Game {
   imageUrl;
   playerHistory;
 
+  copy() {
+    const copy = new Game();
+    copy.id = this.id;
+    copy.name = this.name;
+    copy.releaseDate = this.releaseDate;
+    copy.developers = this.developers.slice();
+    copy.genres = this.genres.slice();
+    copy.description = this.description;
+    copy.imageUrl = this.imageUrl;
+    copy.playerHistory = PlayerHistory.manyFromDbEntry(this.playerHistory);
+
+    return copy;
+  }
+
   // prettier-ignore
   static fromSteamApp(steamApp, releaseDate, developers, genres, description) {
     const game         = new Game();
