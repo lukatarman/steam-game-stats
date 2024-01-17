@@ -1,34 +1,29 @@
 import { Game } from "../models/game.js";
 import { SteamApp } from "../models/steam.app.js";
 import { parseHTML } from "linkedom";
-import { ValidDataSources } from "../../../models/valid.data.sources.js";
+import { ValidDataSources } from "../models/valid.data.sources.js";
 
-export function recordHtmlAttempts(steamApps, htmlDetailsPages, source) {
+export function identifySteamAppTypes(steamApps, htmlDetailsPages, source) {
   return steamApps.map((app, i) => {
     const appCopy = app.copy();
-    appCopy.triedIfGameViaSource(source);
+    const page = htmlDetailsPages[i];
 
-    if (htmlDetailsPages[i] === "") appCopy.htmlPageFailedViaSource(source);
+    recordHtmlAttempt(appCopy, page, source);
+
+    updateSteamAppType(appCopy, page, source);
 
     return appCopy;
   });
 }
 
-export function getGames(steamApps, htmlDetailsPages, source) {
-  return htmlDetailsPages
-    .map((page, i) => {
-      if (page === "") return "";
-      if (getType(page, source) !== SteamApp.validTypes.game) return "";
+export function recordHtmlAttempt(steamApp, htmlDetailsPage, source) {
+  steamApp.triedIfGameViaSource(source);
 
-      return Game.fromSteamApp(
-        steamApps[i],
-        getReleaseDate(page),
-        getDevelopers(page),
-        getGenres(page),
-        getGameDescription(page),
-      );
-    })
-    .filter((game) => !!game);
+  if (htmlDetailsPage === "") steamApp.htmlPageFailedViaSource(source);
+}
+
+export function updateSteamAppType(steamApp, page, source) {
+  steamApp.appType = getType(page, source);
 }
 
 function getType(page, source) {
@@ -65,6 +60,22 @@ export function getSteamchartsAppType(page) {
   return SteamApp.validTypes.game;
 }
 
+export function getGames(updatedSteamApps, htmlDetailsPages) {
+  return htmlDetailsPages
+    .map((page, i) => {
+      if (updatedSteamApps[i].appType !== SteamApp.validTypes.game) return "";
+
+      return Game.fromSteamApp(
+        updatedSteamApps[i],
+        getReleaseDate(page),
+        getDevelopers(page),
+        getGenres(page),
+        getDescription(page),
+      );
+    })
+    .filter((game) => !!game);
+}
+
 export function getReleaseDate(page) {
   const { document } = parseHTML(page);
 
@@ -99,7 +110,7 @@ export function getGenres(page) {
     .filter((genre) => !!genre);
 }
 
-export function getGameDescription(page) {
+export function getDescription(page) {
   const { document } = parseHTML(page);
 
   const description = document.querySelector(".game_description_snippet");
@@ -109,7 +120,7 @@ export function getGameDescription(page) {
   return description.textContent.trim();
 }
 
-export function getIds(games) {
+export function getGamesIds(games) {
   return games.map((game) => game.id);
 }
 

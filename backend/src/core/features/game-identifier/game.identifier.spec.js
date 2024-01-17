@@ -1,9 +1,9 @@
 import { GameIdentifier } from "./game.identifier.js";
 import {
   getGames,
-  getIds,
+  getGamesIds,
+  identifySteamAppTypes,
   recordAttemptsViaSource,
-  recordHtmlAttempts,
   updateGamesMissingDetails,
   updateMissingReleaseDates,
 } from "../../services/game.service.js";
@@ -14,11 +14,11 @@ import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details
 import { getXGamesWithoutDetails } from "../../models/game.mocks.js";
 import { createConfigMock } from "../../../common/config.loader.mock.js";
 import { getXSampleSteamApps } from "../../models/steam.app.mocks.js";
-import { createHtmlDetailsPages } from "../../../assets/html.details.pages.mock.js";
 import { ValidDataSources } from "../../models/valid.data.sources.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
-import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
-import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
+import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { createHtmlDetailsPages } from "../../../../assets/html.details.pages.mock.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 
 describe("game.identifier.js", function () {
   describe(".tryIfGameViaSource.", function () {
@@ -85,7 +85,7 @@ describe("game.identifier.js", function () {
             theSims4dlcHtmlDetailsPage,
           ];
 
-          this.updatedSteamApps = recordHtmlAttempts(
+          this.updatedSteamApps = identifySteamAppTypes(
             this.steamApps,
             this.htmlDetailsPages,
             this.source,
@@ -178,7 +178,7 @@ describe("game.identifier.js", function () {
             gta5ageRestrictedHtmlDetailsPage,
           ];
 
-          this.updatedSteamApps = recordHtmlAttempts(
+          this.updatedSteamApps = identifySteamAppTypes(
             this.steamApps,
             this.htmlDetailsPages,
             this.source,
@@ -331,7 +331,7 @@ describe("game.identifier.js", function () {
 
           this.htmlDetailsPages = ["", ""];
 
-          this.updatedSteamApps = recordHtmlAttempts(
+          this.updatedSteamApps = identifySteamAppTypes(
             this.steamApps,
             this.htmlDetailsPages,
             this.source,
@@ -421,7 +421,7 @@ describe("game.identifier.js", function () {
 
           this.htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, ""];
 
-          this.updatedSteamApps = recordHtmlAttempts(
+          this.updatedSteamApps = identifySteamAppTypes(
             this.steamApps,
             this.htmlDetailsPages,
             this.source,
@@ -737,7 +737,7 @@ describe("game.identifier.js", function () {
 
       it("getSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledWith(
-          getIds(this.updatedGames),
+          getGamesIds(this.updatedGames),
         );
       });
 

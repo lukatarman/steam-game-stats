@@ -1,12 +1,12 @@
 import {
   updateMissingReleaseDates,
-  recordHtmlAttempts,
   getGames,
-  getIds,
+  getGamesIds,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
-} from "./services/game.service.js";
-import { delay } from "../../utils/time.utils.js";
+  identifySteamAppTypes,
+} from "../../services/game.service.js";
+import { delay } from "../../../common/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { ValidDataSources } from "../../models/valid.data.sources.js";
 
@@ -61,7 +61,7 @@ export class GameIdentifier {
   async #identifyTypes(steamApps, source) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
 
-    const updatedSteamApps = recordHtmlAttempts(steamApps, htmlDetailsPages, source);
+    const updatedSteamApps = identifySteamAppTypes(steamApps, htmlDetailsPages, source);
 
     const games = getGames(updatedSteamApps, htmlDetailsPages, source);
 
@@ -101,7 +101,9 @@ export class GameIdentifier {
 
     if (this.#gamesIsEmpty(games, "details")) return;
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(getIds(games));
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
+      getGamesIds(games),
+    );
 
     const [updatedGames, updatedSteamApps] = await this.#updateMissingDetails(
       games,
@@ -166,7 +168,9 @@ export class GameIdentifier {
 
     if (this.#gamesIsEmpty(games, "release dates")) return;
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(getIds(games));
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
+      getGamesIds(games),
+    );
 
     const [updatedGames, updatedSteamApps] = await this.#updateMissingReleaseDates(
       games,
