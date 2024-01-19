@@ -71,7 +71,7 @@ export class SteamApp {
     steamApp.name       = dbEntry.name;
     steamApp.type       = dbEntry.type;
     steamApp.triedVia   = dbEntry.triedVia.slice();
-    steamApp.failedVia   = dbEntry.failedVia.slice();
+    steamApp.failedVia  = dbEntry.failedVia.slice();
     return steamApp;
   }
 

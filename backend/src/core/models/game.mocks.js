@@ -40,7 +40,7 @@ export const getOneGameWithDetails = () => {
   ];
 };
 
-export const getOneGameWithFullDetails = () => {
+export const getOneGameWithPlayerHistory = () => {
   const dbEntry = [
     {
       id: 239140,

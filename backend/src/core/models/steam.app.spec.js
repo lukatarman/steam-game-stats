@@ -46,7 +46,7 @@ describe("SteamApp", function () {
         this.steamApp.triedIfGameViaSource(this.source);
       });
 
-      it("the steam app is tried via steam web", function () {
+      it("the steam app is mark as tried via steam web", function () {
         expect(this.steamApp.triedVia).toEqual([this.source]);
       });
     });
@@ -60,7 +60,7 @@ describe("SteamApp", function () {
         this.steamApp.triedIfGameViaSource(this.source);
       });
 
-      it("the steam app is tried via steam web", function () {
+      it("the steam app is marked as tried via steam web", function () {
         expect(this.steamApp.triedVia).toEqual([this.source]);
       });
     });
@@ -76,7 +76,7 @@ describe("SteamApp", function () {
         this.steamApp.htmlPageFailedViaSource(this.source);
       });
 
-      it("the steam app is tried via steam web", function () {
+      it("the steam app is marked as tried via steam web", function () {
         expect(this.steamApp.failedVia).toEqual([this.source]);
       });
     });
@@ -90,7 +90,7 @@ describe("SteamApp", function () {
         this.steamApp.htmlPageFailedViaSource(this.source);
       });
 
-      it("the steam app is tried via steam web", function () {
+      it("the steam app is marked as tried via steam web", function () {
         expect(this.steamApp.failedVia).toEqual([this.source]);
       });
     });

@@ -1,7 +1,7 @@
 import { getXGamesWithoutDetails } from "../models/game.mocks.js";
 import { SteamApp } from "../models/steam.app.js";
 import {
-  getThreeSourceUntriedFilteredSteamAppsNR64,
+  getThreeSourceUntriedFilteredSteamApps,
   getXSampleSteamApps,
 } from "../models/steam.app.mocks.js";
 import { ValidDataSources } from "../models/valid.data.sources.js";
@@ -221,7 +221,7 @@ describe("SteamAppsRepository", function () {
 
             await insertManyApps(
               this.databaseClient,
-              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+              getThreeSourceUntriedFilteredSteamApps(8, source),
             );
 
             const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
@@ -269,7 +269,7 @@ describe("SteamAppsRepository", function () {
 
             await insertManyApps(
               this.databaseClient,
-              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+              getThreeSourceUntriedFilteredSteamApps(8, source),
             );
 
             const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
@@ -331,7 +331,7 @@ describe("SteamAppsRepository", function () {
 
             await insertManyApps(
               this.databaseClient,
-              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+              getThreeSourceUntriedFilteredSteamApps(8, source),
             );
 
             const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
@@ -379,7 +379,7 @@ describe("SteamAppsRepository", function () {
 
             await insertManyApps(
               this.databaseClient,
-              getThreeSourceUntriedFilteredSteamAppsNR64(8, source),
+              getThreeSourceUntriedFilteredSteamApps(8, source),
             );
 
             const steamAppsRepo = new SteamAppsRepository(this.databaseClient);

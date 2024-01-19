@@ -228,7 +228,7 @@ describe("game.identifier.js", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(2);
         });
 
-        it("getSourceHtmlDetailsPage was called with the correct ids", function () {
+        it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
             this.steamApps[0].appid,
             this.source,
@@ -471,7 +471,7 @@ describe("game.identifier.js", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(2);
         });
 
-        it("getSourceHtmlDetailsPage was called with the correct ids", function () {
+        it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
             this.steamApps[0].appid,
             this.source,

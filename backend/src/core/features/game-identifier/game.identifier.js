@@ -153,7 +153,9 @@ export class GameIdentifier {
   }
 
   async #persistUpdatedDetails(games, updatedApps) {
-    this.#logger.debugc(`persisting ${updatedApps.length} apps without pages`);
+    this.#logger.debugc(
+      `persisting ${updatedApps.length} apps with updated html attempts`,
+    );
     this.#steamAppsRepository.updateSteamAppsById(updatedApps);
 
     this.#logger.debugc(`persisting ${games.length} games with updated details`);
@@ -194,7 +196,7 @@ export class GameIdentifier {
   }
 
   async #persistReleaseDates(games, steamApps) {
-    this.#logger.debugc(`persisting ${steamApps.length} apps without pages`);
+    this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);
     this.#steamAppsRepository.updateSteamAppsById(steamApps);
 
     this.#logger.debugc(`persisting ${games.length} games with updated release dates`);

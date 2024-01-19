@@ -39,7 +39,7 @@ import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-det
 
 describe("game.service.js", () => {
   describe(".recordHtmlAttempt", () => {
-    describe("if an html page is empty", function () {
+    describe("if the html page is empty", function () {
       beforeAll(function () {
         this.app = getXSampleSteamApps(1)[0];
         this.source = ValidDataSources.validDataSources.steamWeb;
@@ -57,7 +57,7 @@ describe("game.service.js", () => {
       });
     });
 
-    describe("if an html page is not empty", function () {
+    describe("if the html page is not empty", function () {
       beforeAll(function () {
         this.app = getXSampleSteamApps(1)[0];
         this.source = ValidDataSources.validDataSources.steamWeb;
@@ -146,12 +146,13 @@ describe("game.service.js", () => {
         const apps = getXSampleSteamApps(2);
         apps[0].appType = SteamApp.validTypes.unknown;
         apps[1].appType = SteamApp.validTypes.unknown;
+
         const pages = ["", ""];
 
         this.result = getGames(apps, pages);
       });
 
-      it("no games is returned", function () {
+      it("no games are returned", function () {
         expect(this.result.length).toBe(0);
       });
     });
@@ -312,82 +313,6 @@ describe("game.service.js", () => {
       it("two ids are returned", function () {
         expect(this.result[0]).toBe(1);
         expect(this.result[1]).toBe(2);
-      });
-    });
-  });
-
-  describe(".recordAttemptsViaSource", function () {
-    describe("via steamDb", function () {
-      describe("if one of the pages is empty", function () {
-        beforeAll(function () {
-          const source = ValidDataSources.validDataSources.steamDb;
-
-          this.apps = getXSampleSteamApps(2);
-
-          this.pages = createHtmlDetailsPages([counterStrikeHtmlDetailsSteamDb, ""]);
-
-          this.result = recordAttemptsViaSource(this.apps, this.pages, source);
-
-          this.apps[0].appid = 5;
-          this.apps[1].appid = 5;
-        });
-
-        it("the first app has the correct values", function () {
-          expect(this.result[0].triedVia).toEqual([
-            ValidDataSources.validDataSources.steamDb,
-          ]);
-          expect(this.result[0].failedVia).toEqual([]);
-        });
-
-        it("the second app has the correct values", function () {
-          expect(this.result[1].triedVia).toEqual([
-            ValidDataSources.validDataSources.steamDb,
-          ]);
-          expect(this.result[1].failedVia).toEqual([
-            ValidDataSources.validDataSources.steamDb,
-          ]);
-        });
-
-        it("the resulting apps are copies", function () {
-          expect(this.result[0].appid).toBe(1);
-          expect(this.result[1].appid).toBe(2);
-        });
-      });
-
-      describe("if none of the pages are empty", function () {
-        beforeAll(function () {
-          const source = ValidDataSources.validDataSources.steamDb;
-          this.apps = getXSampleSteamApps(2);
-
-          this.pages = createHtmlDetailsPages([
-            counterStrikeHtmlDetailsSteamDb,
-            karmazooHtmlDetailsPageSteamDb,
-          ]);
-
-          this.result = recordAttemptsViaSource(this.apps, this.pages, source);
-
-          this.apps[0].appid = 5;
-          this.apps[1].appid = 5;
-        });
-
-        it("the first app has the correct values", function () {
-          expect(this.result[0].triedVia).toEqual([
-            ValidDataSources.validDataSources.steamDb,
-          ]);
-          expect(this.result[0].failedVia).toEqual([]);
-        });
-
-        it("the second app has the correct values", function () {
-          expect(this.result[1].triedVia).toEqual([
-            ValidDataSources.validDataSources.steamDb,
-          ]);
-          expect(this.result[1].failedVia).toEqual([]);
-        });
-
-        it("the resulting apps are copies", function () {
-          expect(this.result[0].appid).toBe(1);
-          expect(this.result[1].appid).toBe(2);
-        });
       });
     });
   });

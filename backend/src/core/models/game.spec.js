@@ -1,6 +1,6 @@
 import { Game } from "./game.js";
 import {
-  getOneGameWithFullDetails,
+  getOneGameWithPlayerHistory,
   getOneSteamAppInstantiatedGame,
   getXGamesWithoutDetails,
 } from "./game.mocks.js";
@@ -11,8 +11,10 @@ describe("game.js", function () {
   describe("Game", function () {
     describe(".copy", function () {
       beforeAll(function () {
-        const game = getOneGameWithFullDetails();
-        this.result = game.copy();
+        this.game = getOneGameWithPlayerHistory();
+        this.result = this.game.copy();
+
+        this.game.id = 99;
       });
 
       it("the result is a copy of game", function () {

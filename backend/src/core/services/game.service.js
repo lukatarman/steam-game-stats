@@ -127,10 +127,9 @@ export function getGamesIds(games) {
 export function recordAttemptsViaSource(steamApps, htmlDetailsPages, source) {
   return steamApps.map((app) => {
     const appCopy = app.copy();
-    appCopy.triedIfGameViaSource(source);
-
     const currentPage = htmlDetailsPages.find((page) => page.id == app.appid);
-    if (currentPage.page === "") appCopy.htmlPageFailedViaSource(source);
+
+    recordHtmlAttempt(appCopy, currentPage.page, source);
 
     return appCopy;
   });
