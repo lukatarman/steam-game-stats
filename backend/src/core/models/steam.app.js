@@ -29,8 +29,8 @@ export class SteamApp {
     this.failedVia.push(source);
   }
 
-  isGame() {
-    return this.type === SteamApp.validTypes.game;
+  get appType() {
+    return this.type;
   }
 
   set appType(type) {

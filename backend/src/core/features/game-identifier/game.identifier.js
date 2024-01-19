@@ -50,12 +50,13 @@ export class GameIdentifier {
   };
 
   #steamAppsIsEmpty(steamApps) {
-    if (steamApps.length === 0) return true;
+    if (steamApps.length > 0) return false;
 
     this.#logger.debugc(
       `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
     );
-    return false;
+
+    return true;
   }
 
   async #identifyTypes(steamApps, source) {
@@ -114,7 +115,7 @@ export class GameIdentifier {
   };
 
   #gamesIsEmpty = (games, message) => {
-    if (games.length === 0) return true;
+    if (games.length > 0) return false;
 
     this.#logger.debugc(
       `no games without ${message} in db, retrying in ${
@@ -122,7 +123,7 @@ export class GameIdentifier {
       } ms`,
     );
 
-    return false;
+    return true;
   };
 
   async #updateMissingDetails(games, steamApps) {

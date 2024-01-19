@@ -1,5 +1,5 @@
-import { SteamApp } from "../models/steam.app.js";
-import { ValidDataSources } from "../models/valid.data.sources.js";
+import { SteamApp } from "../../../core/models/steam.app.js";
+import { ValidDataSources } from "../../../core/models/valid.data.sources.js";
 
 export class SteamClient {
   #httpClient;
