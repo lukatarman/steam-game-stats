@@ -22,10 +22,14 @@ export class SteamApp {
   }
 
   triedIfGameViaSource(source) {
+    if (this.triedVia.includes(source)) return;
+
     this.triedVia.push(source);
   }
 
   htmlPageFailedViaSource(source) {
+    if (this.failedVia.includes(source)) return;
+
     this.failedVia.push(source);
   }
 

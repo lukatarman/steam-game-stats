@@ -38,60 +38,136 @@ describe("SteamApp", function () {
 
   describe(".triedIfGameViaSource", function () {
     describe("via steamWeb", function () {
-      beforeAll(function () {
-        this.source = ValidDataSources.validDataSources.steamWeb;
+      describe("if the steamApp's triedVia doesn't already include steamWeb", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
 
-        this.steamApp = getXSampleSteamApps(1)[0];
+          this.steamApp = getXSampleSteamApps(1)[0];
 
-        this.steamApp.triedIfGameViaSource(this.source);
+          this.steamApp.triedIfGameViaSource(this.source);
+        });
+
+        it("the steam app is mark as tried via steam web", function () {
+          expect(this.steamApp.triedVia.length).toBe(1);
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
       });
 
-      it("the steam app is mark as tried via steam web", function () {
-        expect(this.steamApp.triedVia).toEqual([this.source]);
+      describe("if the steamApp's triedVia already includes steamWeb", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.triedIfGameViaSource(this.source);
+          this.steamApp.triedIfGameViaSource(this.source);
+        });
+
+        it("the steam app is mark as tried via steam web", function () {
+          expect(this.steamApp.triedVia.length).toBe(1);
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
       });
     });
 
     describe("via steamcharts", function () {
-      beforeAll(function () {
-        this.source = ValidDataSources.validDataSources.steamcharts;
+      describe("if the steamApp's triedVia doesn't already include steamcharts", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamcharts;
 
-        this.steamApp = getXSampleSteamApps(1)[0];
+          this.steamApp = getXSampleSteamApps(1)[0];
 
-        this.steamApp.triedIfGameViaSource(this.source);
+          this.steamApp.triedIfGameViaSource(this.source);
+        });
+
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.triedVia.length).toBe(1);
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
       });
 
-      it("the steam app is marked as tried via steam web", function () {
-        expect(this.steamApp.triedVia).toEqual([this.source]);
+      describe("if the steamApp's triedVia already includes steamcharts", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamcharts;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.triedIfGameViaSource(this.source);
+          this.steamApp.triedIfGameViaSource(this.source);
+        });
+
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.triedVia.length).toBe(1);
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
       });
     });
   });
 
   describe(".htmlPageFailedViaSource", function () {
     describe("via steamWeb", function () {
-      beforeAll(function () {
-        this.source = ValidDataSources.validDataSources.steamWeb;
+      describe("if the steamApp's failedVia doesn't already include steamWeb", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
 
-        this.steamApp = getXSampleSteamApps(1)[0];
+          this.steamApp = getXSampleSteamApps(1)[0];
 
-        this.steamApp.htmlPageFailedViaSource(this.source);
+          this.steamApp.htmlPageFailedViaSource(this.source);
+        });
+
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.failedVia.length).toBe(1);
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
       });
 
-      it("the steam app is marked as tried via steam web", function () {
-        expect(this.steamApp.failedVia).toEqual([this.source]);
+      describe("if the steamApp's failedVia already includes steamWeb", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.htmlPageFailedViaSource(this.source);
+          this.steamApp.htmlPageFailedViaSource(this.source);
+        });
+
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.failedVia.length).toBe(1);
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
       });
     });
 
     describe("via steamcharts", function () {
-      beforeAll(function () {
-        this.source = ValidDataSources.validDataSources.steamcharts;
+      describe("if the steamApp's failedVia doesn't already include steamcharts", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamcharts;
 
-        this.steamApp = getXSampleSteamApps(1)[0];
+          this.steamApp = getXSampleSteamApps(1)[0];
 
-        this.steamApp.htmlPageFailedViaSource(this.source);
+          this.steamApp.htmlPageFailedViaSource(this.source);
+        });
+
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.failedVia.length).toBe(1);
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
       });
 
-      it("the steam app is marked as tried via steam web", function () {
-        expect(this.steamApp.failedVia).toEqual([this.source]);
+      describe("if the steamApp's failedVia already includes steamcharts", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamcharts;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.htmlPageFailedViaSource(this.source);
+          this.steamApp.htmlPageFailedViaSource(this.source);
+        });
+
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.failedVia.length).toBe(1);
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
       });
     });
   });
