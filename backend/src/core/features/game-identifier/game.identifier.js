@@ -44,22 +44,12 @@ export class GameIdentifier {
       source,
     );
 
-    if (this.#steamAppsIsEmpty(steamApps)) return;
+    if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const [games, updatedSteamApps] = await this.#identifyTypes(steamApps, source);
+    const [games, updatedSteamApps] = await this.#identifyTypes(steamApps.apps, source);
 
     await this.#persistGameCheckUpdates(games, updatedSteamApps);
   };
-
-  #steamAppsIsEmpty(steamApps) {
-    if (steamApps.length > 0) return false;
-
-    this.#logger.debugc(
-      `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
-    );
-
-    return true;
-  }
 
   async #identifyTypes(steamApps, source) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);

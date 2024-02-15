@@ -1,8 +1,9 @@
 import { SteamApp } from "../models/steam.app.js";
-import { ValidDataSources } from "../models/valid.data.sources.js";
+import { SteamAppsAggregate } from "../models/steam.apps.aggregate.js";
 
 export class SteamAppsRepository {
   #dbClient;
+  #logger;
   #steamAppsCollection;
 
   constructor(dbClient) {
@@ -57,7 +58,7 @@ export class SteamAppsRepository {
       .limit(amount)
       .toArray();
 
-    return SteamApp.manyFromDbEntries(response);
+    return SteamAppsAggregate.manyFromDbEntries(response, this.#logger);
   }
 
   async getSteamAppsById(ids) {
