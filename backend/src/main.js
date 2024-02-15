@@ -24,7 +24,7 @@ async function main() {
 
   // repositories
   const gamesRepository = new GamesRepository(databaseClient);
-  const steamAppsRepository = new SteamAppsRepository(databaseClient);
+  const steamAppsRepository = new SteamAppsRepository(databaseClient, logger);
   const steamAppsUpdateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
     databaseClient,
   );
