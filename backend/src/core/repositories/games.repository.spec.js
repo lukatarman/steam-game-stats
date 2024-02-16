@@ -9,6 +9,7 @@ import {
   getTrendingGamesMockData,
 } from "../models/game.mocks.js";
 import { Game } from "../models/game.js";
+import { GamesAggregate } from "../models/games.aggregate.js";
 
 describe("GamesRepository", function () {
   describe(".insertManyGames inserts multiple games into the collection.", function () {
@@ -141,29 +142,33 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
+      it("the result is an instance of GamesAggregate", function () {
+        expect(this.result).toBeInstanceOf(GamesAggregate);
+      });
+
       it("three games are returned", function () {
-        expect(this.result.length).toBe(3);
+        expect(this.result.games.length).toBe(3);
       });
 
       it("the games are an instance of Game", function () {
-        expect(this.result[0]).toBeInstanceOf(Game);
-        expect(this.result[1]).toBeInstanceOf(Game);
-        expect(this.result[2]).toBeInstanceOf(Game);
+        expect(this.result.games[0]).toBeInstanceOf(Game);
+        expect(this.result.games[1]).toBeInstanceOf(Game);
+        expect(this.result.games[2]).toBeInstanceOf(Game);
       });
 
       it("the first game is missing the developers", function () {
-        expect(this.result[0].id).toBe(232090);
-        expect(this.result[0].developers).toEqual([]);
+        expect(this.result.games[0].id).toBe(232090);
+        expect(this.result.games[0].developers).toEqual([]);
       });
 
       it("the second game is missing the genres", function () {
-        expect(this.result[1].id).toBe(881100);
-        expect(this.result[1].genres).toEqual([]);
+        expect(this.result.games[1].id).toBe(881100);
+        expect(this.result.games[1].genres).toEqual([]);
       });
 
       it("the third game is missing the description", function () {
-        expect(this.result[2].id).toBe(620);
-        expect(this.result[2].description).toEqual("");
+        expect(this.result.games[2].id).toBe(620);
+        expect(this.result.games[2].description).toEqual("");
       });
     });
   });
@@ -213,29 +218,33 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
+      it("the result is an instance of GamesAggregate", function () {
+        expect(this.result).toBeInstanceOf(GamesAggregate);
+      });
+
       it("three games are returned", function () {
-        expect(this.result.length).toBe(3);
+        expect(this.result.games.length).toBe(3);
       });
 
       it("the games are an instance of Game", function () {
-        expect(this.result[0]).toBeInstanceOf(Game);
-        expect(this.result[1]).toBeInstanceOf(Game);
-        expect(this.result[2]).toBeInstanceOf(Game);
+        expect(this.result.games[0]).toBeInstanceOf(Game);
+        expect(this.result.games[1]).toBeInstanceOf(Game);
+        expect(this.result.games[2]).toBeInstanceOf(Game);
       });
 
       it("the first game has the correct date", function () {
-        expect(this.result[0].id).toBe(227300);
-        expect(this.result[0].releaseDate).toEqual(new Date("Thu Oct 17 2999"));
+        expect(this.result.games[0].id).toBe(227300);
+        expect(this.result.games[0].releaseDate).toEqual(new Date("Thu Oct 17 2999"));
       });
 
       it("the second game is missing the release date", function () {
-        expect(this.result[1].id).toBe(2218750);
-        expect(this.result[1].releaseDate).toBe("");
+        expect(this.result.games[1].id).toBe(2218750);
+        expect(this.result.games[1].releaseDate).toBe("");
       });
 
       it("the third game is missing the release date", function () {
-        expect(this.result[2].id).toBe(239140);
-        expect(this.result[2].releaseDate).toBe("");
+        expect(this.result.games[2].id).toBe(239140);
+        expect(this.result.games[2].releaseDate).toBe("");
       });
     });
   });

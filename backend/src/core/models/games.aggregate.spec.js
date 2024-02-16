@@ -3,7 +3,7 @@ import { Game } from "./game.js";
 import { getXGamesWithoutDetails } from "./game.mocks.js";
 import { GamesAggregate } from "./games.aggregate.js";
 
-fdescribe("GamesAggregate", function () {
+describe("GamesAggregate", function () {
   describe(".manyFromDbEntries", function () {
     beforeAll(function () {
       this.result = GamesAggregate.manyFromDbEntries(
