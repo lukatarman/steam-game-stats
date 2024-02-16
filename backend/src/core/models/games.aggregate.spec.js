@@ -1,23 +1,23 @@
 import { createLoggerMock } from "../../common/logger.mock.js";
-import { SteamApp } from "./steam.app.js";
-import { getXSampleSteamApps } from "./steam.app.mocks.js";
-import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
+import { Game } from "./game.js";
+import { getXGamesWithoutDetails } from "./game.mocks.js";
+import { GamesAggregate } from "./games.aggregate.js";
 
-describe("SteamAppsAggregate", function () {
+fdescribe("GamesAggregate", function () {
   describe(".manyFromDbEntries", function () {
     beforeAll(function () {
-      this.result = SteamAppsAggregate.manyFromDbEntries(
-        getXSampleSteamApps(2),
+      this.result = GamesAggregate.manyFromDbEntries(
+        getXGamesWithoutDetails(2),
         createLoggerMock(),
       );
     });
 
-    it("the result is an instance of SteamAppsAggregate", function () {
-      expect(this.result).toBeInstanceOf(SteamAppsAggregate);
+    it("the result is an instance of GamesAggregate", function () {
+      expect(this.result).toBeInstanceOf(GamesAggregate);
     });
 
-    it("the result's apps are instances of SteamApp", function () {
-      expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+    it("the result's games are instances of Game", function () {
+      expect(this.result.games[0]).toBeInstanceOf(Game);
     });
   });
 
@@ -26,9 +26,9 @@ describe("SteamAppsAggregate", function () {
       beforeAll(function () {
         this.loggerMock = createLoggerMock();
 
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries([], this.loggerMock);
+        const gamesArray = GamesAggregate.manyFromDbEntries([], this.loggerMock);
 
-        this.result = steamAppsArray.checkIfEmpty("");
+        this.result = gamesArray.checkIfEmpty("");
       });
 
       it("the returned value is true", function () {
@@ -44,12 +44,12 @@ describe("SteamAppsAggregate", function () {
       beforeAll(function () {
         this.loggerMock = createLoggerMock();
 
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamApps(2),
+        const gamesArray = GamesAggregate.manyFromDbEntries(
+          getXGamesWithoutDetails(2),
           this.loggerMock,
         );
 
-        this.result = steamAppsArray.checkIfEmpty("");
+        this.result = gamesArray.checkIfEmpty("");
       });
 
       it("the returned value is false", function () {
