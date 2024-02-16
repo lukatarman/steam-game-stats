@@ -35,6 +35,9 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
+  //use new GamesAggregate in game.identifier
+  // remove all usage of manyFromX from game and steamApp datamodels
+  // adjust usage
 
   tryIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
