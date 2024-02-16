@@ -4,9 +4,9 @@ export class SteamAppsAggregate {
   apps;
   logger;
 
-  static manyFromDbEntries(apps, logger) {
+  static manyFromDbEntries(steamApps, logger) {
     const steamAppsAggregate = new SteamAppsAggregate();
-    steamAppsAggregate.apps = apps.map((app) => SteamApp.oneFromDbEntry(app));
+    steamAppsAggregate.apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
     steamAppsAggregate.logger = logger;
 
     return steamAppsAggregate;
