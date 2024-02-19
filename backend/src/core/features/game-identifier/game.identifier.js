@@ -95,30 +95,18 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (this.#gamesIsEmpty(games, "details")) return;
+    if (games.checkIfEmpty(this.#options.globalIterationDelay, "details")) return;
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(
-      getGamesIds(games),
+      getGamesIds(games.games),
     );
 
     const [updatedGames, updatedSteamApps] = await this.#updateMissingDetails(
-      games,
+      games.games,
       steamApps,
     );
 
     this.#persistUpdatedDetails(updatedGames, updatedSteamApps);
-  };
-
-  #gamesIsEmpty = (games, message) => {
-    if (games.length > 0) return false;
-
-    this.#logger.debugc(
-      `no games without ${message} in db, retrying in ${
-        this.#options.globalIterationDelay
-      } ms`,
-    );
-
-    return true;
   };
 
   async #updateMissingDetails(games, steamApps) {
@@ -164,14 +152,14 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (this.#gamesIsEmpty(games, "release dates")) return;
+    if (games.checkIfEmpty(this.#options.globalIterationDelay, "release dates")) return;
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(
-      getGamesIds(games),
+      getGamesIds(games.games),
     );
 
     const [updatedGames, updatedSteamApps] = await this.#updateMissingReleaseDates(
-      games,
+      games.games,
       steamApps,
     );
 

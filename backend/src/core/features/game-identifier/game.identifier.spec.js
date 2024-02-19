@@ -20,6 +20,7 @@ import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pag
 import { createHtmlDetailsPages } from "../../../../assets/html.details.pages.mock.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
+import { GamesAggregate } from "../../models/games.aggregate.js";
 
 describe("game.identifier.js", function () {
   describe(".tryIfGameViaSource.", function () {
@@ -527,7 +528,9 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
-        this.gamesRepository = createGamesRepositoryMock([]);
+        this.gamesRepository = createGamesRepositoryMock(
+          SteamAppsAggregate.manyFromDbEntries([], createLoggerMock()),
+        );
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -589,7 +592,9 @@ describe("game.identifier.js", function () {
 
         this.steamClientMock = createSteamMock(pages);
         this.steamAppsRepository = createSteamAppsRepositoryMock(steamApps);
-        this.gamesRepository = createGamesRepositoryMock(games);
+        this.gamesRepository = createGamesRepositoryMock(
+          GamesAggregate.manyFromDbEntries(games, createLoggerMock()),
+        );
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -654,7 +659,9 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
-        this.gamesRepository = createGamesRepositoryMock([]);
+        this.gamesRepository = createGamesRepositoryMock(
+          GamesAggregate.manyFromDbEntries([], createLoggerMock()),
+        );
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -715,7 +722,9 @@ describe("game.identifier.js", function () {
           riskOfRainHtmlDetailsSteamDb,
         ]);
         this.steamAppsRepository = createSteamAppsRepositoryMock(apps);
-        this.gamesRepository = createGamesRepositoryMock(games);
+        this.gamesRepository = createGamesRepositoryMock(
+          GamesAggregate.manyFromDbEntries(games, createLoggerMock()),
+        );
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
