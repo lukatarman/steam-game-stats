@@ -12,10 +12,10 @@ export class GamesAggregate {
     return gamesAggregate;
   }
 
-  checkIfEmpty(delay) {
+  checkIfEmpty(delay, message) {
     if (this.games.length > 0) return false;
 
-    this.logger.debugc(`no steam apps in db, retry in: ${delay} ms`);
+    this.logger.debugc(`no games without ${message} in db, retry in: ${delay} ms`);
 
     return true;
   }

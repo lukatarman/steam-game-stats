@@ -28,7 +28,7 @@ describe("GamesAggregate", function () {
 
         const gamesArray = GamesAggregate.manyFromDbEntries([], this.loggerMock);
 
-        this.result = gamesArray.checkIfEmpty("");
+        this.result = gamesArray.checkIfEmpty("", "");
       });
 
       it("the returned value is true", function () {
@@ -37,6 +37,12 @@ describe("GamesAggregate", function () {
 
       it("the logger was called", function () {
         expect(this.loggerMock.debugc).toHaveBeenCalled();
+      });
+
+      it("the logger was with the correct message", function () {
+        expect(this.loggerMock.debugc).toHaveBeenCalledWith(
+          `no games without  in db, retry in:  ms`,
+        );
       });
     });
 
@@ -49,7 +55,7 @@ describe("GamesAggregate", function () {
           this.loggerMock,
         );
 
-        this.result = gamesArray.checkIfEmpty("");
+        this.result = gamesArray.checkIfEmpty("", "");
       });
 
       it("the returned value is false", function () {
