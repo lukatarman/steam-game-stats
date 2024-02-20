@@ -35,7 +35,7 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  //use new GamesAggregate in game.identifier
+
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
 
@@ -49,19 +49,22 @@ export class GameIdentifier {
 
     if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const [games, updatedSteamApps] = await this.#identifyTypes(steamApps.apps, source);
+    const games = await this.#identifyTypes(steamApps, source);
 
-    await this.#persistGameCheckUpdates(games, updatedSteamApps);
+    await this.#persistGameCheckUpdates(games, steamApps.apps);
   };
 
   async #identifyTypes(steamApps, source) {
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
+      steamApps.apps,
+      source,
+    );
 
-    const updatedSteamApps = identifySteamAppTypes(steamApps, htmlDetailsPages, source);
+    steamApps.identifySteamAppTypes(htmlDetailsPages, source);
 
-    const games = getGames(updatedSteamApps, htmlDetailsPages, source);
+    const games = getGames(steamApps.apps, htmlDetailsPages, source);
 
-    return [games, updatedSteamApps];
+    return games;
   }
 
   async #getSteamAppsHtmlDetailsPages(steamApps, source) {
