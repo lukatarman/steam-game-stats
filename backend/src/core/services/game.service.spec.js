@@ -9,12 +9,8 @@ import {
   getSteamDbDescription,
   updateMissingReleaseDates,
   getGames,
-  getSteamWebAppType,
-  recordAttemptsViaSource,
   updateGamesMissingDetails,
-  getSteamchartsAppType,
   getGamesIds,
-  recordHtmlAttempt,
 } from "./game.service.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
@@ -38,108 +34,6 @@ import { getXSampleSteamApps } from "../models/steam.app.mocks.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
 describe("game.service.js", () => {
-  describe(".recordHtmlAttempt", () => {
-    describe("if the html page is empty", function () {
-      beforeAll(function () {
-        this.app = getXSampleSteamApps(1)[0];
-        this.source = ValidDataSources.validDataSources.steamWeb;
-        const page = "";
-
-        recordHtmlAttempt(this.app, page, this.source);
-      });
-
-      it("the app will be marked as tried via provided source", function () {
-        expect(this.app.triedVia).toEqual([this.source]);
-      });
-
-      it("the app will be marked as failed via provided source", function () {
-        expect(this.app.failedVia).toEqual([this.source]);
-      });
-    });
-
-    describe("if the html page is not empty", function () {
-      beforeAll(function () {
-        this.app = getXSampleSteamApps(1)[0];
-        this.source = ValidDataSources.validDataSources.steamWeb;
-        const page = feartressGameHtmlDetailsPage;
-
-        recordHtmlAttempt(this.app, page, this.source);
-      });
-
-      it("the app will be marked as tried via provided source", function () {
-        expect(this.app.triedVia).toEqual([this.source]);
-      });
-
-      it("the app will not be marked as failed via provided source", function () {
-        expect(this.app.failedVia).toEqual([]);
-      });
-    });
-  });
-
-  describe(".getSteamWebAppType", function () {
-    describe("game is age restricted - there is no .blockbg class on the page", function () {
-      beforeAll(async function () {
-        this.appType = getSteamWebAppType(gta5ageRestrictedHtmlDetailsPage);
-      });
-
-      it("the function returns 'unknown'", function () {
-        expect(this.appType).toBe(SteamApp.validTypes.unknown);
-      });
-    });
-
-    describe("if there is no 'All Software' or 'All Games' in the first breadcrumb child text", function () {
-      beforeAll(async function () {
-        this.appType = getSteamWebAppType(padakVideoHtmlDetailsPage);
-      });
-
-      it("the function returns 'unknown'", function () {
-        expect(this.appType).toBe(SteamApp.validTypes.unknown);
-      });
-    });
-
-    describe("if the text 'Downloadable Content' is in one of the breadcrumbs", function () {
-      beforeAll(async function () {
-        this.appType = getSteamWebAppType(theSims4dlcHtmlDetailsPage);
-      });
-
-      it("the function returns 'downloadableContent'", function () {
-        expect(this.appType).toBe(SteamApp.validTypes.downloadableContent);
-      });
-    });
-
-    describe(".blockbg class is on the page, 'All Software' or 'All Games' is in the first breadcrumb and there is no 'Downloadable Content' text in the breadcrumbs", function () {
-      beforeAll(async function () {
-        this.appType = getSteamWebAppType(feartressGameHtmlDetailsPage);
-      });
-
-      it("the function returns 'game'", function () {
-        expect(this.appType).toBe(SteamApp.validTypes.game);
-      });
-    });
-  });
-
-  describe(".getSteamchartsAppType", function () {
-    describe("the provided html page is empty", function () {
-      beforeAll(async function () {
-        this.result = getSteamchartsAppType("");
-      });
-
-      it("the result is 'unknown'", function () {
-        expect(this.result).toBe(SteamApp.validTypes.unknown);
-      });
-    });
-
-    describe("the provided html page is not empty", function () {
-      beforeAll(async function () {
-        this.result = getSteamchartsAppType(eldenRingHttpDetailsSteamcharts);
-      });
-
-      it("the result is 'game'", function () {
-        expect(this.result).toBe(SteamApp.validTypes.game);
-      });
-    });
-  });
-
   describe(".getGames", () => {
     describe("gets no games out of 2 steam apps,", function () {
       beforeAll(function () {

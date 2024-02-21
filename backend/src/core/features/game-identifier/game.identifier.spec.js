@@ -2,7 +2,6 @@ import { GameIdentifier } from "./game.identifier.js";
 import {
   getGames,
   getGamesIds,
-  identifySteamAppTypes,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
   updateMissingReleaseDates,
@@ -81,7 +80,10 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, none of them being games", function () {
         beforeAll(async function () {
-          this.steamApps = getXSampleSteamApps(2);
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            getXSampleSteamApps(2),
+            createLoggerMock(),
+          );
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -90,24 +92,16 @@ describe("game.identifier.js", function () {
             theSims4dlcHtmlDetailsPage,
           ];
 
-          this.updatedSteamApps = identifySteamAppTypes(
-            this.steamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(
-            this.updatedSteamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
           this.steamClient = createSteamMock(this.htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
-            SteamAppsAggregate.manyFromDbEntries(this.steamApps, createLoggerMock()),
+            this.steamApps,
           );
           this.gamesRepository = createGamesRepositoryMock();
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -142,11 +136,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[0].appid,
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[1].appid,
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -167,14 +161,17 @@ describe("game.identifier.js", function () {
 
         it("updateSteamAppsById was called with the correct argument", function () {
           expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-            this.updatedSteamApps,
+            this.steamApps.apps,
           );
         });
       });
 
       describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
         beforeAll(async function () {
-          this.steamApps = getXSampleSteamApps(2);
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            getXSampleSteamApps(2),
+            createLoggerMock(),
+          );
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -183,24 +180,16 @@ describe("game.identifier.js", function () {
             gta5ageRestrictedHtmlDetailsPage,
           ];
 
-          this.updatedSteamApps = identifySteamAppTypes(
-            this.steamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(
-            this.updatedSteamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
           this.steamClient = createSteamMock(this.htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
-            SteamAppsAggregate.manyFromDbEntries(this.steamApps, createLoggerMock()),
+            this.steamApps,
           );
           this.gamesRepository = createGamesRepositoryMock();
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -235,11 +224,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[0].appid,
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[1].appid,
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -270,7 +259,7 @@ describe("game.identifier.js", function () {
 
         it("updateSteamAppsById was called with the correct argument", function () {
           expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-            this.updatedSteamApps,
+            this.steamApps.apps,
           );
         });
       });
@@ -333,30 +322,25 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, none of them being games", function () {
         beforeAll(async function () {
-          this.steamApps = getXSampleSteamApps(2);
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            getXSampleSteamApps(2),
+            createLoggerMock(),
+          );
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
           this.htmlDetailsPages = ["", ""];
 
-          this.updatedSteamApps = identifySteamAppTypes(
-            this.steamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(
-            this.updatedSteamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
           this.steamClient = createSteamMock(this.htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
-            SteamAppsAggregate.manyFromDbEntries(this.steamApps, createLoggerMock()),
+            this.steamApps,
           );
           this.gamesRepository = createGamesRepositoryMock();
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -391,11 +375,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[0].appid,
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[1].appid,
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -416,37 +400,32 @@ describe("game.identifier.js", function () {
 
         it("updateSteamAppsById was called with the correct argument", function () {
           expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-            this.updatedSteamApps,
+            this.steamApps.apps,
           );
         });
       });
 
       describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
         beforeAll(async function () {
-          this.steamApps = getXSampleSteamApps(2);
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            getXSampleSteamApps(2),
+            createLoggerMock(),
+          );
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
           this.htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, ""];
 
-          this.updatedSteamApps = identifySteamAppTypes(
-            this.steamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(
-            this.updatedSteamApps,
-            this.htmlDetailsPages,
-            this.source,
-          );
+          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
           this.steamClient = createSteamMock(this.htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
-            SteamAppsAggregate.manyFromDbEntries(this.steamApps, createLoggerMock()),
+            this.steamApps,
           );
           this.gamesRepository = createGamesRepositoryMock();
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -481,11 +460,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[0].appid,
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps[1].appid,
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -516,7 +495,7 @@ describe("game.identifier.js", function () {
 
         it("updateSteamAppsById was called with the correct argument", function () {
           expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-            this.updatedSteamApps,
+            this.steamApps.apps,
           );
         });
       });

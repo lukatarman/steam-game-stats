@@ -1,3 +1,6 @@
+import { parseHTML } from "linkedom";
+import { ValidDataSources } from "./valid.data.sources.js";
+
 export class SteamApp {
   appid;
   name;
@@ -10,6 +13,14 @@ export class SteamApp {
     "unknown",
   ]);
 
+  static #createValidTypesEnum(values) {
+    const enumObject = {};
+    for (const val of values) {
+      enumObject[val] = val;
+    }
+    return Object.freeze(enumObject);
+  }
+
   copy() {
     const copy = new SteamApp();
     copy.appid = this.appid;
@@ -19,34 +30,6 @@ export class SteamApp {
     copy.failedVia = this.failedVia.slice();
 
     return copy;
-  }
-
-  triedIfGameViaSource(source) {
-    if (this.triedVia.includes(source)) return;
-
-    this.triedVia.push(source);
-  }
-
-  htmlPageFailedViaSource(source) {
-    if (this.failedVia.includes(source)) return;
-
-    this.failedVia.push(source);
-  }
-
-  get appType() {
-    return this.type;
-  }
-
-  set appType(type) {
-    this.type = type;
-  }
-
-  static #createValidTypesEnum(values) {
-    const enumObject = {};
-    for (const val of values) {
-      enumObject[val] = val;
-    }
-    return Object.freeze(enumObject);
   }
 
   static manyFromSteamApi(apps) {
@@ -83,5 +66,69 @@ export class SteamApp {
     const targetAppIds = steamAppsTarget.map((app) => app.appid);
 
     return steamAppsSource.filter((app) => !targetAppIds.includes(app.appid));
+  }
+
+  get appType() {
+    return this.type;
+  }
+
+  set appType(type) {
+    this.type = type;
+  }
+
+  checkedIfGameViaSource(source) {
+    if (this.triedVia.includes(source)) return;
+
+    this.triedVia.push(source);
+  }
+
+  htmlPageFailedViaSource(source) {
+    if (this.failedVia.includes(source)) return;
+
+    this.failedVia.push(source);
+  }
+
+  recordHtmlAttempt(page, source) {
+    this.checkedIfGameViaSource(source);
+
+    if (page === "") this.htmlPageFailedViaSource(source);
+  }
+
+  updateSteamAppType(page, source) {
+    this.appType = this.#getType(page, source);
+  }
+
+  #getType(page, source) {
+    if (source === ValidDataSources.validDataSources.steamWeb)
+      return this.#getSteamWebAppType(page);
+    if (source === ValidDataSources.validDataSources.steamcharts)
+      return this.#getSteamchartsAppType(page);
+  }
+
+  #getSteamWebAppType(page) {
+    const { document } = parseHTML(page);
+
+    const breadcrumbElement = document.querySelector(".blockbg");
+
+    if (!breadcrumbElement) return SteamApp.validTypes.unknown;
+
+    const breadcrumbText = breadcrumbElement.children[0].textContent;
+
+    if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
+      return SteamApp.validTypes.unknown;
+
+    for (let child of breadcrumbElement.children) {
+      if (child.textContent === "Downloadable Content")
+        return SteamApp.validTypes.downloadableContent;
+    }
+
+    return SteamApp.validTypes.game;
+  }
+
+  // TODO https://github.com/lukatarman/steam-game-stats/issues/178
+  #getSteamchartsAppType(page) {
+    if (page === "") return SteamApp.validTypes.unknown;
+
+    return SteamApp.validTypes.game;
   }
 }

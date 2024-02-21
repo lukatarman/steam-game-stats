@@ -4,7 +4,6 @@ import {
   getGamesIds,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
-  identifySteamAppTypes,
 } from "../../services/game.service.js";
 import { delay } from "../../../common/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
@@ -35,7 +34,8 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-
+  // run tests, fix bugs
+  // check if anything else to change in game identifier tryIfGameViaSource method
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
 

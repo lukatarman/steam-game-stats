@@ -1,64 +1,6 @@
 import { Game } from "../models/game.js";
 import { SteamApp } from "../models/steam.app.js";
 import { parseHTML } from "linkedom";
-import { ValidDataSources } from "../models/valid.data.sources.js";
-
-export function identifySteamAppTypes(steamApps, htmlDetailsPages, source) {
-  return steamApps.map((app, i) => {
-    const appCopy = app.copy();
-    const page = htmlDetailsPages[i];
-
-    recordHtmlAttempt(appCopy, page, source);
-
-    updateSteamAppType(appCopy, page, source);
-
-    return appCopy;
-  });
-}
-
-export function recordHtmlAttempt(steamApp, htmlDetailsPage, source) {
-  steamApp.triedIfGameViaSource(source);
-
-  if (htmlDetailsPage === "") steamApp.htmlPageFailedViaSource(source);
-}
-
-export function updateSteamAppType(steamApp, page, source) {
-  steamApp.appType = getType(page, source);
-}
-
-function getType(page, source) {
-  if (source === ValidDataSources.validDataSources.steamWeb)
-    return getSteamWebAppType(page);
-  if (source === ValidDataSources.validDataSources.steamcharts)
-    return getSteamchartsAppType(page);
-}
-
-export function getSteamWebAppType(page) {
-  const { document } = parseHTML(page);
-
-  const breadcrumbElement = document.querySelector(".blockbg");
-
-  if (!breadcrumbElement) return SteamApp.validTypes.unknown;
-
-  const breadcrumbText = breadcrumbElement.children[0].textContent;
-
-  if (breadcrumbText !== "All Software" && breadcrumbText !== "All Games")
-    return SteamApp.validTypes.unknown;
-
-  for (let child of breadcrumbElement.children) {
-    if (child.textContent === "Downloadable Content")
-      return SteamApp.validTypes.downloadableContent;
-  }
-
-  return SteamApp.validTypes.game;
-}
-
-// TODO https://github.com/lukatarman/steam-game-stats/issues/178
-export function getSteamchartsAppType(page) {
-  if (page === "") return SteamApp.validTypes.unknown;
-
-  return SteamApp.validTypes.game;
-}
 
 export function getGames(updatedSteamApps, htmlDetailsPages) {
   return htmlDetailsPages
@@ -129,7 +71,7 @@ export function recordAttemptsViaSource(steamApps, htmlDetailsPages, source) {
     const appCopy = app.copy();
     const currentPage = htmlDetailsPages.find((page) => page.id == app.appid);
 
-    recordHtmlAttempt(appCopy, currentPage.page, source);
+    appCopy.recordHtmlAttempt(currentPage.page, source);
 
     return appCopy;
   });
