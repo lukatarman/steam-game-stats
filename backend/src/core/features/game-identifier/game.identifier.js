@@ -47,12 +47,6 @@ export class GameIdentifier {
 
     if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const games = await this.#identifyTypes(steamApps, source);
-
-    await this.#persistGameCheckUpdates(games, steamApps.apps);
-  };
-
-  async #identifyTypes(steamApps, source) {
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
       steamApps.apps,
       source,
@@ -62,8 +56,8 @@ export class GameIdentifier {
 
     const games = steamApps.getGames(htmlDetailsPages);
 
-    return games;
-  }
+    await this.#persistGameCheckUpdates(games, steamApps.apps);
+  };
 
   async #getSteamAppsHtmlDetailsPages(steamApps, source) {
     const detailsPages = [];
