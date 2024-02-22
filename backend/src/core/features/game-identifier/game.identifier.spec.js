@@ -1,6 +1,5 @@
 import { GameIdentifier } from "./game.identifier.js";
 import {
-  getGames,
   getGamesIds,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
@@ -94,7 +93,7 @@ describe("game.identifier.js", function () {
 
           this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
+          this.games = this.steamApps.getGames(this.htmlDetailsPages);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -182,7 +181,7 @@ describe("game.identifier.js", function () {
 
           this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
+          this.games = this.steamApps.getGames(this.htmlDetailsPages);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -333,7 +332,7 @@ describe("game.identifier.js", function () {
 
           this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
+          this.games = this.steamApps.getGames(this.htmlDetailsPages);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -418,7 +417,7 @@ describe("game.identifier.js", function () {
 
           this.steamApps.identifySteamAppTypes(this.htmlDetailsPages, this.source);
 
-          this.games = getGames(this.steamApps.apps, this.htmlDetailsPages, this.source);
+          this.games = this.steamApps.getGames(this.htmlDetailsPages);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 

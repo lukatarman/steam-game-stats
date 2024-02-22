@@ -1,6 +1,6 @@
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { daysToMs } from "../../common/time.utils.js";
 import { Game } from "./game.js";
-import { PlayerHistory } from "./player.history.js";
 import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
@@ -13,12 +13,9 @@ export const getXGamesWithoutDetails = (amount) => {
 export const getOneSteamAppInstantiatedGame = () => {
   const steamApp = getXSampleSteamApps(1);
 
-  const releaseDate = "21 July 2019";
-  const developers = ["Valve", "Hopoo Games"];
-  const genres = ["Action", "Adventure"];
-  const description = "Best game";
+  const page = feartressGameHtmlDetailsPage;
 
-  return Game.fromSteamApp(steamApp, releaseDate, developers, genres, description);
+  return Game.fromSteamApp(steamApp, page);
 };
 
 export const getXsteamchartsInstantiatedGames = (amount) => {

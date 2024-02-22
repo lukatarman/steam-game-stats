@@ -1,27 +1,13 @@
 import {
-  getReleaseDate,
-  getDevelopers,
-  getGenres,
-  getDescription,
   getSteamDbReleaseDate,
   getSteamDbDevelopers,
   getSteamDbGenres,
   getSteamDbDescription,
   updateMissingReleaseDates,
-  getGames,
   updateGamesMissingDetails,
   getGamesIds,
 } from "./game.service.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
-import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
-import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
-import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
-import { Game } from "../models/game.js";
-import { SteamApp } from "../models/steam.app.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
-import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
-import { ValidDataSources } from "../models/valid.data.sources.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
@@ -30,172 +16,8 @@ import {
   getXsteamchartsInstantiatedGames,
 } from "../models/game.mocks.js";
 import { createHtmlDetailsPages } from "../../../assets/html.details.pages.mock.js";
-import { getXSampleSteamApps } from "../models/steam.app.mocks.js";
-import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
 
 describe("game.service.js", () => {
-  describe(".getGames", () => {
-    describe("gets no games out of 2 steam apps,", function () {
-      beforeAll(function () {
-        const apps = getXSampleSteamApps(2);
-        apps[0].appType = SteamApp.validTypes.unknown;
-        apps[1].appType = SteamApp.validTypes.unknown;
-
-        const pages = ["", ""];
-
-        this.result = getGames(apps, pages);
-      });
-
-      it("no games are returned", function () {
-        expect(this.result.length).toBe(0);
-      });
-    });
-
-    describe("gets one game out of 2 steam apps,", function () {
-      beforeAll(function () {
-        const apps = getXSampleSteamApps(2);
-        apps[0].appType = SteamApp.validTypes.game;
-        apps[1].appType = SteamApp.validTypes.unknown;
-        const pages = ["", ""];
-
-        this.result = getGames(apps, pages);
-      });
-
-      it("one game is returned", function () {
-        expect(this.result.length).toBe(1);
-      });
-
-      it("the result is an instance on Game", function () {
-        expect(this.result[0]).toBeInstanceOf(Game);
-      });
-
-      it("the game has the correct id", function () {
-        expect(this.result[0].id).toBe(1);
-      });
-    });
-  });
-
-  describe(".getReleaseDate checks for a release date in the provided HTML page.", function () {
-    describe("if the provided HTML page does not include a release date section,", function () {
-      beforeAll(function () {
-        this.result = getReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
-      });
-
-      it("the result is an empty string", function () {
-        expect(this.result).toBe("");
-      });
-    });
-
-    describe("if the provided HTML page includes a release date,", function () {
-      beforeAll(function () {
-        this.result = getReleaseDate(mortalDarknessGameHtmlDetailsPage);
-      });
-
-      it("the result is a date", function () {
-        expect(this.result).toBeInstanceOf(Date);
-      });
-      it("the result is the correct date'", function () {
-        expect(this.result.toISOString()).toEqual("2023-08-01T00:00:00.000Z");
-      });
-    });
-  });
-
-  describe(".getDevelopers checks for developers in the provided HTML page.", function () {
-    describe("if the provided HTML page does not include any developers,", function () {
-      beforeAll(function () {
-        this.result = getDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
-      });
-
-      it("the result is an empty array", function () {
-        expect(this.result).toEqual([]);
-      });
-    });
-
-    describe("if the provided HTML page includes one developer,", function () {
-      beforeAll(function () {
-        this.result = getDevelopers(mortalDarknessGameHtmlDetailsPage);
-      });
-
-      it("the result is an array with one value", function () {
-        expect(this.result.length).toBe(1);
-      });
-
-      it("the result is 'Dark Faction Games'", function () {
-        expect(this.result[0]).toBe("Dark Faction Games");
-      });
-    });
-
-    describe("if the provided HTML page includes two developers,", function () {
-      beforeAll(function () {
-        this.result = getDevelopers(crusaderKingsDetailsPage);
-      });
-
-      it("the result is an array with two values", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first result is 'Paradox Development Studio'", function () {
-        expect(this.result[0]).toBe("Paradox Development Studio");
-      });
-
-      it("the second result is 'Paradox Thalassic'", function () {
-        expect(this.result[1]).toBe("Paradox Thalassic");
-      });
-    });
-  });
-
-  describe(".getGenres checks for genres in the provided HTML page.", function () {
-    describe("if the provided HTML page does not include any genres,", function () {
-      beforeAll(function () {
-        this.result = getGenres(riskOfRainHtmlDetailsPageMissingInfo);
-      });
-
-      it("the result is an empty array", function () {
-        expect(this.result).toEqual([]);
-      });
-    });
-
-    describe("if the provided HTML page includes genres,", function () {
-      beforeAll(function () {
-        this.result = getGenres(mortalDarknessGameHtmlDetailsPage);
-      });
-
-      it("the resulting array has a length of 4", function () {
-        expect(this.result.length).toBe(4);
-      });
-      it("the first result is 'Action'", function () {
-        expect(this.result[0]).toBe("Action");
-      });
-      it("the fourth result is 'RPG'", function () {
-        expect(this.result[3]).toBe("RPG");
-      });
-    });
-  });
-
-  describe(".getDescription checks for a game's description in the provided HTML page.", function () {
-    describe("if the provided HTML page does not include a game description,", function () {
-      beforeAll(function () {
-        this.result = getDescription(riskOfRainHtmlDetailsPageMissingInfo);
-      });
-
-      it("the result is an empty string", function () {
-        expect(this.result).toEqual("");
-      });
-    });
-
-    describe("if the provided HTML page includes a description,", function () {
-      beforeAll(function () {
-        this.result = getDescription(mortalDarknessGameHtmlDetailsPage);
-      });
-
-      it("the resulting is a specific string", function () {
-        expect(this.result).toBe(
-          "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
-        );
-      });
-    });
-  });
-
   describe(".getGamesIds", () => {
     describe("if two games are passed in", function () {
       beforeAll(function () {

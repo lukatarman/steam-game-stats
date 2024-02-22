@@ -76,6 +76,10 @@ export class SteamApp {
     this.type = type;
   }
 
+  get isGame() {
+    return this.type === SteamApp.validTypes.game;
+  }
+
   checkedIfGameViaSource(source) {
     if (this.triedVia.includes(source)) return;
 

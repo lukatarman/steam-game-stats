@@ -1,3 +1,4 @@
+import { parseHTML } from "linkedom";
 import { PlayerHistory } from "./player.history.js";
 import cloneDeep from "lodash.clonedeep";
 
@@ -26,16 +27,17 @@ export class Game {
   }
 
   // prettier-ignore
-  static fromSteamApp(steamApp, releaseDate, developers, genres, description) {
+  static fromSteamApp(steamApp, page) {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = releaseDate;
-    game.developers    = developers;
-    game.genres        = genres;
-    game.description   = description;
+    game.releaseDate   = game.getReleaseDate(page);
+    game.developers    = game.getDevelopers(page);
+    game.genres        = game.getGenres(page);
+    game.description   = game.getDescription(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
+    
     return game;
   }
 
@@ -121,5 +123,51 @@ export class Game {
   updateReleaseDate(newReleaseDate) {
     if (newReleaseDate !== "" && this.releaseDate === "")
       this.releaseDate = newReleaseDate;
+  }
+
+  getReleaseDate(page) {
+    const { document } = parseHTML(page);
+
+    const releaseDateElement = document.querySelector(".release_date .date");
+
+    if (!releaseDateElement) return "";
+
+    const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
+
+    return releaseDate == "Invalid Date" ? "" : releaseDate;
+  }
+
+  getDevelopers(page) {
+    const { document } = parseHTML(page);
+
+    const developers = document.querySelector(".dev_row #developers_list");
+
+    if (!developers) return [];
+
+    return Array.from(developers.children).map((developer) =>
+      developer.textContent.trim(),
+    );
+  }
+
+  getGenres(page) {
+    const { document } = parseHTML(page);
+
+    const genres = document.querySelector("#genresAndManufacturer span");
+
+    if (!genres) return [];
+
+    return Array.from(genres.children)
+      .map((genre) => genre.textContent.trim())
+      .filter((genre) => !!genre);
+  }
+
+  getDescription(page) {
+    const { document } = parseHTML(page);
+
+    const description = document.querySelector(".game_description_snippet");
+
+    if (!description) return "";
+
+    return description.textContent.trim();
   }
 }

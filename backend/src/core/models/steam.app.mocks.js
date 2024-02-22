@@ -17,6 +17,18 @@ export const getThreeSourceUntriedFilteredSteamApps = (amount, source) => {
   });
 };
 
+export const getXSampleSteamAppsMarkedAsGames = (amount) => {
+  return Array.from({ length: amount }, (x, index) =>
+    SteamApp.oneFromDbEntry({
+      appid: index + 1,
+      name: `Game #${index + 1}`,
+      type: SteamApp.validTypes.game,
+      triedVia: [],
+      failedVia: [],
+    }),
+  );
+};
+
 const isSecondFourthOrSeventhValue = (index) => {
   if (index === 1) return true;
   if (index === 3) return true;

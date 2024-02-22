@@ -2,7 +2,10 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details
 import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { createLoggerMock } from "../../common/logger.mock.js";
 import { SteamApp } from "./steam.app.js";
-import { getXSampleSteamApps } from "./steam.app.mocks.js";
+import {
+  getXSampleSteamApps,
+  getXSampleSteamAppsMarkedAsGames,
+} from "./steam.app.mocks.js";
 import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 
@@ -92,6 +95,53 @@ describe("SteamAppsAggregate", function () {
         expect(this.result.apps[1].triedVia).toEqual([
           ValidDataSources.validDataSources.steamWeb,
         ]);
+      });
+    });
+  });
+
+  describe(".getGames", function () {
+    describe("when no steam apps are marked as games", function () {
+      beforeAll(function () {
+        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamApps(2),
+          createLoggerMock(),
+        );
+
+        this.result = steamAppsArray.getGames(["", ""]);
+      });
+
+      it("no games are returned", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+
+    describe("when one out of two steam apps is marked as a game", function () {
+      beforeAll(function () {
+        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
+          [getXSampleSteamApps(1)[0], getXSampleSteamAppsMarkedAsGames(1)[0]],
+          createLoggerMock(),
+        );
+
+        this.result = steamAppsArray.getGames(["", ""]);
+      });
+
+      it("one game is returned", function () {
+        expect(this.result.length).toBe(1);
+      });
+    });
+
+    describe("when two out of two steam apps are marked as games", function () {
+      beforeAll(function () {
+        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsGames(2),
+          createLoggerMock(),
+        );
+
+        this.result = steamAppsArray.getGames(["", ""]);
+      });
+
+      it("two games are returned", function () {
+        expect(this.result.length).toBe(2);
       });
     });
   });

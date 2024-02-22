@@ -1,3 +1,4 @@
+import { Game } from "./game.js";
 import { SteamApp } from "./steam.app.js";
 
 export class SteamAppsAggregate {
@@ -31,5 +32,15 @@ export class SteamAppsAggregate {
 
       return appCopy;
     });
+  }
+
+  getGames(pages) {
+    return this.apps
+      .map((app, i) => {
+        if (!app.isGame) return "";
+
+        return Game.fromSteamApp(app, pages[i]);
+      })
+      .filter((game) => !!game);
   }
 }

@@ -1,6 +1,5 @@
 import {
   updateMissingReleaseDates,
-  getGames,
   getGamesIds,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
@@ -34,7 +33,6 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // run tests, fix bugs
   // check if anything else to change in game identifier tryIfGameViaSource method
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
@@ -62,7 +60,7 @@ export class GameIdentifier {
 
     steamApps.identifySteamAppTypes(htmlDetailsPages, source);
 
-    const games = getGames(steamApps.apps, htmlDetailsPages, source);
+    const games = steamApps.getGames(htmlDetailsPages);
 
     return games;
   }
