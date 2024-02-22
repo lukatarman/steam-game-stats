@@ -58,7 +58,7 @@ export class GameIdentifier {
       source,
     );
 
-    steamApps.identifySteamAppTypes(htmlDetailsPages, source);
+    steamApps.identifyTypes(htmlDetailsPages, source);
 
     const games = steamApps.getGames(htmlDetailsPages);
 

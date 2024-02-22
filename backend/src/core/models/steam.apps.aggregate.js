@@ -21,7 +21,7 @@ export class SteamAppsAggregate {
     return true;
   }
 
-  identifySteamAppTypes(htmlDetailsPages, source) {
+  identifyTypes(htmlDetailsPages, source) {
     this.apps = this.apps.map((app, i) => {
       const appCopy = app.copy();
       const page = htmlDetailsPages[i];

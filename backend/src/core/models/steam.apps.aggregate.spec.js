@@ -68,7 +68,7 @@ describe("SteamAppsAggregate", function () {
     });
   });
 
-  describe(".identifySteamAppTypes", function () {
+  describe(".identifyTypes", function () {
     describe("when attempting to identify steam app types", function () {
       beforeAll(function () {
         this.result = SteamAppsAggregate.manyFromDbEntries(
@@ -80,7 +80,7 @@ describe("SteamAppsAggregate", function () {
 
         const htmlPages = [mortalDarknessGameHtmlDetailsPage, theSims4dlcHtmlDetailsPage];
 
-        this.result.identifySteamAppTypes(htmlPages, source);
+        this.result.identifyTypes(htmlPages, source);
       });
 
       it("the first steam app has the correct values", function () {
