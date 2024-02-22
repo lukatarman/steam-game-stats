@@ -21,7 +21,7 @@ import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
 import { GamesAggregate } from "../../models/games.aggregate.js";
 
 describe("game.identifier.js", function () {
-  describe(".tryIfGameViaSource.", function () {
+  describe(".checkIfGameViaSource.", function () {
     describe("via SteamWeb", function () {
       describe("Finds no unidentified steam apps in the database", function () {
         beforeAll(async function () {
@@ -43,7 +43,7 @@ describe("game.identifier.js", function () {
             createConfigMock().features,
           );
 
-          await this.identifier.tryIfGameViaSource(this.source);
+          await this.identifier.checkIfGameViaSource(this.source);
         });
 
         it("getSourceUntriedFilteredSteamApps was called once", function () {
@@ -114,7 +114,7 @@ describe("game.identifier.js", function () {
             createConfigMock().features,
           );
 
-          await this.identifier.tryIfGameViaSource(this.source);
+          await this.identifier.checkIfGameViaSource(this.source);
         });
 
         it("getSourceUntriedFilteredSteamApps was called once", function () {
@@ -202,7 +202,7 @@ describe("game.identifier.js", function () {
             createConfigMock().features,
           );
 
-          await this.identifier.tryIfGameViaSource(this.source);
+          await this.identifier.checkIfGameViaSource(this.source);
         });
 
         it("getSourceUntriedFilteredSteamApps was called once", function () {
@@ -285,7 +285,7 @@ describe("game.identifier.js", function () {
             createConfigMock().features,
           );
 
-          await this.identifier.tryIfGameViaSource(this.source);
+          await this.identifier.checkIfGameViaSource(this.source);
         });
 
         it("getSourceUntriedFilteredSteamApps was called once", function () {
@@ -353,7 +353,7 @@ describe("game.identifier.js", function () {
             createConfigMock().features,
           );
 
-          await this.identifier.tryIfGameViaSource(this.source);
+          await this.identifier.checkIfGameViaSource(this.source);
         });
 
         it("getSourceUntriedFilteredSteamApps was called once", function () {
@@ -438,7 +438,7 @@ describe("game.identifier.js", function () {
             createConfigMock().features,
           );
 
-          await this.identifier.tryIfGameViaSource(this.source);
+          await this.identifier.checkIfGameViaSource(this.source);
         });
 
         it("getSourceUntriedFilteredSteamApps was called once", function () {

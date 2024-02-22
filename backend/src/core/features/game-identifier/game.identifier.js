@@ -33,11 +33,11 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // check if anything else to change in game identifier tryIfGameViaSource method
+  // check if anything else to change in game identifier checkIfGameViaSource method
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
 
-  tryIfGameViaSource = async (source) => {
+  checkIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
 
     const steamApps = await this.#steamAppsRepository.getSourceUntriedFilteredSteamApps(

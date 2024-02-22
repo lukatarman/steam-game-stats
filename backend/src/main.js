@@ -80,8 +80,8 @@ async function main() {
   const runnables = [
     steamAppsAggregatorRunnable,
     { func: steamAppsAggregator.collectSteamApps },
-    { func: () => gameIdentifier.tryIfGameViaSource(steamWeb) },
-    { func: () => gameIdentifier.tryIfGameViaSource(steamcharts) },
+    { func: () => gameIdentifier.checkIfGameViaSource(steamWeb) },
+    { func: () => gameIdentifier.checkIfGameViaSource(steamcharts) },
     { func: gameIdentifier.updateGamesWithoutDetails },
     { func: gameIdentifier.updateGamesWithoutReleaseDates },
     { func: playerHistoryAggregator.addPlayerHistoryFromSteamcharts },
