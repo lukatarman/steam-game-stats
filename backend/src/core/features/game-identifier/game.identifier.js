@@ -47,25 +47,16 @@ export class GameIdentifier {
 
     if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
+    const htmlDetailsPages = await this.#steamClient.getSourceHtmlDetailsPages(
+      steamApps.getIds(),
+      source,
+      this.#options.unitDelay,
+    );
 
     const games = steamApps.checkForGames(htmlDetailsPages, source);
 
     await this.#persistGameCheckUpdates(games, steamApps);
   };
-
-  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
-    const detailsPages = [];
-
-    for (let steamApp of steamApps.apps) {
-      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      detailsPages.push(
-        await this.#steamClient.getSourceHtmlDetailsPage(steamApp.appid, source),
-      );
-      await delay(this.#options.unitDelay);
-    }
-    return detailsPages;
-  }
 
   async #persistGameCheckUpdates(games, steamApps) {
     if (games.length !== 0) {
@@ -116,7 +107,7 @@ export class GameIdentifier {
 
     for (let game of games) {
       // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(game.id, source);
+      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPages(game.id, source);
       htmlDetailsPages.push({ page: htmlPage, id: game.id });
 
       await delay(this.#options.unitDelay);

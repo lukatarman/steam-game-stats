@@ -13,6 +13,10 @@ export class SteamAppsAggregate {
     return steamAppsAggregate;
   }
 
+  getIds() {
+    return this.apps.map((app) => app.appid);
+  }
+
   checkIfEmpty(delay) {
     if (this.apps.length > 0) return false;
 
