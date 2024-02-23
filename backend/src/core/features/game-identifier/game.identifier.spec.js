@@ -91,9 +91,7 @@ describe("game.identifier.js", function () {
             theSims4dlcHtmlDetailsPage,
           ];
 
-          this.steamApps.identifyTypes(this.htmlDetailsPages, this.source);
-
-          this.games = this.steamApps.getGames(this.htmlDetailsPages);
+          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -179,9 +177,7 @@ describe("game.identifier.js", function () {
             gta5ageRestrictedHtmlDetailsPage,
           ];
 
-          this.steamApps.identifyTypes(this.htmlDetailsPages, this.source);
-
-          this.games = this.steamApps.getGames(this.htmlDetailsPages);
+          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -330,9 +326,7 @@ describe("game.identifier.js", function () {
 
           this.htmlDetailsPages = ["", ""];
 
-          this.steamApps.identifyTypes(this.htmlDetailsPages, this.source);
-
-          this.games = this.steamApps.getGames(this.htmlDetailsPages);
+          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -415,9 +409,7 @@ describe("game.identifier.js", function () {
 
           this.htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, ""];
 
-          this.steamApps.identifyTypes(this.htmlDetailsPages, this.source);
-
-          this.games = this.steamApps.getGames(this.htmlDetailsPages);
+          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 

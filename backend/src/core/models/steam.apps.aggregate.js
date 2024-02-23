@@ -21,7 +21,13 @@ export class SteamAppsAggregate {
     return true;
   }
 
-  identifyTypes(htmlDetailsPages, source) {
+  checkForGames(pages, source) {
+    this.#identifyTypes(pages, source);
+
+    return this.#getGames(pages);
+  }
+
+  #identifyTypes(htmlDetailsPages, source) {
     this.apps = this.apps.map((app, i) => {
       const appCopy = app.copy();
       const page = htmlDetailsPages[i];
@@ -34,7 +40,7 @@ export class SteamAppsAggregate {
     });
   }
 
-  getGames(pages) {
+  #getGames(pages) {
     return this.apps
       .map((app, i) => {
         if (!app.isGame) return "";

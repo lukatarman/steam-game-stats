@@ -47,22 +47,17 @@ export class GameIdentifier {
 
     if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.apps,
-      source,
-    );
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
 
-    steamApps.identifyTypes(htmlDetailsPages, source);
+    const games = steamApps.checkForGames(htmlDetailsPages, source);
 
-    const games = steamApps.getGames(htmlDetailsPages);
-
-    await this.#persistGameCheckUpdates(games, steamApps.apps);
+    await this.#persistGameCheckUpdates(games, steamApps);
   };
 
   async #getSteamAppsHtmlDetailsPages(steamApps, source) {
     const detailsPages = [];
 
-    for (let steamApp of steamApps) {
+    for (let steamApp of steamApps.apps) {
       // TODO https://github.com/lukatarman/steam-game-stats/issues/192
       detailsPages.push(
         await this.#steamClient.getSourceHtmlDetailsPage(steamApp.appid, source),
@@ -80,7 +75,7 @@ export class GameIdentifier {
         HistoryCheck.manyFromGames(games),
       );
     }
-    await this.#steamAppsRepository.updateSteamAppsById(steamApps);
+    await this.#steamAppsRepository.updateSteamAppsById(steamApps.apps);
   }
 
   updateGamesWithoutDetails = async () => {
