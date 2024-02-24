@@ -20,7 +20,7 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
 import { GamesAggregate } from "../../models/games.aggregate.js";
 
-fdescribe("game.identifier.js", function () {
+describe("game.identifier.js", function () {
   describe(".checkIfGameViaSource.", function () {
     describe("via SteamWeb", function () {
       describe("Finds no unidentified steam apps in the database", function () {
