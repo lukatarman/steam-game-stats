@@ -12,6 +12,10 @@ export class GamesAggregate {
     return gamesAggregate;
   }
 
+  getIds() {
+    return this.games.map((game) => game.id);
+  }
+
   checkIfEmpty(delay, message) {
     if (this.games.length > 0) return false;
 

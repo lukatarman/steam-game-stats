@@ -21,6 +21,24 @@ describe("GamesAggregate", function () {
     });
   });
 
+  describe(".getGamesIds", () => {
+    describe("if two games are passed in", function () {
+      beforeAll(function () {
+        const games = GamesAggregate.manyFromDbEntries(
+          getXGamesWithoutDetails(2),
+          createLoggerMock(),
+        );
+
+        this.result = games.getIds();
+      });
+
+      it("two ids are returned", function () {
+        expect(this.result[0]).toBe(1);
+        expect(this.result[1]).toBe(2);
+      });
+    });
+  });
+
   describe(".checkIfEmpty", function () {
     describe("when the steamApps array is empty", function () {
       beforeAll(function () {
