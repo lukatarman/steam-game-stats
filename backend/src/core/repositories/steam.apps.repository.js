@@ -64,7 +64,7 @@ export class SteamAppsRepository {
   async getSteamAppsById(ids) {
     const response = await Promise.all(ids.map((id) => this.getSteamAppById(id)));
 
-    return SteamApp.manyFromDbEntries(response);
+    return SteamAppsAggregate.manyFromDbEntries(response, this.#logger);
   }
 
   async getSteamAppById(id) {

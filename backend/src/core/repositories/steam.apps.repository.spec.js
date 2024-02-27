@@ -467,21 +467,25 @@ describe("SteamAppsRepository", function () {
         this.databaseClient.disconnect();
       });
 
+      it("the result is an instance of SteamAppsAggregate", function () {
+        expect(this.result).toBeInstanceOf(SteamAppsAggregate);
+      });
+
       it("two steam apps are returned", function () {
-        expect(this.result.length).toBe(2);
+        expect(this.result.apps.length).toBe(2);
       });
 
       it("the steam apps are an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
+        expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+        expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
       });
 
       it("the first steam app has the correct values", function () {
-        expect(this.result[0].appid).toBe(1);
+        expect(this.result.apps[0].appid).toBe(1);
       });
 
       it("the second steam app has the correct values", function () {
-        expect(this.result[1].appid).toBe(2);
+        expect(this.result.apps[1].appid).toBe(2);
       });
     });
   });
