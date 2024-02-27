@@ -1,9 +1,5 @@
 import { parseHTML } from "linkedom";
 
-export function getGamesIds(games) {
-  return games.map((game) => game.id);
-}
-
 export function recordAttemptsViaSource(steamApps, htmlDetailsPages, source) {
   return steamApps.map((app) => {
     const appCopy = app.copy();

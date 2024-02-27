@@ -5,34 +5,15 @@ import {
   getSteamDbDescription,
   updateMissingReleaseDates,
   updateGamesMissingDetails,
-  getGamesIds,
 } from "./game.service.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
-import {
-  getXGamesWithoutDetails,
-  getXsteamchartsInstantiatedGames,
-} from "../models/game.mocks.js";
+import { getXsteamchartsInstantiatedGames } from "../models/game.mocks.js";
 import { createHtmlDetailsPages } from "../../../assets/html.details.pages.mock.js";
 
 describe("game.service.js", () => {
-  describe(".getGamesIds", () => {
-    describe("if two games are passed in", function () {
-      beforeAll(function () {
-        const games = getXGamesWithoutDetails(2);
-
-        this.result = getGamesIds(games);
-      });
-
-      it("two ids are returned", function () {
-        expect(this.result[0]).toBe(1);
-        expect(this.result[1]).toBe(2);
-      });
-    });
-  });
-
   describe(".updateGamesMissingDetails.", function () {
     describe("When we try to update two games with missing details,", function () {
       beforeAll(function () {
