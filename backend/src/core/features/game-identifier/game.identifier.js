@@ -1,6 +1,5 @@
 import {
   updateMissingReleaseDates,
-  getGamesIds,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
 } from "../../services/game.service.js";
@@ -33,7 +32,11 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // check if anything else to change in game identifier checkIfGameViaSource method
+  // take out parseHTML from methods, parse it in identifier before providing
+  // take out delay + logger from steam apps aggregate - back to game identifier
+  // take out loop from steam client - put into identifier
+  // put steam apps identify types into game identifier
+  // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
 
@@ -47,16 +50,25 @@ export class GameIdentifier {
 
     if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const htmlDetailsPages = await this.#steamClient.getSourceHtmlDetailsPages(
-      steamApps.getIds(),
-      source,
-      this.#options.unitDelay,
-    );
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
 
     const games = steamApps.checkForGames(htmlDetailsPages, source);
 
     await this.#persistGameCheckUpdates(games, steamApps);
   };
+
+  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
+    const detailsPages = [];
+
+    for (let steamApp of steamApps.apps) {
+      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+      detailsPages.push(
+        await this.#steamClient.getSourceHtmlDetailsPage(steamApp.appid, source),
+      );
+      await delay(this.#options.unitDelay);
+    }
+    return detailsPages;
+  }
 
   async #persistGameCheckUpdates(games, steamApps) {
     if (games.length !== 0) {
@@ -78,9 +90,7 @@ export class GameIdentifier {
 
     if (games.checkIfEmpty(this.#options.globalIterationDelay, "details")) return;
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
-      getGamesIds(games.games),
-    );
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
 
     const [updatedGames, updatedSteamApps] = await this.#updateMissingDetails(
       games.games,
@@ -107,7 +117,7 @@ export class GameIdentifier {
 
     for (let game of games) {
       // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPages(game.id, source);
+      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(game.id, source);
       htmlDetailsPages.push({ page: htmlPage, id: game.id });
 
       await delay(this.#options.unitDelay);
@@ -135,9 +145,7 @@ export class GameIdentifier {
 
     if (games.checkIfEmpty(this.#options.globalIterationDelay, "release dates")) return;
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(
-      getGamesIds(games.games),
-    );
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
 
     const [updatedGames, updatedSteamApps] = await this.#updateMissingReleaseDates(
       games.games,

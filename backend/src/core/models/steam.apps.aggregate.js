@@ -53,4 +53,15 @@ export class SteamAppsAggregate {
       })
       .filter((game) => !!game);
   }
+
+  recordAttemptsViaSource(pages, source) {
+    this.apps = this.apps.map((app) => {
+      const appCopy = app.copy;
+      const currentPage = pages.find((page) => page.id === app.appid);
+
+      appCopy.recordHtmlAttempt(currentPage.page, source);
+
+      return appCopy;
+    });
+  }
 }

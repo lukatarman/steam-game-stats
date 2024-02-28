@@ -45,18 +45,7 @@ export class SteamClient {
   }
 
   // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-  async getSourceHtmlDetailsPages(ids, source, delay) {
-    const detailsPages = [];
-
-    for (let id of ids) {
-      detailsPages.push(this.#requestPage(id, source));
-      await delay(delay);
-    }
-
-    return detailsPages;
-  }
-
-  async #requestPage(id, source) {
+  async getSourceHtmlDetailsPage(id, source) {
     const url = ValidDataSources.getSourceUrl(id, source);
 
     try {
