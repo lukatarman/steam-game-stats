@@ -34,7 +34,8 @@ export class SteamAppsAggregate {
   #identifyTypes(htmlDetailsPages, source) {
     this.apps = this.apps.map((app, i) => {
       const appCopy = app.copy();
-      const page = htmlDetailsPages[i];
+
+      const page = htmlDetailsPages.find((page) => page.id === appCopy.appid).page;
 
       appCopy.recordHtmlAttempt(page, source);
 
@@ -49,7 +50,9 @@ export class SteamAppsAggregate {
       .map((app, i) => {
         if (!app.isGame) return "";
 
-        return Game.fromSteamApp(app, pages[i]);
+        const page = pages.find((page) => page.id === app.appid).page;
+
+        return Game.fromSteamApp(app, page);
       })
       .filter((game) => !!game);
   }

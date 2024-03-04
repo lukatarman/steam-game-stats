@@ -1,6 +1,6 @@
+import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
-import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { createLoggerMock } from "../../common/logger.mock.js";
 import { SteamApp } from "./steam.app.js";
 import {
@@ -78,7 +78,7 @@ describe("SteamAppsAggregate", function () {
         );
         const source = ValidDataSources.validDataSources.steamWeb;
 
-        this.result = steamAppsArray.checkForGames(["", ""], source);
+        this.result = steamAppsArray.checkForGames(getParsedHtmlPages(["", ""]), source);
       });
 
       it("no games are returned", function () {
@@ -89,15 +89,13 @@ describe("SteamAppsAggregate", function () {
     describe("when one out of two steam apps is marked as a game", function () {
       beforeAll(function () {
         const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          [getXSampleSteamApps(1)[0], getXSampleSteamAppsMarkedAsGames(1)[0]],
+          getXSampleSteamApps(2),
           createLoggerMock(),
         );
         const source = ValidDataSources.validDataSources.steamWeb;
+        const pages = ["", mortalDarknessGameHtmlDetailsPage];
 
-        this.result = steamAppsArray.checkForGames(
-          ["", mortalDarknessGameHtmlDetailsPage],
-          source,
-        );
+        this.result = steamAppsArray.checkForGames(getParsedHtmlPages(pages), source);
       });
 
       it("one game is returned", function () {
@@ -112,11 +110,9 @@ describe("SteamAppsAggregate", function () {
           createLoggerMock(),
         );
         const source = ValidDataSources.validDataSources.steamWeb;
+        const pages = [feartressGameHtmlDetailsPage, mortalDarknessGameHtmlDetailsPage];
 
-        this.result = steamAppsArray.checkForGames(
-          [feartressGameHtmlDetailsPage, mortalDarknessGameHtmlDetailsPage],
-          source,
-        );
+        this.result = steamAppsArray.checkForGames(getParsedHtmlPages(pages), source);
       });
 
       it("two games are returned", function () {

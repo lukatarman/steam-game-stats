@@ -1,3 +1,4 @@
+import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
@@ -36,107 +37,27 @@ describe("Game", function () {
   });
 
   describe(".fromSteamApp", function () {
-    describe("is called with no arguments, ", function () {
-      it("an Error is thrown", function () {
-        expect(Game.fromSteamApp).toThrowError();
-      });
-    });
-
-    describe("is called with incomplete arguments, ", function () {
-      beforeAll(function () {
-        this.testObject = {
-          id: 123,
-          name: "test game",
-        };
-      });
-
-      it("an Error is thrown", function () {
-        expect(Game.fromSteamApp.bind(this.testObject)).toThrowError();
-      });
-    });
-
-    describe("is called with appropriate attributes,", function () {
+    describe("when the method is called", function () {
       beforeAll(function () {
         const steamApp = getXSampleSteamApps(1)[0];
-
-        const page = feartressGameHtmlDetailsPage;
+        const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
 
         this.result = Game.fromSteamApp(steamApp, page);
-      });
-
-      it("the result is a game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("the game has the correct values", function () {
-        expect(this.result.id).toBe(1);
-        expect(this.result.name).toBe("Game #1");
-        expect(this.result.releaseDate).toEqual(new Date("January 1, 2001 UTC"));
-        expect(this.result.developers).toEqual(["Frederik List", "Aaron Miles"]);
-        expect(this.result.genres).toEqual([
-          "Casual",
-          "Indie",
-          "RPG",
-          "Strategy",
-          "Early Access",
-        ]);
-        expect(this.result.description).toBe(
-          "Feartress is an incremental fantasy RPG where you gather resources, build structures and hire workers and armies to help you succeed in battle and expand your territory.",
-        );
-        expect(this.result.imageUrl).toBe(
-          "https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg",
-        );
-        expect(this.result.playerHistory).toEqual([]);
-      });
-    });
-
-    describe("is called with appropriate attributes, but the releaseDate and Developers are empty the returned value", function () {
-      beforeAll(function () {
-        this.testObject = {
-          appid: 123,
-          name: "test game",
-          imageUrl: "test url",
-          playerHistory: [],
-        };
-
-        this.releaseDate = "";
-        this.developers = [];
-
-        this.result = Game.fromSteamApp(
-          this.testObject,
-          this.releaseDate,
-          this.developers,
-        );
       });
 
       it("is an instance of Game", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("has an 'id' property which equals 123", function () {
-        expect(this.result.id).toBe(this.testObject.appid);
-      });
-
-      it("has a 'name' property which equals 'test game'", function () {
-        expect(this.result.name).toBe(this.testObject.name);
-      });
-
-      it("has a 'releaseDate' property which equals an empty string", function () {
-        expect(this.result.releaseDate).toBe("");
-      });
-
-      it("has a 'developers' property which equals an empty array", function () {
-        expect(this.result.developers).toEqual([]);
-      });
-
-      it("has an 'imageUrl' property which equals a link", function () {
+      it("the game has the correct values", function () {
+        expect(this.result.id).toBe(1);
+        expect(this.result.name).toBe("Game #1");
+        expect(this.result.releaseDate).toEqual(new Date("Jan 1 2001 UTC"));
+        expect(this.result.developers).toEqual(["Frederik List", "Aaron Miles"]);
         expect(this.result.imageUrl).toBe(
-          `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
+          `https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg`,
         );
-      });
-
-      it("has a 'playerHistory' property which equals an empty array", function () {
-        expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
+        expect(this.result.playerHistory).toEqual([]);
       });
     });
   });
@@ -383,10 +304,7 @@ describe("Game", function () {
     beforeAll(function () {
       const steamApp = getXSampleSteamApps(1);
 
-      this.releaseDate = "";
-      this.developers = [];
-
-      this.result = Game.fromSteamApp(steamApp, this.releaseDate, this.developers);
+      this.result = Game.fromSteamcharts(steamApp);
 
       this.result.pushCurrentPlayers(513);
 
@@ -581,8 +499,9 @@ describe("Game", function () {
     describe("if the provided HTML page does not include a release date section,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        this.result = game.getReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+        this.result = game.getReleaseDate(page);
       });
 
       it("the result is an empty string", function () {
@@ -593,8 +512,9 @@ describe("Game", function () {
     describe("if the provided HTML page includes a release date,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
 
-        this.result = game.getReleaseDate(mortalDarknessGameHtmlDetailsPage);
+        this.result = game.getReleaseDate(page);
       });
 
       it("the result is a date", function () {
@@ -610,8 +530,9 @@ describe("Game", function () {
     describe("if the provided HTML page does not include any developers,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        this.result = game.getDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
+        this.result = game.getDevelopers(page);
       });
 
       it("the result is an empty array", function () {
@@ -622,8 +543,9 @@ describe("Game", function () {
     describe("if the provided HTML page includes one developer,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
 
-        this.result = game.getDevelopers(mortalDarknessGameHtmlDetailsPage);
+        this.result = game.getDevelopers(page);
       });
 
       it("the result is 'Dark Faction Games'", function () {
@@ -634,8 +556,9 @@ describe("Game", function () {
     describe("if the provided HTML page includes two developers,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(crusaderKingsDetailsPage);
 
-        this.result = game.getDevelopers(crusaderKingsDetailsPage);
+        this.result = game.getDevelopers(page);
       });
 
       it("the result has the correct values", function () {
@@ -648,8 +571,9 @@ describe("Game", function () {
     describe("if the provided HTML page does not include any genres,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        this.result = game.getGenres(riskOfRainHtmlDetailsPageMissingInfo);
+        this.result = game.getGenres(page);
       });
 
       it("the result is an empty array", function () {
@@ -660,8 +584,9 @@ describe("Game", function () {
     describe("if the provided HTML page includes genres,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
 
-        this.result = game.getGenres(mortalDarknessGameHtmlDetailsPage);
+        this.result = game.getGenres(page);
       });
 
       it("the result has the correct values", function () {
@@ -674,8 +599,9 @@ describe("Game", function () {
     describe("if the provided HTML page does not include a game description,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        this.result = game.getDescription(riskOfRainHtmlDetailsPageMissingInfo);
+        this.result = game.getDescription(page);
       });
 
       it("the result is an empty string", function () {
@@ -686,8 +612,9 @@ describe("Game", function () {
     describe("if the provided HTML page includes a description,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
 
-        this.result = game.getDescription(mortalDarknessGameHtmlDetailsPage);
+        this.result = game.getDescription(page);
       });
 
       it("the resulting is a specific string", function () {

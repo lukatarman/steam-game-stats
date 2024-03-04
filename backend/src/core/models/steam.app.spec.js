@@ -7,6 +7,7 @@ import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-page
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
 import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 
 describe("SteamApp", function () {
   describe(".copy", function () {
@@ -447,7 +448,7 @@ describe("SteamApp", function () {
           this.app = getXSampleSteamApps(1)[0];
 
           const source = ValidDataSources.validDataSources.steamWeb;
-          const page = gta5ageRestrictedHtmlDetailsPage;
+          const page = getParsedHtmlPage(gta5ageRestrictedHtmlDetailsPage);
 
           this.app.updateSteamAppType(page, source);
         });
@@ -462,7 +463,7 @@ describe("SteamApp", function () {
           this.app = getXSampleSteamApps(1)[0];
 
           const source = ValidDataSources.validDataSources.steamWeb;
-          const page = padakVideoHtmlDetailsPage;
+          const page = getParsedHtmlPage(padakVideoHtmlDetailsPage);
 
           this.app.updateSteamAppType(page, source);
         });
@@ -477,7 +478,7 @@ describe("SteamApp", function () {
           this.app = getXSampleSteamApps(1)[0];
 
           const source = ValidDataSources.validDataSources.steamWeb;
-          const page = theSims4dlcHtmlDetailsPage;
+          const page = getParsedHtmlPage(theSims4dlcHtmlDetailsPage);
 
           this.app.updateSteamAppType(page, source);
         });
@@ -492,7 +493,7 @@ describe("SteamApp", function () {
           this.app = getXSampleSteamApps(1)[0];
 
           const source = ValidDataSources.validDataSources.steamWeb;
-          const page = feartressGameHtmlDetailsPage;
+          const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
 
           this.app.updateSteamAppType(page, source);
         });

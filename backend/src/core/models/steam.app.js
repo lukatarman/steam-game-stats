@@ -1,4 +1,3 @@
-import { parseHTML } from "linkedom";
 import { ValidDataSources } from "./valid.data.sources.js";
 
 export class SteamApp {
@@ -95,7 +94,7 @@ export class SteamApp {
   recordHtmlAttempt(page, source) {
     this.checkedIfGameViaSource(source);
 
-    if (page === "") this.htmlPageFailedViaSource(source);
+    if (page.toString() === "") this.htmlPageFailedViaSource(source);
   }
 
   updateSteamAppType(page, source) {
@@ -110,9 +109,7 @@ export class SteamApp {
   }
 
   #getSteamWebAppType(page) {
-    const { document } = parseHTML(page);
-
-    const breadcrumbElement = document.querySelector(".blockbg");
+    const breadcrumbElement = page.querySelector(".blockbg");
 
     if (!breadcrumbElement) return SteamApp.validTypes.unknown;
 
@@ -131,7 +128,7 @@ export class SteamApp {
 
   // TODO https://github.com/lukatarman/steam-game-stats/issues/178
   #getSteamchartsAppType(page) {
-    if (page === "") return SteamApp.validTypes.unknown;
+    if (page.toString() === "") return SteamApp.validTypes.unknown;
 
     return SteamApp.validTypes.game;
   }

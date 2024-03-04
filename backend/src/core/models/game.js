@@ -1,4 +1,3 @@
-import { parseHTML } from "linkedom";
 import { PlayerHistory } from "./player.history.js";
 import cloneDeep from "lodash.clonedeep";
 
@@ -126,9 +125,7 @@ export class Game {
   }
 
   getReleaseDate(page) {
-    const { document } = parseHTML(page);
-
-    const releaseDateElement = document.querySelector(".release_date .date");
+    const releaseDateElement = page.querySelector(".release_date .date");
 
     if (!releaseDateElement) return "";
 
@@ -138,9 +135,7 @@ export class Game {
   }
 
   getDevelopers(page) {
-    const { document } = parseHTML(page);
-
-    const developers = document.querySelector(".dev_row #developers_list");
+    const developers = page.querySelector(".dev_row #developers_list");
 
     if (!developers) return [];
 
@@ -150,9 +145,7 @@ export class Game {
   }
 
   getGenres(page) {
-    const { document } = parseHTML(page);
-
-    const genres = document.querySelector("#genresAndManufacturer span");
+    const genres = page.querySelector("#genresAndManufacturer span");
 
     if (!genres) return [];
 
@@ -162,9 +155,7 @@ export class Game {
   }
 
   getDescription(page) {
-    const { document } = parseHTML(page);
-
-    const description = document.querySelector(".game_description_snippet");
+    const description = page.querySelector(".game_description_snippet");
 
     if (!description) return "";
 

@@ -11,7 +11,10 @@ import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import { getXsteamchartsInstantiatedGames } from "../models/game.mocks.js";
-import { createHtmlDetailsPages } from "../../../assets/html.details.pages.mock.js";
+import {
+  getParsedHtmlPage,
+  getParsedHtmlPages,
+} from "../../../assets/html.details.pages.mock.js";
 
 describe("game.service.js", () => {
   describe(".updateGamesMissingDetails.", function () {
@@ -19,12 +22,14 @@ describe("game.service.js", () => {
       beforeAll(function () {
         this.games = getXsteamchartsInstantiatedGames(2);
 
-        const htmlDetailsPages = createHtmlDetailsPages([
+        const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
-        ]);
+        ];
 
-        this.result = updateGamesMissingDetails(this.games, htmlDetailsPages);
+        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
+
+        this.result = updateGamesMissingDetails(this.games, parsedPages);
       });
 
       it("two games are returned", function () {
@@ -52,7 +57,9 @@ describe("game.service.js", () => {
   describe(".getSteamDbDevelopers.", function () {
     describe("When we provide a html page that contains two developers,", function () {
       beforeAll(function () {
-        this.result = getSteamDbDevelopers(counterStrikeHtmlDetailsSteamDb);
+        const page = getParsedHtmlPage(counterStrikeHtmlDetailsSteamDb);
+
+        this.result = getSteamDbDevelopers(page);
       });
 
       it("two developers are returned", function () {
@@ -70,7 +77,9 @@ describe("game.service.js", () => {
 
     describe("When we provide a html page that doesn't contain a developer section", function () {
       beforeAll(function () {
-        this.result = getSteamDbDevelopers(riskOfRainHtmlDetailsPageMissingInfo);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = getSteamDbDevelopers(page);
       });
 
       it("an empty array is returned", function () {
@@ -82,7 +91,9 @@ describe("game.service.js", () => {
   describe(".getSteamDbGenres.", function () {
     describe("When we provide a html page that contains the genres,", function () {
       beforeAll(function () {
-        this.result = getSteamDbGenres(riskOfRainHtmlDetailsSteamDb);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+        this.result = getSteamDbGenres(page);
       });
 
       it("two genres are returned", function () {
@@ -100,7 +111,9 @@ describe("game.service.js", () => {
 
     describe("When we provide a html page that doesn't contain a genres section,", function () {
       beforeAll(function () {
-        this.result = getSteamDbGenres(riskOfRainHtmlDetailsPageMissingInfo);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = getSteamDbGenres(page);
       });
 
       it("an empty array is returned", function () {
@@ -112,7 +125,9 @@ describe("game.service.js", () => {
   describe(".getSteamDbDescription.", function () {
     describe("When we provide a html page that contains the description,", function () {
       beforeAll(function () {
-        this.result = getSteamDbDescription(riskOfRainHtmlDetailsSteamDb);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+        this.result = getSteamDbDescription(page);
       });
 
       it("the returned value is the game's description'", function () {
@@ -124,7 +139,9 @@ describe("game.service.js", () => {
 
     describe("When we provide a html page that doesn't contain a description section,", function () {
       beforeAll(function () {
-        this.result = getSteamDbDescription(riskOfRainHtmlDetailsPageMissingInfo);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = getSteamDbDescription(page);
       });
 
       it("an empty string is returned", function () {
@@ -138,12 +155,14 @@ describe("game.service.js", () => {
       beforeAll(function () {
         this.games = getXsteamchartsInstantiatedGames(2);
 
-        const htmlDetailsPages = createHtmlDetailsPages([
+        const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
-        ]);
+        ];
 
-        this.result = updateMissingReleaseDates(this.games, htmlDetailsPages);
+        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
+
+        this.result = updateMissingReleaseDates(this.games, parsedPages);
       });
 
       it("two games are returned", function () {
@@ -163,7 +182,9 @@ describe("game.service.js", () => {
   describe(".getSteamDbReleaseDate.", function () {
     describe("When we provide a html page that doesn't contain a valid release date,", function () {
       beforeAll(function () {
-        this.result = getSteamDbReleaseDate(karmazooHtmlDetailsPageSteamDb);
+        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
+
+        this.result = getSteamDbReleaseDate(page);
       });
 
       it("an empty string is returned", function () {
@@ -175,7 +196,9 @@ describe("game.service.js", () => {
       beforeAll(function () {
         this.date = new Date("11 August 2020 UTC");
 
-        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsSteamDb);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+        this.result = getSteamDbReleaseDate(page);
       });
 
       it("a date is returned'", function () {
@@ -189,7 +212,9 @@ describe("game.service.js", () => {
 
     describe("When we provide a html page that doesn't contain a date section", function () {
       beforeAll(function () {
-        this.result = getSteamDbReleaseDate(riskOfRainHtmlDetailsPageMissingInfo);
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = getSteamDbReleaseDate(page);
       });
 
       it("an empty string is returned", function () {

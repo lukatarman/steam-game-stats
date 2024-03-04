@@ -14,10 +14,14 @@ import { getXSampleSteamApps } from "../../models/steam.app.mocks.js";
 import { ValidDataSources } from "../../models/valid.data.sources.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
 import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
-import { createHtmlDetailsPages } from "../../../../assets/html.details.pages.mock.js";
+import {
+  createHtmlDetailsPages,
+  getParsedHtmlPages,
+} from "../../../../assets/html.details.pages.mock.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
 import { GamesAggregate } from "../../models/games.aggregate.js";
+import { parseHTML } from "linkedom";
 
 describe("game.identifier.js", function () {
   describe(".checkIfGameViaSource.", function () {
@@ -40,6 +44,7 @@ describe("game.identifier.js", function () {
             this.historyChecksRepository,
             createLoggerMock(),
             createConfigMock().features,
+            parseHTML,
           );
 
           await this.identifier.checkIfGameViaSource(this.source);
@@ -90,7 +95,9 @@ describe("game.identifier.js", function () {
             theSims4dlcHtmlDetailsPage,
           ];
 
-          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
+          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+
+          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -109,6 +116,7 @@ describe("game.identifier.js", function () {
             this.historyChecksRepository,
             createLoggerMock(),
             createConfigMock().features,
+            parseHTML,
           );
 
           await this.identifier.checkIfGameViaSource(this.source);
@@ -176,7 +184,9 @@ describe("game.identifier.js", function () {
             gta5ageRestrictedHtmlDetailsPage,
           ];
 
-          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
+          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+
+          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -195,6 +205,7 @@ describe("game.identifier.js", function () {
             this.historyChecksRepository,
             createLoggerMock(),
             createConfigMock().features,
+            parseHTML,
           );
 
           await this.identifier.checkIfGameViaSource(this.source);
@@ -278,6 +289,7 @@ describe("game.identifier.js", function () {
             this.historyChecksRepository,
             createLoggerMock(),
             createConfigMock().features,
+            parseHTML,
           );
 
           await this.identifier.checkIfGameViaSource(this.source);
@@ -325,7 +337,9 @@ describe("game.identifier.js", function () {
 
           this.htmlDetailsPages = ["", ""];
 
-          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
+          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+
+          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -344,6 +358,7 @@ describe("game.identifier.js", function () {
             this.historyChecksRepository,
             createLoggerMock(),
             createConfigMock().features,
+            parseHTML,
           );
 
           await this.identifier.checkIfGameViaSource(this.source);
@@ -408,7 +423,9 @@ describe("game.identifier.js", function () {
 
           this.htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, ""];
 
-          this.games = this.steamApps.checkForGames(this.htmlDetailsPages, this.source);
+          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+
+          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -427,6 +444,7 @@ describe("game.identifier.js", function () {
             this.historyChecksRepository,
             createLoggerMock(),
             createConfigMock().features,
+            parseHTML,
           );
 
           await this.identifier.checkIfGameViaSource(this.source);
@@ -509,6 +527,7 @@ describe("game.identifier.js", function () {
           this.historyChecksRepository,
           createLoggerMock(),
           createConfigMock().features,
+          parseHTML,
         );
 
         await this.identifier.updateGamesWithoutDetails();
@@ -549,7 +568,7 @@ describe("game.identifier.js", function () {
 
         const pages = [counterStrikeHtmlDetailsSteamDb, riskOfRainHtmlDetailsSteamDb];
 
-        this.htmlDetailsPages = createHtmlDetailsPages(pages);
+        this.htmlDetailsPages = getParsedHtmlPages(pages);
 
         this.updatedGames = updateGamesMissingDetails(games, this.htmlDetailsPages);
 
@@ -573,6 +592,7 @@ describe("game.identifier.js", function () {
           this.historyChecksRepository,
           createLoggerMock(),
           createConfigMock().features,
+          parseHTML,
         );
 
         await this.identifier.updateGamesWithoutDetails();
@@ -640,6 +660,7 @@ describe("game.identifier.js", function () {
           this.historyChecksRepository,
           createLoggerMock(),
           createConfigMock(2).features,
+          parseHTML,
         );
 
         await this.identifier.updateGamesWithoutReleaseDates();
@@ -676,15 +697,16 @@ describe("game.identifier.js", function () {
 
         const apps = getXSampleSteamApps(2);
 
-        const pages = [counterStrikeHtmlDetailsSteamDb, riskOfRainHtmlDetailsSteamDb];
-
-        const updatedPages = createHtmlDetailsPages(pages);
+        const pages = getParsedHtmlPages([
+          counterStrikeHtmlDetailsSteamDb,
+          riskOfRainHtmlDetailsSteamDb,
+        ]);
 
         this.source = ValidDataSources.validDataSources.steamDb;
 
-        this.updatedApps = recordAttemptsViaSource(apps, updatedPages, this.source);
+        this.updatedApps = recordAttemptsViaSource(apps, pages, this.source);
 
-        this.updatedGames = updateMissingReleaseDates(games, updatedPages);
+        this.updatedGames = updateMissingReleaseDates(games, pages);
 
         this.steamClientMock = createSteamMock([
           counterStrikeHtmlDetailsSteamDb,
@@ -703,6 +725,7 @@ describe("game.identifier.js", function () {
           this.historyChecksRepository,
           createLoggerMock(),
           createConfigMock(2).features,
+          parseHTML,
         );
 
         await this.identifier.updateGamesWithoutReleaseDates();

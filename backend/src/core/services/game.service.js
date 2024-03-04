@@ -26,9 +26,7 @@ export function updateGamesMissingDetails(games, htmlDetailsPages) {
 }
 
 export function getSteamDbDevelopers(page) {
-  const { document } = parseHTML(page);
-
-  const developers = document.querySelector(
+  const developers = page.querySelector(
     "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
   );
 
@@ -38,9 +36,7 @@ export function getSteamDbDevelopers(page) {
 }
 
 export function getSteamDbGenres(page) {
-  const { document } = parseHTML(page);
-
-  const domTableBody = document.querySelector("#info tbody");
+  const domTableBody = page.querySelector("#info tbody");
 
   if (!domTableBody) return [];
 
@@ -54,9 +50,7 @@ export function getSteamDbGenres(page) {
 }
 
 export function getSteamDbDescription(page) {
-  const { document } = parseHTML(page);
-
-  const description = document.querySelector(".header-description");
+  const description = page.querySelector(".header-description");
 
   if (!description) return "";
 
@@ -67,16 +61,16 @@ export function updateMissingReleaseDates(games, htmlDetailsPages) {
   return games.map((game, i) => {
     const gameCopy = game.copy();
 
-    gameCopy.updateReleaseDate(getSteamDbReleaseDate(htmlDetailsPages[i].page));
+    const page = htmlDetailsPages.find((page) => gameCopy.id === page.id).page;
+
+    gameCopy.updateReleaseDate(getSteamDbReleaseDate(page));
 
     return gameCopy;
   });
 }
 
 export function getSteamDbReleaseDate(page) {
-  const { document } = parseHTML(page);
-
-  const releaseDateElement = document.querySelector(
+  const releaseDateElement = page.querySelector(
     "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
   );
 

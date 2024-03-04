@@ -14,6 +14,7 @@ export class GameIdentifier {
   #historyChecksRepository;
   #logger;
   #options;
+  #htmlParser;
 
   constructor(
     steamClient,
@@ -22,6 +23,7 @@ export class GameIdentifier {
     historyChecksRepository,
     logger,
     options,
+    htmlParser,
   ) {
     this.#steamClient = steamClient;
     this.#steamAppsRepository = steamAppsRepository;
@@ -29,12 +31,12 @@ export class GameIdentifier {
     this.#historyChecksRepository = historyChecksRepository;
     this.#logger = logger;
     this.#options = options;
+    this.#htmlParser = htmlParser;
   }
 
   //todo: checK PR
   // take out parseHTML from methods, parse it in identifier before providing
   // take out delay + logger from steam apps aggregate - back to game identifier
-  // take out loop from steam client - put into identifier
   // put steam apps identify types into game identifier
   // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
@@ -50,7 +52,10 @@ export class GameIdentifier {
 
     if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
 
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
+      steamApps.apps,
+      source,
+    );
 
     const games = steamApps.checkForGames(htmlDetailsPages, source);
 
@@ -58,16 +63,24 @@ export class GameIdentifier {
   };
 
   async #getSteamAppsHtmlDetailsPages(steamApps, source) {
-    const detailsPages = [];
+    const htmlDetailsPages = [];
 
-    for (let steamApp of steamApps.apps) {
+    for (let steamApp of steamApps) {
       // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      detailsPages.push(
-        await this.#steamClient.getSourceHtmlDetailsPage(steamApp.appid, source),
+      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(
+        steamApp.appid,
+        source,
       );
+
+      htmlDetailsPages.push({
+        page: this.#htmlParser(htmlPage).document,
+        id: steamApp.appid,
+      });
+
       await delay(this.#options.unitDelay);
     }
-    return detailsPages;
+
+    return htmlDetailsPages;
   }
 
   async #persistGameCheckUpdates(games, steamApps) {
@@ -103,27 +116,13 @@ export class GameIdentifier {
   async #updateMissingDetails(games, steamApps) {
     const source = ValidDataSources.validDataSources.steamDb;
 
-    const htmlDetailsPages = await this.#getGamesHtmlDetailsPages(games, source);
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
 
     const updatedSteamApps = recordAttemptsViaSource(steamApps, htmlDetailsPages, source);
 
     const updatedGames = updateGamesMissingDetails(games, htmlDetailsPages);
 
     return [updatedGames, updatedSteamApps];
-  }
-
-  async #getGamesHtmlDetailsPages(games, source) {
-    const htmlDetailsPages = [];
-
-    for (let game of games) {
-      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(game.id, source);
-      htmlDetailsPages.push({ page: htmlPage, id: game.id });
-
-      await delay(this.#options.unitDelay);
-    }
-
-    return htmlDetailsPages;
   }
 
   async #persistUpdatedDetails(games, updatedApps) {
@@ -158,7 +157,7 @@ export class GameIdentifier {
   async #updateMissingReleaseDates(games, steamApps) {
     const source = ValidDataSources.validDataSources.steamDb;
 
-    const htmlDetailsPages = await this.#getGamesHtmlDetailsPages(games, source);
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
 
     const updatedSteamApps = recordAttemptsViaSource(steamApps, htmlDetailsPages, source);
 
