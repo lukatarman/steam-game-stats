@@ -24,8 +24,8 @@ async function main() {
   const databaseClient = await new DatabaseClient(logger).init(config.db);
 
   // repositories
-  const gamesRepository = new GamesRepository(databaseClient, logger);
-  const steamAppsRepository = new SteamAppsRepository(databaseClient, logger);
+  const gamesRepository = new GamesRepository(databaseClient);
+  const steamAppsRepository = new SteamAppsRepository(databaseClient);
   const steamAppsUpdateTimestampRepository = new SteamAppsUpdateTimestampsRepository(
     databaseClient,
   );

@@ -4,7 +4,6 @@ import { GamesAggregate } from "../models/games.aggregate.js";
 
 export class GamesRepository {
   #dbClient;
-  #logger;
 
   constructor(dbClient) {
     this.#dbClient = dbClient;
@@ -39,7 +38,7 @@ export class GamesRepository {
       ])
       .toArray();
 
-    return GamesAggregate.manyFromDbEntries(response, this.#logger);
+    return GamesAggregate.manyFromDbEntries(response);
   }
 
   async updateGameDetails(games) {
@@ -73,7 +72,7 @@ export class GamesRepository {
       ])
       .toArray();
 
-    return GamesAggregate.manyFromDbEntries(response, this.#logger);
+    return GamesAggregate.manyFromDbEntries(response);
   }
 
   async updateReleaseDates(games) {

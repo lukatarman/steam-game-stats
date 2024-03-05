@@ -35,9 +35,6 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // take out parseHTML from methods, parse it in identifier before providing
-  // take out delay + logger from steam apps aggregate - back to game identifier
-  // put steam apps identify types into game identifier
   // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
@@ -50,7 +47,13 @@ export class GameIdentifier {
       source,
     );
 
-    if (steamApps.checkIfEmpty(this.#options.globalIterationDelay)) return;
+    if (steamApps.checkIfEmpty()) {
+      this.#logger.debugc(
+        `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
+      );
+
+      return;
+    }
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
       steamApps.apps,
@@ -103,7 +106,14 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.checkIfEmpty(this.#options.globalIterationDelay, "details")) return;
+    if (games.checkIfEmpty()) {
+      this.#logger.debugc(
+        `no games without details in db, retry in: ${
+          this.#options.globalIterationDelay
+        } ms`,
+      );
+      return;
+    }
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
 
@@ -144,7 +154,15 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.checkIfEmpty(this.#options.globalIterationDelay, "release dates")) return;
+    if (games.checkIfEmpty()) {
+      this.#logger.debugc(
+        `no games without release dates in db, retry in: ${
+          this.#options.globalIterationDelay
+        } ms`,
+      );
+
+      return;
+    }
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
 

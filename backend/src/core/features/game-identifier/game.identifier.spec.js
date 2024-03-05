@@ -14,10 +14,7 @@ import { getXSampleSteamApps } from "../../models/steam.app.mocks.js";
 import { ValidDataSources } from "../../models/valid.data.sources.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
 import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
-import {
-  createHtmlDetailsPages,
-  getParsedHtmlPages,
-} from "../../../../assets/html.details.pages.mock.js";
+import { getParsedHtmlPages } from "../../../../assets/html.details.pages.mock.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
 import { GamesAggregate } from "../../models/games.aggregate.js";
@@ -32,7 +29,7 @@ describe("game.identifier.js", function () {
           this.steamClient = createSteamMock([]);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             [],
-            SteamAppsAggregate.manyFromDbEntries([], createLoggerMock()),
+            SteamAppsAggregate.manyFromDbEntries([]),
           );
           this.gamesRepository = createGamesRepositoryMock([]);
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -83,10 +80,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, none of them being games", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
-            getXSampleSteamApps(2),
-            createLoggerMock(),
-          );
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -174,10 +168,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
-            getXSampleSteamApps(2),
-            createLoggerMock(),
-          );
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -281,7 +272,7 @@ describe("game.identifier.js", function () {
           this.steamClient = createSteamMock([]);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             [],
-            SteamAppsAggregate.manyFromDbEntries([], createLoggerMock()),
+            SteamAppsAggregate.manyFromDbEntries([]),
           );
           this.gamesRepository = createGamesRepositoryMock([]);
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -332,10 +323,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, none of them being games", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
-            getXSampleSteamApps(2),
-            createLoggerMock(),
-          );
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
@@ -420,10 +408,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
-            getXSampleSteamApps(2),
-            createLoggerMock(),
-          );
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
@@ -524,7 +509,7 @@ describe("game.identifier.js", function () {
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
         this.gamesRepository = createGamesRepositoryMock(
-          SteamAppsAggregate.manyFromDbEntries([], createLoggerMock()),
+          SteamAppsAggregate.manyFromDbEntries([]),
         );
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 

@@ -3,7 +3,6 @@ import { SteamAppsAggregate } from "../models/steam.apps.aggregate.js";
 
 export class SteamAppsRepository {
   #dbClient;
-  #logger;
   #steamAppsCollection;
 
   constructor(dbClient) {
@@ -58,13 +57,13 @@ export class SteamAppsRepository {
       .limit(amount)
       .toArray();
 
-    return SteamAppsAggregate.manyFromDbEntries(response, this.#logger);
+    return SteamAppsAggregate.manyFromDbEntries(response);
   }
 
   async getSteamAppsById(ids) {
     const response = await Promise.all(ids.map((id) => this.getSteamAppById(id)));
 
-    return SteamAppsAggregate.manyFromDbEntries(response, this.#logger);
+    return SteamAppsAggregate.manyFromDbEntries(response);
   }
 
   async getSteamAppById(id) {
