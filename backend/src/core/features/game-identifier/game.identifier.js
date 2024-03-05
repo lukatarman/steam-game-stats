@@ -57,7 +57,9 @@ export class GameIdentifier {
       source,
     );
 
-    const games = steamApps.checkForGames(htmlDetailsPages, source);
+    steamApps.identifyTypes(htmlDetailsPages, source);
+
+    const games = steamApps.extractGames(htmlDetailsPages, source);
 
     await this.#persistGameCheckUpdates(games, steamApps);
   };

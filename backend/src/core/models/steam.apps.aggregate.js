@@ -25,14 +25,8 @@ export class SteamAppsAggregate {
     return true;
   }
 
-  checkForGames(pages, source) {
-    this.#identifyTypes(pages, source);
-
-    return this.#getGames(pages);
-  }
-
-  #identifyTypes(htmlDetailsPages, source) {
-    this.apps = this.apps.map((app, i) => {
+  identifyTypes(htmlDetailsPages, source) {
+    this.apps = this.apps.map((app) => {
       const appCopy = app.copy();
 
       const page = htmlDetailsPages.find((page) => page.id === appCopy.appid).page;
@@ -45,9 +39,9 @@ export class SteamAppsAggregate {
     });
   }
 
-  #getGames(pages) {
+  extractGames(pages) {
     return this.apps
-      .map((app, i) => {
+      .map((app) => {
         if (!app.isGame) return "";
 
         const page = pages.find((page) => page.id === app.appid).page;

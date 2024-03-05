@@ -97,7 +97,9 @@ describe("game.identifier.js", function () {
 
           const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
 
-          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
+          this.steamApps.identifyTypes(parsedHtmlPages, this.source);
+
+          this.games = this.steamApps.extractGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -186,7 +188,9 @@ describe("game.identifier.js", function () {
 
           const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
 
-          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
+          this.steamApps.identifyTypes(parsedHtmlPages, this.source);
+
+          this.games = this.steamApps.extractGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -339,7 +343,9 @@ describe("game.identifier.js", function () {
 
           const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
 
-          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
+          this.steamApps.identifyTypes(parsedHtmlPages, this.source);
+
+          this.games = this.steamApps.extractGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -425,7 +431,9 @@ describe("game.identifier.js", function () {
 
           const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
 
-          this.games = this.steamApps.checkForGames(parsedHtmlPages, this.source);
+          this.steamApps.identifyTypes(parsedHtmlPages, this.source);
+
+          this.games = this.steamApps.extractGames(parsedHtmlPages, this.source);
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
