@@ -1,5 +1,3 @@
-import { parseHTML } from "linkedom";
-
 export function recordAttemptsViaSource(steamApps, htmlDetailsPages, source) {
   return steamApps.map((app) => {
     const appCopy = app.copy();
@@ -55,33 +53,4 @@ export function getSteamDbDescription(page) {
   if (!description) return "";
 
   return description.textContent;
-}
-
-export function updateMissingReleaseDates(games, htmlDetailsPages) {
-  return games.map((game, i) => {
-    const gameCopy = game.copy();
-
-    const page = htmlDetailsPages.find((page) => gameCopy.id === page.id).page;
-
-    gameCopy.updateReleaseDate(getSteamDbReleaseDate(page));
-
-    return gameCopy;
-  });
-}
-
-export function getSteamDbReleaseDate(page) {
-  const releaseDateElement = page.querySelector(
-    "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
-  );
-
-  if (!releaseDateElement) return "";
-
-  const releaseDateString = releaseDateElement.textContent;
-
-  const releaseDate = new Date(`
-    ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
-
-  if (releaseDate == "Invalid Date") return "";
-
-  return releaseDate;
 }

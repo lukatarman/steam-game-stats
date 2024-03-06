@@ -1,5 +1,4 @@
 import {
-  updateMissingReleaseDates,
   recordAttemptsViaSource,
   updateGamesMissingDetails,
 } from "../../services/game.service.js";
@@ -35,6 +34,8 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
+  // remove update missing release dates code from game service and remove tests
+  // adjust update missing details usage in game identifier. remove code from game service
   // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
@@ -148,7 +149,8 @@ export class GameIdentifier {
   }
 
   updateGamesWithoutReleaseDates = async () => {
-    this.#logger.debugc("updating games without details");
+    const source = ValidDataSources.validDataSources.steamDb;
+    this.#logger.debugc(`updating games without details via ${source}`);
 
     const games = await this.#gamesRepository.getGamesWithoutReleaseDates(
       this.#options.batchSize,
@@ -166,25 +168,17 @@ export class GameIdentifier {
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
 
-    const [updatedGames, updatedSteamApps] = await this.#updateMissingReleaseDates(
-      games.games,
-      steamApps,
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
+      steamApps.apps,
+      source,
     );
 
-    this.#persistReleaseDates(updatedGames, updatedSteamApps);
+    steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
+
+    games.updateMissingReleaseDates(htmlDetailsPages);
+
+    this.#persistReleaseDates(games, steamApps);
   };
-
-  async #updateMissingReleaseDates(games, steamApps) {
-    const source = ValidDataSources.validDataSources.steamDb;
-
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
-
-    const updatedSteamApps = recordAttemptsViaSource(steamApps, htmlDetailsPages, source);
-
-    const updatedGames = updateMissingReleaseDates(games, htmlDetailsPages);
-
-    return [updatedGames, updatedSteamApps];
-  }
 
   async #persistReleaseDates(games, steamApps) {
     this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);

@@ -119,9 +119,31 @@ export class Game {
       this.description = newDescription;
   }
 
-  updateReleaseDate(newReleaseDate) {
-    if (newReleaseDate !== "" && this.releaseDate === "")
-      this.releaseDate = newReleaseDate;
+  updateReleaseDate(page) {
+    if (this.releaseDate) return;
+
+    const date = this.getSteamDbReleaseDate(page);
+
+    if (date === "") return;
+
+    this.releaseDate = date;
+  }
+
+  getSteamDbReleaseDate(page) {
+    const releaseDateElement = page.querySelector(
+      "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
+    );
+
+    if (!releaseDateElement) return "";
+
+    const releaseDateString = releaseDateElement.textContent;
+
+    const releaseDate = new Date(`
+      ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
+
+    if (releaseDate == "Invalid Date") return "";
+
+    return releaseDate;
   }
 
   getReleaseDate(page) {

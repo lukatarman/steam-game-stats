@@ -49,10 +49,10 @@ export class SteamAppsAggregate {
 
   recordAttemptsViaSource(pages, source) {
     this.apps = this.apps.map((app) => {
-      const appCopy = app.copy;
-      const currentPage = pages.find((page) => page.id === app.appid);
+      const appCopy = app.copy();
+      const currentPage = pages.find((page) => page.id === app.appid).page;
 
-      appCopy.recordHtmlAttempt(currentPage.page, source);
+      appCopy.recordHtmlAttempt(currentPage, source);
 
       return appCopy;
     });

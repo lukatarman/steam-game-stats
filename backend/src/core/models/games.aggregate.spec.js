@@ -1,5 +1,11 @@
+import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
+import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { Game } from "./game.js";
-import { getXGamesWithoutDetails } from "./game.mocks.js";
+import {
+  getXGamesWithoutDetails,
+  getXsteamchartsInstantiatedGames,
+} from "./game.mocks.js";
 import { GamesAggregate } from "./games.aggregate.js";
 
 describe("GamesAggregate", function () {
@@ -54,6 +60,36 @@ describe("GamesAggregate", function () {
 
       it("the returned value is false", function () {
         expect(this.result).toBeFalsy();
+      });
+    });
+  });
+
+  describe(".updateMissingReleaseDates.", function () {
+    describe("When we try to update two games with missing release dates,", function () {
+      beforeAll(function () {
+        const games = getXsteamchartsInstantiatedGames(2);
+        this.gamesArray = GamesAggregate.manyFromDbEntries(games);
+
+        const htmlDetailsPages = [
+          counterStrikeHtmlDetailsSteamDb,
+          riskOfRainHtmlDetailsSteamDb,
+        ];
+
+        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
+
+        this.gamesArray.updateMissingReleaseDates(parsedPages);
+      });
+
+      it("the first game's release date is updated", function () {
+        expect(this.gamesArray.games[0].releaseDate).toEqual(
+          new Date("21 August 2012 UTC"),
+        );
+      });
+
+      it("the second game's release date is updated", function () {
+        expect(this.gamesArray.games[1].releaseDate).toEqual(
+          new Date("11 August 2020 UTC"),
+        );
       });
     });
   });

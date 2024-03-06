@@ -1,15 +1,12 @@
 import {
-  getSteamDbReleaseDate,
   getSteamDbDevelopers,
   getSteamDbGenres,
   getSteamDbDescription,
-  updateMissingReleaseDates,
   updateGamesMissingDetails,
 } from "./game.service.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
-import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import { getXsteamchartsInstantiatedGames } from "../models/game.mocks.js";
 import {
   getParsedHtmlPage,
@@ -146,79 +143,6 @@ describe("game.service.js", () => {
 
       it("an empty string is returned", function () {
         expect(this.result).toEqual("");
-      });
-    });
-  });
-
-  describe(".updateMissingReleaseDates.", function () {
-    describe("When we try to update two games with missing release dates,", function () {
-      beforeAll(function () {
-        this.games = getXsteamchartsInstantiatedGames(2);
-
-        const htmlDetailsPages = [
-          counterStrikeHtmlDetailsSteamDb,
-          riskOfRainHtmlDetailsSteamDb,
-        ];
-
-        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
-
-        this.result = updateMissingReleaseDates(this.games, parsedPages);
-      });
-
-      it("two games are returned", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first game's release date is updated", function () {
-        expect(this.result[0].releaseDate).toEqual(new Date("21 August 2012 UTC"));
-      });
-
-      it("the second game's release date is updated", function () {
-        expect(this.result[1].releaseDate).toEqual(new Date("11 August 2020 UTC"));
-      });
-    });
-  });
-
-  describe(".getSteamDbReleaseDate.", function () {
-    describe("When we provide a html page that doesn't contain a valid release date,", function () {
-      beforeAll(function () {
-        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
-
-        this.result = getSteamDbReleaseDate(page);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toBe("");
-      });
-    });
-
-    describe("When we provide a html page that contains a valid release date,", function () {
-      beforeAll(function () {
-        this.date = new Date("11 August 2020 UTC");
-
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-        this.result = getSteamDbReleaseDate(page);
-      });
-
-      it("a date is returned'", function () {
-        expect(this.result).toBeInstanceOf(Date);
-      });
-
-      it("the correct date is returned", function () {
-        expect(this.result).toEqual(this.date);
-      });
-    });
-
-    describe("When we provide a html page that doesn't contain a date section", function () {
-      beforeAll(function () {
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = getSteamDbReleaseDate(page);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toBe("");
       });
     });
   });

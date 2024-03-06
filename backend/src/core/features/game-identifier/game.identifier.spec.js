@@ -2,7 +2,6 @@ import { GameIdentifier } from "./game.identifier.js";
 import {
   recordAttemptsViaSource,
   updateGamesMissingDetails,
-  updateMissingReleaseDates,
 } from "../../services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../../common/logger.mock.js";
@@ -686,9 +685,9 @@ describe("game.identifier.js", function () {
 
     describe("Finds two games with missing release dates", function () {
       beforeAll(async function () {
-        const games = getXGamesWithoutDetails(2);
+        this.games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
 
-        const apps = getXSampleSteamApps(2);
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
         const pages = getParsedHtmlPages([
           counterStrikeHtmlDetailsSteamDb,
@@ -697,18 +696,16 @@ describe("game.identifier.js", function () {
 
         this.source = ValidDataSources.validDataSources.steamDb;
 
-        this.updatedApps = recordAttemptsViaSource(apps, pages, this.source);
+        this.steamApps.recordAttemptsViaSource(pages, this.source);
 
-        this.updatedGames = updateMissingReleaseDates(games, pages);
+        this.games.updateMissingReleaseDates(pages);
 
         this.steamClientMock = createSteamMock([
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
         ]);
-        this.steamAppsRepository = createSteamAppsRepositoryMock(apps);
-        this.gamesRepository = createGamesRepositoryMock(
-          GamesAggregate.manyFromDbEntries(games, createLoggerMock()),
-        );
+        this.steamAppsRepository = createSteamAppsRepositoryMock(this.steamApps);
+        this.gamesRepository = createGamesRepositoryMock(this.games);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -738,7 +735,7 @@ describe("game.identifier.js", function () {
 
       it("getSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledWith(
-          this.updatedGames.map((game) => game.id),
+          this.games.getIds(),
         );
       });
 
@@ -748,11 +745,11 @@ describe("game.identifier.js", function () {
 
       it("getSourceHtmlDetailsPage was called with the correct ids", function () {
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.updatedGames[0].id,
+          this.games.games[0].id,
           this.source,
         );
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.updatedGames[1].id,
+          this.games.games[1].id,
           this.source,
         );
       });
@@ -763,7 +760,7 @@ describe("game.identifier.js", function () {
 
       it("updateSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-          this.updatedApps,
+          this.steamApps,
         );
       });
 
@@ -772,9 +769,7 @@ describe("game.identifier.js", function () {
       });
 
       it("updateReleaseDates was called with the correct argument", function () {
-        expect(this.gamesRepository.updateReleaseDates).toHaveBeenCalledWith(
-          this.updatedGames,
-        );
+        expect(this.gamesRepository.updateReleaseDates).toHaveBeenCalledWith(this.games);
       });
     });
   });

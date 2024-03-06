@@ -3,6 +3,8 @@ import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/cr
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
+import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
+import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { Game } from "./game.js";
 import {
   getOneGameWithPlayerHistory,
@@ -460,37 +462,83 @@ describe("Game", function () {
   });
 
   describe(".updateReleaseDate", function () {
-    describe("When we try to update a missing release date,", function () {
+    describe("When we try to update the date of a game with an existing release date,", function () {
       beforeAll(function () {
-        this.releaseDate = new Date("23 July 2023");
-
         this.game = getXGamesWithoutDetails(1)[0];
+        this.date = new Date("23 July 2023");
 
-        this.game.updateReleaseDate(this.releaseDate);
+        this.game.releaseDate = this.date;
+
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+        this.game.updateReleaseDate(page);
       });
 
       it("a game is returned.", function () {
         expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's release date is updated", function () {
-        expect(this.game.releaseDate).toBe(this.releaseDate);
+      it("the game's release date stays unchanged", function () {
+        expect(this.game.releaseDate).toBe(this.date);
       });
     });
 
-    describe("When we try to update an existing release date,", function () {
+    describe("When we try to use a page that has no release date", function () {
       beforeAll(function () {
-        this.game = getOneSteamAppInstantiatedGame();
+        this.game = getXGamesWithoutDetails(1)[0];
 
-        this.game.updateReleaseDate("12 July 2019");
+        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
+
+        this.game.updateReleaseDate(page);
       });
 
       it("a game is returned.", function () {
         expect(this.game).toBeInstanceOf(Game);
       });
 
-      it("the game's release date stays the same", function () {
-        expect(this.game.releaseDate).toEqual(new Date("Jan 1, 2001 UTC"));
+      it("the game's release date stays empty", function () {
+        expect(this.game.releaseDate).toBe("");
+      });
+    });
+  });
+
+  describe(".getSteamDbReleaseDate.", function () {
+    describe("When we provide a html page that doesn't contain a valid release date,", function () {
+      beforeAll(function () {
+        const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
+
+        this.result = game.getSteamDbReleaseDate(page);
+      });
+
+      it("an empty string is returned", function () {
+        expect(this.result).toBe("");
+      });
+    });
+
+    describe("When we provide a html page that doesn't contain a date section", function () {
+      beforeAll(function () {
+        const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = game.getSteamDbReleaseDate(page);
+      });
+
+      it("an empty string is returned", function () {
+        expect(this.result).toBe("");
+      });
+    });
+
+    describe("When we provide a html page that contains a valid release date,", function () {
+      beforeAll(function () {
+        const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+        this.result = game.getSteamDbReleaseDate(page);
+      });
+
+      it("the correct date is returned", function () {
+        expect(this.result).toEqual(new Date("11 August 2020 UTC"));
       });
     });
   });

@@ -19,4 +19,16 @@ export class GamesAggregate {
 
     return true;
   }
+
+  updateMissingReleaseDates(htmlDetailsPages) {
+    this.games = this.games.map((game) => {
+      const gameCopy = game.copy();
+
+      const page = htmlDetailsPages.find((page) => gameCopy.id === page.id).page;
+
+      gameCopy.updateReleaseDate(page);
+
+      return gameCopy;
+    });
+  }
 }
