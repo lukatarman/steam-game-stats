@@ -47,7 +47,7 @@ export class GameIdentifier {
       source,
     );
 
-    if (steamApps.checkIfEmpty()) {
+    if (steamApps.isEmpty()) {
       this.#logger.debugc(
         `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
       );
@@ -106,7 +106,7 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.checkIfEmpty()) {
+    if (games.isEmpty()) {
       this.#logger.debugc(
         `no games without details in db, retry in: ${
           this.#options.globalIterationDelay
@@ -154,7 +154,7 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.checkIfEmpty()) {
+    if (games.isEmpty()) {
       this.#logger.debugc(
         `no games without release dates in db, retry in: ${
           this.#options.globalIterationDelay

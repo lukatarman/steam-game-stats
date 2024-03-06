@@ -14,7 +14,7 @@ export class GamesAggregate {
     return this.games.map((game) => game.id);
   }
 
-  checkIfEmpty() {
+  isEmpty() {
     if (this.games.length > 0) return false;
 
     return true;

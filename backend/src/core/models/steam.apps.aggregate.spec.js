@@ -24,12 +24,12 @@ describe("SteamAppsAggregate", function () {
     });
   });
 
-  describe(".checkIfEmpty", function () {
+  describe(".isEmpty", function () {
     describe("when the steamApps array is empty", function () {
       beforeAll(function () {
         const steamAppsArray = SteamAppsAggregate.manyFromDbEntries([]);
 
-        this.result = steamAppsArray.checkIfEmpty();
+        this.result = steamAppsArray.isEmpty();
       });
 
       it("the returned value is true", function () {
@@ -43,7 +43,7 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamApps(2),
         );
 
-        this.result = steamAppsArray.checkIfEmpty("");
+        this.result = steamAppsArray.isEmpty("");
       });
 
       it("the returned value is false", function () {

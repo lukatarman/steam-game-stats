@@ -15,7 +15,7 @@ export class SteamAppsAggregate {
     return this.apps.map((app) => app.appid);
   }
 
-  checkIfEmpty() {
+  isEmpty() {
     if (this.apps.length > 0) return false;
 
     return true;
