@@ -39,6 +39,7 @@ export class GameIdentifier {
   // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
+  // final check
 
   checkIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
