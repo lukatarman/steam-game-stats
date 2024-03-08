@@ -34,7 +34,6 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // remove update missing release dates code from game service and remove tests
   // adjust update missing details usage in game identifier. remove code from game service
   // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
