@@ -1,8 +1,4 @@
 import { GameIdentifier } from "./game.identifier.js";
-import {
-  recordAttemptsViaSource,
-  updateGamesMissingDetails,
-} from "../../services/game.service.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../../common/logger.mock.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
@@ -554,27 +550,21 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.source = ValidDataSources.validDataSources.steamDb;
 
-        const steamApps = getXSampleSteamApps(2);
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
-        const games = getXGamesWithoutDetails(2);
+        this.games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
 
         const pages = [counterStrikeHtmlDetailsSteamDb, riskOfRainHtmlDetailsSteamDb];
 
         this.htmlDetailsPages = getParsedHtmlPages(pages);
 
-        this.updatedGames = updateGamesMissingDetails(games, this.htmlDetailsPages);
+        this.games.updateGamesMissingDetails(this.htmlDetailsPages);
 
-        this.updatedApps = recordAttemptsViaSource(
-          steamApps,
-          this.htmlDetailsPages,
-          this.source,
-        );
+        this.steamApps.recordAttemptsViaSource(this.htmlDetailsPages, this.source);
 
         this.steamClientMock = createSteamMock(pages);
-        this.steamAppsRepository = createSteamAppsRepositoryMock(steamApps);
-        this.gamesRepository = createGamesRepositoryMock(
-          GamesAggregate.manyFromDbEntries(games, createLoggerMock()),
-        );
+        this.steamAppsRepository = createSteamAppsRepositoryMock(this.steamApps);
+        this.gamesRepository = createGamesRepositoryMock(this.games);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -604,11 +594,11 @@ describe("game.identifier.js", function () {
 
       it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.updatedGames[0].id,
+          this.games.games[0].id,
           this.source,
         );
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.updatedGames[1].id,
+          this.games.games[1].id,
           this.source,
         );
       });
@@ -619,7 +609,7 @@ describe("game.identifier.js", function () {
 
       it("updateSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-          this.updatedApps,
+          this.steamApps,
         );
       });
 
@@ -628,9 +618,7 @@ describe("game.identifier.js", function () {
       });
 
       it("updateGameDetails was called with the correct argument", function () {
-        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledWith(
-          this.updatedGames,
-        );
+        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledWith(this.games);
       });
     });
   });

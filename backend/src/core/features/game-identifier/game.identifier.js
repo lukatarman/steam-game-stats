@@ -1,7 +1,3 @@
-import {
-  recordAttemptsViaSource,
-  updateGamesMissingDetails,
-} from "../../services/game.service.js";
 import { delay } from "../../../common/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { ValidDataSources } from "../../models/valid.data.sources.js";
@@ -34,7 +30,6 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // adjust update missing details usage in game identifier. remove code from game service
   // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
@@ -101,6 +96,7 @@ export class GameIdentifier {
   }
 
   updateGamesWithoutDetails = async () => {
+    const source = ValidDataSources.validDataSources.steamDb;
     this.#logger.debugc("updating games without details");
 
     const games = await this.#gamesRepository.getGamesWithoutDetails(
@@ -118,25 +114,17 @@ export class GameIdentifier {
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
 
-    const [updatedGames, updatedSteamApps] = await this.#updateMissingDetails(
-      games.games,
-      steamApps,
+    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
+      steamApps.apps,
+      source,
     );
 
-    this.#persistUpdatedDetails(updatedGames, updatedSteamApps);
+    steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
+
+    games.updateGamesMissingDetails(htmlDetailsPages);
+
+    this.#persistUpdatedDetails(games, steamApps);
   };
-
-  async #updateMissingDetails(games, steamApps) {
-    const source = ValidDataSources.validDataSources.steamDb;
-
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(steamApps, source);
-
-    const updatedSteamApps = recordAttemptsViaSource(steamApps, htmlDetailsPages, source);
-
-    const updatedGames = updateGamesMissingDetails(games, htmlDetailsPages);
-
-    return [updatedGames, updatedSteamApps];
-  }
 
   async #persistUpdatedDetails(games, updatedApps) {
     this.#logger.debugc(
