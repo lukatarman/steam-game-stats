@@ -30,7 +30,6 @@ export class GameIdentifier {
   }
 
   //todo: checK PR
-  // Check & adjust update details/release date methods
   // remove all usage of manyFromX from game and steamApp datamodels
   // adjust usage
   // final check
@@ -126,11 +125,9 @@ export class GameIdentifier {
     this.#persistUpdatedDetails(games, steamApps);
   };
 
-  async #persistUpdatedDetails(games, updatedApps) {
-    this.#logger.debugc(
-      `persisting ${updatedApps.length} apps with updated html attempts`,
-    );
-    this.#steamAppsRepository.updateSteamAppsById(updatedApps);
+  async #persistUpdatedDetails(games, steamApps) {
+    this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);
+    this.#steamAppsRepository.updateSteamAppsById(steamApps);
 
     this.#logger.debugc(`persisting ${games.length} games with updated details`);
     await this.#gamesRepository.updateGameDetails(games);
