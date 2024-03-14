@@ -20,6 +20,18 @@ export class GamesAggregate {
     return true;
   }
 
+  updateGamesMissingDetails(htmlDetailsPages) {
+    this.games = this.games.map((game) => {
+      const gameCopy = game.copy();
+
+      const page = htmlDetailsPages.find((page) => gameCopy.id === page.id).page;
+
+      gameCopy.updateGameDetails(page);
+
+      return gameCopy;
+    });
+  }
+
   updateMissingReleaseDates(htmlDetailsPages) {
     this.games = this.games.map((game) => {
       const gameCopy = game.copy();
