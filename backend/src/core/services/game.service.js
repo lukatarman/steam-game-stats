@@ -13,11 +13,7 @@ export function updateGamesMissingDetails(games, htmlDetailsPages) {
   return htmlDetailsPages.map(({ page }, i) => {
     const gameCopy = games[i].copy();
 
-    gameCopy.updateGameDetails(
-      getSteamDbDevelopers(page),
-      getSteamDbGenres(page),
-      getSteamDbDescription(page),
-    );
+    gameCopy.updateGameDetails(page);
 
     return gameCopy;
   });
