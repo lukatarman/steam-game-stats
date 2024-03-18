@@ -29,10 +29,7 @@ export class GameIdentifier {
     this.#htmlParser = htmlParser;
   }
 
-  //todo: checK PR
-  // remove all usage of manyFromX from game and steamApp datamodels
-  // adjust usage
-  // final check
+  //todo final check
 
   checkIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
