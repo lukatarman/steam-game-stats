@@ -29,6 +29,8 @@ export class GameIdentifier {
     this.#htmlParser = htmlParser;
   }
 
+  //todo game.identifier.spec .checkIfGameViaSource via steamcharts continue
+
   checkIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
 
@@ -81,11 +83,13 @@ export class GameIdentifier {
   async #persistGameCheckUpdates(games, steamApps) {
     if (games.length !== 0) {
       this.#logger.debugc(`persiting ${games.length} identified games`);
+
       await this.#gamesRepository.insertManyGames(games);
       await this.#historyChecksRepository.insertManyHistoryChecks(
         HistoryCheck.manyFromGames(games),
       );
     }
+
     await this.#steamAppsRepository.updateSteamAppsById(steamApps.apps);
   }
 
@@ -122,15 +126,15 @@ export class GameIdentifier {
 
   async #persistUpdatedDetails(games, steamApps) {
     this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);
-    this.#steamAppsRepository.updateSteamAppsById(steamApps);
-
     this.#logger.debugc(`persisting ${games.length} games with updated details`);
+
+    await this.#steamAppsRepository.updateSteamAppsById(steamApps);
     await this.#gamesRepository.updateGameDetails(games);
   }
 
   updateGamesWithoutReleaseDates = async () => {
     const source = ValidDataSources.validDataSources.steamDb;
-    this.#logger.debugc(`updating games without details via ${source}`);
+    this.#logger.debugc(`updating games without release dates via ${source}`);
 
     const games = await this.#gamesRepository.getGamesWithoutReleaseDates(
       this.#options.batchSize,
@@ -162,9 +166,9 @@ export class GameIdentifier {
 
   async #persistReleaseDates(games, steamApps) {
     this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);
-    this.#steamAppsRepository.updateSteamAppsById(steamApps);
-
     this.#logger.debugc(`persisting ${games.length} games with updated release dates`);
+
+    await this.#steamAppsRepository.updateSteamAppsById(steamApps);
     await this.#gamesRepository.updateReleaseDates(games);
   }
 }
