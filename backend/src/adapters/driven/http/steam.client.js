@@ -34,16 +34,6 @@ export class SteamClient {
     ).map((player) => (player ? player.data.response.player_count : 0));
   }
 
-  async getSourceHtmlDetailsPage(id, source) {
-    const url = ValidDataSources.getSourceUrl(id, source);
-
-    try {
-      return (await this.#httpClient.get(url)).data;
-    } catch (err) {
-      return "";
-    }
-  }
-
   // TODO https://github.com/lukatarman/steam-game-stats/issues/192
   async getSourceHtmlDetailsPage(id, source) {
     const url = ValidDataSources.getSourceUrl(id, source);
