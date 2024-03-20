@@ -29,8 +29,6 @@ export class GameIdentifier {
     this.#htmlParser = htmlParser;
   }
 
-  //todo final check
-
   checkIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
 
