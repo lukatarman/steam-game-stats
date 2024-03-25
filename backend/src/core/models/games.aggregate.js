@@ -24,7 +24,7 @@ export class GamesAggregate {
     this.games = this.games.map((game) => {
       const gameCopy = game.copy();
 
-      const page = htmlDetailsPages.find((page) => gameCopy.id === page.id).page;
+      const page = this.#findGamesHtmlDetailsPage(htmlDetailsPages, gameCopy);
 
       gameCopy.updateGameDetails(page);
 
@@ -32,11 +32,15 @@ export class GamesAggregate {
     });
   }
 
+  #findGamesHtmlDetailsPage(htmlDetailsPages, game) {
+    return htmlDetailsPages.find((page) => game.id === page.id).page;
+  }
+
   updateMissingReleaseDates(htmlDetailsPages) {
     this.games = this.games.map((game) => {
       const gameCopy = game.copy();
 
-      const page = htmlDetailsPages.find((page) => gameCopy.id === page.id).page;
+      const page = this.#findGamesHtmlDetailsPage(htmlDetailsPages, gameCopy);
 
       gameCopy.updateReleaseDate(page);
 
