@@ -75,26 +75,26 @@ export class SteamApp {
     this.type = type;
   }
 
-  get isGame() {
+  isGame() {
     return this.type === SteamApp.validTypes.game;
   }
 
-  checkedIfGameViaSource(source) {
+  recordHtmlAttempt(page, source) {
+    this.addHtmlPageTriedViaSource(source);
+
+    if (page.toString() === "") this.addHtmlPageFailedViaSource(source);
+  }
+
+  addHtmlPageTriedViaSource(source) {
     if (this.triedVia.includes(source)) return;
 
     this.triedVia.push(source);
   }
 
-  htmlPageFailedViaSource(source) {
+  addHtmlPageFailedViaSource(source) {
     if (this.failedVia.includes(source)) return;
 
     this.failedVia.push(source);
-  }
-
-  recordHtmlAttempt(page, source) {
-    this.checkedIfGameViaSource(source);
-
-    if (page.toString() === "") this.htmlPageFailedViaSource(source);
   }
 
   updateSteamAppType(page, source) {

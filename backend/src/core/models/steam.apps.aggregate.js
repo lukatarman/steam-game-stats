@@ -38,7 +38,7 @@ export class SteamAppsAggregate {
   extractGames(pages) {
     return this.apps
       .map((app) => {
-        if (!app.isGame) return "";
+        if (!app.isGame()) return "";
 
         const page = pages.find((page) => page.id === app.appid).page;
 
