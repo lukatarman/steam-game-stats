@@ -8,11 +8,7 @@ import { eldenRingHtmlDetailsPageDb } from "../../../assets/steamdb-details-page
 import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { Game } from "./game.js";
-import {
-  getOneGameWithPlayerHistory,
-  getOneSteamAppInstantiatedGame,
-  getXGamesWithoutDetails,
-} from "./game.mocks.js";
+import { getOneGameWithPlayerHistory, getXGamesWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
@@ -396,19 +392,6 @@ describe("Game", function () {
       });
     });
 
-    describe("if the provided HTML page includes one developer,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
-
-        this.result = game.getDevelopers(page);
-      });
-
-      it("the result is 'Dark Faction Games'", function () {
-        expect(this.result).toEqual(["Dark Faction Games"]);
-      });
-    });
-
     describe("if the provided HTML page includes two developers,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
@@ -473,7 +456,7 @@ describe("Game", function () {
         this.result = game.getDescription(page);
       });
 
-      it("the resulting is a specific string", function () {
+      it("the game's description is returned", function () {
         expect(this.result).toBe(
           "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
         );
@@ -506,9 +489,9 @@ describe("Game", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
 
-        this.developers = ["Valve", "Hopoo Games"];
+        this.existingDevelopers = ["Valve", "Hopoo Games"];
 
-        this.game.developers = this.developers;
+        this.game.developers = this.existingDevelopers;
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
@@ -516,7 +499,7 @@ describe("Game", function () {
       });
 
       it("the game's developers stays unchanged", function () {
-        expect(this.game.developers).toBe(this.developers);
+        expect(this.game.developers).toBe(this.existingDevelopers);
       });
     });
 
@@ -540,9 +523,9 @@ describe("Game", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
 
-        this.genres = ["Action", "RPG"];
+        this.existingGenres = ["Action", "RPG"];
 
-        this.game.genres = this.genres;
+        this.game.genres = this.existingGenres;
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
@@ -550,7 +533,7 @@ describe("Game", function () {
       });
 
       it("the game's genres stays unchanged", function () {
-        expect(this.game.genres).toBe(this.genres);
+        expect(this.game.genres).toBe(this.existingGenres);
       });
     });
 
@@ -574,9 +557,9 @@ describe("Game", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
 
-        this.description = "Test description";
+        this.existingDescription = "Test description";
 
-        this.game.description = this.description;
+        this.game.description = this.existingDescription;
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
@@ -584,7 +567,7 @@ describe("Game", function () {
       });
 
       it("the game's description stays unchanged", function () {
-        expect(this.game.description).toBe(this.description);
+        expect(this.game.description).toBe(this.existingDescription);
       });
     });
 
@@ -609,21 +592,17 @@ describe("Game", function () {
     describe("When we try to update the date of a game with an existing release date,", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
-        this.date = new Date("23 July 2023");
+        this.existingDate = new Date("23 July 2023");
 
-        this.game.releaseDate = this.date;
+        this.game.releaseDate = this.existingDate;
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
         this.game.updateReleaseDate(page);
       });
 
-      it("a game is returned.", function () {
-        expect(this.game).toBeInstanceOf(Game);
-      });
-
       it("the game's release date stays unchanged", function () {
-        expect(this.game.releaseDate).toBe(this.date);
+        expect(this.game.releaseDate).toBe(this.existingDate);
       });
     });
 
@@ -636,38 +615,27 @@ describe("Game", function () {
         this.game.updateReleaseDate(page);
       });
 
-      it("a game is returned.", function () {
-        expect(this.game).toBeInstanceOf(Game);
+      it("the game's release date stays empty", function () {
+        expect(this.game.releaseDate).toBe("");
+      });
+    });
+
+    describe("When we try to use a page that has a valid release date", function () {
+      beforeAll(function () {
+        this.game = getXGamesWithoutDetails(1)[0];
+
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+        this.game.updateReleaseDate(page);
       });
 
       it("the game's release date stays empty", function () {
-        expect(this.game.releaseDate).toBe("");
+        expect(this.game.releaseDate).toEqual(new Date("Aug 11 2020 UTC"));
       });
     });
   });
 
   describe(".getSteamDbDevelopers.", function () {
-    describe("When we provide a html page that contains two developers,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(counterStrikeHtmlDetailsSteamDb);
-
-        this.result = game.getSteamDbDevelopers(page);
-      });
-
-      it("two developers are returned", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the developer is 'Valve'", function () {
-        expect(this.result[0]).toBe("Valve");
-      });
-
-      it("the developer is 'Hidden Path Entertainment'", function () {
-        expect(this.result[1]).toBe("Hidden Path Entertainment");
-      });
-    });
-
     describe("When we provide a html page that doesn't contain a developer section", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
@@ -680,9 +648,43 @@ describe("Game", function () {
         expect(this.result).toEqual([]);
       });
     });
+
+    describe("When we provide a html page that contains two developers,", function () {
+      beforeAll(function () {
+        const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(counterStrikeHtmlDetailsSteamDb);
+
+        this.result = game.getSteamDbDevelopers(page);
+      });
+
+      it("two developers are returned", function () {
+        expect(this.result.length).toBe(2);
+      });
+
+      it("the first developer is 'Valve'", function () {
+        expect(this.result[0]).toBe("Valve");
+      });
+
+      it("the second developer is 'Hidden Path Entertainment'", function () {
+        expect(this.result[1]).toBe("Hidden Path Entertainment");
+      });
+    });
   });
 
   describe(".getSteamDbGenres.", function () {
+    describe("When we provide a html page that doesn't contain a genres section,", function () {
+      beforeAll(function () {
+        const game = getXGamesWithoutDetails(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = game.getSteamDbGenres(page);
+      });
+
+      it("an empty array is returned", function () {
+        expect(this.result).toEqual([]);
+      });
+    });
+
     describe("When we provide a html page that contains the genres,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
@@ -703,22 +705,22 @@ describe("Game", function () {
         expect(this.result[1]).toBe("Indie");
       });
     });
+  });
 
-    describe("When we provide a html page that doesn't contain a genres section,", function () {
+  describe(".getSteamDbDescription.", function () {
+    describe("When we provide a html page that doesn't contain a description section,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        this.result = game.getSteamDbGenres(page);
+        this.result = game.getSteamDbDescription(page);
       });
 
-      it("an empty array is returned", function () {
-        expect(this.result).toEqual([]);
+      it("an empty string is returned", function () {
+        expect(this.result).toEqual("");
       });
     });
-  });
 
-  describe(".getSteamDbDescription.", function () {
     describe("When we provide a html page that contains the description,", function () {
       beforeAll(function () {
         const game = getXGamesWithoutDetails(1)[0];
@@ -731,19 +733,6 @@ describe("Game", function () {
         expect(this.result).toEqual(
           "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
         );
-      });
-    });
-
-    describe("When we provide a html page that doesn't contain a description section,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getSteamDbDescription(page);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toEqual("");
       });
     });
   });

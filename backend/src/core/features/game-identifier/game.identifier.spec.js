@@ -79,12 +79,12 @@ describe("game.identifier.js", function () {
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
-          this.htmlDetailsPages = [
+          const htmlDetailsPages = [
             gta5ageRestrictedHtmlDetailsPage,
             theSims4dlcHtmlDetailsPage,
           ];
 
-          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+          const parsedHtmlPages = getParsedHtmlPages(htmlDetailsPages);
 
           this.steamApps.identifyTypes(parsedHtmlPages, this.source);
 
@@ -92,7 +92,7 @@ describe("game.identifier.js", function () {
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
-          this.steamClient = createSteamMock(this.htmlDetailsPages);
+          this.steamClient = createSteamMock(htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
             this.steamApps,
@@ -167,12 +167,12 @@ describe("game.identifier.js", function () {
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
-          this.htmlDetailsPages = [
+          const htmlDetailsPages = [
             mortalDarknessGameHtmlDetailsPage,
             gta5ageRestrictedHtmlDetailsPage,
           ];
 
-          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+          const parsedHtmlPages = getParsedHtmlPages(htmlDetailsPages);
 
           this.steamApps.identifyTypes(parsedHtmlPages, this.source);
 
@@ -180,7 +180,7 @@ describe("game.identifier.js", function () {
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
-          this.steamClient = createSteamMock(this.htmlDetailsPages);
+          this.steamClient = createSteamMock(htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
             this.steamApps,
@@ -322,9 +322,9 @@ describe("game.identifier.js", function () {
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
-          this.htmlDetailsPages = ["", ""];
+          const htmlDetailsPages = ["", ""];
 
-          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+          const parsedHtmlPages = getParsedHtmlPages(htmlDetailsPages);
 
           this.steamApps.identifyTypes(parsedHtmlPages, this.source);
 
@@ -332,7 +332,7 @@ describe("game.identifier.js", function () {
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
-          this.steamClient = createSteamMock(this.htmlDetailsPages);
+          this.steamClient = createSteamMock(htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
             this.steamApps,
@@ -407,9 +407,9 @@ describe("game.identifier.js", function () {
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
-          this.htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, ""];
+          const htmlDetailsPages = [mortalDarknessGameHtmlDetailsPage, ""];
 
-          const parsedHtmlPages = getParsedHtmlPages(this.htmlDetailsPages);
+          const parsedHtmlPages = getParsedHtmlPages(htmlDetailsPages);
 
           this.steamApps.identifyTypes(parsedHtmlPages, this.source);
 
@@ -417,7 +417,7 @@ describe("game.identifier.js", function () {
 
           this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
-          this.steamClient = createSteamMock(this.htmlDetailsPages);
+          this.steamClient = createSteamMock(htmlDetailsPages);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             undefined,
             this.steamApps,
@@ -554,15 +554,18 @@ describe("game.identifier.js", function () {
 
         this.games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
 
-        const pages = [counterStrikeHtmlDetailsSteamDb, riskOfRainHtmlDetailsSteamDb];
+        const htmlDetailsPages = [
+          counterStrikeHtmlDetailsSteamDb,
+          riskOfRainHtmlDetailsSteamDb,
+        ];
 
-        this.htmlDetailsPages = getParsedHtmlPages(pages);
+        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
-        this.games.updateGamesMissingDetails(this.htmlDetailsPages);
+        this.games.updateGamesMissingDetails(parsedPages);
 
-        this.steamApps.recordAttemptsViaSource(this.htmlDetailsPages, this.source);
+        this.steamApps.recordAttemptsViaSource(parsedPages, this.source);
 
-        this.steamClientMock = createSteamMock(pages);
+        this.steamClientMock = createSteamMock(htmlDetailsPages);
         this.steamAppsRepository = createSteamAppsRepositoryMock(this.steamApps);
         this.gamesRepository = createGamesRepositoryMock(this.games);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -677,21 +680,20 @@ describe("game.identifier.js", function () {
 
         this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
-        const pages = getParsedHtmlPages([
+        const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
           riskOfRainHtmlDetailsSteamDb,
-        ]);
+        ];
+
+        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
         this.source = ValidDataSources.validDataSources.steamDb;
 
-        this.steamApps.recordAttemptsViaSource(pages, this.source);
+        this.steamApps.recordAttemptsViaSource(parsedPages, this.source);
 
-        this.games.updateMissingReleaseDates(pages);
+        this.games.updateMissingReleaseDates(parsedPages);
 
-        this.steamClientMock = createSteamMock([
-          counterStrikeHtmlDetailsSteamDb,
-          riskOfRainHtmlDetailsSteamDb,
-        ]);
+        this.steamClientMock = createSteamMock(htmlDetailsPages);
         this.steamAppsRepository = createSteamAppsRepositoryMock(this.steamApps);
         this.gamesRepository = createGamesRepositoryMock(this.games);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -731,7 +733,7 @@ describe("game.identifier.js", function () {
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(2);
       });
 
-      it("getSourceHtmlDetailsPage was called with the correct ids", function () {
+      it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
           this.games.games[0].id,
           this.source,
