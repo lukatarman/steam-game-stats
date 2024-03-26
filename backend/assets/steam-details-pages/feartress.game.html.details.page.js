@@ -821,7 +821,7 @@ export const feartressGameHtmlDetailsPage = `<!DOCTYPE html>
 
 																			<div class="grid_label grid_date">Release</div>
 										<div class="grid_content grid_date">
-											TBD										</div>
+											10.10.2001										</div>
 																	</div>
 
 
@@ -842,7 +842,7 @@ export const feartressGameHtmlDetailsPage = `<!DOCTYPE html>
 
 															<div class="release_date">
 									<div class="subtitle column">Release Date:</div>
-									<div class="date">TBD</div>
+									<div class="date">1 January, 2001</div>
 								</div>
 
 																						<div class="dev_row">

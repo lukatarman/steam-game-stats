@@ -1,22 +1,24 @@
+import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { daysToMs } from "../../common/time.utils.js";
 import { Game } from "./game.js";
+import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
 export const getXGamesWithoutDetails = (amount) => {
   const steamApps = getXSampleSteamApps(amount);
 
-  return steamApps.map((app, i) => Game.fromSteamApp(steamApps[i], "", [], [], ""));
+  return steamApps.map((app, i) =>
+    Game.fromSteamApp(steamApps[i], getParsedHtmlPage("")),
+  );
 };
 
 export const getOneSteamAppInstantiatedGame = () => {
   const steamApp = getXSampleSteamApps(1);
 
-  const releaseDate = "21 July 2019";
-  const developers = ["Valve", "Hopoo Games"];
-  const genres = ["Action", "Adventure"];
-  const description = "Best game";
+  const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
 
-  return Game.fromSteamApp(steamApp, releaseDate, developers, genres, description);
+  return Game.fromSteamApp(steamApp, page);
 };
 
 export const getXsteamchartsInstantiatedGames = (amount) => {
@@ -36,6 +38,22 @@ export const getOneGameWithDetails = () => {
       description: "Best game",
     },
   ];
+};
+
+export const getOneGameWithPlayerHistory = () => {
+  const dbEntry = [
+    {
+      id: 239140,
+      name: "Dying Light",
+      releaseDate: "21.09.1989",
+      developers: ["Techland"],
+      genres: ["Action", "RPG"],
+      description: "Best game",
+      playerHistory: getSamplePlayerHistory(),
+    },
+  ];
+
+  return Game.manyFromDbEntry(dbEntry)[0];
 };
 
 export const getGamesWithEmptyPlayerHistories = () => {
