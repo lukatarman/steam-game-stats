@@ -8,7 +8,7 @@ describe("ValidDataSources", function () {
         this.result = ValidDataSources.getSourceUrl(1, source);
       });
 
-      it("the result is the correct url.", function () {
+      it("the correct url is returned.", function () {
         expect(this.result).toBe("https://store.steampowered.com/app/1");
       });
     });
@@ -19,7 +19,7 @@ describe("ValidDataSources", function () {
         this.result = ValidDataSources.getSourceUrl(1, source);
       });
 
-      it("the result is the correct url.", function () {
+      it("the correct url is returned.", function () {
         expect(this.result).toBe("https://steamcharts.com/app/1");
       });
     });
@@ -30,7 +30,7 @@ describe("ValidDataSources", function () {
         this.result = ValidDataSources.getSourceUrl(1, source);
       });
 
-      it("the result is the correct url.", function () {
+      it("the correct url is returned.", function () {
         expect(this.result).toBe("https://steamdb.info/app/1/info/");
       });
     });

@@ -214,7 +214,7 @@ describe("SteamAppsRepository", function () {
   describe(".getSourceUntriedFilteredSteamApps.", function () {
     describe("via SteamWeb source", function () {
       describe("If three steam apps out of eigth match the filters,", function () {
-        describe("and the amount of 2 is provided", function () {
+        describe("and a limit of 2 is provided", function () {
           beforeAll(async function () {
             this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
@@ -241,25 +241,25 @@ describe("SteamAppsRepository", function () {
             expect(this.result).toBeInstanceOf(SteamAppsAggregate);
           });
 
-          it("the result has two games", function () {
+          it("the result contains two steam apps", function () {
             expect(this.result.apps.length).toBe(2);
           });
 
-          it("the first result is an instance of SteamApp", function () {
+          it("the first steam app is an instance of SteamApp", function () {
             expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
           });
 
-          it("the first array has the correct values", function () {
+          it("the first steam app has the correct values", function () {
             expect(this.result.apps[0].appid).toBe(2);
             expect(this.result.apps[0].type).toBe("unknown");
             expect(this.result.apps[0].triedVia).toEqual([]);
           });
 
-          it("the second result is an instance of SteamApp", function () {
+          it("the second steam app is an instance of SteamApp", function () {
             expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
           });
 
-          it("the second array has the correct values", function () {
+          it("the second steam app has the correct values", function () {
             expect(this.result.apps[1].appid).toBe(4);
             expect(this.result.apps[1].type).toBe("unknown");
             expect(this.result.apps[1].triedVia).toEqual([]);
@@ -293,35 +293,35 @@ describe("SteamAppsRepository", function () {
             expect(this.result).toBeInstanceOf(SteamAppsAggregate);
           });
 
-          it("the resulting array has a length of 3", function () {
+          it("the result contains three steam apps", function () {
             expect(this.result.apps.length).toBe(3);
           });
 
-          it("the first result is an instance of SteamApp", function () {
+          it("the first steam app an instance of SteamApp", function () {
             expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
           });
 
-          it("the first array has the correct values", function () {
+          it("the first steam app has the correct values", function () {
             expect(this.result.apps[0].appid).toBe(2);
             expect(this.result.apps[0].type).toBe("unknown");
             expect(this.result.apps[0].triedVia).toEqual([]);
           });
 
-          it("the second result is an instance of SteamApp", function () {
+          it("the second steam app is an instance of SteamApp", function () {
             expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
           });
 
-          it("the second array has the correct values", function () {
+          it("the second steam app has the correct values", function () {
             expect(this.result.apps[1].appid).toBe(4);
             expect(this.result.apps[1].type).toBe("unknown");
             expect(this.result.apps[1].triedVia).toEqual([]);
           });
 
-          it("the third result is an instance of SteamApp", function () {
+          it("the third steam app is an instance of SteamApp", function () {
             expect(this.result.apps[2]).toBeInstanceOf(SteamApp);
           });
 
-          it("the third array has the correct values", function () {
+          it("the third steam app has the correct values", function () {
             expect(this.result.apps[2].appid).toBe(7);
             expect(this.result.apps[2].type).toBe("unknown");
             expect(this.result.apps[2].triedVia).toEqual([]);
@@ -332,7 +332,7 @@ describe("SteamAppsRepository", function () {
 
     describe("via Steamcharts source", function () {
       describe("If three steam apps out of eigth match the filters,", function () {
-        describe("and the amount of 2 is provided", function () {
+        describe("and the limit of 2 is provided", function () {
           beforeAll(async function () {
             this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
@@ -359,32 +359,32 @@ describe("SteamAppsRepository", function () {
             expect(this.result).toBeInstanceOf(SteamAppsAggregate);
           });
 
-          it("the result has two games", function () {
+          it("the result contains two steam app", function () {
             expect(this.result.apps.length).toBe(2);
           });
 
-          it("the first result is an instance of SteamApp", function () {
+          it("the first steam app is an instance of SteamApp", function () {
             expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
           });
 
-          it("the first array has the correct values", function () {
+          it("the first steam apphas the correct values", function () {
             expect(this.result.apps[0].appid).toBe(2);
             expect(this.result.apps[0].type).toBe("unknown");
             expect(this.result.apps[0].triedVia).toEqual([]);
           });
 
-          it("the second result is an instance of SteamApp", function () {
+          it("the second steam app is an instance of SteamApp", function () {
             expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
           });
 
-          it("the second array has the correct values", function () {
+          it("the second steam app has the correct values", function () {
             expect(this.result.apps[1].appid).toBe(4);
             expect(this.result.apps[1].type).toBe("unknown");
             expect(this.result.apps[1].triedVia).toEqual([]);
           });
         });
 
-        describe("and the amount of 0 is provided", function () {
+        describe("and the limit of 0 is provided", function () {
           beforeAll(async function () {
             this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
@@ -411,35 +411,35 @@ describe("SteamAppsRepository", function () {
             expect(this.result).toBeInstanceOf(SteamAppsAggregate);
           });
 
-          it("the resulting array has a length of 3", function () {
+          it("the result contains three steam apps", function () {
             expect(this.result.apps.length).toBe(3);
           });
 
-          it("the first result is an instance of SteamApp", function () {
+          it("the first steam app is an instance of SteamApp", function () {
             expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
           });
 
-          it("the first array has the correct values", function () {
+          it("the first steam app has the correct values", function () {
             expect(this.result.apps[0].appid).toBe(2);
             expect(this.result.apps[0].type).toBe("unknown");
             expect(this.result.apps[0].triedVia).toEqual([]);
           });
 
-          it("the second result is an instance of SteamApp", function () {
+          it("the second steam app is an instance of SteamApp", function () {
             expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
           });
 
-          it("the second array has the correct values", function () {
+          it("the second steam app has the correct values", function () {
             expect(this.result.apps[1].appid).toBe(4);
             expect(this.result.apps[1].type).toBe("unknown");
             expect(this.result.apps[1].triedVia).toEqual([]);
           });
 
-          it("the third result is an instance of SteamApp", function () {
+          it("the third steam app is an instance of SteamApp", function () {
             expect(this.result.apps[2]).toBeInstanceOf(SteamApp);
           });
 
-          it("the third array has the correct values", function () {
+          it("the third steam app has the correct values", function () {
             expect(this.result.apps[2].appid).toBe(7);
             expect(this.result.apps[2].type).toBe("unknown");
             expect(this.result.apps[2].triedVia).toEqual([]);
