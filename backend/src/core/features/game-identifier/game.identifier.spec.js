@@ -612,7 +612,7 @@ describe("game.identifier.js", function () {
 
       it("updateSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-          this.steamApps,
+          this.steamApps.apps,
         );
       });
 
@@ -621,7 +621,9 @@ describe("game.identifier.js", function () {
       });
 
       it("updateGameDetails was called with the correct argument", function () {
-        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledWith(this.games);
+        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledWith(
+          this.games.games,
+        );
       });
     });
   });
@@ -750,7 +752,7 @@ describe("game.identifier.js", function () {
 
       it("updateSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
-          this.steamApps,
+          this.steamApps.apps,
         );
       });
 
@@ -759,7 +761,9 @@ describe("game.identifier.js", function () {
       });
 
       it("updateReleaseDates was called with the correct argument", function () {
-        expect(this.gamesRepository.updateReleaseDates).toHaveBeenCalledWith(this.games);
+        expect(this.gamesRepository.updateReleaseDates).toHaveBeenCalledWith(
+          this.games.games,
+        );
       });
     });
   });

@@ -56,7 +56,7 @@ export class GameIdentifier {
 
     const games = steamApps.extractGames(htmlDetailsPages, source);
 
-    await this.#persistGameCheckUpdates(games, steamApps);
+    await this.#persistGameCheckUpdates(games, steamApps.apps);
   };
 
   async #getSteamAppsHtmlDetailsPages(steamApps, source) {
@@ -90,7 +90,7 @@ export class GameIdentifier {
       );
     }
 
-    await this.#steamAppsRepository.updateSteamAppsById(steamApps.apps);
+    await this.#steamAppsRepository.updateSteamAppsById(steamApps);
   }
 
   updateGamesWithoutDetails = async () => {
@@ -121,7 +121,7 @@ export class GameIdentifier {
 
     games.updateGamesMissingDetails(htmlDetailsPages);
 
-    this.#persistUpdatedDetails(games, steamApps);
+    this.#persistUpdatedDetails(games.games, steamApps.apps);
   };
 
   async #persistUpdatedDetails(games, steamApps) {
@@ -161,7 +161,7 @@ export class GameIdentifier {
 
     games.updateMissingReleaseDates(htmlDetailsPages);
 
-    this.#persistReleaseDates(games, steamApps);
+    this.#persistReleaseDates(games.games, steamApps.apps);
   };
 
   async #persistReleaseDates(games, steamApps) {
