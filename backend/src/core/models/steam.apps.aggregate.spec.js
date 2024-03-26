@@ -43,7 +43,7 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamApps(2),
         );
 
-        this.result = steamAppsArray.isEmpty("");
+        this.result = steamAppsArray.isEmpty();
       });
 
       it("the returned value is false", function () {
@@ -53,7 +53,7 @@ describe("SteamAppsAggregate", function () {
   });
 
   describe(".identifyTypes", function () {
-    describe("When the method is used", function () {
+    describe("When we try to identify two steam apps", function () {
       beforeAll(function () {
         this.steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
           getXSampleSteamApps(2),
@@ -65,14 +65,14 @@ describe("SteamAppsAggregate", function () {
         this.steamAppsArray.identifyTypes(pages, source);
       });
 
-      it("the first app has the correct values", function () {
+      it("the first app is correctly identified", function () {
         expect(this.steamAppsArray.apps[0].appid).toBe(1);
         expect(this.steamAppsArray.apps[0].triedVia).toEqual(["steamWeb"]);
         expect(this.steamAppsArray.apps[0].failedVia).toEqual(["steamWeb"]);
         expect(this.steamAppsArray.apps[0].type).toBe("unknown");
       });
 
-      it("the second app has the correct values", function () {
+      it("the second app is correctly identified", function () {
         expect(this.steamAppsArray.apps[1].appid).toBe(2);
         expect(this.steamAppsArray.apps[1].triedVia).toEqual(["steamWeb"]);
         expect(this.steamAppsArray.apps[1].failedVia).toEqual([]);
@@ -87,9 +87,9 @@ describe("SteamAppsAggregate", function () {
         const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
           getXSampleSteamApps(2),
         );
-        const source = ValidDataSources.validDataSources.steamWeb;
+        const pages = getParsedHtmlPages(["", ""]);
 
-        this.result = steamAppsArray.extractGames(getParsedHtmlPages(["", ""]), source);
+        this.result = steamAppsArray.extractGames(pages);
       });
 
       it("no games are returned", function () {
@@ -107,7 +107,7 @@ describe("SteamAppsAggregate", function () {
 
         steamAppsArray.identifyTypes(pages, source);
 
-        this.result = steamAppsArray.extractGames(pages, source);
+        this.result = steamAppsArray.extractGames(pages);
       });
 
       it("one game is returned", function () {
@@ -120,10 +120,12 @@ describe("SteamAppsAggregate", function () {
         const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
           getXSampleSteamAppsMarkedAsGames(2),
         );
-        const source = ValidDataSources.validDataSources.steamWeb;
-        const pages = [feartressGameHtmlDetailsPage, mortalDarknessGameHtmlDetailsPage];
+        const pages = getParsedHtmlPages([
+          feartressGameHtmlDetailsPage,
+          mortalDarknessGameHtmlDetailsPage,
+        ]);
 
-        this.result = steamAppsArray.extractGames(getParsedHtmlPages(pages), source);
+        this.result = steamAppsArray.extractGames(pages);
       });
 
       it("two games are returned", function () {

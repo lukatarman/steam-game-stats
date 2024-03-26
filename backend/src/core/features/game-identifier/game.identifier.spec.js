@@ -131,11 +131,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[0],
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[1],
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -219,11 +219,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[0],
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[1],
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -371,11 +371,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[0],
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[1],
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
@@ -456,11 +456,11 @@ describe("game.identifier.js", function () {
 
         it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[0],
+            this.steamApps.apps[0].appid,
             this.source,
           );
           expect(this.steamClient.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-            this.steamApps.getIds()[1],
+            this.steamApps.apps[1].appid,
             this.source,
           );
         });
