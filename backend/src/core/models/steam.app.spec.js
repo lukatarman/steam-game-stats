@@ -9,7 +9,7 @@ import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/p
 import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 
-fdescribe("SteamApp", function () {
+describe("SteamApp", function () {
   describe(".copy", function () {
     describe("creates a copy of a steamApp instance. When this is done,", function () {
       beforeAll(function () {
