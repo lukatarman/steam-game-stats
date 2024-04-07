@@ -36,12 +36,25 @@ export class SteamClient {
 
   // TODO https://github.com/lukatarman/steam-game-stats/issues/192
   async getSourceHtmlDetailsPage(id, source) {
-    const url = ValidDataSources.getSourceUrl(id, source);
+    const url = this.getSourceUrl(id, source);
 
     try {
       return (await this.#httpClient.get(url)).data;
     } catch (err) {
       return "";
+    }
+  }
+
+  getSourceUrl(id, source) {
+    switch (source) {
+      case ValidDataSources.validDataSources.steamWeb:
+        return `https://store.steampowered.com/app/${id}`;
+
+      case ValidDataSources.validDataSources.steacharts:
+        return `https://steamcharts.com/app/${id}`;
+
+      case ValidDataSources.validDataSources.steamDb:
+        return `https://steamdb.info/app/${id}/info/`;
     }
   }
 }
