@@ -11,7 +11,7 @@ export class SteamAppsAggregate {
     return steamAppsAggregate;
   }
 
-  isEmpty() {
+  get isEmpty() {
     if (this.apps.length > 0) return false;
 
     return true;

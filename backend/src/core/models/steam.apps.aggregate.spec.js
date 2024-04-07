@@ -29,7 +29,7 @@ describe("SteamAppsAggregate", function () {
       beforeAll(function () {
         const steamAppsArray = SteamAppsAggregate.manyFromDbEntries([]);
 
-        this.result = steamAppsArray.isEmpty();
+        this.result = steamAppsArray.isEmpty;
       });
 
       it("the returned value is true", function () {
@@ -43,7 +43,7 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamApps(2),
         );
 
-        this.result = steamAppsArray.isEmpty();
+        this.result = steamAppsArray.isEmpty;
       });
 
       it("the returned value is false", function () {

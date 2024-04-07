@@ -29,8 +29,6 @@ export class GameIdentifier {
     this.#htmlParser = htmlParser;
   }
 
-  //todo game.identifier.spec .checkIfGameViaSource via steamcharts continue
-
   checkIfGameViaSource = async (source) => {
     this.#logger.debugc(`identifying games via ${source}`);
 
@@ -39,7 +37,7 @@ export class GameIdentifier {
       source,
     );
 
-    if (steamApps.isEmpty()) {
+    if (steamApps.isEmpty) {
       this.#logger.debugc(
         `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
       );

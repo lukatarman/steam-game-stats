@@ -504,7 +504,7 @@ describe("game.identifier.js", function () {
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
         this.gamesRepository = createGamesRepositoryMock(
-          SteamAppsAggregate.manyFromDbEntries([]),
+          GamesAggregate.manyFromDbEntries([]),
         );
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
