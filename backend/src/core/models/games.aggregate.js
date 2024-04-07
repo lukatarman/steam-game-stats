@@ -10,7 +10,7 @@ export class GamesAggregate {
     return gamesAggregate;
   }
 
-  getIds() {
+  get ids() {
     return this.games.map((game) => game.id);
   }
 

@@ -29,7 +29,7 @@ describe("GamesAggregate", function () {
       beforeAll(function () {
         const games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
 
-        this.result = games.getIds();
+        this.result = games.ids;
       });
 
       it("the games' ids are returned.", function () {

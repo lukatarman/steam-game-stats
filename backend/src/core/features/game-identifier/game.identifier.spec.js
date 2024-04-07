@@ -727,7 +727,7 @@ describe("game.identifier.js", function () {
 
       it("getSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledWith(
-          this.games.getIds(),
+          this.games.ids,
         );
       });
 

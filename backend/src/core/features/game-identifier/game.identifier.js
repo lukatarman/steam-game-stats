@@ -108,7 +108,7 @@ export class GameIdentifier {
       return;
     }
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
       steamApps.apps,
@@ -148,7 +148,7 @@ export class GameIdentifier {
       return;
     }
 
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.getIds());
+    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
       steamApps.apps,
