@@ -64,7 +64,7 @@ describe("GamesAggregate", function () {
     });
   });
 
-  describe(".updateGamesMissingDetails.", function () {
+  describe(".extractGameDetailsFrom.", function () {
     describe("When we try to update two games with missing details,", function () {
       beforeAll(function () {
         this.result = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
@@ -76,7 +76,7 @@ describe("GamesAggregate", function () {
 
         const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
-        this.result.updateGamesMissingDetails(parsedPages);
+        this.result.extractGameDetailsFrom(parsedPages);
       });
 
       it("the first game's details are updated", function () {
@@ -100,7 +100,7 @@ describe("GamesAggregate", function () {
     });
   });
 
-  describe(".updateMissingReleaseDates.", function () {
+  describe(".extractReleaseDatesFrom.", function () {
     describe("When we try to update two games with missing release dates,", function () {
       beforeAll(function () {
         const games = getXsteamchartsInstantiatedGames(2);
@@ -113,7 +113,7 @@ describe("GamesAggregate", function () {
 
         const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
-        this.gamesArray.updateMissingReleaseDates(parsedPages);
+        this.gamesArray.extractReleaseDatesFrom(parsedPages);
       });
 
       it("the first game's release date is updated", function () {

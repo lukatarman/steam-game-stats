@@ -117,7 +117,7 @@ export class GameIdentifier {
 
     steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
 
-    games.updateGamesMissingDetails(htmlDetailsPages);
+    games.extractGameDetailsFrom(htmlDetailsPages);
 
     this.#persistUpdatedDetails(games.games, steamApps.apps);
   };
@@ -157,7 +157,7 @@ export class GameIdentifier {
 
     steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
 
-    games.updateMissingReleaseDates(htmlDetailsPages);
+    games.extractReleaseDatesFrom(htmlDetailsPages);
 
     this.#persistReleaseDates(games.games, steamApps.apps);
   };

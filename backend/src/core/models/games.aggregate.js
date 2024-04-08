@@ -20,7 +20,7 @@ export class GamesAggregate {
     return true;
   }
 
-  updateGamesMissingDetails(htmlDetailsPages) {
+  extractGameDetailsFrom(htmlDetailsPages) {
     this.games = this.games.map((game) => {
       const gameCopy = game.copy();
 
@@ -36,7 +36,7 @@ export class GamesAggregate {
     return htmlDetailsPages.find((page) => game.id === page.id).page;
   }
 
-  updateMissingReleaseDates(htmlDetailsPages) {
+  extractReleaseDatesFrom(htmlDetailsPages) {
     this.games = this.games.map((game) => {
       const gameCopy = game.copy();
 

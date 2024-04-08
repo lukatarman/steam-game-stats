@@ -561,7 +561,7 @@ describe("game.identifier.js", function () {
 
         const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
-        this.games.updateGamesMissingDetails(parsedPages);
+        this.games.extractGameDetailsFrom(parsedPages);
 
         this.steamApps.recordAttemptsViaSource(parsedPages, this.source);
 
@@ -693,7 +693,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.recordAttemptsViaSource(parsedPages, this.source);
 
-        this.games.updateMissingReleaseDates(parsedPages);
+        this.games.extractReleaseDatesFrom(parsedPages);
 
         this.steamClientMock = createSteamMock(htmlDetailsPages);
         this.steamAppsRepository = createSteamAppsRepositoryMock(this.steamApps);
