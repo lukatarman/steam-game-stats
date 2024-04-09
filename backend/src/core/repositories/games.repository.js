@@ -41,7 +41,7 @@ export class GamesRepository {
     return GamesAggregate.manyFromDbEntries(response);
   }
 
-  async updateGameDetails(games) {
+  async updateGameDetailsFrom(games) {
     await Promise.all(
       games.map((game) =>
         this.#dbClient.updateOne(

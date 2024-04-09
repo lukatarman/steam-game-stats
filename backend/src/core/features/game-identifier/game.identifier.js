@@ -117,7 +117,7 @@ export class GameIdentifier {
 
     steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
 
-    games.extractGameDetailsFrom(htmlDetailsPages);
+    games.updateGameDetailsFrom(htmlDetailsPages);
 
     this.#persistUpdatedDetails(games.games, steamApps.apps);
   };
@@ -127,7 +127,7 @@ export class GameIdentifier {
     this.#logger.debugc(`persisting ${games.length} games with updated details`);
 
     await this.#steamAppsRepository.updateSteamAppsById(steamApps);
-    await this.#gamesRepository.updateGameDetails(games);
+    await this.#gamesRepository.updateGameDetailsFrom(games);
   }
 
   updateGamesWithoutReleaseDates = async () => {

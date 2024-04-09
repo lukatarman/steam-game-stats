@@ -541,8 +541,8 @@ describe("game.identifier.js", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledTimes(0);
       });
 
-      it("updateGameDetails was not called", function () {
-        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledTimes(0);
+      it("updateGameDetailsFrom was not called", function () {
+        expect(this.gamesRepository.updateGameDetailsFrom).toHaveBeenCalledTimes(0);
       });
     });
 
@@ -561,7 +561,7 @@ describe("game.identifier.js", function () {
 
         const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
-        this.games.extractGameDetailsFrom(parsedPages);
+        this.games.updateGameDetailsFrom(parsedPages);
 
         this.steamApps.recordAttemptsViaSource(parsedPages, this.source);
 
@@ -616,12 +616,12 @@ describe("game.identifier.js", function () {
         );
       });
 
-      it("updateGameDetails was called once", function () {
-        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledTimes(1);
+      it("updateGameDetailsFrom was called once", function () {
+        expect(this.gamesRepository.updateGameDetailsFrom).toHaveBeenCalledTimes(1);
       });
 
-      it("updateGameDetails was called with the correct argument", function () {
-        expect(this.gamesRepository.updateGameDetails).toHaveBeenCalledWith(
+      it("updateGameDetailsFrom was called with the correct argument", function () {
+        expect(this.gamesRepository.updateGameDetailsFrom).toHaveBeenCalledWith(
           this.games.games,
         );
       });
@@ -789,7 +789,7 @@ function createGamesRepositoryMock(gamesRepoRet) {
   return jasmine.createSpyObj("GamesRepository", {
     insertManyGames: Promise.resolve(undefined),
     getGamesWithoutDetails: Promise.resolve(gamesRepoRet),
-    updateGameDetails: Promise.resolve(undefined),
+    updateGameDetailsFrom: Promise.resolve(undefined),
     getGamesWithoutReleaseDates: Promise.resolve(gamesRepoRet),
     updateReleaseDates: Promise.resolve(undefined),
     getSourceHtmlDetailsPage: Promise.resolve(gamesRepoRet),

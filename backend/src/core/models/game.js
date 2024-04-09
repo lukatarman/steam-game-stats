@@ -30,10 +30,10 @@ export class Game {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = game.#getReleaseDate(page);
-    game.developers    = game.#getDevelopers(page);
-    game.genres        = game.#getGenres(page);
-    game.description   = game.#getDescription(page);
+    game.releaseDate   = game.#extractReleaseDateFrom(page);
+    game.developers    = game.#extractDevelopersFrom(page);
+    game.genres        = game.#extractGenresFrom(page);
+    game.description   = game.#extractDescriptionFrom(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     
@@ -108,7 +108,7 @@ export class Game {
     });
   }
 
-  #getReleaseDate(page) {
+  #extractReleaseDateFrom(page) {
     const releaseDateElement = page.querySelector(".release_date .date");
 
     if (!releaseDateElement) return "";
@@ -118,7 +118,7 @@ export class Game {
     return releaseDate == "Invalid Date" ? "" : releaseDate;
   }
 
-  #getDevelopers(page) {
+  #extractDevelopersFrom(page) {
     const developers = page.querySelector(".dev_row #developers_list");
 
     if (!developers) return [];
@@ -128,7 +128,7 @@ export class Game {
     );
   }
 
-  #getGenres(page) {
+  #extractGenresFrom(page) {
     const genres = page.querySelector("#genresAndManufacturer span");
 
     if (!genres) return [];
@@ -138,7 +138,7 @@ export class Game {
       .filter((genre) => !!genre);
   }
 
-  #getDescription(page) {
+  #extractDescriptionFrom(page) {
     const description = page.querySelector(".game_description_snippet");
 
     if (!description) return "";
@@ -146,41 +146,41 @@ export class Game {
     return description.textContent.trim();
   }
 
-  updateGameDetails(page) {
-    this.updateDevelopers(page);
-    this.updateGenres(page);
-    this.updateDescription(page);
+  updateGameDetailsFrom(page) {
+    this.#updateDevelopers(page);
+    this.#updateGenres(page);
+    this.#updateDescription(page);
   }
 
-  updateDevelopers(page) {
+  #updateDevelopers(page) {
     if (this.developers.length !== 0) return;
 
-    this.developers = this.getSteamDbDevelopers(page);
+    this.developers = this.#extractSteamDbDevelopersFrom(page);
   }
 
-  updateGenres(page) {
+  #updateGenres(page) {
     if (this.genres.length !== 0) return;
 
-    this.genres = this.getSteamDbGenres(page);
+    this.genres = this.#extractSteamDbGenresFrom(page);
   }
 
-  updateDescription(page) {
+  #updateDescription(page) {
     if (this.description.length !== 0) return;
 
-    this.description = this.getSteamDbDescription(page);
+    this.description = this.#extractSteamDbDescriptionFrom(page);
   }
 
   updateReleaseDate(page) {
     if (this.releaseDate) return;
 
-    const date = this.getSteamDbReleaseDate(page);
+    const date = this.#extractSteamDbReleaseDateFrom(page);
 
     if (date === "") return;
 
     this.releaseDate = date;
   }
 
-  getSteamDbDevelopers(page) {
+  #extractSteamDbDevelopersFrom(page) {
     const developers = page.querySelector(
       "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
     );
@@ -190,7 +190,7 @@ export class Game {
     return Array.from(developers.children).map((developer) => developer.textContent);
   }
 
-  getSteamDbGenres(page) {
+  #extractSteamDbGenresFrom(page) {
     const domTableBody = page.querySelector("#info tbody");
 
     if (!domTableBody) return [];
@@ -204,7 +204,7 @@ export class Game {
       .map((genre) => genre.nodeValue.replace(",", "").trim());
   }
 
-  getSteamDbDescription(page) {
+  #extractSteamDbDescriptionFrom(page) {
     const description = page.querySelector(".header-description");
 
     if (!description) return "";
@@ -212,7 +212,7 @@ export class Game {
     return description.textContent;
   }
 
-  getSteamDbReleaseDate(page) {
+  #extractSteamDbReleaseDateFrom(page) {
     const releaseDateElement = page.querySelector(
       "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
     );

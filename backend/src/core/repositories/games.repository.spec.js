@@ -173,7 +173,7 @@ describe("GamesRepository", function () {
     });
   });
 
-  describe(".updateGameDetails", function () {
+  describe(".updateGameDetailsFrom", function () {
     describe("When the details of 1 game are to be updated,", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
@@ -184,7 +184,7 @@ describe("GamesRepository", function () {
 
         this.games = getOneGameWithDetails();
 
-        await gamesRepo.updateGameDetails(this.games);
+        await gamesRepo.updateGameDetailsFrom(this.games);
 
         this.result = await gamesRepo.getOneGameById(this.games[0].id);
       });

@@ -64,7 +64,7 @@ describe("GamesAggregate", function () {
     });
   });
 
-  describe(".extractGameDetailsFrom.", function () {
+  describe(".updateGameDetailsFrom.", function () {
     describe("When we try to update two games with missing details,", function () {
       beforeAll(function () {
         this.result = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
@@ -76,7 +76,7 @@ describe("GamesAggregate", function () {
 
         const parsedPages = getParsedHtmlPages(htmlDetailsPages);
 
-        this.result.extractGameDetailsFrom(parsedPages);
+        this.result.updateGameDetailsFrom(parsedPages);
       });
 
       it("the first game's details are updated", function () {

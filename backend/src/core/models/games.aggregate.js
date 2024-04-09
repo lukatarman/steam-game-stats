@@ -20,13 +20,13 @@ export class GamesAggregate {
     return true;
   }
 
-  extractGameDetailsFrom(htmlDetailsPages) {
+  updateGameDetailsFrom(htmlDetailsPages) {
     this.games = this.games.map((game) => {
       const gameCopy = game.copy();
 
       const page = this.#findGamesHtmlDetailsPage(htmlDetailsPages, gameCopy);
 
-      gameCopy.updateGameDetails(page);
+      gameCopy.updateGameDetailsFrom(page);
 
       return gameCopy;
     });

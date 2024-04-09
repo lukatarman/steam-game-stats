@@ -4,7 +4,6 @@ import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-page
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
-import { eldenRingHtmlDetailsPageDb } from "../../../assets/steamdb-details-pages/elden.ring.html.details.page.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { Game } from "./game.js";
@@ -26,7 +25,7 @@ describe("Game", function () {
       expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
     });
 
-    it("the result has the correct values", function () {
+    it("the copy has identical values to the original", function () {
       expect(this.result.id).toBe(239140);
       expect(this.result.name).toBe("Dying Light");
       expect(this.result.releaseDate).toBe("21.09.1989");
@@ -488,27 +487,7 @@ describe("Game", function () {
     });
   });
 
-  describe(".updateGameDetails", function () {
-    describe("When we try to update a game's details", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
-
-        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
-
-        this.game.updateGameDetails(page);
-      });
-
-      it("the game's details are updated", function () {
-        expect(this.game.developers).toEqual(["Pastagames"]);
-        expect(this.game.genres).toEqual(["Action", "Casual"]);
-        expect(this.game.description).toEqual(
-          "Share the love and die trying! KarmaZoo is a joyful, altruistic, cooperative platformer where up to 10 random players help each other with the unique abilities of 50 different characters - all for the sake of good Karma.",
-        );
-      });
-    });
-  });
-
-  describe(".updateDevelopers", function () {
+  describe(".updateGameDetailsFrom", function () {
     describe("When we try to update a game with existing developers", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
@@ -519,7 +498,7 @@ describe("Game", function () {
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
-        this.game.updateDevelopers(page);
+        this.game.updateGameDetailsFrom(page);
       });
 
       it("the game's developers stays unchanged", function () {
@@ -528,21 +507,33 @@ describe("Game", function () {
     });
 
     describe("When we try to update a game with no existing developers", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
+      describe("and the provided html page doesn't contain a developer section", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        const page = getParsedHtmlPage(eldenRingHtmlDetailsPageDb);
+          this.game.updateGameDetailsFrom(page);
+        });
 
-        this.game.updateDevelopers(page);
+        it("the game's developers stay unchanged", function () {
+          expect(this.game.developers).toEqual([]);
+        });
       });
 
-      it("the game's developers are updated", function () {
-        expect(this.game.developers).toEqual(["FromSoftware Inc."]);
+      describe("and the provided html page contains two developers,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(counterStrikeHtmlDetailsSteamDb);
+
+          this.game.updateGameDetailsFrom(page);
+        });
+
+        it("the game's developers are correctly changed", function () {
+          expect(this.game.developers).toEqual(["Valve", "Hidden Path Entertainment"]);
+        });
       });
     });
-  });
 
-  describe(".updateGenres", function () {
     describe("When we try to update a game with existing genres", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
@@ -553,7 +544,7 @@ describe("Game", function () {
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
-        this.game.updateGenres(page);
+        this.game.updateGameDetailsFrom(page);
       });
 
       it("the game's genres stays unchanged", function () {
@@ -562,21 +553,33 @@ describe("Game", function () {
     });
 
     describe("When we try to update a game with no existing genres", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
+      describe("and the provided html page doesn't contain a genres section,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
+          this.game.updateGameDetailsFrom(page);
+        });
 
-        this.game.updateGenres(page);
+        it("the game's genres stay unchanged", function () {
+          expect(this.game.genres).toEqual([]);
+        });
       });
 
-      it("the game's genres are updated", function () {
-        expect(this.game.genres).toEqual(["Action", "Casual"]);
+      describe("and the provided html page contains the genres,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+          this.game.updateGameDetailsFrom(page);
+        });
+
+        it("the game's genres are correctly changed", function () {
+          expect(this.game.genres).toEqual(["Action", "Indie"]);
+        });
       });
     });
-  });
 
-  describe(".updateDescription", function () {
     describe("When we try to update a game with an existing description", function () {
       beforeAll(function () {
         this.game = getXGamesWithoutDetails(1)[0];
@@ -587,7 +590,7 @@ describe("Game", function () {
 
         const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
-        this.game.updateDescription(page);
+        this.game.updateGameDetailsFrom(page);
       });
 
       it("the game's description stays unchanged", function () {
@@ -595,19 +598,33 @@ describe("Game", function () {
       });
     });
 
-    describe("When we try to update a game with no existing genres", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
+    describe("When we try to update a game with no existing description", function () {
+      describe("and the provided html page doesn't contain a description section,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
+          this.game.updateGameDetailsFrom(page);
+        });
 
-        this.game.updateDescription(page);
+        it("the game's description remains unchanged", function () {
+          expect(this.game.description).toEqual("");
+        });
       });
 
-      it("the game's description is updated", function () {
-        expect(this.game.description).toEqual(
-          "Share the love and die trying! KarmaZoo is a joyful, altruistic, cooperative platformer where up to 10 random players help each other with the unique abilities of 50 different characters - all for the sake of good Karma.",
-        );
+      describe("and the provided html page contains the description,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
+
+          this.game.updateGameDetailsFrom(page);
+        });
+
+        it("the game's description is correctly changed", function () {
+          expect(this.game.description).toEqual(
+            "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
+          );
+        });
       });
     });
   });
@@ -630,174 +647,44 @@ describe("Game", function () {
       });
     });
 
-    describe("When we try to use a page that has no release date", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
+    describe("When we try to use a page that has no existing release date", function () {
+      describe("and the provided html page doesn't contain a valid release date,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
 
-        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
+          this.game.updateReleaseDate(page);
+        });
 
-        this.game.updateReleaseDate(page);
+        it("the release date stays unchanged", function () {
+          expect(this.game.releaseDate).toBe("");
+        });
       });
 
-      it("the game's release date stays empty", function () {
-        expect(this.game.releaseDate).toBe("");
-      });
-    });
+      describe("and the provided html page doesn't contain a date section", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
 
-    describe("When we try to use a page that has a valid release date", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
+          this.game.updateReleaseDate(page);
+        });
 
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-        this.game.updateReleaseDate(page);
-      });
-
-      it("the game's release date stays empty", function () {
-        expect(this.game.releaseDate).toEqual(new Date("Aug 11 2020 UTC"));
-      });
-    });
-  });
-
-  describe(".getSteamDbDevelopers.", function () {
-    describe("When we provide a html page that doesn't contain a developer section", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getSteamDbDevelopers(page);
+        it("the release date stays unchanged", function () {
+          expect(this.game.releaseDate).toBe("");
+        });
       });
 
-      it("an empty array is returned", function () {
-        expect(this.result).toEqual([]);
-      });
-    });
+      describe("and the provided html page contains a valid release date,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+          const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
 
-    describe("When we provide a html page that contains two developers,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(counterStrikeHtmlDetailsSteamDb);
+          this.game.updateReleaseDate(page);
+        });
 
-        this.result = game.getSteamDbDevelopers(page);
-      });
-
-      it("two developers are returned", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first developer is 'Valve'", function () {
-        expect(this.result[0]).toBe("Valve");
-      });
-
-      it("the second developer is 'Hidden Path Entertainment'", function () {
-        expect(this.result[1]).toBe("Hidden Path Entertainment");
-      });
-    });
-  });
-
-  describe(".getSteamDbGenres.", function () {
-    describe("When we provide a html page that doesn't contain a genres section,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getSteamDbGenres(page);
-      });
-
-      it("an empty array is returned", function () {
-        expect(this.result).toEqual([]);
-      });
-    });
-
-    describe("When we provide a html page that contains the genres,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-        this.result = game.getSteamDbGenres(page);
-      });
-
-      it("two genres are returned", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first genre is 'Action'", function () {
-        expect(this.result[0]).toBe("Action");
-      });
-
-      it("the second genre is 'Indie'", function () {
-        expect(this.result[1]).toBe("Indie");
-      });
-    });
-  });
-
-  describe(".getSteamDbDescription.", function () {
-    describe("When we provide a html page that doesn't contain a description section,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getSteamDbDescription(page);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toEqual("");
-      });
-    });
-
-    describe("When we provide a html page that contains the description,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-        this.result = game.getSteamDbDescription(page);
-      });
-
-      it("the returned value is the game's description'", function () {
-        expect(this.result).toEqual(
-          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
-        );
-      });
-    });
-  });
-
-  describe(".getSteamDbReleaseDate.", function () {
-    describe("When we provide a html page that doesn't contain a valid release date,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
-
-        this.result = game.getSteamDbReleaseDate(page);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toBe("");
-      });
-    });
-
-    describe("When we provide a html page that doesn't contain a date section", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getSteamDbReleaseDate(page);
-      });
-
-      it("an empty string is returned", function () {
-        expect(this.result).toBe("");
-      });
-    });
-
-    describe("When we provide a html page that contains a valid release date,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-        this.result = game.getSteamDbReleaseDate(page);
-      });
-
-      it("the correct date is returned", function () {
-        expect(this.result).toEqual(new Date("11 August 2020 UTC"));
+        it("the release date is changed to the correct value", function () {
+          expect(this.game.releaseDate).toEqual(new Date("11 August 2020 UTC"));
+        });
       });
     });
   });
