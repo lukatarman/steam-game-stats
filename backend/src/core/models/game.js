@@ -30,10 +30,10 @@ export class Game {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = game.getReleaseDate(page);
-    game.developers    = game.getDevelopers(page);
-    game.genres        = game.getGenres(page);
-    game.description   = game.getDescription(page);
+    game.releaseDate   = game.#getReleaseDate(page);
+    game.developers    = game.#getDevelopers(page);
+    game.genres        = game.#getGenres(page);
+    game.description   = game.#getDescription(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     
@@ -108,7 +108,7 @@ export class Game {
     });
   }
 
-  getReleaseDate(page) {
+  #getReleaseDate(page) {
     const releaseDateElement = page.querySelector(".release_date .date");
 
     if (!releaseDateElement) return "";
@@ -118,7 +118,7 @@ export class Game {
     return releaseDate == "Invalid Date" ? "" : releaseDate;
   }
 
-  getDevelopers(page) {
+  #getDevelopers(page) {
     const developers = page.querySelector(".dev_row #developers_list");
 
     if (!developers) return [];
@@ -128,7 +128,7 @@ export class Game {
     );
   }
 
-  getGenres(page) {
+  #getGenres(page) {
     const genres = page.querySelector("#genresAndManufacturer span");
 
     if (!genres) return [];
@@ -138,7 +138,7 @@ export class Game {
       .filter((genre) => !!genre);
   }
 
-  getDescription(page) {
+  #getDescription(page) {
     const description = page.querySelector(".game_description_snippet");
 
     if (!description) return "";

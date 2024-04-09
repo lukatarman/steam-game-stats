@@ -60,6 +60,147 @@ describe("Game", function () {
         expect(this.result.playerHistory).toEqual([]);
       });
     });
+
+    describe("if the provided HTML page does not include a release date section,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date will be an empty string", function () {
+        expect(this.result.releaseDate).toBe("");
+      });
+    });
+
+    describe("if the provided HTML page includes a release date,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date is set to the correct date'", function () {
+        expect(this.result.releaseDate.toISOString()).toEqual("2023-08-01T00:00:00.000Z");
+      });
+    });
+
+    describe("if the provided HTML page does not include any developers,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the games developers do not get updated", function () {
+        expect(this.result.developers).toEqual([]);
+      });
+    });
+
+    describe("if the provided HTML page includes two developers,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(crusaderKingsDetailsPage);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's developers get updated with the correct values", function () {
+        expect(this.result.developers).toEqual([
+          "Paradox Development Studio",
+          "Paradox Thalassic",
+        ]);
+      });
+    });
+
+    describe("if the provided HTML page does not include any genres,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's genres do not get updated", function () {
+        expect(this.result.genres).toEqual([]);
+      });
+    });
+
+    describe("if the provided HTML page includes genres,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's genres get updated with the correct values", function () {
+        expect(this.result.genres).toEqual(["Action", "Adventure", "Indie", "RPG"]);
+      });
+    });
+
+    describe("if the provided HTML page does not include a game description,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's description does not get updated", function () {
+        expect(this.result.description).toEqual("");
+      });
+    });
+
+    describe("if the provided HTML page includes a description,", function () {
+      beforeAll(function () {
+        const steamApp = getXSampleSteamApps(1)[0];
+        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
+
+        this.result = Game.fromSteamApp(steamApp, page);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's description is updated with the correct value", function () {
+        expect(this.result.description).toBe(
+          "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
+        );
+      });
+    });
   });
 
   describe(".fromSteamcharts", function () {
@@ -344,123 +485,6 @@ describe("Game", function () {
       expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
       expect(this.result.playerHistory[2]).toBeInstanceOf(PlayerHistory);
       expect(this.result.playerHistory[3]).toBeInstanceOf(PlayerHistory);
-    });
-  });
-
-  describe(".getReleaseDate", function () {
-    describe("if the provided HTML page does not include a release date section,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getReleaseDate(page);
-      });
-
-      it("the result is an empty string", function () {
-        expect(this.result).toBe("");
-      });
-    });
-
-    describe("if the provided HTML page includes a release date,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
-
-        this.result = game.getReleaseDate(page);
-      });
-
-      it("the result is a date", function () {
-        expect(this.result).toBeInstanceOf(Date);
-      });
-      it("the result is the correct date'", function () {
-        expect(this.result.toISOString()).toEqual("2023-08-01T00:00:00.000Z");
-      });
-    });
-  });
-
-  describe(".getDevelopers", function () {
-    describe("if the provided HTML page does not include any developers,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getDevelopers(page);
-      });
-
-      it("the result is an empty array", function () {
-        expect(this.result).toEqual([]);
-      });
-    });
-
-    describe("if the provided HTML page includes two developers,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(crusaderKingsDetailsPage);
-
-        this.result = game.getDevelopers(page);
-      });
-
-      it("the result has the correct values", function () {
-        expect(this.result).toEqual(["Paradox Development Studio", "Paradox Thalassic"]);
-      });
-    });
-  });
-
-  describe(".getGenres", function () {
-    describe("if the provided HTML page does not include any genres,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getGenres(page);
-      });
-
-      it("the result is an empty array", function () {
-        expect(this.result).toEqual([]);
-      });
-    });
-
-    describe("if the provided HTML page includes genres,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
-
-        this.result = game.getGenres(page);
-      });
-
-      it("the result has the correct values", function () {
-        expect(this.result).toEqual(["Action", "Adventure", "Indie", "RPG"]);
-      });
-    });
-  });
-
-  describe(".getDescription", function () {
-    describe("if the provided HTML page does not include a game description,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = game.getDescription(page);
-      });
-
-      it("the result is an empty string", function () {
-        expect(this.result).toEqual("");
-      });
-    });
-
-    describe("if the provided HTML page includes a description,", function () {
-      beforeAll(function () {
-        const game = getXGamesWithoutDetails(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
-
-        this.result = game.getDescription(page);
-      });
-
-      it("the game's description is returned", function () {
-        expect(this.result).toBe(
-          "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
-        );
-      });
     });
   });
 
