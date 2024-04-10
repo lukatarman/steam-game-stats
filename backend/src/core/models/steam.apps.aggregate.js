@@ -38,7 +38,7 @@ export class SteamAppsAggregate {
   extractGames(htmlDetailsPages) {
     return this.apps
       .map((app) => {
-        if (!app.isGame()) return "";
+        if (!app.isGame) return "";
 
         const page = this.#findSteamAppHtmlDetailsPage(htmlDetailsPages, app);
 

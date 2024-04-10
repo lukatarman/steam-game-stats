@@ -75,7 +75,7 @@ export class SteamApp {
     this.type = type;
   }
 
-  isGame() {
+  get isGame() {
     return this.type === SteamApp.validTypes.game;
   }
 
