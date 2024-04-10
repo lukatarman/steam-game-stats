@@ -242,27 +242,27 @@ describe("SteamAppsRepository", function () {
           });
 
           it("the result contains two steam apps", function () {
-            expect(this.result.apps.length).toBe(2);
+            expect(this.result.content.length).toBe(2);
           });
 
           it("the first steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[0]).toBeInstanceOf(SteamApp);
           });
 
           it("the first steam app has the correct values", function () {
-            expect(this.result.apps[0].appid).toBe(2);
-            expect(this.result.apps[0].type).toBe("unknown");
-            expect(this.result.apps[0].triedVia).toEqual([]);
+            expect(this.result.content[0].appid).toBe(2);
+            expect(this.result.content[0].type).toBe("unknown");
+            expect(this.result.content[0].triedVia).toEqual([]);
           });
 
           it("the second steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[1]).toBeInstanceOf(SteamApp);
           });
 
           it("the second steam app has the correct values", function () {
-            expect(this.result.apps[1].appid).toBe(4);
-            expect(this.result.apps[1].type).toBe("unknown");
-            expect(this.result.apps[1].triedVia).toEqual([]);
+            expect(this.result.content[1].appid).toBe(4);
+            expect(this.result.content[1].type).toBe("unknown");
+            expect(this.result.content[1].triedVia).toEqual([]);
           });
         });
 
@@ -294,37 +294,37 @@ describe("SteamAppsRepository", function () {
           });
 
           it("the result contains three steam apps", function () {
-            expect(this.result.apps.length).toBe(3);
+            expect(this.result.content.length).toBe(3);
           });
 
           it("the first steam app an instance of SteamApp", function () {
-            expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[0]).toBeInstanceOf(SteamApp);
           });
 
           it("the first steam app has the correct values", function () {
-            expect(this.result.apps[0].appid).toBe(2);
-            expect(this.result.apps[0].type).toBe("unknown");
-            expect(this.result.apps[0].triedVia).toEqual([]);
+            expect(this.result.content[0].appid).toBe(2);
+            expect(this.result.content[0].type).toBe("unknown");
+            expect(this.result.content[0].triedVia).toEqual([]);
           });
 
           it("the second steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[1]).toBeInstanceOf(SteamApp);
           });
 
           it("the second steam app has the correct values", function () {
-            expect(this.result.apps[1].appid).toBe(4);
-            expect(this.result.apps[1].type).toBe("unknown");
-            expect(this.result.apps[1].triedVia).toEqual([]);
+            expect(this.result.content[1].appid).toBe(4);
+            expect(this.result.content[1].type).toBe("unknown");
+            expect(this.result.content[1].triedVia).toEqual([]);
           });
 
           it("the third steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[2]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[2]).toBeInstanceOf(SteamApp);
           });
 
           it("the third steam app has the correct values", function () {
-            expect(this.result.apps[2].appid).toBe(7);
-            expect(this.result.apps[2].type).toBe("unknown");
-            expect(this.result.apps[2].triedVia).toEqual([]);
+            expect(this.result.content[2].appid).toBe(7);
+            expect(this.result.content[2].type).toBe("unknown");
+            expect(this.result.content[2].triedVia).toEqual([]);
           });
         });
       });
@@ -360,27 +360,27 @@ describe("SteamAppsRepository", function () {
           });
 
           it("the result contains two steam app", function () {
-            expect(this.result.apps.length).toBe(2);
+            expect(this.result.content.length).toBe(2);
           });
 
           it("the first steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[0]).toBeInstanceOf(SteamApp);
           });
 
           it("the first steam apphas the correct values", function () {
-            expect(this.result.apps[0].appid).toBe(2);
-            expect(this.result.apps[0].type).toBe("unknown");
-            expect(this.result.apps[0].triedVia).toEqual([]);
+            expect(this.result.content[0].appid).toBe(2);
+            expect(this.result.content[0].type).toBe("unknown");
+            expect(this.result.content[0].triedVia).toEqual([]);
           });
 
           it("the second steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[1]).toBeInstanceOf(SteamApp);
           });
 
           it("the second steam app has the correct values", function () {
-            expect(this.result.apps[1].appid).toBe(4);
-            expect(this.result.apps[1].type).toBe("unknown");
-            expect(this.result.apps[1].triedVia).toEqual([]);
+            expect(this.result.content[1].appid).toBe(4);
+            expect(this.result.content[1].type).toBe("unknown");
+            expect(this.result.content[1].triedVia).toEqual([]);
           });
         });
 
@@ -412,37 +412,37 @@ describe("SteamAppsRepository", function () {
           });
 
           it("the result contains three steam apps", function () {
-            expect(this.result.apps.length).toBe(3);
+            expect(this.result.content.length).toBe(3);
           });
 
           it("the first steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[0]).toBeInstanceOf(SteamApp);
           });
 
           it("the first steam app has the correct values", function () {
-            expect(this.result.apps[0].appid).toBe(2);
-            expect(this.result.apps[0].type).toBe("unknown");
-            expect(this.result.apps[0].triedVia).toEqual([]);
+            expect(this.result.content[0].appid).toBe(2);
+            expect(this.result.content[0].type).toBe("unknown");
+            expect(this.result.content[0].triedVia).toEqual([]);
           });
 
           it("the second steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[1]).toBeInstanceOf(SteamApp);
           });
 
           it("the second steam app has the correct values", function () {
-            expect(this.result.apps[1].appid).toBe(4);
-            expect(this.result.apps[1].type).toBe("unknown");
-            expect(this.result.apps[1].triedVia).toEqual([]);
+            expect(this.result.content[1].appid).toBe(4);
+            expect(this.result.content[1].type).toBe("unknown");
+            expect(this.result.content[1].triedVia).toEqual([]);
           });
 
           it("the third steam app is an instance of SteamApp", function () {
-            expect(this.result.apps[2]).toBeInstanceOf(SteamApp);
+            expect(this.result.content[2]).toBeInstanceOf(SteamApp);
           });
 
           it("the third steam app has the correct values", function () {
-            expect(this.result.apps[2].appid).toBe(7);
-            expect(this.result.apps[2].type).toBe("unknown");
-            expect(this.result.apps[2].triedVia).toEqual([]);
+            expect(this.result.content[2].appid).toBe(7);
+            expect(this.result.content[2].type).toBe("unknown");
+            expect(this.result.content[2].triedVia).toEqual([]);
           });
         });
       });
@@ -472,20 +472,20 @@ describe("SteamAppsRepository", function () {
       });
 
       it("two steam apps are returned", function () {
-        expect(this.result.apps.length).toBe(2);
+        expect(this.result.content.length).toBe(2);
       });
 
       it("the steam apps are an instance of SteamApp", function () {
-        expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
-        expect(this.result.apps[1]).toBeInstanceOf(SteamApp);
+        expect(this.result.content[0]).toBeInstanceOf(SteamApp);
+        expect(this.result.content[1]).toBeInstanceOf(SteamApp);
       });
 
       it("the first steam app has the correct values", function () {
-        expect(this.result.apps[0].appid).toBe(1);
+        expect(this.result.content[0].appid).toBe(1);
       });
 
       it("the second steam app has the correct values", function () {
-        expect(this.result.apps[1].appid).toBe(2);
+        expect(this.result.content[1].appid).toBe(2);
       });
     });
   });

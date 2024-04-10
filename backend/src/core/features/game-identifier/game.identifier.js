@@ -46,7 +46,7 @@ export class GameIdentifier {
     }
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.apps,
+      steamApps.content,
       source,
     );
 
@@ -54,7 +54,7 @@ export class GameIdentifier {
 
     const games = steamApps.extractGames(htmlDetailsPages, source);
 
-    await this.#persistGameCheckUpdates(games, steamApps.apps);
+    await this.#persistGameCheckUpdates(games, steamApps.content);
   };
 
   async #getSteamAppsHtmlDetailsPages(steamApps, source) {
@@ -111,7 +111,7 @@ export class GameIdentifier {
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.apps,
+      steamApps.content,
       source,
     );
 
@@ -119,7 +119,7 @@ export class GameIdentifier {
 
     games.updateGameDetailsFrom(htmlDetailsPages);
 
-    this.#persistUpdatedDetails(games.content, steamApps.apps);
+    this.#persistUpdatedDetails(games.content, steamApps.content);
   };
 
   async #persistUpdatedDetails(games, steamApps) {
@@ -151,7 +151,7 @@ export class GameIdentifier {
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
 
     const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.apps,
+      steamApps.content,
       source,
     );
 
@@ -159,7 +159,7 @@ export class GameIdentifier {
 
     games.extractReleaseDatesFrom(htmlDetailsPages);
 
-    this.#persistReleaseDates(games.content, steamApps.apps);
+    this.#persistReleaseDates(games.content, steamApps.content);
   };
 
   async #persistReleaseDates(games, steamApps) {

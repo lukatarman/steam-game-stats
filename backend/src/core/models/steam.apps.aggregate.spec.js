@@ -20,7 +20,7 @@ describe("SteamAppsAggregate", function () {
     });
 
     it("the result's apps are instances of SteamApp", function () {
-      expect(this.result.apps[0]).toBeInstanceOf(SteamApp);
+      expect(this.result.content[0]).toBeInstanceOf(SteamApp);
     });
   });
 
@@ -66,17 +66,17 @@ describe("SteamAppsAggregate", function () {
       });
 
       it("the first app is correctly identified", function () {
-        expect(this.steamAppsArray.apps[0].appid).toBe(1);
-        expect(this.steamAppsArray.apps[0].triedVia).toEqual(["steamWeb"]);
-        expect(this.steamAppsArray.apps[0].failedVia).toEqual(["steamWeb"]);
-        expect(this.steamAppsArray.apps[0].type).toBe("unknown");
+        expect(this.steamAppsArray.content[0].appid).toBe(1);
+        expect(this.steamAppsArray.content[0].triedVia).toEqual(["steamWeb"]);
+        expect(this.steamAppsArray.content[0].failedVia).toEqual(["steamWeb"]);
+        expect(this.steamAppsArray.content[0].type).toBe("unknown");
       });
 
       it("the second app is correctly identified", function () {
-        expect(this.steamAppsArray.apps[1].appid).toBe(2);
-        expect(this.steamAppsArray.apps[1].triedVia).toEqual(["steamWeb"]);
-        expect(this.steamAppsArray.apps[1].failedVia).toEqual([]);
-        expect(this.steamAppsArray.apps[1].type).toBe("game");
+        expect(this.steamAppsArray.content[1].appid).toBe(2);
+        expect(this.steamAppsArray.content[1].triedVia).toEqual(["steamWeb"]);
+        expect(this.steamAppsArray.content[1].failedVia).toEqual([]);
+        expect(this.steamAppsArray.content[1].type).toBe("game");
       });
     });
   });
