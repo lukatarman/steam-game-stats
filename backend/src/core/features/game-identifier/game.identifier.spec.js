@@ -24,7 +24,7 @@ describe("game.identifier.js", function () {
           this.steamClient = createSteamMock([]);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             [],
-            SteamAppsAggregate.manyFromDbEntries([]),
+            new SteamAppsAggregate([]),
           );
           this.gamesRepository = createGamesRepositoryMock([]);
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -75,7 +75,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, none of them being games", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+          this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -163,7 +163,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+          this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -267,7 +267,7 @@ describe("game.identifier.js", function () {
           this.steamClient = createSteamMock([]);
           this.steamAppsRepository = createSteamAppsRepositoryMock(
             [],
-            SteamAppsAggregate.manyFromDbEntries([]),
+            new SteamAppsAggregate([]),
           );
           this.gamesRepository = createGamesRepositoryMock([]);
           this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -318,7 +318,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, none of them being games", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+          this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
@@ -403,7 +403,7 @@ describe("game.identifier.js", function () {
 
       describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
         beforeAll(async function () {
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+          this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
 
           this.source = ValidDataSources.validDataSources.steamcharts;
 
@@ -548,7 +548,7 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.source = ValidDataSources.validDataSources.steamDb;
 
-        this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
 
         this.games = new GamesAggregate(getXGamesWithoutDetails(2));
 
@@ -676,7 +676,7 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.games = new GamesAggregate(getXGamesWithoutDetails(2));
 
-        this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,

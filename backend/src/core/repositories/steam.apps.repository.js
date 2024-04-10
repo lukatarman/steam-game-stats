@@ -57,13 +57,13 @@ export class SteamAppsRepository {
       .limit(amount)
       .toArray();
 
-    return SteamAppsAggregate.manyFromDbEntries(response);
+    return new SteamAppsAggregate(response);
   }
 
   async getSteamAppsById(ids) {
     const response = await Promise.all(ids.map((id) => this.getSteamAppById(id)));
 
-    return SteamAppsAggregate.manyFromDbEntries(response);
+    return new SteamAppsAggregate(response);
   }
 
   async getSteamAppById(id) {

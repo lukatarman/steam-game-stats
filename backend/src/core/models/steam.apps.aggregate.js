@@ -4,11 +4,8 @@ import { SteamApp } from "./steam.app.js";
 export class SteamAppsAggregate {
   #apps;
 
-  static manyFromDbEntries(steamApps) {
-    const steamAppsAggregate = new SteamAppsAggregate();
-    steamAppsAggregate.#apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
-
-    return steamAppsAggregate;
+  constructor(steamApps) {
+    this.#apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
   }
 
   get content() {

@@ -12,7 +12,7 @@ import { ValidDataSources } from "./valid.data.sources.js";
 describe("SteamAppsAggregate", function () {
   describe(".manyFromDbEntries", function () {
     beforeAll(function () {
-      this.result = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
+      this.result = new SteamAppsAggregate(getXSampleSteamApps(2));
     });
 
     it("the result is an instance of SteamAppsAggregate", function () {
@@ -27,7 +27,7 @@ describe("SteamAppsAggregate", function () {
   describe(".isEmpty", function () {
     describe("when the steamApps array is empty", function () {
       beforeAll(function () {
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries([]);
+        const steamAppsArray = new SteamAppsAggregate([]);
 
         this.result = steamAppsArray.isEmpty;
       });
@@ -39,9 +39,7 @@ describe("SteamAppsAggregate", function () {
 
     describe("when the steamApps array is not empty", function () {
       beforeAll(function () {
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamApps(2),
-        );
+        const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
 
         this.result = steamAppsArray.isEmpty;
       });
@@ -55,9 +53,7 @@ describe("SteamAppsAggregate", function () {
   describe(".identifyTypes", function () {
     describe("When we try to identify two steam apps", function () {
       beforeAll(function () {
-        this.steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamApps(2),
-        );
+        this.steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
 
         const source = ValidDataSources.validDataSources.steamWeb;
         const pages = getParsedHtmlPages(["", mortalDarknessGameHtmlDetailsPage]);
@@ -84,9 +80,7 @@ describe("SteamAppsAggregate", function () {
   describe(".extractGames", function () {
     describe("when no steam apps are marked as games", function () {
       beforeAll(function () {
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamApps(2),
-        );
+        const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
         const pages = getParsedHtmlPages(["", ""]);
 
         this.result = steamAppsArray.extractGames(pages);
@@ -99,9 +93,7 @@ describe("SteamAppsAggregate", function () {
 
     describe("when one out of two steam apps is marked as a game", function () {
       beforeAll(function () {
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamApps(2),
-        );
+        const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
         const source = ValidDataSources.validDataSources.steamWeb;
         const pages = getParsedHtmlPages(["", mortalDarknessGameHtmlDetailsPage]);
 
@@ -117,7 +109,7 @@ describe("SteamAppsAggregate", function () {
 
     describe("when two out of two steam apps are marked as games", function () {
       beforeAll(function () {
-        const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
+        const steamAppsArray = new SteamAppsAggregate(
           getXSampleSteamAppsMarkedAsGames(2),
         );
         const pages = getParsedHtmlPages([
