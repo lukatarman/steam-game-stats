@@ -11,7 +11,7 @@ import { GamesAggregate } from "./games.aggregate.js";
 describe("GamesAggregate", function () {
   describe(".manyFromDbEntries", function () {
     beforeAll(function () {
-      this.result = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
+      this.result = new GamesAggregate(getXGamesWithoutDetails(2));
     });
 
     it("the result is an instance of GamesAggregate", function () {
@@ -27,7 +27,7 @@ describe("GamesAggregate", function () {
   describe(".getIds", () => {
     describe("if the object contains two games,", function () {
       beforeAll(function () {
-        const games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
+        const games = new GamesAggregate(getXGamesWithoutDetails(2));
 
         this.result = games.ids;
       });
@@ -41,7 +41,7 @@ describe("GamesAggregate", function () {
   describe(".isEmpty", function () {
     describe("when the games array is empty", function () {
       beforeAll(function () {
-        const gamesArray = GamesAggregate.manyFromDbEntries([]);
+        const gamesArray = new GamesAggregate([]);
 
         this.result = gamesArray.isEmpty();
       });
@@ -53,7 +53,7 @@ describe("GamesAggregate", function () {
 
     describe("when the games array is not empty", function () {
       beforeAll(function () {
-        const gamesArray = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
+        const gamesArray = new GamesAggregate(getXGamesWithoutDetails(2));
 
         this.result = gamesArray.isEmpty();
       });
@@ -67,7 +67,7 @@ describe("GamesAggregate", function () {
   describe(".updateGameDetailsFrom.", function () {
     describe("When we try to update two games with missing details,", function () {
       beforeAll(function () {
-        this.result = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
+        this.result = new GamesAggregate(getXGamesWithoutDetails(2));
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
@@ -104,7 +104,7 @@ describe("GamesAggregate", function () {
     describe("When we try to update two games with missing release dates,", function () {
       beforeAll(function () {
         const games = getXsteamchartsInstantiatedGames(2);
-        this.gamesArray = GamesAggregate.manyFromDbEntries(games);
+        this.gamesArray = new GamesAggregate(games);
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,

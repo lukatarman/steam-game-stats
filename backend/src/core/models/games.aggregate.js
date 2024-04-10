@@ -3,11 +3,8 @@ import { Game } from "./game.js";
 export class GamesAggregate {
   #games;
 
-  static manyFromDbEntries(games) {
-    const gamesAggregate = new GamesAggregate();
-    gamesAggregate.#games = games.map((game) => Game.fromDbEntry(game));
-
-    return gamesAggregate;
+  constructor(games) {
+    this.#games = games.map((game) => Game.fromDbEntry(game));
   }
 
   get content() {

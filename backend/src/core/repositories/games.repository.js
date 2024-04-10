@@ -38,7 +38,7 @@ export class GamesRepository {
       ])
       .toArray();
 
-    return GamesAggregate.manyFromDbEntries(response);
+    return new GamesAggregate(response);
   }
 
   async updateGameDetailsFrom(games) {
@@ -72,7 +72,7 @@ export class GamesRepository {
       ])
       .toArray();
 
-    return GamesAggregate.manyFromDbEntries(response);
+    return new GamesAggregate(response);
   }
 
   async updateReleaseDates(games) {

@@ -503,9 +503,7 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
-        this.gamesRepository = createGamesRepositoryMock(
-          GamesAggregate.manyFromDbEntries([]),
-        );
+        this.gamesRepository = createGamesRepositoryMock(new GamesAggregate([]));
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -552,7 +550,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
-        this.games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
+        this.games = new GamesAggregate(getXGamesWithoutDetails(2));
 
         const htmlDetailsPages = [
           counterStrikeHtmlDetailsSteamDb,
@@ -633,9 +631,7 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         this.steamClientMock = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock();
-        this.gamesRepository = createGamesRepositoryMock(
-          GamesAggregate.manyFromDbEntries([], createLoggerMock()),
-        );
+        this.gamesRepository = createGamesRepositoryMock(new GamesAggregate([]));
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
 
         this.identifier = new GameIdentifier(
@@ -678,7 +674,7 @@ describe("game.identifier.js", function () {
 
     describe("Finds two games with missing release dates", function () {
       beforeAll(async function () {
-        this.games = GamesAggregate.manyFromDbEntries(getXGamesWithoutDetails(2));
+        this.games = new GamesAggregate(getXGamesWithoutDetails(2));
 
         this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
