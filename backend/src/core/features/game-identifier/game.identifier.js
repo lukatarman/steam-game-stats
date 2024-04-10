@@ -99,7 +99,7 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.isEmpty()) {
+    if (games.isEmpty) {
       this.#logger.debugc(
         `no games without details in db, retry in: ${
           this.#options.globalIterationDelay
@@ -138,7 +138,7 @@ export class GameIdentifier {
       this.#options.batchSize,
     );
 
-    if (games.isEmpty()) {
+    if (games.isEmpty) {
       this.#logger.debugc(
         `no games without release dates in db, retry in: ${
           this.#options.globalIterationDelay

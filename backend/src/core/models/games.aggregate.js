@@ -15,7 +15,7 @@ export class GamesAggregate {
     return this.#games.map((game) => game.id);
   }
 
-  isEmpty() {
+  get isEmpty() {
     if (this.#games.length > 0) return false;
 
     return true;
@@ -25,7 +25,7 @@ export class GamesAggregate {
     this.#games = this.#games.map((game) => {
       const gameCopy = game.copy();
 
-      const page = this.#findGamesHtmlDetailsPage(htmlDetailsPages, gameCopy);
+      const page = this.findPageForGameById(htmlDetailsPages, gameCopy.id);
 
       gameCopy.updateGameDetailsFrom(page);
 
@@ -33,15 +33,15 @@ export class GamesAggregate {
     });
   }
 
-  #findGamesHtmlDetailsPage(htmlDetailsPages, game) {
-    return htmlDetailsPages.find((page) => game.id === page.id).page;
+  findPageForGameById(htmlDetailsPages, gameId) {
+    return htmlDetailsPages.find((page) => gameId === page.id).page;
   }
 
   extractReleaseDatesFrom(htmlDetailsPages) {
     this.#games = this.#games.map((game) => {
       const gameCopy = game.copy();
 
-      const page = this.#findGamesHtmlDetailsPage(htmlDetailsPages, gameCopy);
+      const page = this.findPageForGameById(htmlDetailsPages, gameCopy.id);
 
       gameCopy.updateReleaseDate(page);
 

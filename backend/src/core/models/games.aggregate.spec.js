@@ -25,7 +25,7 @@ describe("GamesAggregate", function () {
   });
 
   describe(".getIds", () => {
-    describe("if the object contains two games,", function () {
+    describe("if the aggregate contains two games,", function () {
       beforeAll(function () {
         const games = new GamesAggregate(getXGamesWithoutDetails(2));
 
@@ -39,26 +39,26 @@ describe("GamesAggregate", function () {
   });
 
   describe(".isEmpty", function () {
-    describe("when the games array is empty", function () {
+    describe("when the aggregate contains no games", function () {
       beforeAll(function () {
         const gamesArray = new GamesAggregate([]);
 
-        this.result = gamesArray.isEmpty();
+        this.result = gamesArray.isEmpty;
       });
 
-      it("the returned value is true", function () {
+      it("the emptyness check is true", function () {
         expect(this.result).toBeTruthy();
       });
     });
 
-    describe("when the games array is not empty", function () {
+    describe("when the aggregate contains games", function () {
       beforeAll(function () {
         const gamesArray = new GamesAggregate(getXGamesWithoutDetails(2));
 
-        this.result = gamesArray.isEmpty();
+        this.result = gamesArray.isEmpty;
       });
 
-      it("the returned value is false", function () {
+      it("the emptyness check is false", function () {
         expect(this.result).toBeFalsy();
       });
     });
