@@ -67,38 +67,30 @@ export class SteamApp {
     return steamAppsSource.filter((app) => !targetAppIds.includes(app.appid));
   }
 
-  get appType() {
-    return this.type;
-  }
-
-  set appType(type) {
-    this.type = type;
-  }
-
   get isGame() {
     return this.type === SteamApp.validTypes.game;
   }
 
   recordHtmlAttempt(page, source) {
-    this.addHtmlPageTriedViaSource(source);
+    this.#addHtmlPageTriedViaSource(source);
 
-    if (page.toString() === "") this.addHtmlPageFailedViaSource(source);
+    if (page.toString() === "") this.#addHtmlPageFailedViaSource(source);
   }
 
-  addHtmlPageTriedViaSource(source) {
+  #addHtmlPageTriedViaSource(source) {
     if (this.triedVia.includes(source)) return;
 
     this.triedVia.push(source);
   }
 
-  addHtmlPageFailedViaSource(source) {
+  #addHtmlPageFailedViaSource(source) {
     if (this.failedVia.includes(source)) return;
 
     this.failedVia.push(source);
   }
 
   updateSteamAppType(page, source) {
-    this.appType = this.#getType(page, source);
+    this.type = this.#getType(page, source);
   }
 
   #getType(page, source) {
