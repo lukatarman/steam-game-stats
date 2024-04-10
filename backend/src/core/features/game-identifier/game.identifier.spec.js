@@ -597,11 +597,11 @@ describe("game.identifier.js", function () {
 
       it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.games[0].id,
+          this.games.content[0].id,
           this.source,
         );
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.games[1].id,
+          this.games.content[1].id,
           this.source,
         );
       });
@@ -622,7 +622,7 @@ describe("game.identifier.js", function () {
 
       it("updateGameDetailsFrom was called with the correct argument", function () {
         expect(this.gamesRepository.updateGameDetailsFrom).toHaveBeenCalledWith(
-          this.games.games,
+          this.games.content,
         );
       });
     });
@@ -737,11 +737,11 @@ describe("game.identifier.js", function () {
 
       it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.games[0].id,
+          this.games.content[0].id,
           this.source,
         );
         expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.games[1].id,
+          this.games.content[1].id,
           this.source,
         );
       });
@@ -762,7 +762,7 @@ describe("game.identifier.js", function () {
 
       it("updateReleaseDates was called with the correct argument", function () {
         expect(this.gamesRepository.updateReleaseDates).toHaveBeenCalledWith(
-          this.games.games,
+          this.games.content,
         );
       });
     });

@@ -119,7 +119,7 @@ export class GameIdentifier {
 
     games.updateGameDetailsFrom(htmlDetailsPages);
 
-    this.#persistUpdatedDetails(games.games, steamApps.apps);
+    this.#persistUpdatedDetails(games.content, steamApps.apps);
   };
 
   async #persistUpdatedDetails(games, steamApps) {
@@ -159,7 +159,7 @@ export class GameIdentifier {
 
     games.extractReleaseDatesFrom(htmlDetailsPages);
 
-    this.#persistReleaseDates(games.games, steamApps.apps);
+    this.#persistReleaseDates(games.content, steamApps.apps);
   };
 
   async #persistReleaseDates(games, steamApps) {
