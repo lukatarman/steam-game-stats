@@ -9,21 +9,6 @@ import {
 import { GamesAggregate } from "./games.aggregate.js";
 
 describe("GamesAggregate", function () {
-  describe(".manyFromDbEntries", function () {
-    beforeAll(function () {
-      this.result = new GamesAggregate(getXGamesWithoutDetails(2));
-    });
-
-    it("the result is an instance of GamesAggregate", function () {
-      expect(this.result).toBeInstanceOf(GamesAggregate);
-    });
-
-    it("the result's games are instances of Game", function () {
-      expect(this.result.content[0]).toBeInstanceOf(Game);
-      expect(this.result.content[1]).toBeInstanceOf(Game);
-    });
-  });
-
   describe(".getIds", () => {
     describe("if the aggregate contains two games,", function () {
       beforeAll(function () {

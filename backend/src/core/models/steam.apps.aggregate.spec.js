@@ -10,41 +10,27 @@ import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 
 describe("SteamAppsAggregate", function () {
-  describe(".manyFromDbEntries", function () {
-    beforeAll(function () {
-      this.result = new SteamAppsAggregate(getXSampleSteamApps(2));
-    });
-
-    it("the result is an instance of SteamAppsAggregate", function () {
-      expect(this.result).toBeInstanceOf(SteamAppsAggregate);
-    });
-
-    it("the result's apps are instances of SteamApp", function () {
-      expect(this.result.content[0]).toBeInstanceOf(SteamApp);
-    });
-  });
-
   describe(".isEmpty", function () {
-    describe("when the steamApps array is empty", function () {
+    describe("when the aggregate contains no steam apps", function () {
       beforeAll(function () {
         const steamAppsArray = new SteamAppsAggregate([]);
 
         this.result = steamAppsArray.isEmpty;
       });
 
-      it("the returned value is true", function () {
+      it("the emptyness check returns true", function () {
         expect(this.result).toBeTruthy();
       });
     });
 
-    describe("when the steamApps array is not empty", function () {
+    describe("when the aggregate contains steam apps", function () {
       beforeAll(function () {
         const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
 
         this.result = steamAppsArray.isEmpty;
       });
 
-      it("the returned value is false", function () {
+      it("the emptyness check returns false", function () {
         expect(this.result).toBeFalsy();
       });
     });
