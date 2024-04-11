@@ -11,17 +11,32 @@ export class Game {
   imageUrl;
   playerHistory;
 
+  copy() {
+    const copy = new Game();
+    copy.id = this.id;
+    copy.name = this.name;
+    copy.releaseDate = this.releaseDate;
+    copy.developers = this.developers.slice();
+    copy.genres = this.genres.slice();
+    copy.description = this.description;
+    copy.imageUrl = this.imageUrl;
+    copy.playerHistory = PlayerHistory.manyFromDbEntry(this.playerHistory);
+
+    return copy;
+  }
+
   // prettier-ignore
-  static fromSteamApp(steamApp, releaseDate, developers, genres, description) {
+  static fromSteamApp(steamApp, page) {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = releaseDate;
-    game.developers    = developers;
-    game.genres        = genres;
-    game.description   = description;
+    game.releaseDate   = game.#extractReleaseDateFrom(page);
+    game.developers    = game.#extractDevelopersFrom(page);
+    game.genres        = game.#extractGenresFrom(page);
+    game.description   = game.#extractDescriptionFrom(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
+    
     return game;
   }
 
@@ -93,19 +108,124 @@ export class Game {
     });
   }
 
-  updateGameDetails(newDevelopers, newGenres, newDescription) {
-    if (newDevelopers.length !== 0 && this.developers.length === 0)
-      this.developers = Array.from(newDevelopers);
+  #extractReleaseDateFrom(page) {
+    const releaseDateElement = page.querySelector(".release_date .date");
 
-    if (newGenres.length !== 0 && this.genres.length === 0)
-      this.genres = Array.from(newGenres);
+    if (!releaseDateElement) return "";
 
-    if (newDescription !== "" && this.description === "")
-      this.description = newDescription;
+    const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
+
+    return releaseDate == "Invalid Date" ? "" : releaseDate;
   }
 
-  updateReleaseDate(newReleaseDate) {
-    if (newReleaseDate !== "" && this.releaseDate === "")
-      this.releaseDate = newReleaseDate;
+  #extractDevelopersFrom(page) {
+    const developers = page.querySelector(".dev_row #developers_list");
+
+    if (!developers) return [];
+
+    return Array.from(developers.children).map((developer) =>
+      developer.textContent.trim(),
+    );
+  }
+
+  #extractGenresFrom(page) {
+    const genres = page.querySelector("#genresAndManufacturer span");
+
+    if (!genres) return [];
+
+    return Array.from(genres.children)
+      .map((genre) => genre.textContent.trim())
+      .filter((genre) => !!genre);
+  }
+
+  #extractDescriptionFrom(page) {
+    const description = page.querySelector(".game_description_snippet");
+
+    if (!description) return "";
+
+    return description.textContent.trim();
+  }
+
+  updateGameDetailsFrom(page) {
+    this.#updateDevelopers(page);
+    this.#updateGenres(page);
+    this.#updateDescription(page);
+  }
+
+  #updateDevelopers(page) {
+    if (this.developers.length !== 0) return;
+
+    this.developers = this.#extractSteamDbDevelopersFrom(page);
+  }
+
+  #updateGenres(page) {
+    if (this.genres.length !== 0) return;
+
+    this.genres = this.#extractSteamDbGenresFrom(page);
+  }
+
+  #updateDescription(page) {
+    if (this.description.length !== 0) return;
+
+    this.description = this.#extractSteamDbDescriptionFrom(page);
+  }
+
+  updateReleaseDate(page) {
+    if (this.releaseDate) return;
+
+    const date = this.#extractSteamDbReleaseDateFrom(page);
+
+    if (date === "") return;
+
+    this.releaseDate = date;
+  }
+
+  #extractSteamDbDevelopersFrom(page) {
+    const developers = page.querySelector(
+      "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
+    );
+
+    if (!developers) return [];
+
+    return Array.from(developers.children).map((developer) => developer.textContent);
+  }
+
+  #extractSteamDbGenresFrom(page) {
+    const domTableBody = page.querySelector("#info tbody");
+
+    if (!domTableBody) return [];
+
+    const genresNodes = Array.from(domTableBody.children).filter(
+      (tableEntry) => tableEntry.children[0].textContent === "Store Genres",
+    )[0].children[1].childNodes;
+
+    return Array.from(genresNodes)
+      .filter((genre) => genre.constructor.name === "Text")
+      .map((genre) => genre.nodeValue.replace(",", "").trim());
+  }
+
+  #extractSteamDbDescriptionFrom(page) {
+    const description = page.querySelector(".header-description");
+
+    if (!description) return "";
+
+    return description.textContent;
+  }
+
+  #extractSteamDbReleaseDateFrom(page) {
+    const releaseDateElement = page.querySelector(
+      "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
+    );
+
+    if (!releaseDateElement) return "";
+
+    const releaseDateString = releaseDateElement.textContent;
+
+    const releaseDate = new Date(`
+      ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
+
+    if (releaseDate == "Invalid Date") return "";
+
+    return releaseDate;
   }
 }

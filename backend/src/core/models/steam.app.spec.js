@@ -2,6 +2,12 @@ import { gamesMock } from "../../../assets/small.data.set.js";
 import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 import { SteamApp } from "./steam.app.js";
+import { getXSampleSteamApps } from "./steam.app.mocks.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
+import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
+import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
+import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 
 describe("SteamApp", function () {
   describe(".copy", function () {
@@ -31,179 +37,6 @@ describe("SteamApp", function () {
 
       it("the copy has a property 'failedVia', which is an empty array", function () {
         expect(this.result.failedVia).toEqual([]);
-      });
-    });
-  });
-
-  describe(".triedViaSteamWeb", function () {
-    describe("pushes 'steamWeb' into the triedVia property. When this is done,", function () {
-      beforeAll(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
-
-        this.result = SteamApp.oneFromSteamApi(this.app);
-
-        this.result.triedViaSteamWeb();
-      });
-
-      it("the triedVia property array value is 'steamWeb'", function () {
-        expect(this.result.triedVia[0]).toBe(ValidDataSources.validDataSources.steamWeb);
-      });
-    });
-  });
-
-  describe(".triedViaSteamchartsWeb", function () {
-    describe("pushes 'steamCharts' into the triedVia property. When this is done,", function () {
-      beforeAll(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
-
-        this.result = SteamApp.oneFromSteamApi(this.app);
-
-        this.result.triedViaSteamchartsWeb();
-      });
-
-      it("the triedVia property array value is 'steamCharts'", function () {
-        expect(this.result.triedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-      });
-    });
-  });
-
-  describe(".triedViaSteamDb", function () {
-    beforeAll(function () {
-      this.app = {
-        name: "Castlevania",
-        appid: 1,
-      };
-
-      this.result = SteamApp.oneFromSteamApi(this.app);
-
-      this.result.triedViaSteamDb();
-    });
-
-    it("the resulting property is 'steamDb'", function () {
-      expect(this.result.triedVia[0]).toBe(ValidDataSources.validDataSources.steamDb);
-    });
-  });
-
-  describe(".failedViaSteamWeb", function () {
-    describe("pushes 'steamWeb' into the filedVia property. When this is done,", function () {
-      beforeAll(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
-
-        this.result = SteamApp.oneFromSteamApi(this.app);
-
-        this.result.failedViaSteamWeb();
-      });
-
-      it("the triedVia property array value is 'steamWeb'", function () {
-        expect(this.result.failedVia[0]).toBe(ValidDataSources.validDataSources.steamWeb);
-      });
-    });
-  });
-
-  describe(".failedViaSteamcharts", function () {
-    describe("pushes 'steamcharts' into the filedVia property. When this is done,", function () {
-      beforeAll(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
-
-        this.result = SteamApp.oneFromSteamApi(this.app);
-
-        this.result.failedViaSteamchartsWeb();
-      });
-
-      it("the triedVia property array value is 'steamcharts'", function () {
-        expect(this.result.failedVia[0]).toBe(
-          ValidDataSources.validDataSources.steamcharts,
-        );
-      });
-    });
-  });
-
-  describe(".failedViaSteamDb", function () {
-    describe("pushes 'steamDb' into the filedVia property. When this is done,", function () {
-      beforeAll(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
-
-        this.result = SteamApp.oneFromSteamApi(this.app);
-
-        this.result.failedViaSteamDb();
-      });
-
-      it("the triedVia property array value is 'steamDb'", function () {
-        expect(this.result.failedVia[0]).toBe(ValidDataSources.validDataSources.steamDb);
-      });
-    });
-  });
-
-  describe(".isGame", function () {
-    describe("checks if the type property of the class instance equals 'games'. So, ", function () {
-      describe("if an app's type property equals 'game'", function () {
-        beforeAll(function () {
-          this.app = {
-            name: "Castlevania",
-            appid: 1,
-          };
-
-          this.steamApp = SteamApp.oneFromSteamApi(this.app);
-          this.steamApp.type = SteamApp.validTypes.game;
-        });
-
-        it("the method returns true", function () {
-          expect(this.steamApp.isGame()).toBeTrue();
-        });
-      });
-
-      describe("if an app's type property does not equal 'game'", function () {
-        beforeAll(function () {
-          this.app = {
-            name: "Castlevania",
-            appid: 1,
-          };
-
-          this.steamApp = SteamApp.oneFromSteamApi(this.app);
-          this.steamApp.type = SteamApp.validTypes.unknown;
-        });
-
-        it("the method returns false", function () {
-          expect(this.steamApp.isGame()).toBeFalse();
-        });
-      });
-    });
-  });
-
-  describe(".appType", function () {
-    describe("sets the 'type' property to whatever was passed in as an argument. When this is done,", function () {
-      beforeAll(function () {
-        this.app = {
-          name: "Castlevania",
-          appid: 1,
-        };
-
-        this.type = SteamApp.validTypes.game;
-
-        this.result = SteamApp.oneFromSteamApi(this.app);
-
-        this.result.appType = this.type;
-      });
-
-      it("the 'type' property equals 'game'", function () {
-        expect(this.result.type).toBe(SteamApp.validTypes.game);
       });
     });
   });
@@ -409,6 +242,176 @@ describe("SteamApp", function () {
 
       it("second entry is The sims", function () {
         expect(this.resultDiff[1].appid).toBe(this.appsFromApi[2].appid);
+      });
+    });
+  });
+
+  describe(".recordHtmlAttempt", () => {
+    describe("if the html page is not empty", function () {
+      describe("if the steamApp's triedVia doesn't already include the provided source", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          const page = feartressGameHtmlDetailsPage;
+
+          this.steamApp.recordHtmlAttempt(page, this.source);
+        });
+
+        it("the steam app is mark as tried via steam web", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+      });
+
+      describe("if the steamApp's triedVia already includes the provided source, and we try to add another", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          const page = feartressGameHtmlDetailsPage;
+
+          this.steamApp.recordHtmlAttempt(page, this.source);
+          this.steamApp.recordHtmlAttempt(page, this.source);
+        });
+
+        it("the steam app is marked as tried via steam web only once", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+      });
+    });
+
+    describe("if the html page is empty", function () {
+      describe("if the steamApp's failedVia doesn't already include steamWeb", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          const page = "";
+
+          this.steamApp.recordHtmlAttempt(page, this.source);
+        });
+
+        it("the steam app is mark as tried via steam web", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+
+        it("the steam app is marked as failed via steam web", function () {
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
+      });
+
+      describe("if the steamApp's failedVia already includes steamWeb and we try to add it again", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          const page = "";
+
+          this.steamApp.recordHtmlAttempt(page, this.source);
+          this.steamApp.recordHtmlAttempt(page, this.source);
+        });
+
+        it("the steam app is mark as tried via steam web", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+
+        it("the steam app is marked as failed via steam web only once", function () {
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
+      });
+    });
+  });
+
+  describe(".updateSteamAppType", function () {
+    describe("via steam web", function () {
+      describe("when the app is age restricted", function () {
+        beforeAll(function () {
+          this.app = getXSampleSteamApps(1)[0];
+
+          const source = ValidDataSources.validDataSources.steamWeb;
+          const page = getParsedHtmlPage(gta5ageRestrictedHtmlDetailsPage);
+
+          this.app.updateSteamAppType(page, source);
+        });
+
+        it("the app will be marked as unknown", function () {
+          expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
+        });
+      });
+
+      describe("when the app does not have the appropriate text in the first breadcrumb", function () {
+        beforeAll(function () {
+          this.app = getXSampleSteamApps(1)[0];
+
+          const source = ValidDataSources.validDataSources.steamWeb;
+          const page = getParsedHtmlPage(padakVideoHtmlDetailsPage);
+
+          this.app.updateSteamAppType(page, source);
+        });
+
+        it("the app will be marked as unknown", function () {
+          expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
+        });
+      });
+
+      describe("when app has 'downloadable content' in its breadcrumb", function () {
+        beforeAll(function () {
+          this.app = getXSampleSteamApps(1)[0];
+
+          const source = ValidDataSources.validDataSources.steamWeb;
+          const page = getParsedHtmlPage(theSims4dlcHtmlDetailsPage);
+
+          this.app.updateSteamAppType(page, source);
+        });
+
+        it("the app will be marked as 'Downloadable Content'", function () {
+          expect(this.app.type).toEqual(SteamApp.validTypes.downloadableContent);
+        });
+      });
+
+      describe("when the app is a game", function () {
+        beforeAll(function () {
+          this.app = getXSampleSteamApps(1)[0];
+
+          const source = ValidDataSources.validDataSources.steamWeb;
+          const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
+
+          this.app.updateSteamAppType(page, source);
+        });
+
+        it("the app will be marked as a game", function () {
+          expect(this.app.type).toEqual(SteamApp.validTypes.game);
+        });
+      });
+    });
+
+    describe("via steamcharts", function () {
+      describe("the provided html page is empty", function () {
+        beforeAll(async function () {
+          this.app = getXSampleSteamApps(1)[0];
+          const source = ValidDataSources.validDataSources.steamcharts;
+          this.app.updateSteamAppType("", source);
+        });
+
+        it("the app will be marked as unknown", function () {
+          expect(this.app.type).toBe(SteamApp.validTypes.unknown);
+        });
+      });
+
+      describe("the provided html page is not empty", function () {
+        beforeAll(async function () {
+          this.app = getXSampleSteamApps(1)[0];
+          const source = ValidDataSources.validDataSources.steamcharts;
+          this.app.updateSteamAppType(feartressGameHtmlDetailsPage, source);
+        });
+
+        it("the app will be marked as game", function () {
+          expect(this.app.type).toBe(SteamApp.validTypes.game);
+        });
       });
     });
   });

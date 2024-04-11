@@ -1,5 +1,6 @@
 import { Game } from "../models/game.js";
 import { daysToMs } from "../../common/time.utils.js";
+import { GamesAggregate } from "../models/games.aggregate.js";
 
 export class GamesRepository {
   #dbClient;
@@ -21,26 +22,26 @@ export class GamesRepository {
   }
 
   async getGamesWithoutDetails(amount) {
-    return (
-      await this.#dbClient
-        .get("games")
-        .aggregate([
-          {
-            $match: {
-              $or: [
-                { developers: { $eq: [] } },
-                { genres: { $eq: [] } },
-                { description: { $eq: "" } },
-              ],
-            },
+    const response = await this.#dbClient
+      .get("games")
+      .aggregate([
+        {
+          $match: {
+            $or: [
+              { developers: { $eq: [] } },
+              { genres: { $eq: [] } },
+              { description: { $eq: "" } },
+            ],
           },
-          { $limit: amount },
-        ])
-        .toArray()
-    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
+        },
+        { $limit: amount },
+      ])
+      .toArray();
+
+    return new GamesAggregate(response);
   }
 
-  async updateGameDetails(games) {
+  async updateGameDetailsFrom(games) {
     await Promise.all(
       games.map((game) =>
         this.#dbClient.updateOne(
@@ -59,19 +60,19 @@ export class GamesRepository {
   }
 
   async getGamesWithoutReleaseDates(amount) {
-    return (
-      await this.#dbClient
-        .get("games")
-        .aggregate([
-          {
-            $match: {
-              $or: [{ releaseDate: { $eq: "" } }, { releaseDate: { $gt: new Date() } }],
-            },
+    const response = await this.#dbClient
+      .get("games")
+      .aggregate([
+        {
+          $match: {
+            $or: [{ releaseDate: { $eq: "" } }, { releaseDate: { $gt: new Date() } }],
           },
-          { $limit: amount },
-        ])
-        .toArray()
-    ).map((dbEntry) => Game.fromDbEntry(dbEntry));
+        },
+        { $limit: amount },
+      ])
+      .toArray();
+
+    return new GamesAggregate(response);
   }
 
   async updateReleaseDates(games) {

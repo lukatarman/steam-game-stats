@@ -1,4 +1,5 @@
 import { SteamApp } from "../../../core/models/steam.app.js";
+import { ValidDataSources } from "../../../core/models/valid.data.sources.js";
 
 export class SteamClient {
   #httpClient;
@@ -33,38 +34,27 @@ export class SteamClient {
     ).map((player) => (player ? player.data.response.player_count : 0));
   }
 
-  async getSteamAppHtmlDetailsPage(id) {
-    // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-    // We add the try catch block here to not crash the whole backend when our application comes accross
-    // errors written into the Steam API
-    try {
-      const url = `https://store.steampowered.com/app/${id}`;
+  // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+  async getSourceHtmlDetailsPage(id, source) {
+    const url = this.getSourceUrl(id, source);
 
+    try {
       return (await this.#httpClient.get(url)).data;
     } catch (err) {
       return "";
     }
   }
 
-  async getSteamchartsGameHtmlDetailsPage(id) {
-    // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-    try {
-      const url = `https://steamcharts.com/app/${id}`;
+  getSourceUrl(id, source) {
+    switch (source) {
+      case ValidDataSources.validDataSources.steamWeb:
+        return `https://store.steampowered.com/app/${id}`;
 
-      return (await this.#httpClient.get(url)).data;
-    } catch (err) {
-      return "";
-    }
-  }
+      case ValidDataSources.validDataSources.steacharts:
+        return `https://steamcharts.com/app/${id}`;
 
-  async getSteamDbHtmlDetailsPage(id) {
-    // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-    try {
-      const url = `https://steamdb.info/app/${id}/info/`;
-
-      return (await this.#httpClient.get(url)).data;
-    } catch (error) {
-      return "";
+      case ValidDataSources.validDataSources.steamDb:
+        return `https://steamdb.info/app/${id}/info/`;
     }
   }
 }
