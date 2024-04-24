@@ -45,6 +45,16 @@ export class SteamClient {
     }
   }
 
+  async getSteamWebHtmlDetailsPage(id) {
+    const url = `https://store.steampowered.com/app/${id}`;
+
+    try {
+      return (await this.#httpClient.get(url)).data;
+    } catch (err) {
+      return "";
+    }
+  }
+
   getSourceUrl(id, source) {
     switch (source) {
       case ValidDataSources.validDataSources.steamWeb:

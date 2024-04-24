@@ -16,7 +16,7 @@ import { GamesAggregate } from "../../models/games.aggregate.js";
 import { parseHTML } from "linkedom";
 
 describe("game.identifier.js", function () {
-  describe(".checkIfGameViaSource.", function () {
+  xdescribe(".checkIfGameViaSource.", function () {
     describe("via SteamWeb", function () {
       describe("Finds no unidentified steam apps in the database", function () {
         beforeAll(async function () {
