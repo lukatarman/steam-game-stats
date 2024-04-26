@@ -36,7 +36,7 @@ export class SteamClient {
 
   // TODO https://github.com/lukatarman/steam-game-stats/issues/192
   async getSourceHtmlDetailsPage(id, source) {
-    const url = this.getSourceUrl(id, source);
+    const url = this.#getSourceUrl(id, source);
 
     try {
       return (await this.#httpClient.get(url)).data;
@@ -55,7 +55,7 @@ export class SteamClient {
     }
   }
 
-  getSourceUrl(id, source) {
+  #getSourceUrl(id, source) {
     switch (source) {
       case ValidDataSources.validDataSources.steamWeb:
         return `https://store.steampowered.com/app/${id}`;
