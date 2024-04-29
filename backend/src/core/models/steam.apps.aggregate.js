@@ -9,9 +9,7 @@ export class SteamAppsAggregate {
   }
 
   get content() {
-    const contentCopy = new SteamAppsAggregate(this.#apps).#apps;
-
-    return contentCopy;
+    return new SteamAppsAggregate(structuredClone(this.#apps)).#apps;
   }
 
   get isEmpty() {

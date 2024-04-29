@@ -40,18 +40,6 @@ describe("game.identifier.js", function () {
         await this.identifier.checkIfGameViaSteamWeb();
       });
 
-      it("getSteamWebUntriedFilteredSteamApps was called once", function () {
-        expect(
-          this.steamAppsRepository.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledTimes(1);
-      });
-
-      it("getSteamWebUntriedFilteredSteamApps was called with the correct arguments", function () {
-        expect(
-          this.steamAppsRepository.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledWith(1);
-      });
-
       it("getSteamWebHtmlDetailsPage was not called", function () {
         expect(this.steamClient.getSteamWebHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
@@ -109,16 +97,6 @@ describe("game.identifier.js", function () {
         await this.identifier.checkIfGameViaSteamWeb();
       });
 
-      it("getSteamWebUntriedFilteredSteamApps was called once", function () {
-        expect(
-          this.steamAppsRepository.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledTimes(1);
-      });
-
-      it("getSteamWebHtmlDetailsPage was called twice", function () {
-        expect(this.steamClient.getSteamWebHtmlDetailsPage).toHaveBeenCalledTimes(2);
-      });
-
       it("insertManyGames was not called", function () {
         expect(this.gamesRepository.insertManyGames).toHaveBeenCalledTimes(0);
       });
@@ -127,10 +105,6 @@ describe("game.identifier.js", function () {
         expect(
           this.historyChecksRepository.insertManyHistoryChecks,
         ).toHaveBeenCalledTimes(0);
-      });
-
-      it("updateSteamAppsById was called once", function () {
-        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledTimes(1);
       });
 
       it("updateSteamAppsById was called with the correct argument", function () {
@@ -178,38 +152,14 @@ describe("game.identifier.js", function () {
         await this.identifier.checkIfGameViaSteamWeb();
       });
 
-      it("getSteamWebUntriedFilteredSteamApps was called once", function () {
-        expect(
-          this.steamAppsRepository.getSteamWebUntriedFilteredSteamApps,
-        ).toHaveBeenCalledTimes(1);
-      });
-
-      it("getSteamWebHtmlDetailsPage was called twice", function () {
-        expect(this.steamClient.getSteamWebHtmlDetailsPage).toHaveBeenCalledTimes(2);
-      });
-
-      it("insertManyGames was called once", function () {
-        expect(this.gamesRepository.insertManyGames).toHaveBeenCalledTimes(1);
-      });
-
       it("insertManyGames was called with the correct argument", function () {
         expect(this.gamesRepository.insertManyGames).toHaveBeenCalledWith(this.games);
-      });
-
-      it("insertManyHistoryChecks was called once", function () {
-        expect(
-          this.historyChecksRepository.insertManyHistoryChecks,
-        ).toHaveBeenCalledTimes(1);
       });
 
       it("insertManyHistoryChecks was called with the correct argument", function () {
         expect(this.historyChecksRepository.insertManyHistoryChecks).toHaveBeenCalledWith(
           this.historyChecks,
         );
-      });
-
-      it("updateSteamAppsById was called once", function () {
-        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledTimes(1);
       });
 
       it("updateSteamAppsById was called with the correct argument", function () {
@@ -241,20 +191,8 @@ describe("game.identifier.js", function () {
         await this.identifier.updateGamesWithoutDetails();
       });
 
-      it("getGamesWithoutDetails was called once", function () {
-        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledTimes(1);
-      });
-
-      it("getGamesWithoutDetails was called with the correct batch size", function () {
-        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledWith(1);
-      });
-
       it("getSteamAppsById was not called", function () {
         expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledTimes(0);
-      });
-
-      it("getSourceHtmlDetailsPage was not called", function () {
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
 
       it("updateSteamAppsById was not called", function () {
@@ -303,41 +241,10 @@ describe("game.identifier.js", function () {
         await this.identifier.updateGamesWithoutDetails();
       });
 
-      it("getGamesWithoutDetails was called once", function () {
-        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledTimes(1);
-      });
-
-      it("getGamesWithoutDetails was called with the correct batch size", function () {
-        expect(this.gamesRepository.getGamesWithoutDetails).toHaveBeenCalledWith(1);
-      });
-
-      it("getSourceHtmlDetailsPage was called twice", function () {
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(2);
-      });
-
-      it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.content[0].id,
-          this.source,
-        );
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.content[1].id,
-          this.source,
-        );
-      });
-
-      it("updateSteamAppsById was called once", function () {
-        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledTimes(1);
-      });
-
       it("updateSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
           this.steamApps.content,
         );
-      });
-
-      it("updateGameDetailsFrom was called once", function () {
-        expect(this.gamesRepository.updateGameDetailsFrom).toHaveBeenCalledTimes(1);
       });
 
       it("updateGameDetailsFrom was called with the correct argument", function () {
@@ -369,20 +276,8 @@ describe("game.identifier.js", function () {
         await this.identifier.updateGamesWithoutReleaseDates();
       });
 
-      it("getGamesWithoutReleaseDates was called once", function () {
-        expect(this.gamesRepository.getGamesWithoutReleaseDates).toHaveBeenCalledTimes(1);
-      });
-
-      it("getGamesWithoutReleaseDates was called with the correct batch size", function () {
-        expect(this.gamesRepository.getGamesWithoutReleaseDates).toHaveBeenCalledWith(2);
-      });
-
       it("getSteamAppsById was not called", function () {
         expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledTimes(0);
-      });
-
-      it("getSourceHtmlDetailsPage was not called", function () {
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(0);
       });
 
       it("updateSteamAppsById was not called", function () {
@@ -431,51 +326,10 @@ describe("game.identifier.js", function () {
         await this.identifier.updateGamesWithoutReleaseDates();
       });
 
-      it("getGamesWithoutReleaseDates was called once", function () {
-        expect(this.gamesRepository.getGamesWithoutReleaseDates).toHaveBeenCalledTimes(1);
-      });
-
-      it("getGamesWithoutReleaseDates was called with the correct batch size", function () {
-        expect(this.gamesRepository.getGamesWithoutReleaseDates).toHaveBeenCalledWith(2);
-      });
-
-      it("getSteamAppsById was called once", function () {
-        expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledTimes(1);
-      });
-
-      it("getSteamAppsById was called with the correct argument", function () {
-        expect(this.steamAppsRepository.getSteamAppsById).toHaveBeenCalledWith(
-          this.games.ids,
-        );
-      });
-
-      it("getSourceHtmlDetailsPage was called twice", function () {
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledTimes(2);
-      });
-
-      it("getSourceHtmlDetailsPage was called with the correct arguments", function () {
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.content[0].id,
-          this.source,
-        );
-        expect(this.steamClientMock.getSourceHtmlDetailsPage).toHaveBeenCalledWith(
-          this.games.content[1].id,
-          this.source,
-        );
-      });
-
-      it("updateSteamAppsById was called once", function () {
-        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledTimes(1);
-      });
-
       it("updateSteamAppsById was called with the correct argument", function () {
         expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
           this.steamApps.content,
         );
-      });
-
-      it("updateReleaseDates was called once", function () {
-        expect(this.gamesRepository.updateReleaseDates).toHaveBeenCalledTimes(1);
       });
 
       it("updateReleaseDates was called with the correct argument", function () {

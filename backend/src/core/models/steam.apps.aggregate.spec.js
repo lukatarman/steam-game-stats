@@ -1,13 +1,34 @@
 import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { SteamApp } from "./steam.app.js";
 import {
   getXSampleSteamApps,
   getXSampleSteamAppsMarkedAsGames,
 } from "./steam.app.mocks.js";
 import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
+import { ValidDataSources } from "./valid.data.sources.js";
 
 describe("SteamAppsAggregate", function () {
+  describe(".content", () => {
+    describe("if we try to get the content of the class", function () {
+      beforeAll(function () {
+        const steamApps = getXSampleSteamApps(2);
+        const steamAppsAggregate = new SteamAppsAggregate(steamApps);
+
+        this.contentCopy = steamAppsAggregate.content;
+
+        steamApps[0].triedVia.push(ValidDataSources.validDataSources.steamWeb);
+        steamApps[1].triedVia.push(ValidDataSources.validDataSources.steamWeb);
+      });
+
+      it("the returned games are true deep copies", function () {
+        expect(this.contentCopy[0].triedVia).toEqual([]);
+        expect(this.contentCopy[1].triedVia).toEqual([]);
+      });
+    });
+  });
+
   describe(".isEmpty", function () {
     describe("when the aggregate contains no steam apps", function () {
       beforeAll(function () {

@@ -1,7 +1,6 @@
 import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
-import { Game } from "./game.js";
 import {
   getXGamesWithoutDetails,
   getXsteamchartsInstantiatedGames,
@@ -9,6 +8,25 @@ import {
 import { GamesAggregate } from "./games.aggregate.js";
 
 describe("GamesAggregate", function () {
+  describe(".content", () => {
+    describe("if we try to get the content of the class", function () {
+      beforeAll(function () {
+        const games = getXGamesWithoutDetails(2);
+        const gamesAggregate = new GamesAggregate(games);
+
+        this.contentCopy = gamesAggregate.content;
+
+        games[0].developers.push("test");
+        games[1].developers.push("test");
+      });
+
+      it("the returned games are true deep copies", function () {
+        expect(this.contentCopy[0].developers).toEqual([]);
+        expect(this.contentCopy[1].developers).toEqual([]);
+      });
+    });
+  });
+
   describe(".getIds", () => {
     describe("if the aggregate contains two games,", function () {
       beforeAll(function () {

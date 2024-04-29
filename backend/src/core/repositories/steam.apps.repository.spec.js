@@ -246,9 +246,7 @@ describe("SteamAppsRepository", function () {
         });
 
         it("the first steam app has the correct values", function () {
-          expect(this.result.content[0].appid).toBe(2);
-          expect(this.result.content[0].type).toBe("unknown");
-          expect(this.result.content[0].triedVia).toEqual([]);
+          matchedSteamAppTestCase(this.result, 1, 2);
         });
 
         it("the second steam app is an instance of SteamApp", function () {
@@ -256,9 +254,7 @@ describe("SteamAppsRepository", function () {
         });
 
         it("the second steam app has the correct values", function () {
-          expect(this.result.content[1].appid).toBe(4);
-          expect(this.result.content[1].type).toBe("unknown");
-          expect(this.result.content[1].triedVia).toEqual([]);
+          matchedSteamAppTestCase(this.result, 2, 4);
         });
       });
 
@@ -295,9 +291,7 @@ describe("SteamAppsRepository", function () {
         });
 
         it("the first steam app has the correct values", function () {
-          expect(this.result.content[0].appid).toBe(2);
-          expect(this.result.content[0].type).toBe("unknown");
-          expect(this.result.content[0].triedVia).toEqual([]);
+          matchedSteamAppTestCase(this.result, 1, 2);
         });
 
         it("the second steam app is an instance of SteamApp", function () {
@@ -305,9 +299,7 @@ describe("SteamAppsRepository", function () {
         });
 
         it("the second steam app has the correct values", function () {
-          expect(this.result.content[1].appid).toBe(4);
-          expect(this.result.content[1].type).toBe("unknown");
-          expect(this.result.content[1].triedVia).toEqual([]);
+          matchedSteamAppTestCase(this.result, 2, 4);
         });
 
         it("the third steam app is an instance of SteamApp", function () {
@@ -315,9 +307,7 @@ describe("SteamAppsRepository", function () {
         });
 
         it("the third steam app has the correct values", function () {
-          expect(this.result.content[2].appid).toBe(7);
-          expect(this.result.content[2].type).toBe("unknown");
-          expect(this.result.content[2].triedVia).toEqual([]);
+          matchedSteamAppTestCase(this.result, 3, 7);
         });
       });
     });
@@ -367,4 +357,10 @@ describe("SteamAppsRepository", function () {
 
 const insertManyApps = async (client, apps) => {
   await client.insertMany("steam_apps", apps);
+};
+
+const matchedSteamAppTestCase = (result, appOrder, id) => {
+  expect(result.content[appOrder - 1].appid).toBe(id);
+  expect(result.content[appOrder - 1].type).toBe("unknown");
+  expect(result.content[appOrder - 1].triedVia).toEqual([]);
 };

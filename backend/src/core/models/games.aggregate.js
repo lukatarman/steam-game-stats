@@ -8,9 +8,7 @@ export class GamesAggregate {
   }
 
   get content() {
-    const contentCopy = new GamesAggregate(this.#games).#games;
-
-    return contentCopy;
+    return new GamesAggregate(structuredClone(this.#games)).#games;
   }
 
   get ids() {
