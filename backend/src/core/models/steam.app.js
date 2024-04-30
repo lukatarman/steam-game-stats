@@ -10,6 +10,7 @@ export class SteamApp {
     "game",
     "downloadableContent",
     "unknown",
+    "restricted",
   ]);
 
   static #createValidTypesEnum(values) {
@@ -89,21 +90,36 @@ export class SteamApp {
     this.failedVia.push(source);
   }
 
-  updateSteamAppType(page, source) {
-    this.type = this.#getType(page, source);
+  recordSteamWebHtmlAttempt(page) {
+    this.#addHtmlPageTriedViaSteamWeb();
+
+    if (page.toString() === "") this.#addHtmlPageFailedViaSteamWeb();
   }
 
-  #getType(page, source) {
-    if (source === ValidDataSources.validDataSources.steamWeb)
-      return this.#getSteamWebAppType(page);
-    if (source === ValidDataSources.validDataSources.steamcharts)
-      return this.#getSteamchartsAppType(page);
+  #addHtmlPageTriedViaSteamWeb() {
+    const source = ValidDataSources.validDataSources.steamWeb;
+
+    if (this.triedVia.includes(source)) return;
+
+    this.triedVia.push(source);
+  }
+
+  #addHtmlPageFailedViaSteamWeb() {
+    const source = ValidDataSources.validDataSources.steamWeb;
+
+    if (this.failedVia.includes(source)) return;
+
+    this.failedVia.push(source);
+  }
+
+  updateAppTypeViaSteamWeb(page) {
+    this.type = this.#getSteamWebAppType(page);
   }
 
   #getSteamWebAppType(page) {
     const breadcrumbElement = page.querySelector(".blockbg");
 
-    if (!breadcrumbElement) return SteamApp.validTypes.unknown;
+    if (!breadcrumbElement) return SteamApp.validTypes.restricted;
 
     const breadcrumbText = breadcrumbElement.children[0].textContent;
 
@@ -114,13 +130,6 @@ export class SteamApp {
       if (child.textContent === "Downloadable Content")
         return SteamApp.validTypes.downloadableContent;
     }
-
-    return SteamApp.validTypes.game;
-  }
-
-  // TODO https://github.com/lukatarman/steam-game-stats/issues/178
-  #getSteamchartsAppType(page) {
-    if (page.toString() === "") return SteamApp.validTypes.unknown;
 
     return SteamApp.validTypes.game;
   }

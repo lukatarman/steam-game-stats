@@ -1,5 +1,6 @@
 import { SteamApp } from "../models/steam.app.js";
 import { SteamAppsAggregate } from "../models/steam.apps.aggregate.js";
+import { ValidDataSources } from "../models/valid.data.sources.js";
 
 export class SteamAppsRepository {
   #dbClient;
@@ -42,13 +43,13 @@ export class SteamAppsRepository {
     );
   }
 
-  async getSourceUntriedFilteredSteamApps(amount, source) {
+  async getSteamWebUntriedFilteredSteamApps(amount) {
     const response = await this.#dbClient
       .get("steam_apps")
       .find({
         $and: [
           { type: SteamApp.validTypes.unknown },
-          { triedVia: { $ne: source } },
+          { triedVia: { $ne: ValidDataSources.validDataSources.steamWeb } },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
           { name: { $not: { $regex: /demo$/, $options: "i" } } },

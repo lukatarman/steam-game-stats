@@ -326,92 +326,140 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".updateSteamAppType", function () {
-    describe("via steam web", function () {
-      describe("when the app is age restricted", function () {
+  describe(".recordSteamWebHtmlAttempt", () => {
+    describe("if the html page has content", function () {
+      describe("if the steam app is still untried via SteamWeb", function () {
         beforeAll(function () {
-          this.app = getXSampleSteamApps(1)[0];
+          this.steamApp = getXSampleSteamApps(1)[0];
 
-          const source = ValidDataSources.validDataSources.steamWeb;
-          const page = getParsedHtmlPage(gta5ageRestrictedHtmlDetailsPage);
+          const page = feartressGameHtmlDetailsPage;
 
-          this.app.updateSteamAppType(page, source);
+          this.steamApp.recordSteamWebHtmlAttempt(page);
         });
 
-        it("the app will be marked as unknown", function () {
-          expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
+        it("the steam app is mark as tried via steam web", function () {
+          expect(this.steamApp.triedVia).toEqual([
+            ValidDataSources.validDataSources.steamWeb,
+          ]);
         });
       });
 
-      describe("when the app does not have the appropriate text in the first breadcrumb", function () {
+      describe("if the steam app was already tried via steamWeb", function () {
         beforeAll(function () {
-          this.app = getXSampleSteamApps(1)[0];
+          this.source = ValidDataSources.validDataSources.steamWeb;
 
-          const source = ValidDataSources.validDataSources.steamWeb;
-          const page = getParsedHtmlPage(padakVideoHtmlDetailsPage);
+          this.steamApp = getXSampleSteamApps(1)[0];
 
-          this.app.updateSteamAppType(page, source);
+          const page = feartressGameHtmlDetailsPage;
+
+          this.steamApp.recordSteamWebHtmlAttempt(page, this.source);
+          this.steamApp.recordSteamWebHtmlAttempt(page, this.source);
         });
 
-        it("the app will be marked as unknown", function () {
-          expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
-        });
-      });
-
-      describe("when app has 'downloadable content' in its breadcrumb", function () {
-        beforeAll(function () {
-          this.app = getXSampleSteamApps(1)[0];
-
-          const source = ValidDataSources.validDataSources.steamWeb;
-          const page = getParsedHtmlPage(theSims4dlcHtmlDetailsPage);
-
-          this.app.updateSteamAppType(page, source);
-        });
-
-        it("the app will be marked as 'Downloadable Content'", function () {
-          expect(this.app.type).toEqual(SteamApp.validTypes.downloadableContent);
-        });
-      });
-
-      describe("when the app is a game", function () {
-        beforeAll(function () {
-          this.app = getXSampleSteamApps(1)[0];
-
-          const source = ValidDataSources.validDataSources.steamWeb;
-          const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
-
-          this.app.updateSteamAppType(page, source);
-        });
-
-        it("the app will be marked as a game", function () {
-          expect(this.app.type).toEqual(SteamApp.validTypes.game);
+        it("the steam app is marked as tried via steam web only once", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
         });
       });
     });
 
-    describe("via steamcharts", function () {
-      describe("the provided html page is empty", function () {
-        beforeAll(async function () {
-          this.app = getXSampleSteamApps(1)[0];
-          const source = ValidDataSources.validDataSources.steamcharts;
-          this.app.updateSteamAppType("", source);
+    describe("if the html page is empty", function () {
+      describe("if the steam app is unmarked as failed via steam web", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          const page = "";
+
+          this.steamApp.recordSteamWebHtmlAttempt(page);
         });
 
-        it("the app will be marked as unknown", function () {
-          expect(this.app.type).toBe(SteamApp.validTypes.unknown);
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+
+        it("the steam app is marked as failed via steam web", function () {
+          expect(this.steamApp.failedVia).toEqual([this.source]);
         });
       });
 
-      describe("the provided html page is not empty", function () {
-        beforeAll(async function () {
-          this.app = getXSampleSteamApps(1)[0];
-          const source = ValidDataSources.validDataSources.steamcharts;
-          this.app.updateSteamAppType(feartressGameHtmlDetailsPage, source);
+      describe("if the steam app was already marked as failed via steamWeb", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamWeb;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          const page = "";
+
+          this.steamApp.recordSteamWebHtmlAttempt(page);
+          this.steamApp.recordSteamWebHtmlAttempt(page);
         });
 
-        it("the app will be marked as game", function () {
-          expect(this.app.type).toBe(SteamApp.validTypes.game);
+        it("the steam app is marked as tried via steam web", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
         });
+
+        it("the steam app is marked as failed via steam web only once", function () {
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
+      });
+    });
+  });
+
+  describe(".updateAppTypeViaSteamWeb", function () {
+    describe("when the app is age restricted", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        const page = getParsedHtmlPage(gta5ageRestrictedHtmlDetailsPage);
+
+        this.app.updateAppTypeViaSteamWeb(page);
+      });
+
+      it("the app will be marked as restricted", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.restricted);
+      });
+    });
+
+    describe("when the app does not have the appropriate text in the first breadcrumb", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        const page = getParsedHtmlPage(padakVideoHtmlDetailsPage);
+
+        this.app.updateAppTypeViaSteamWeb(page);
+      });
+
+      it("the app will be marked as unknown", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
+      });
+    });
+
+    describe("when app has 'downloadable content' in its breadcrumb", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        const page = getParsedHtmlPage(theSims4dlcHtmlDetailsPage);
+
+        this.app.updateAppTypeViaSteamWeb(page);
+      });
+
+      it("the app will be marked as 'Downloadable Content'", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.downloadableContent);
+      });
+    });
+
+    describe("when the app is a game", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
+
+        this.app.updateAppTypeViaSteamWeb(page);
+      });
+
+      it("the app will be marked as a game", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.game);
       });
     });
   });

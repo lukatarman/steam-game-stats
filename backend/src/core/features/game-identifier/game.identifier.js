@@ -29,12 +29,11 @@ export class GameIdentifier {
     this.#htmlParser = htmlParser;
   }
 
-  checkIfGameViaSource = async (source) => {
-    this.#logger.debugc(`identifying games via ${source}`);
+  checkIfGameViaSteamWeb = async () => {
+    this.#logger.debugc(`identifying games via Steam web`);
 
-    const steamApps = await this.#steamAppsRepository.getSourceUntriedFilteredSteamApps(
+    const steamApps = await this.#steamAppsRepository.getSteamWebUntriedFilteredSteamApps(
       this.#options.batchSize,
-      source,
     );
 
     if (steamApps.isEmpty) {
@@ -45,27 +44,21 @@ export class GameIdentifier {
       return;
     }
 
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.content,
-      source,
-    );
+    const htmlDetailsPages = await this.#getSteamWebHtmlDetailsPages(steamApps.content);
 
-    steamApps.identifyTypes(htmlDetailsPages, source);
+    steamApps.identifyTypesViaSteamWeb(htmlDetailsPages);
 
-    const games = steamApps.extractGames(htmlDetailsPages, source);
+    const games = steamApps.extractGames(htmlDetailsPages);
 
     await this.#persistGameCheckUpdates(games, steamApps.content);
   };
 
-  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
+  async #getSteamWebHtmlDetailsPages(steamApps) {
     const htmlDetailsPages = [];
 
     for (let steamApp of steamApps) {
       // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(
-        steamApp.appid,
-        source,
-      );
+      const htmlPage = await this.#steamClient.getSteamWebHtmlDetailsPage(steamApp.appid);
 
       htmlDetailsPages.push({
         page: this.#htmlParser(htmlPage).document,
@@ -121,6 +114,27 @@ export class GameIdentifier {
 
     this.#persistUpdatedDetails(games.content, steamApps.content);
   };
+
+  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
+    const htmlDetailsPages = [];
+
+    for (let steamApp of steamApps) {
+      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(
+        steamApp.appid,
+        source,
+      );
+
+      htmlDetailsPages.push({
+        page: this.#htmlParser(htmlPage).document,
+        id: steamApp.appid,
+      });
+
+      await delay(this.#options.unitDelay);
+    }
+
+    return htmlDetailsPages;
+  }
 
   async #persistUpdatedDetails(games, steamApps) {
     this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);

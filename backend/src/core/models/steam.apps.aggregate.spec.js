@@ -10,6 +10,25 @@ import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 
 describe("SteamAppsAggregate", function () {
+  describe(".content", () => {
+    describe("if we try to get the content of the class", function () {
+      beforeAll(function () {
+        const steamApps = getXSampleSteamApps(2);
+        const steamAppsAggregate = new SteamAppsAggregate(steamApps);
+
+        this.contentCopy = steamAppsAggregate.content;
+
+        steamApps[0].triedVia.push(ValidDataSources.validDataSources.steamWeb);
+        steamApps[1].triedVia.push(ValidDataSources.validDataSources.steamWeb);
+      });
+
+      it("the returned games are true deep copies", function () {
+        expect(this.contentCopy[0].triedVia).toEqual([]);
+        expect(this.contentCopy[1].triedVia).toEqual([]);
+      });
+    });
+  });
+
   describe(".isEmpty", function () {
     describe("when the aggregate contains no steam apps", function () {
       beforeAll(function () {
@@ -36,22 +55,21 @@ describe("SteamAppsAggregate", function () {
     });
   });
 
-  describe(".identifyTypes", function () {
+  describe(".identifyTypesViaSteamWeb", function () {
     describe("When we try to identify two steam apps", function () {
       beforeAll(function () {
         this.steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
 
-        const source = ValidDataSources.validDataSources.steamWeb;
         const pages = getParsedHtmlPages(["", mortalDarknessGameHtmlDetailsPage]);
 
-        this.steamAppsArray.identifyTypes(pages, source);
+        this.steamAppsArray.identifyTypesViaSteamWeb(pages);
       });
 
       it("the first app is correctly identified", function () {
         expect(this.steamAppsArray.content[0].appid).toBe(1);
         expect(this.steamAppsArray.content[0].triedVia).toEqual(["steamWeb"]);
         expect(this.steamAppsArray.content[0].failedVia).toEqual(["steamWeb"]);
-        expect(this.steamAppsArray.content[0].type).toBe("unknown");
+        expect(this.steamAppsArray.content[0].type).toBe("restricted");
       });
 
       it("the second app is correctly identified", function () {
@@ -80,10 +98,9 @@ describe("SteamAppsAggregate", function () {
     describe("when one out of two steam apps is marked as a game", function () {
       beforeAll(function () {
         const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
-        const source = ValidDataSources.validDataSources.steamWeb;
         const pages = getParsedHtmlPages(["", mortalDarknessGameHtmlDetailsPage]);
 
-        steamAppsArray.identifyTypes(pages, source);
+        steamAppsArray.identifyTypesViaSteamWeb(pages);
 
         this.result = steamAppsArray.extractGames(pages);
       });
