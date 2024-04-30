@@ -84,66 +84,6 @@ export class GameIdentifier {
     await this.#steamAppsRepository.updateSteamAppsById(steamApps);
   }
 
-  updateGamesWithoutDetails = async () => {
-    const source = ValidDataSources.validDataSources.steamDb;
-    this.#logger.debugc("updating games without details");
-
-    const games = await this.#gamesRepository.getGamesWithoutDetails(
-      this.#options.batchSize,
-    );
-
-    if (games.isEmpty) {
-      this.#logger.debugc(
-        `no games without details in db, retry in: ${
-          this.#options.globalIterationDelay
-        } ms`,
-      );
-      return;
-    }
-
-    const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
-
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.content,
-      source,
-    );
-
-    steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
-
-    games.updateGameDetailsFrom(htmlDetailsPages);
-
-    this.#persistUpdatedDetails(games.content, steamApps.content);
-  };
-
-  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
-    const htmlDetailsPages = [];
-
-    for (let steamApp of steamApps) {
-      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(
-        steamApp.appid,
-        source,
-      );
-
-      htmlDetailsPages.push({
-        page: this.#htmlParser(htmlPage).document,
-        id: steamApp.appid,
-      });
-
-      await delay(this.#options.unitDelay);
-    }
-
-    return htmlDetailsPages;
-  }
-
-  async #persistUpdatedDetails(games, steamApps) {
-    this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);
-    this.#logger.debugc(`persisting ${games.length} games with updated details`);
-
-    await this.#steamAppsRepository.updateSteamAppsById(steamApps);
-    await this.#gamesRepository.updateGameDetailsFrom(games);
-  }
-
   updateGamesWithoutReleaseDates = async () => {
     const source = ValidDataSources.validDataSources.steamDb;
     this.#logger.debugc(`updating games without release dates via ${source}`);
@@ -175,6 +115,27 @@ export class GameIdentifier {
 
     this.#persistReleaseDates(games.content, steamApps.content);
   };
+
+  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
+    const htmlDetailsPages = [];
+
+    for (let steamApp of steamApps) {
+      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(
+        steamApp.appid,
+        source,
+      );
+
+      htmlDetailsPages.push({
+        page: this.#htmlParser(htmlPage).document,
+        id: steamApp.appid,
+      });
+
+      await delay(this.#options.unitDelay);
+    }
+
+    return htmlDetailsPages;
+  }
 
   async #persistReleaseDates(games, steamApps) {
     this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);

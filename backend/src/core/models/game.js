@@ -146,30 +146,6 @@ export class Game {
     return description.textContent.trim();
   }
 
-  updateGameDetailsFrom(page) {
-    this.#updateDevelopers(page);
-    this.#updateGenres(page);
-    this.#updateDescription(page);
-  }
-
-  #updateDevelopers(page) {
-    if (this.developers.length !== 0) return;
-
-    this.developers = this.#extractSteamDbDevelopersFrom(page);
-  }
-
-  #updateGenres(page) {
-    if (this.genres.length !== 0) return;
-
-    this.genres = this.#extractSteamDbGenresFrom(page);
-  }
-
-  #updateDescription(page) {
-    if (this.description.length !== 0) return;
-
-    this.description = this.#extractSteamDbDescriptionFrom(page);
-  }
-
   updateReleaseDate(page) {
     if (this.releaseDate) return;
 
@@ -178,38 +154,6 @@ export class Game {
     if (date === "") return;
 
     this.releaseDate = date;
-  }
-
-  #extractSteamDbDevelopersFrom(page) {
-    const developers = page.querySelector(
-      "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:nth-child(3) td:last-child",
-    );
-
-    if (!developers) return [];
-
-    return Array.from(developers.children).map((developer) => developer.textContent);
-  }
-
-  #extractSteamDbGenresFrom(page) {
-    const domTableBody = page.querySelector("#info tbody");
-
-    if (!domTableBody) return [];
-
-    const genresNodes = Array.from(domTableBody.children).filter(
-      (tableEntry) => tableEntry.children[0].textContent === "Store Genres",
-    )[0].children[1].childNodes;
-
-    return Array.from(genresNodes)
-      .filter((genre) => genre.constructor.name === "Text")
-      .map((genre) => genre.nodeValue.replace(",", "").trim());
-  }
-
-  #extractSteamDbDescriptionFrom(page) {
-    const description = page.querySelector(".header-description");
-
-    if (!description) return "";
-
-    return description.textContent;
   }
 
   #extractSteamDbReleaseDateFrom(page) {

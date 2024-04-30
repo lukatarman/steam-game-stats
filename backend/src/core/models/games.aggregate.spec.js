@@ -67,42 +67,6 @@ describe("GamesAggregate", function () {
     });
   });
 
-  describe(".updateGameDetailsFrom.", function () {
-    describe("When we try to update two games with missing details,", function () {
-      beforeAll(function () {
-        this.result = new GamesAggregate(getXGamesWithoutDetails(2));
-
-        const htmlDetailsPages = [
-          counterStrikeHtmlDetailsSteamDb,
-          riskOfRainHtmlDetailsSteamDb,
-        ];
-
-        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
-
-        this.result.updateGameDetailsFrom(parsedPages);
-      });
-
-      it("the first game's details are updated", function () {
-        expect(this.result.content[0].developers).toEqual([
-          "Valve",
-          "Hidden Path Entertainment",
-        ]);
-        expect(this.result.content[0].genres).toEqual(["Action", "Free to Play"]);
-        expect(this.result.content[0].description).toBe(
-          "Counter-Strike: Global Offensive (CS: GO) expands upon the team-based action gameplay that it pioneered when it was launched 19 years ago. CS: GO features new maps, characters, weapons, and game modes, and delivers updated versions of the classic CS content (de_dust2, etc.).",
-        );
-      });
-
-      it("the second game's details are updated", function () {
-        expect(this.result.content[1].developers).toEqual(["Hopoo Games"]);
-        expect(this.result.content[1].genres).toEqual(["Action", "Indie"]);
-        expect(this.result.content[1].description).toBe(
-          "Escape a chaotic alien planet by fighting through hordes of frenzied monsters – with your friends, or on your own. Combine loot in surprising ways and master each character until you become the havoc you feared upon your first crash landing.",
-        );
-      });
-    });
-  });
-
   describe(".extractReleaseDatesFrom.", function () {
     describe("When we try to update two games with missing release dates,", function () {
       beforeAll(function () {

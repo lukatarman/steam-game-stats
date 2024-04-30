@@ -19,22 +19,6 @@ export class GamesAggregate {
     return !this.#games.length > 0;
   }
 
-  updateGameDetailsFrom(htmlDetailsPages) {
-    this.#games = this.#games.map((game) => {
-      const gameCopy = game.copy();
-
-      const page = this.#findPageForGameById(htmlDetailsPages, gameCopy.id);
-
-      gameCopy.updateGameDetailsFrom(page);
-
-      return gameCopy;
-    });
-  }
-
-  #findPageForGameById(htmlDetailsPages, gameId) {
-    return htmlDetailsPages.find((page) => gameId === page.id).page;
-  }
-
   extractReleaseDatesFrom(htmlDetailsPages) {
     this.#games = this.#games.map((game) => {
       const gameCopy = game.copy();
@@ -45,5 +29,9 @@ export class GamesAggregate {
 
       return gameCopy;
     });
+  }
+
+  #findPageForGameById(htmlDetailsPages, gameId) {
+    return htmlDetailsPages.find((page) => gameId === page.id).page;
   }
 }
