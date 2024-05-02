@@ -21,44 +21,6 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
-  async getGamesWithoutDetails(amount) {
-    const response = await this.#dbClient
-      .get("games")
-      .aggregate([
-        {
-          $match: {
-            $or: [
-              { developers: { $eq: [] } },
-              { genres: { $eq: [] } },
-              { description: { $eq: "" } },
-            ],
-          },
-        },
-        { $limit: amount },
-      ])
-      .toArray();
-
-    return new GamesAggregate(response);
-  }
-
-  async updateGameDetailsFrom(games) {
-    await Promise.all(
-      games.map((game) =>
-        this.#dbClient.updateOne(
-          "games",
-          { id: { $eq: game.id } },
-          {
-            $set: {
-              developers: game.developers,
-              genres: game.genres,
-              description: game.description,
-            },
-          },
-        ),
-      ),
-    );
-  }
-
   async getGamesWithoutReleaseDates(amount) {
     const response = await this.#dbClient
       .get("games")

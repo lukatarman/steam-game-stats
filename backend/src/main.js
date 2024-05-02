@@ -76,14 +76,9 @@ async function main() {
     ? { func: steamAppsAggregator.collectSteamAppsDiffOnDbLayer }
     : { func: steamAppsAggregator.collectSteamApps };
 
-  const steamWeb = ValidDataSources.validDataSources.steamWeb;
-  const steamcharts = ValidDataSources.validDataSources.steamcharts;
-
   const runnables = [
     steamAppsAggregatorRunnable,
-    { func: () => gameIdentifier.checkIfGameViaSource(steamWeb) },
-    { func: () => gameIdentifier.checkIfGameViaSource(steamcharts) },
-    { func: gameIdentifier.updateGamesWithoutDetails },
+    { func: gameIdentifier.checkIfGameViaSteamWeb },
     { func: gameIdentifier.updateGamesWithoutReleaseDates },
     { func: playerHistoryAggregator.addPlayerHistoryFromSteamcharts },
     { func: playerHistoryAggregator.addCurrentPlayers },
