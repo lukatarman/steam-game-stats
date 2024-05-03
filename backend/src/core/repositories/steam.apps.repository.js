@@ -61,6 +61,30 @@ export class SteamAppsRepository {
     return new SteamAppsAggregate(response);
   }
 
+  async getSteamApiUntriedFilteredSteamApps(amount) {
+    const response = await this.#dbClient
+      .get("steam_apps")
+      .find({
+        $and: [
+          {
+            $or: [
+              { type: SteamApp.validTypes.restricted },
+              { failedVia: ValidDataSources.validDataSources.steamWeb },
+            ],
+          },
+
+          { triedVia: ValidDataSources.validDataSources.steamWeb },
+          { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
+          { name: { $not: { $regex: /dlc$/, $options: "i" } } },
+          { name: { $not: { $regex: /demo$/, $options: "i" } } },
+        ],
+      })
+      .limit(amount)
+      .toArray();
+
+    return new SteamAppsAggregate(response);
+  }
+
   async getSteamAppsById(ids) {
     const response = await Promise.all(ids.map((id) => this.getSteamAppById(id)));
 
