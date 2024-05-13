@@ -40,6 +40,21 @@ export class Game {
     return game;
   }
 
+  // prettier-ignore
+  static fromSteamApi(steamApiApp) {
+      const game         = new Game();
+      game.id            = steamApiApp.steam_appid;
+      game.name          = steamApiApp.name;
+      game.releaseDate   = game.#extractSteamApiReleaseDateFrom(steamApiApp);
+      game.developers    = game.#extractSteamApiDevelopersFrom(steamApiApp);
+      game.genres        = game.#extractSteamApiGenresFrom(steamApiApp);
+      game.description   = game.#extractSteamApiDescriptionFrom(steamApiApp);
+      game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
+      game.playerHistory = [];
+      
+      return game;
+    }
+
   //@todo https://github.com/lukatarman/steam-game-stats-backend/issues/115
 
   // prettier-ignore
@@ -171,5 +186,23 @@ export class Game {
     if (releaseDate == "Invalid Date") return "";
 
     return releaseDate;
+  }
+
+  #extractSteamApiReleaseDateFrom(steamApiApp) {
+    const releaseDate = new Date(steamApiApp.release_date.date);
+
+    return releaseDate == "Invalid Date" ? "" : releaseDate;
+  }
+
+  #extractSteamApiDevelopersFrom(steamApiApp) {
+    return structuredClone(steamApiApp.developers);
+  }
+
+  #extractSteamApiGenresFrom(steamApiApp) {
+    return steamApiApp.genres.map((genre) => genre.description);
+  }
+
+  #extractSteamApiDescriptionFrom(steamApiApp) {
+    return steamApiApp.short_description;
   }
 }

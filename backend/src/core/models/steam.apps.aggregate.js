@@ -56,4 +56,34 @@ export class SteamAppsAggregate {
       return appCopy;
     });
   }
+
+  identifyTypesViaSteamApi(steamApiApps) {
+    this.#apps = this.#apps.map((app) => {
+      const appCopy = app.copy();
+
+      const steamApiApp = this.#findSteamApiAppById(steamApiApps, appCopy.appid);
+
+      appCopy.recordSteamApiAttempt(steamApiApp);
+
+      appCopy.updateAppTypeViaSteamApi(steamApiApp);
+
+      return appCopy;
+    });
+  }
+
+  #findSteamApiAppById(steamApiApps, steamAppId) {
+    return steamApiApps.find((app) => app.steam_appid === steamAppId);
+  }
+
+  extractGamesfromSteamApi(steamApiApps) {
+    return this.#apps
+      .map((app) => {
+        if (!app.isGame) return "";
+
+        const steamApiApp = this.#findSteamApiAppById(steamApiApps, app.appid);
+
+        return Game.fromSteamApi(steamApiApp);
+      })
+      .filter((game) => !!game);
+  }
 }

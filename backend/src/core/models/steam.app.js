@@ -91,22 +91,20 @@ export class SteamApp {
   }
 
   recordSteamWebHtmlAttempt(page) {
-    this.#addHtmlPageTriedViaSteamWeb();
-
-    if (page.toString() === "") this.#addHtmlPageFailedViaSteamWeb();
-  }
-
-  #addHtmlPageTriedViaSteamWeb() {
     const source = ValidDataSources.validDataSources.steamWeb;
 
+    this.#addTriedViaSource(source);
+
+    if (page.toString() === "") this.#addFailedViaSource(source);
+  }
+
+  #addTriedViaSource(source) {
     if (this.triedVia.includes(source)) return;
 
     this.triedVia.push(source);
   }
 
-  #addHtmlPageFailedViaSteamWeb() {
-    const source = ValidDataSources.validDataSources.steamWeb;
-
+  #addFailedViaSource(source) {
     if (this.failedVia.includes(source)) return;
 
     this.failedVia.push(source);
@@ -132,5 +130,28 @@ export class SteamApp {
     }
 
     return SteamApp.validTypes.game;
+  }
+
+  recordSteamApiAttempt(steamApp) {
+    const source = ValidDataSources.validDataSources.steamApi;
+
+    this.#addTriedViaSource(source);
+
+    if (!steamApp) this.#addFailedViaSource(source);
+  }
+
+  updateAppTypeViaSteamApi(steamApp) {
+    this.type = this.#getSteamApiAppType(steamApp);
+  }
+
+  #getSteamApiAppType(steamApp) {
+    if (!steamApp) return SteamApp.validTypes.unknown;
+
+    const appType = steamApp.type;
+
+    if (appType === "game") return SteamApp.validTypes.game;
+    if (appType === "dlc") return SteamApp.validTypes.downloadableContent;
+
+    return SteamApp.validTypes.unknown;
   }
 }

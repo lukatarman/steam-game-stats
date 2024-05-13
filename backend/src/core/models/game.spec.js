@@ -1,4 +1,6 @@
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
+import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
+import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
@@ -197,6 +199,46 @@ describe("Game", function () {
         expect(this.result.description).toBe(
           "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
         );
+      });
+    });
+  });
+
+  describe(".fromSteamApi", function () {
+    describe("when the method is called", function () {
+      beforeAll(function () {
+        this.result = Game.fromSteamApi(eldenRingSteamApiData);
+      });
+
+      it("is an instance of Game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game has the correct values", function () {
+        expect(this.result.id).toBe(1245620);
+        expect(this.result.name).toBe("ELDEN RING");
+        expect(this.result.releaseDate).toEqual(new Date("Feb 24 2022 UTC"));
+        expect(this.result.description).toEqual(
+          "THE NEW FANTASY ACTION RPG. Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.",
+        );
+        expect(this.result.developers).toEqual(["FromSoftware Inc."]);
+        expect(this.result.imageUrl).toBe(
+          `https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg`,
+        );
+        expect(this.result.playerHistory).toEqual([]);
+      });
+    });
+
+    describe("if the provided data does not include a proper release date", function () {
+      beforeAll(function () {
+        this.result = Game.fromSteamApi(theLastNightSteamApiData);
+      });
+
+      it("the result is an instance of game", function () {
+        expect(this.result).toBeInstanceOf(Game);
+      });
+
+      it("the game's release date will be an empty string", function () {
+        expect(this.result.releaseDate).toBe("");
       });
     });
   });

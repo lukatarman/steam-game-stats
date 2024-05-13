@@ -14,6 +14,9 @@ import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-deta
 import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
 import { GamesAggregate } from "../../models/games.aggregate.js";
 import { parseHTML } from "linkedom";
+import { eldenRingSteamApiData } from "../../../../assets/steam-api-responses/elden.ring.js";
+import { padakVideoSteamApiData } from "../../../../assets/steam-api-responses/padak.video.js";
+import { riskOfRainTwoDlcSteamApiData } from "../../../../assets/steam-api-responses/risk.of.rain.2.dlc.js";
 
 describe("game.identifier.js", function () {
   describe(".checkIfGameViaSteamWeb.", function () {
@@ -170,6 +173,157 @@ describe("game.identifier.js", function () {
     });
   });
 
+  describe(".checkIfGameViaSteamApi.", function () {
+    describe("Finds no unidentified steam apps in the database", function () {
+      beforeAll(async function () {
+        this.steamClient = createSteamMock([]);
+        this.steamAppsRepository = createSteamAppsRepositoryMock(
+          [],
+          [],
+          new SteamAppsAggregate([]),
+        );
+        this.gamesRepository = createGamesRepositoryMock([]);
+        this.historyChecksRepository = createHistoryChecksRepositoryMock();
+
+        this.identifier = new GameIdentifier(
+          this.steamClient,
+          this.steamAppsRepository,
+          this.gamesRepository,
+          this.historyChecksRepository,
+          createLoggerMock(),
+          createConfigMock().features,
+          parseHTML,
+        );
+
+        await this.identifier.checkIfGameViaSteamApi();
+      });
+
+      it("getSteamAppViaSteamApi was not called", function () {
+        expect(this.steamClient.getSteamAppViaSteamApi).toHaveBeenCalledTimes(0);
+      });
+
+      it("insertManyGames was not called", function () {
+        expect(this.gamesRepository.insertManyGames).toHaveBeenCalledTimes(0);
+      });
+
+      it("insertManyHistoryChecks was not called", function () {
+        expect(
+          this.historyChecksRepository.insertManyHistoryChecks,
+        ).toHaveBeenCalledTimes(0);
+      });
+
+      it("updateSteamAppsById was not called", function () {
+        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    describe("Finds two unidentified steam apps in the database, none of them being games", function () {
+      beforeAll(async function () {
+        const gameIds = [468060, 1607890];
+
+        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2, gameIds));
+
+        const steamApiApps = [padakVideoSteamApiData, riskOfRainTwoDlcSteamApiData];
+
+        this.steamApps.identifyTypesViaSteamApi(steamApiApps);
+
+        this.games = this.steamApps.extractGamesfromSteamApi(steamApiApps);
+
+        this.historyChecks = HistoryCheck.manyFromGames(this.games);
+
+        this.steamClient = createSteamMock(steamApiApps);
+        this.steamAppsRepository = createSteamAppsRepositoryMock(
+          undefined,
+          undefined,
+          this.steamApps,
+        );
+        this.gamesRepository = createGamesRepositoryMock();
+        this.historyChecksRepository = createHistoryChecksRepositoryMock();
+
+        this.identifier = new GameIdentifier(
+          this.steamClient,
+          this.steamAppsRepository,
+          this.gamesRepository,
+          this.historyChecksRepository,
+          createLoggerMock(),
+          createConfigMock().features,
+          parseHTML,
+        );
+
+        await this.identifier.checkIfGameViaSteamApi();
+      });
+
+      it("insertManyGames was not called", function () {
+        expect(this.gamesRepository.insertManyGames).toHaveBeenCalledTimes(0);
+      });
+
+      it("insertManyHistoryChecks was not called", function () {
+        expect(
+          this.historyChecksRepository.insertManyHistoryChecks,
+        ).toHaveBeenCalledTimes(0);
+      });
+
+      it("updateSteamAppsById was called with the correct argument", function () {
+        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
+          this.steamApps.content,
+        );
+      });
+    });
+
+    describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
+      beforeAll(async function () {
+        const gameIds = [1245620, 468060];
+
+        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2, gameIds));
+
+        const steamApiApps = [eldenRingSteamApiData, padakVideoSteamApiData];
+
+        this.steamApps.identifyTypesViaSteamApi(steamApiApps);
+
+        this.games = this.steamApps.extractGamesfromSteamApi(steamApiApps);
+
+        this.historyChecks = HistoryCheck.manyFromGames(this.games);
+
+        this.steamClient = createSteamMock(steamApiApps);
+        this.steamAppsRepository = createSteamAppsRepositoryMock(
+          undefined,
+          undefined,
+          this.steamApps,
+        );
+        this.gamesRepository = createGamesRepositoryMock();
+        this.historyChecksRepository = createHistoryChecksRepositoryMock();
+
+        this.identifier = new GameIdentifier(
+          this.steamClient,
+          this.steamAppsRepository,
+          this.gamesRepository,
+          this.historyChecksRepository,
+          createLoggerMock(),
+          createConfigMock().features,
+          parseHTML,
+        );
+
+        await this.identifier.checkIfGameViaSteamApi();
+      });
+
+      it("insertManyGames was called with the correct argument", function () {
+        expect(this.gamesRepository.insertManyGames).toHaveBeenCalledWith(this.games);
+      });
+
+      it("insertManyHistoryChecks was called with the correct argument", function () {
+        expect(this.historyChecksRepository.insertManyHistoryChecks).toHaveBeenCalledWith(
+          this.historyChecks,
+        );
+      });
+
+      it("updateSteamAppsById was called with the correct argument", function () {
+        expect(this.steamAppsRepository.updateSteamAppsById).toHaveBeenCalledWith(
+          this.steamApps.content,
+        );
+      });
+    });
+  });
+
   describe(".updateGamesWithoutReleaseDates.", function () {
     describe("Finds no games with missing release dates", function () {
       beforeAll(async function () {
@@ -260,19 +414,26 @@ function createSteamMock(args) {
   const spyObj = jasmine.createSpyObj("steamClient", [
     "getSourceHtmlDetailsPage",
     "getSteamWebHtmlDetailsPage",
+    "getSteamAppViaSteamApi",
   ]);
 
   spyObj.getSourceHtmlDetailsPage.and.returnValues(...args);
   spyObj.getSteamWebHtmlDetailsPage.and.returnValues(...args);
+  spyObj.getSteamAppViaSteamApi.and.returnValues(...args);
 
   return spyObj;
 }
 
-function createSteamAppsRepositoryMock(steamAppByIdDbRet, steamWebUntriedRet) {
+function createSteamAppsRepositoryMock(
+  steamAppByIdDbRet,
+  steamWebUntriedRet,
+  steamApiUntriedRet,
+) {
   return jasmine.createSpyObj("SteamAppsRepository", {
     updateSteamAppsById: Promise.resolve(undefined),
     getSteamAppsById: Promise.resolve(steamAppByIdDbRet),
     getSteamWebUntriedFilteredSteamApps: Promise.resolve(steamWebUntriedRet),
+    getSteamApiUntriedFilteredSteamApps: Promise.resolve(steamApiUntriedRet),
   });
 }
 

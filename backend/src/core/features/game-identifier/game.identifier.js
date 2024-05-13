@@ -38,7 +38,9 @@ export class GameIdentifier {
 
     if (steamApps.isEmpty) {
       this.#logger.debugc(
-        `no steam apps in db, retry in: ${this.#options.globalIterationDelay} ms`,
+        `no Steam web checkable steam apps in db, retry in: ${
+          this.#options.globalIterationDelay
+        } ms`,
       );
 
       return;
@@ -82,6 +84,48 @@ export class GameIdentifier {
     }
 
     await this.#steamAppsRepository.updateSteamAppsById(steamApps);
+  }
+
+  checkIfGameViaSteamApi = async () => {
+    this.#logger.debugc(`identifying games via Steam API`);
+
+    const steamApps = await this.#steamAppsRepository.getSteamApiUntriedFilteredSteamApps(
+      this.#options.batchSize,
+    );
+
+    if (steamApps.isEmpty) {
+      this.#logger.debugc(
+        `no Steam API checkable steam apps in db, retry in: ${
+          this.#options.globalIterationDelay
+        } ms`,
+      );
+
+      return;
+    }
+
+    const steamApiApps = await this.#getSteamAppsViaSteamApi(steamApps.content);
+
+    steamApps.identifyTypesViaSteamApi(steamApiApps);
+
+    const games = steamApps.extractGamesfromSteamApi(steamApiApps);
+
+    this.#persistGameCheckUpdates(games, steamApps.content);
+  };
+
+  async #getSteamAppsViaSteamApi(steamApps) {
+    const steamApiApps = [];
+
+    for (let steamApp of steamApps) {
+      const steamAppWithDetails = await this.#steamClient.getSteamAppViaSteamApi(
+        steamApp.appid,
+      );
+
+      steamApiApps.push(steamAppWithDetails);
+
+      await delay(this.#options.unitDelay);
+    }
+
+    return steamApiApps;
   }
 
   updateGamesWithoutReleaseDates = async () => {

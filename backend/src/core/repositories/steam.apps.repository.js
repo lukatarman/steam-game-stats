@@ -72,7 +72,6 @@ export class SteamAppsRepository {
               { failedVia: ValidDataSources.validDataSources.steamWeb },
             ],
           },
-
           { triedVia: ValidDataSources.validDataSources.steamWeb },
           { name: { $not: { $regex: /soundtrack$/, $options: "i" } } },
           { name: { $not: { $regex: /dlc$/, $options: "i" } } },
