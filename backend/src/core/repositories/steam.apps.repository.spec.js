@@ -2,6 +2,7 @@ import { getXGamesWithoutDetails } from "../models/game.mocks.js";
 import { SteamApp } from "../models/steam.app.js";
 import {
   getThreeSourceUntriedFilteredSteamApps,
+  getSixSteamApiUntriedFilteredSteamApps,
   getXSampleSteamApps,
 } from "../models/steam.app.mocks.js";
 import { ValidDataSources } from "../models/valid.data.sources.js";
@@ -309,6 +310,51 @@ describe("SteamAppsRepository", function () {
         it("the third steam app has the correct values", function () {
           matchedSteamAppTestCase(this.result, 3, 7);
         });
+      });
+    });
+  });
+
+  describe(".getSteamApiUntriedFilteredSteamApps.", function () {
+    describe("If two steam apps out of six match the filters,", function () {
+      beforeAll(async function () {
+        this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
+
+        await insertManyApps(
+          this.databaseClient,
+          getSixSteamApiUntriedFilteredSteamApps(),
+        );
+
+        const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
+
+        this.result = await steamAppsRepo.getSteamApiUntriedFilteredSteamApps(3);
+      });
+
+      afterAll(function () {
+        this.databaseClient.disconnect();
+      });
+
+      it("the result is an instance of SteamAppsAggregate", function () {
+        expect(this.result).toBeInstanceOf(SteamAppsAggregate);
+      });
+
+      it("the result contains two steam apps", function () {
+        expect(this.result.content.length).toBe(2);
+      });
+
+      it("the first steam app is an instance of SteamApp", function () {
+        expect(this.result.content[0]).toBeInstanceOf(SteamApp);
+      });
+
+      it("the first steam app has the correct id", function () {
+        expect(this.result.content[0].appid).toBe(3);
+      });
+
+      it("the second steam app is an instance of SteamApp", function () {
+        expect(this.result.content[1]).toBeInstanceOf(SteamApp);
+      });
+
+      it("the second steam app has the correct values", function () {
+        expect(this.result.content[1].appid).toBe(4);
       });
     });
   });

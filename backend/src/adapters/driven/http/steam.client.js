@@ -34,9 +34,8 @@ export class SteamClient {
     ).map((player) => (player ? player.data.response.player_count : 0));
   }
 
-  // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-  async getSourceHtmlDetailsPage(id, source) {
-    const url = this.#getSourceUrl(id, source);
+  async getSteamWebHtmlDetailsPage(id) {
+    const url = `https://store.steampowered.com/app/${id}`;
 
     try {
       return (await this.#httpClient.get(url)).data;
@@ -45,8 +44,9 @@ export class SteamClient {
     }
   }
 
-  async getSteamWebHtmlDetailsPage(id) {
-    const url = `https://store.steampowered.com/app/${id}`;
+  // TODO https://github.com/lukatarman/steam-game-stats/issues/192
+  async getSourceHtmlDetailsPage(id, source) {
+    const url = this.#getSourceUrl(id, source);
 
     try {
       return (await this.#httpClient.get(url)).data;
@@ -65,6 +65,18 @@ export class SteamClient {
 
       case ValidDataSources.validDataSources.steamDb:
         return `https://steamdb.info/app/${id}/info/`;
+    }
+  }
+
+  async getSteamAppViaSteamApi(steamAppId) {
+    try {
+      return (
+        await this.#httpClient.get(
+          `https://store.steampowered.com/api/appdetails?appids=${steamAppId}`,
+        )
+      ).data[`${steamAppId}`].data;
+    } catch (error) {
+      return "";
     }
   }
 }

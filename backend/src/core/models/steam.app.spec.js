@@ -8,6 +8,8 @@ import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-
 import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
 import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
+import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
+import { riskOfRainTwoDlcSteamApiData } from "../../../assets/steam-api-responses/risk.of.rain.2.dlc.js";
 
 describe("SteamApp", function () {
   describe(".copy", function () {
@@ -460,6 +462,128 @@ describe("SteamApp", function () {
 
       it("the app will be marked as a game", function () {
         expect(this.app.type).toEqual(SteamApp.validTypes.game);
+      });
+    });
+  });
+
+  describe(".recordSteamApiAttempt", () => {
+    describe("if the provided steam app exists", function () {
+      describe("if the steam app is still untried via steam api", function () {
+        beforeAll(function () {
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.recordSteamApiAttempt(true);
+        });
+
+        it("the steam app is marked as tried via steam api", function () {
+          expect(this.steamApp.triedVia).toEqual([
+            ValidDataSources.validDataSources.steamApi,
+          ]);
+        });
+      });
+
+      describe("if the steam app was already tried via steam api", function () {
+        beforeAll(function () {
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.recordSteamApiAttempt(true);
+          this.steamApp.recordSteamApiAttempt(true);
+        });
+
+        it("the steam app is marked as tried via steam api only once", function () {
+          expect(this.steamApp.triedVia).toEqual([
+            ValidDataSources.validDataSources.steamApi,
+          ]);
+        });
+      });
+    });
+
+    describe("if the html page is empty", function () {
+      describe("if the steam app is unmarked as failed via steam api", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamApi;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.recordSteamApiAttempt(undefined);
+        });
+
+        it("the steam app is marked as tried via steam api", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+
+        it("the steam app is marked as failed via steam api", function () {
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
+      });
+
+      describe("if the steam app was already marked as failed via steam api", function () {
+        beforeAll(function () {
+          this.source = ValidDataSources.validDataSources.steamApi;
+
+          this.steamApp = getXSampleSteamApps(1)[0];
+
+          this.steamApp.recordSteamApiAttempt(undefined);
+          this.steamApp.recordSteamApiAttempt(undefined);
+        });
+
+        it("the steam app is marked as tried via steam api", function () {
+          expect(this.steamApp.triedVia).toEqual([this.source]);
+        });
+
+        it("the steam app is marked as failed via steam api only once", function () {
+          expect(this.steamApp.failedVia).toEqual([this.source]);
+        });
+      });
+    });
+  });
+
+  describe(".updateAppTypeViaSteamApi", function () {
+    describe("when there is no steam app passed in", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        this.app.updateAppTypeViaSteamApi(undefined);
+      });
+
+      it("the app will be marked as unknown", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
+      });
+    });
+
+    describe("when the app type is game", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        this.app.updateAppTypeViaSteamApi(eldenRingSteamApiData);
+      });
+
+      it("the app will be marked as a game", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.game);
+      });
+    });
+
+    describe("when the app type is downloadable content", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        this.app.updateAppTypeViaSteamApi(riskOfRainTwoDlcSteamApiData);
+      });
+
+      it("the app will be marked as downloadable content", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.downloadableContent);
+      });
+    });
+
+    describe("when the app type is neither game nor dlc", function () {
+      beforeAll(function () {
+        this.app = getXSampleSteamApps(1)[0];
+
+        this.app.updateAppTypeViaSteamApi(padakVideoHtmlDetailsPage);
+      });
+
+      it("the app will be marked as unknown", function () {
+        expect(this.app.type).toEqual(SteamApp.validTypes.unknown);
       });
     });
   });

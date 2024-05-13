@@ -3,6 +3,7 @@ export class ValidDataSources {
     "steamWeb",
     "steamcharts",
     "steamDb",
+    "steamApi",
   ]);
 
   static #createValidDataSourcesEnum(values) {
