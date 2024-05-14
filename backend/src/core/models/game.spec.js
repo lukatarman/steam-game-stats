@@ -5,6 +5,7 @@ import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/cr
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
+import { getXSampleSteamApiApps } from "../../../assets/steam.api.responses.mock.js";
 import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { Game } from "./game.js";
@@ -228,17 +229,69 @@ describe("Game", function () {
       });
     });
 
-    describe("if the provided data does not include a proper release date", function () {
+    describe("if the provided steam api app includes a release date", function () {
+      describe("and the date is a valid date", function () {
+        beforeAll(function () {
+          this.result = Game.fromSteamApi(eldenRingSteamApiData);
+        });
+
+        it("the game's release date will have the correct value", function () {
+          expect(this.result.releaseDate).toEqual(new Date("24 February 2022 UTC"));
+        });
+      });
+
+      describe("and the date is not a valid date", function () {
+        beforeAll(function () {
+          this.result = Game.fromSteamApi(theLastNightSteamApiData);
+        });
+
+        it("the result is an instance of game", function () {
+          expect(this.result).toBeInstanceOf(Game);
+        });
+
+        it("the game's release date will be an empty string", function () {
+          expect(this.result.releaseDate).toBe("");
+        });
+      });
+    });
+
+    describe("if the provided steam api app doesn't include a release date", function () {
       beforeAll(function () {
-        this.result = Game.fromSteamApi(theLastNightSteamApiData);
+        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
       });
 
-      it("the result is an instance of game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("the game's release date will be an empty string", function () {
+      it("the game's release date will be set to an empty string", function () {
         expect(this.result.releaseDate).toBe("");
+      });
+    });
+
+    describe("if the provided steam api app doesn't include developers", function () {
+      beforeAll(function () {
+        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+      });
+
+      it("the game's developers will be set to an empty array", function () {
+        expect(this.result.developers).toEqual([]);
+      });
+    });
+
+    describe("if the provided steam api app doesn't include genres", function () {
+      beforeAll(function () {
+        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+      });
+
+      it("the game's genres will be set to an empty array", function () {
+        expect(this.result.genres).toEqual([]);
+      });
+    });
+
+    describe("if the provided steam api app doesn't include a description", function () {
+      beforeAll(function () {
+        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+      });
+
+      it("the game's description will be set to an empty string", function () {
+        expect(this.result.description).toBe("");
       });
     });
   });
