@@ -1,4 +1,6 @@
 import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
+import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
+import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
 import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import {
@@ -93,6 +95,30 @@ describe("GamesAggregate", function () {
         expect(this.gamesArray.content[1].releaseDate).toEqual(
           new Date("11 August 2020 UTC"),
         );
+      });
+    });
+  });
+
+  describe(".extractReleaseDatesViaSteamApi.", function () {
+    describe("When we try to update two games with missing release dates, one of them missing a release date", function () {
+      beforeAll(function () {
+        const gameIds = [1245620, 612400];
+
+        this.gamesArray = new GamesAggregate(getXGamesWithoutDetails(2, gameIds));
+
+        const steamApiApps = [eldenRingSteamApiData, theLastNightSteamApiData];
+
+        this.gamesArray.extractReleaseDatesViaSteamApi(steamApiApps);
+      });
+
+      it("the first game's release date is updated", function () {
+        expect(this.gamesArray.content[0].releaseDate).toEqual(
+          new Date("24 February 2022 UTC"),
+        );
+      });
+
+      it("the second game's release date remains unchanged", function () {
+        expect(this.gamesArray.content[1].releaseDate).toEqual("");
       });
     });
   });

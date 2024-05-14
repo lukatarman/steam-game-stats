@@ -189,20 +189,38 @@ export class Game {
   }
 
   #extractSteamApiReleaseDateFrom(steamApiApp) {
-    const releaseDate = new Date(steamApiApp.release_date.date);
+    if (!steamApiApp.release_date) return "";
+
+    const releaseDate = new Date(`${steamApiApp.release_date.date} UTC`);
 
     return releaseDate == "Invalid Date" ? "" : releaseDate;
   }
 
   #extractSteamApiDevelopersFrom(steamApiApp) {
+    if (!steamApiApp.developers) return [];
+
     return structuredClone(steamApiApp.developers);
   }
 
   #extractSteamApiGenresFrom(steamApiApp) {
+    if (!steamApiApp.genres) return [];
+
     return steamApiApp.genres.map((genre) => genre.description);
   }
 
   #extractSteamApiDescriptionFrom(steamApiApp) {
+    if (!steamApiApp.short_description) return "";
+
     return steamApiApp.short_description;
+  }
+
+  updateReleaseDateViaSteamApi(steamApiApp) {
+    if (this.releaseDate) return;
+
+    const date = this.#extractSteamApiReleaseDateFrom(steamApiApp);
+
+    if (date === "") return;
+
+    this.releaseDate = date;
   }
 }

@@ -34,4 +34,20 @@ export class GamesAggregate {
   #findPageForGameById(htmlDetailsPages, gameId) {
     return htmlDetailsPages.find((page) => gameId === page.id).page;
   }
+
+  extractReleaseDatesViaSteamApi(steamApiApps) {
+    this.#games = this.#games.map((game) => {
+      const gameCopy = game.copy();
+
+      const steamApiApp = this.#findGameByAppId(steamApiApps, gameCopy.id);
+
+      gameCopy.updateReleaseDateViaSteamApi(steamApiApp);
+
+      return gameCopy;
+    });
+  }
+
+  #findGameByAppId(steamApiApps, gameId) {
+    return steamApiApps.find((app) => app.steam_appid === gameId);
+  }
 }

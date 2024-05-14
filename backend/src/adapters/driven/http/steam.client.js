@@ -70,11 +70,15 @@ export class SteamClient {
 
   async getSteamAppViaSteamApi(steamAppId) {
     try {
-      return (
+      const response = (
         await this.#httpClient.get(
           `https://store.steampowered.com/api/appdetails?appids=${steamAppId}`,
         )
-      ).data[`${steamAppId}`].data;
+      ).data[`${steamAppId}`];
+
+      if (!response.success) return "";
+
+      return response.data;
     } catch (error) {
       return "";
     }

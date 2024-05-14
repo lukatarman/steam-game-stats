@@ -116,11 +116,9 @@ export class GameIdentifier {
     const steamApiApps = [];
 
     for (let steamApp of steamApps) {
-      const steamAppWithDetails = await this.#steamClient.getSteamAppViaSteamApi(
-        steamApp.appid,
-      );
+      const steamApiApp = await this.#steamClient.getSteamAppViaSteamApi(steamApp.appid);
 
-      steamApiApps.push(steamAppWithDetails);
+      steamApiApps.push(steamApiApp);
 
       await delay(this.#options.unitDelay);
     }
@@ -129,8 +127,7 @@ export class GameIdentifier {
   }
 
   updateGamesWithoutReleaseDates = async () => {
-    const source = ValidDataSources.validDataSources.steamDb;
-    this.#logger.debugc(`updating games without release dates via ${source}`);
+    this.#logger.debugc(`updating games without release dates via Steam API`);
 
     const games = await this.#gamesRepository.getGamesWithoutReleaseDates(
       this.#options.batchSize,
@@ -148,38 +145,14 @@ export class GameIdentifier {
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
 
-    const htmlDetailsPages = await this.#getSteamAppsHtmlDetailsPages(
-      steamApps.content,
-      source,
-    );
+    const steamApiApps = await this.#getSteamAppsViaSteamApi(steamApps.content);
 
-    steamApps.recordAttemptsViaSource(htmlDetailsPages, source);
+    steamApps.recordAttemptsViaSteamApi(steamApiApps);
 
-    games.extractReleaseDatesFrom(htmlDetailsPages);
+    games.extractReleaseDatesViaSteamApi(steamApiApps);
 
     this.#persistReleaseDates(games.content, steamApps.content);
   };
-
-  async #getSteamAppsHtmlDetailsPages(steamApps, source) {
-    const htmlDetailsPages = [];
-
-    for (let steamApp of steamApps) {
-      // TODO https://github.com/lukatarman/steam-game-stats/issues/192
-      const htmlPage = await this.#steamClient.getSourceHtmlDetailsPage(
-        steamApp.appid,
-        source,
-      );
-
-      htmlDetailsPages.push({
-        page: this.#htmlParser(htmlPage).document,
-        id: steamApp.appid,
-      });
-
-      await delay(this.#options.unitDelay);
-    }
-
-    return htmlDetailsPages;
-  }
 
   async #persistReleaseDates(games, steamApps) {
     this.#logger.debugc(`persisting ${steamApps.length} apps with updated html attempts`);

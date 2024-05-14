@@ -79,6 +79,7 @@ async function main() {
   const runnables = [
     steamAppsAggregatorRunnable,
     { func: gameIdentifier.checkIfGameViaSteamWeb },
+    { func: gameIdentifier.checkIfGameViaSteamApi },
     { func: gameIdentifier.updateGamesWithoutReleaseDates },
     { func: playerHistoryAggregator.addPlayerHistoryFromSteamcharts },
     { func: playerHistoryAggregator.addCurrentPlayers },
