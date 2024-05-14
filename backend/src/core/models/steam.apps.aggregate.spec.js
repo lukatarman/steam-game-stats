@@ -219,7 +219,9 @@ describe("SteamAppsAggregate", function () {
   describe(".recordAttemptsViaSteamApi", function () {
     describe("when recording attempts via steam api", function () {
       beforeAll(function () {
-        this.steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2, [1245620]));
+        this.steamAppsArray = new SteamAppsAggregate(
+          getXSampleSteamApps(2, [1245620, 130]),
+        );
 
         const steamApiApps = [eldenRingSteamApiData, ""];
 

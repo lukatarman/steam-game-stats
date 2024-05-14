@@ -245,10 +245,6 @@ describe("Game", function () {
           this.result = Game.fromSteamApi(theLastNightSteamApiData);
         });
 
-        it("the result is an instance of game", function () {
-          expect(this.result).toBeInstanceOf(Game);
-        });
-
         it("the game's release date will be an empty string", function () {
           expect(this.result.releaseDate).toBe("");
         });

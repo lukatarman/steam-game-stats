@@ -100,7 +100,7 @@ describe("GamesAggregate", function () {
   });
 
   describe(".extractReleaseDatesViaSteamApi.", function () {
-    describe("When we try to update two games with missing release dates,", function () {
+    describe("When we try to update two games with missing release dates, one of them missing a release date", function () {
       beforeAll(function () {
         const gameIds = [1245620, 612400];
 
