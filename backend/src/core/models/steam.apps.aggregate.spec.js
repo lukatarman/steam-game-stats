@@ -215,4 +215,26 @@ describe("SteamAppsAggregate", function () {
       });
     });
   });
+
+  describe(".recordAttemptsViaSteamApi", function () {
+    describe("when recording attempts via steam api", function () {
+      beforeAll(function () {
+        this.steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2, [1245620]));
+
+        const steamApiApps = [eldenRingSteamApiData, ""];
+
+        this.steamAppsArray.recordAttemptsViaSteamApi(steamApiApps);
+      });
+
+      it("the first apps attempts are successfully recorded", function () {
+        expect(this.steamAppsArray.content[0].triedVia).toEqual(["steamApi"]);
+        expect(this.steamAppsArray.content[0].failedVia).toEqual([]);
+      });
+
+      it("the second apps attempts are successfully recorded", function () {
+        expect(this.steamAppsArray.content[1].triedVia).toEqual(["steamApi"]);
+        expect(this.steamAppsArray.content[1].failedVia).toEqual(["steamApi"]);
+      });
+    });
+  });
 });

@@ -1,12 +1,9 @@
 import { GameIdentifier } from "./game.identifier.js";
 import { HistoryCheck } from "../../models/history.check.js";
 import { createLoggerMock } from "../../../common/logger.mock.js";
-import { counterStrikeHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
-import { riskOfRainHtmlDetailsSteamDb } from "../../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { getXGamesWithoutDetails } from "../../models/game.mocks.js";
 import { createConfigMock } from "../../../common/config.loader.mock.js";
 import { getXSampleSteamApps } from "../../models/steam.app.mocks.js";
-import { ValidDataSources } from "../../models/valid.data.sources.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
 import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
 import { getParsedHtmlPages } from "../../../../assets/html.details.pages.mock.js";
@@ -17,6 +14,7 @@ import { parseHTML } from "linkedom";
 import { eldenRingSteamApiData } from "../../../../assets/steam-api-responses/elden.ring.js";
 import { padakVideoSteamApiData } from "../../../../assets/steam-api-responses/padak.video.js";
 import { riskOfRainTwoDlcSteamApiData } from "../../../../assets/steam-api-responses/risk.of.rain.2.dlc.js";
+import { counterStrikeSteamApiData } from "../../../../assets/steam-api-responses/counter.strike.js";
 
 describe("game.identifier.js", function () {
   describe(".checkIfGameViaSteamWeb.", function () {
@@ -360,24 +358,19 @@ describe("game.identifier.js", function () {
 
     describe("Finds two games with missing release dates", function () {
       beforeAll(async function () {
-        this.games = new GamesAggregate(getXGamesWithoutDetails(2));
+        const appIds = [1245620, 730];
 
-        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
+        this.games = new GamesAggregate(getXGamesWithoutDetails(2, appIds));
 
-        const htmlDetailsPages = [
-          counterStrikeHtmlDetailsSteamDb,
-          riskOfRainHtmlDetailsSteamDb,
-        ];
+        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2, appIds));
 
-        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
+        const steamApiApps = [eldenRingSteamApiData, counterStrikeSteamApiData];
 
-        this.source = ValidDataSources.validDataSources.steamDb;
+        this.steamApps.recordAttemptsViaSteamApi(steamApiApps);
 
-        this.steamApps.recordAttemptsViaSource(parsedPages, this.source);
+        this.games.extractReleaseDatesViaSteamApi(steamApiApps);
 
-        this.games.extractReleaseDatesFrom(parsedPages);
-
-        this.steamClientMock = createSteamMock(htmlDetailsPages);
+        this.steamClientMock = createSteamMock(steamApiApps);
         this.steamAppsRepository = createSteamAppsRepositoryMock(this.steamApps);
         this.gamesRepository = createGamesRepositoryMock(this.games);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();

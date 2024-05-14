@@ -86,4 +86,16 @@ export class SteamAppsAggregate {
       })
       .filter((game) => !!game);
   }
+
+  recordAttemptsViaSteamApi(steamApiApps) {
+    this.#apps = this.#apps.map((app) => {
+      const appCopy = app.copy();
+
+      const steamApiApp = this.#findSteamApiAppById(steamApiApps, appCopy.appid);
+
+      appCopy.recordSteamApiAttempt(steamApiApp);
+
+      return appCopy;
+    });
+  }
 }

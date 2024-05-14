@@ -5,8 +5,8 @@ import { Game } from "./game.js";
 import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
 
-export const getXGamesWithoutDetails = (amount) => {
-  const steamApps = getXSampleSteamApps(amount);
+export const getXGamesWithoutDetails = (amount, ids = []) => {
+  const steamApps = getXSampleSteamApps(amount, ids);
 
   return steamApps.map((app, i) =>
     Game.fromSteamApp(steamApps[i], getParsedHtmlPage("")),

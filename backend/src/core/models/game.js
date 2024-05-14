@@ -189,7 +189,7 @@ export class Game {
   }
 
   #extractSteamApiReleaseDateFrom(steamApiApp) {
-    const releaseDate = new Date(steamApiApp.release_date.date);
+    const releaseDate = new Date(`${steamApiApp.release_date.date} UTC`);
 
     return releaseDate == "Invalid Date" ? "" : releaseDate;
   }
@@ -204,5 +204,15 @@ export class Game {
 
   #extractSteamApiDescriptionFrom(steamApiApp) {
     return steamApiApp.short_description;
+  }
+
+  updateReleaseDateViaSteamApi(steamApiApp) {
+    if (this.releaseDate) return;
+
+    const date = this.#extractSteamApiReleaseDateFrom(steamApiApp);
+
+    if (date === "") return;
+
+    this.releaseDate = date;
   }
 }

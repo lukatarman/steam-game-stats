@@ -587,4 +587,47 @@ describe("Game", function () {
       });
     });
   });
+
+  describe(".updateReleaseDateViaSteamApi", function () {
+    describe("If the game already has an existing release date", function () {
+      beforeAll(function () {
+        this.game = getXGamesWithoutDetails(1)[0];
+        this.existingDate = new Date("23 July 2023");
+
+        this.game.releaseDate = this.existingDate;
+
+        this.game.updateReleaseDateViaSteamApi(eldenRingSteamApiData);
+      });
+
+      it("the game's release date stays unchanged", function () {
+        expect(this.game.releaseDate).toBe(this.existingDate);
+      });
+    });
+
+    describe("When we try to use a page that has no existing release date", function () {
+      describe("and the provided html page doesn't contain a valid release date,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+
+          this.game.updateReleaseDateViaSteamApi(theLastNightSteamApiData);
+        });
+
+        it("the release date stays unchanged", function () {
+          expect(this.game.releaseDate).toBe("");
+        });
+      });
+
+      describe("and the provided html page contains a valid release date,", function () {
+        beforeAll(function () {
+          this.game = getXGamesWithoutDetails(1)[0];
+
+          this.game.updateReleaseDateViaSteamApi(eldenRingSteamApiData);
+        });
+
+        it("the release date is changed to the correct value", function () {
+          expect(this.game.releaseDate).toEqual(new Date("24 February 2022 UTC"));
+        });
+      });
+    });
+  });
 });
