@@ -49,7 +49,7 @@ export class GameIdentifier {
 
     steamApps.identifyTypesViaSteamWeb(htmlDetailsPages);
 
-    const games = steamApps.extractGames(htmlDetailsPages);
+    const games = steamApps.extractGamesFromSteamWeb(htmlDetailsPages);
 
     await this.#persistGameCheckUpdates(games, steamApps.content);
   };

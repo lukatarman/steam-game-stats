@@ -1,13 +1,11 @@
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
 import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
-import { crusaderKingsDetailsPage } from "../../../assets/steam-details-pages/crusader.kings.multiple.developers.html.details.page.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
-import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-details-pages/risk.of.rain.missing.additional.info.page.js";
+import { crusaderKingsDetailsPage } from "../../../assets/steam-web-html-details-pages/crusader.kings.multiple.developers.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
+import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-web-html-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { getXSampleSteamApiApps } from "../../../assets/steam.api.responses.mock.js";
-import { karmazooHtmlDetailsPageSteamDb } from "../../../assets/steamdb-details-pages/karmazoo.html.details.page.js";
-import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
 import { Game } from "./game.js";
 import { getOneGameWithPlayerHistory, getXGamesWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
@@ -292,78 +290,6 @@ describe("Game", function () {
     });
   });
 
-  describe(".fromSteamcharts", function () {
-    describe("is called with no arguments, ", function () {
-      it("an Error is thrown", function () {
-        expect(Game.fromSteamcharts).toThrowError();
-      });
-    });
-
-    describe("is called with incomplete arguments, ", function () {
-      beforeAll(function () {
-        this.testObject = {
-          id: 123,
-          name: "test game",
-        };
-      });
-
-      it("an Error is thrown", function () {
-        expect(Game.fromSteamcharts.bind(this.testObject)).toThrowError();
-      });
-    });
-
-    describe("is called with appropriate attributes, the returned value", function () {
-      beforeAll(function () {
-        this.testObject = {
-          appid: 123,
-          name: "test game",
-          imageUrl: "test url",
-          playerHistory: [],
-        };
-
-        this.result = Game.fromSteamcharts(this.testObject);
-      });
-
-      it("is an instance of Game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("has an 'id' property which equals 123", function () {
-        expect(this.result.id).toBe(this.testObject.appid);
-      });
-
-      it("has a 'name' property which equals 'test game'", function () {
-        expect(this.result.name).toBe(this.testObject.name);
-      });
-
-      it("has a 'releaseDate' property which equals an empty string", function () {
-        expect(this.result.releaseDate).toBe("");
-      });
-
-      it("has a 'developers' property which equals an empty array", function () {
-        expect(this.result.developers).toEqual([]);
-      });
-
-      it("has a 'genres' property which equals an empty array", function () {
-        expect(this.result.genres).toEqual([]);
-      });
-
-      it("has a 'description' property which equals an empty string", function () {
-        expect(this.result.description).toEqual("");
-      });
-
-      it("has an 'imageUrl' property which equals a link", function () {
-        expect(this.result.imageUrl).toBe(
-          `https://cdn.akamai.steamstatic.com/steam/apps/${this.testObject.appid}/header.jpg`,
-        );
-      });
-
-      it("has a 'playerHistory' property which equals an empty array", function () {
-        expect(this.result.playerHistory).toEqual(this.testObject.playerHistory);
-      });
-    });
-  });
-
   describe(".fromDbEntry", function () {
     describe("is called with no arguments, ", function () {
       it("an Error is thrown", function () {
@@ -532,9 +458,7 @@ describe("Game", function () {
 
   describe(".pushSteamchartsPlayerHistory adds player histories from Steamcharts to existing entries while keeping the order intact.", function () {
     beforeAll(function () {
-      const steamApp = getXSampleSteamApps(1);
-
-      this.result = Game.fromSteamcharts(steamApp);
+      this.result = getXGamesWithoutDetails(1)[0];
 
       this.result.pushCurrentPlayers(513);
 
@@ -574,66 +498,6 @@ describe("Game", function () {
       expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
       expect(this.result.playerHistory[2]).toBeInstanceOf(PlayerHistory);
       expect(this.result.playerHistory[3]).toBeInstanceOf(PlayerHistory);
-    });
-  });
-
-  describe(".updateReleaseDate", function () {
-    describe("When we try to update the date of a game with an existing release date,", function () {
-      beforeAll(function () {
-        this.game = getXGamesWithoutDetails(1)[0];
-        this.existingDate = new Date("23 July 2023");
-
-        this.game.releaseDate = this.existingDate;
-
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-        this.game.updateReleaseDate(page);
-      });
-
-      it("the game's release date stays unchanged", function () {
-        expect(this.game.releaseDate).toBe(this.existingDate);
-      });
-    });
-
-    describe("When we try to use a page that has no existing release date", function () {
-      describe("and the provided html page doesn't contain a valid release date,", function () {
-        beforeAll(function () {
-          this.game = getXGamesWithoutDetails(1)[0];
-          const page = getParsedHtmlPage(karmazooHtmlDetailsPageSteamDb);
-
-          this.game.updateReleaseDate(page);
-        });
-
-        it("the release date stays unchanged", function () {
-          expect(this.game.releaseDate).toBe("");
-        });
-      });
-
-      describe("and the provided html page doesn't contain a date section", function () {
-        beforeAll(function () {
-          this.game = getXGamesWithoutDetails(1)[0];
-          const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-          this.game.updateReleaseDate(page);
-        });
-
-        it("the release date stays unchanged", function () {
-          expect(this.game.releaseDate).toBe("");
-        });
-      });
-
-      describe("and the provided html page contains a valid release date,", function () {
-        beforeAll(function () {
-          this.game = getXGamesWithoutDetails(1)[0];
-          const page = getParsedHtmlPage(riskOfRainHtmlDetailsSteamDb);
-
-          this.game.updateReleaseDate(page);
-        });
-
-        it("the release date is changed to the correct value", function () {
-          expect(this.game.releaseDate).toEqual(new Date("11 August 2020 UTC"));
-        });
-      });
     });
   });
 

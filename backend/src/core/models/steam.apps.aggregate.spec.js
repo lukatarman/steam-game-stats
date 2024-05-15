@@ -1,8 +1,8 @@
 import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { counterStrikeSteamApiData } from "../../../assets/steam-api-responses/counter.strike.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
 import { getXSampleSteamApiApps } from "../../../assets/steam.api.responses.mock.js";
 import { Game } from "./game.js";
 import { SteamApp } from "./steam.app.js";
@@ -92,7 +92,7 @@ describe("SteamAppsAggregate", function () {
         const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
         const pages = getParsedHtmlPages(["", ""]);
 
-        this.result = steamAppsArray.extractGames(pages);
+        this.result = steamAppsArray.extractGamesFromSteamWeb(pages);
       });
 
       it("no games are returned", function () {
@@ -107,7 +107,7 @@ describe("SteamAppsAggregate", function () {
 
         steamAppsArray.identifyTypesViaSteamWeb(pages);
 
-        this.result = steamAppsArray.extractGames(pages);
+        this.result = steamAppsArray.extractGamesFromSteamWeb(pages);
       });
 
       it("one game is returned", function () {
@@ -125,7 +125,7 @@ describe("SteamAppsAggregate", function () {
           mortalDarknessGameHtmlDetailsPage,
         ]);
 
-        this.result = steamAppsArray.extractGames(pages);
+        this.result = steamAppsArray.extractGamesFromSteamWeb(pages);
       });
 
       it("two games are returned", function () {

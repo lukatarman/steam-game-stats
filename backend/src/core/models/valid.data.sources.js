@@ -2,7 +2,6 @@ export class ValidDataSources {
   static validDataSources = this.#createValidDataSourcesEnum([
     "steamWeb",
     "steamcharts",
-    "steamDb",
     "steamApi",
   ]);
 

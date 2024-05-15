@@ -30,14 +30,52 @@ export class Game {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = game.#extractReleaseDateFrom(page);
-    game.developers    = game.#extractDevelopersFrom(page);
-    game.genres        = game.#extractGenresFrom(page);
-    game.description   = game.#extractDescriptionFrom(page);
+    game.releaseDate   = game.#extractReleaseDateViaSteamWeb(page);
+    game.developers    = game.#extractDevelopersViaSteamWeb(page);
+    game.genres        = game.#extractGenresViaSteamWeb(page);
+    game.description   = game.#extractDescriptionViaSteamWeb(page);
     game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
     game.playerHistory = [];
     
     return game;
+  }
+
+  #extractReleaseDateViaSteamWeb(page) {
+    const releaseDateElement = page.querySelector(".release_date .date");
+
+    if (!releaseDateElement) return "";
+
+    const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
+
+    return releaseDate == "Invalid Date" ? "" : releaseDate;
+  }
+
+  #extractDevelopersViaSteamWeb(page) {
+    const developers = page.querySelector(".dev_row #developers_list");
+
+    if (!developers) return [];
+
+    return Array.from(developers.children).map((developer) =>
+      developer.textContent.trim(),
+    );
+  }
+
+  #extractGenresViaSteamWeb(page) {
+    const genres = page.querySelector("#genresAndManufacturer span");
+
+    if (!genres) return [];
+
+    return Array.from(genres.children)
+      .map((genre) => genre.textContent.trim())
+      .filter((genre) => !!genre);
+  }
+
+  #extractDescriptionViaSteamWeb(page) {
+    const description = page.querySelector(".game_description_snippet");
+
+    if (!description) return "";
+
+    return description.textContent.trim();
   }
 
   // prettier-ignore
@@ -45,31 +83,41 @@ export class Game {
       const game         = new Game();
       game.id            = steamApiApp.steam_appid;
       game.name          = steamApiApp.name;
-      game.releaseDate   = game.#extractSteamApiReleaseDateFrom(steamApiApp);
-      game.developers    = game.#extractSteamApiDevelopersFrom(steamApiApp);
-      game.genres        = game.#extractSteamApiGenresFrom(steamApiApp);
-      game.description   = game.#extractSteamApiDescriptionFrom(steamApiApp);
+      game.releaseDate   = game.#extractReleaseDateViaSteamApi(steamApiApp);
+      game.developers    = game.#extractDevelopersViaSteamApi(steamApiApp);
+      game.genres        = game.#extractGenresViaSteamApi(steamApiApp);
+      game.description   = game.#extractDescriptionViaSteamApi(steamApiApp);
       game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
       game.playerHistory = [];
       
       return game;
     }
 
-  //@todo https://github.com/lukatarman/steam-game-stats-backend/issues/115
+  #extractReleaseDateViaSteamApi(steamApiApp) {
+    if (!steamApiApp.release_date) return "";
 
-  // prettier-ignore
-  static fromSteamcharts(steamApp) {
-      const game         = new Game();
-      game.id            = steamApp.appid;
-      game.name          = steamApp.name;
-      game.releaseDate   = "";
-      game.developers    = [];
-      game.genres        = [];
-      game.description   = "";
-      game.imageUrl      = `https://cdn.akamai.steamstatic.com/steam/apps/${game.id}/header.jpg`
-      game.playerHistory = [];
-      return game;
-    }
+    const releaseDate = new Date(`${steamApiApp.release_date.date} UTC`);
+
+    return releaseDate == "Invalid Date" ? "" : releaseDate;
+  }
+
+  #extractDevelopersViaSteamApi(steamApiApp) {
+    if (!steamApiApp.developers) return [];
+
+    return structuredClone(steamApiApp.developers);
+  }
+
+  #extractGenresViaSteamApi(steamApiApp) {
+    if (!steamApiApp.genres) return [];
+
+    return steamApiApp.genres.map((genre) => genre.description);
+  }
+
+  #extractDescriptionViaSteamApi(steamApiApp) {
+    if (!steamApiApp.short_description) return "";
+
+    return steamApiApp.short_description;
+  }
 
   static manyFromDbEntry(entries) {
     return entries.map((entry) => this.fromDbEntry(entry));
@@ -123,101 +171,10 @@ export class Game {
     });
   }
 
-  #extractReleaseDateFrom(page) {
-    const releaseDateElement = page.querySelector(".release_date .date");
-
-    if (!releaseDateElement) return "";
-
-    const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
-
-    return releaseDate == "Invalid Date" ? "" : releaseDate;
-  }
-
-  #extractDevelopersFrom(page) {
-    const developers = page.querySelector(".dev_row #developers_list");
-
-    if (!developers) return [];
-
-    return Array.from(developers.children).map((developer) =>
-      developer.textContent.trim(),
-    );
-  }
-
-  #extractGenresFrom(page) {
-    const genres = page.querySelector("#genresAndManufacturer span");
-
-    if (!genres) return [];
-
-    return Array.from(genres.children)
-      .map((genre) => genre.textContent.trim())
-      .filter((genre) => !!genre);
-  }
-
-  #extractDescriptionFrom(page) {
-    const description = page.querySelector(".game_description_snippet");
-
-    if (!description) return "";
-
-    return description.textContent.trim();
-  }
-
-  updateReleaseDate(page) {
-    if (this.releaseDate) return;
-
-    const date = this.#extractSteamDbReleaseDateFrom(page);
-
-    if (date === "") return;
-
-    this.releaseDate = date;
-  }
-
-  #extractSteamDbReleaseDateFrom(page) {
-    const releaseDateElement = page.querySelector(
-      "table.table.table-bordered.table-hover.table-responsive-flex tbody tr:last-child td:last-child",
-    );
-
-    if (!releaseDateElement) return "";
-
-    const releaseDateString = releaseDateElement.textContent;
-
-    const releaseDate = new Date(`
-      ${releaseDateString.slice(0, releaseDateString.indexOf("–") - 1)} UTC`);
-
-    if (releaseDate == "Invalid Date") return "";
-
-    return releaseDate;
-  }
-
-  #extractSteamApiReleaseDateFrom(steamApiApp) {
-    if (!steamApiApp.release_date) return "";
-
-    const releaseDate = new Date(`${steamApiApp.release_date.date} UTC`);
-
-    return releaseDate == "Invalid Date" ? "" : releaseDate;
-  }
-
-  #extractSteamApiDevelopersFrom(steamApiApp) {
-    if (!steamApiApp.developers) return [];
-
-    return structuredClone(steamApiApp.developers);
-  }
-
-  #extractSteamApiGenresFrom(steamApiApp) {
-    if (!steamApiApp.genres) return [];
-
-    return steamApiApp.genres.map((genre) => genre.description);
-  }
-
-  #extractSteamApiDescriptionFrom(steamApiApp) {
-    if (!steamApiApp.short_description) return "";
-
-    return steamApiApp.short_description;
-  }
-
   updateReleaseDateViaSteamApi(steamApiApp) {
     if (this.releaseDate) return;
 
-    const date = this.#extractSteamApiReleaseDateFrom(steamApiApp);
+    const date = this.#extractReleaseDateViaSteamApi(steamApiApp);
 
     if (date === "") return;
 
