@@ -22,7 +22,7 @@ export class SteamAppsAggregate {
 
       const page = this.#findPageForSteamAppById(htmlDetailsPages, appCopy.appid);
 
-      appCopy.recordSteamWebHtmlAttempt(page);
+      appCopy.recordSteamWebCallAttempt(page);
 
       appCopy.updateAppTypeViaSteamWeb(page);
 
@@ -34,7 +34,7 @@ export class SteamAppsAggregate {
     return htmlDetailsPages.find((page) => steamAppId === page.id).page;
   }
 
-  extractGames(htmlDetailsPages) {
+  extractGamesViaSteamWeb(htmlDetailsPages) {
     return this.#apps
       .map((app) => {
         if (!app.isGame) return "";
@@ -46,24 +46,13 @@ export class SteamAppsAggregate {
       .filter((game) => !!game);
   }
 
-  recordAttemptsViaSource(htmlDetailsPages, source) {
-    this.#apps = this.#apps.map((app) => {
-      const appCopy = app.copy();
-      const currentPage = this.#findPageForSteamAppById(htmlDetailsPages, appCopy.appid);
-
-      appCopy.recordHtmlAttempt(currentPage, source);
-
-      return appCopy;
-    });
-  }
-
   identifyTypesViaSteamApi(steamApiApps) {
     this.#apps = this.#apps.map((app) => {
       const appCopy = app.copy();
 
       const steamApiApp = this.#findSteamApiAppById(steamApiApps, appCopy.appid);
 
-      appCopy.recordSteamApiAttempt(steamApiApp);
+      appCopy.recordSteamApiCallAttempt(steamApiApp);
 
       appCopy.updateAppTypeViaSteamApi(steamApiApp);
 
@@ -75,7 +64,7 @@ export class SteamAppsAggregate {
     return steamApiApps.find((app) => app.steam_appid === steamAppId);
   }
 
-  extractGamesfromSteamApi(steamApiApps) {
+  extractGamesViaSteamApi(steamApiApps) {
     return this.#apps
       .map((app) => {
         if (!app.isGame) return "";
@@ -93,7 +82,7 @@ export class SteamAppsAggregate {
 
       const steamApiApp = this.#findSteamApiAppById(steamApiApps, appCopy.appid);
 
-      appCopy.recordSteamApiAttempt(steamApiApp);
+      appCopy.recordSteamApiCallAttempt(steamApiApp);
 
       return appCopy;
     });

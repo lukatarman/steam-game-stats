@@ -4,10 +4,10 @@ import { createLoggerMock } from "../../../common/logger.mock.js";
 import { getXGamesWithoutDetails } from "../../models/game.mocks.js";
 import { createConfigMock } from "../../../common/config.loader.mock.js";
 import { getXSampleSteamApps } from "../../models/steam.app.mocks.js";
-import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
-import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { gta5ageRestrictedHtmlDetailsPage } from "../../../../assets/steam-web-html-details-pages/gta.5.age.restricted.html.details.page.js";
+import { theSims4dlcHtmlDetailsPage } from "../../../../assets/steam-web-html-details-pages/the.sims.4.dlc.html.details.page.js";
 import { getParsedHtmlPages } from "../../../../assets/html.details.pages.mock.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
 import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
 import { GamesAggregate } from "../../models/games.aggregate.js";
 import { parseHTML } from "linkedom";
@@ -73,7 +73,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamWeb(parsedHtmlPages);
 
-        this.games = this.steamApps.extractGames(parsedHtmlPages);
+        this.games = this.steamApps.extractGamesViaSteamWeb(parsedHtmlPages);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -128,7 +128,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamWeb(parsedHtmlPages);
 
-        this.games = this.steamApps.extractGames(parsedHtmlPages);
+        this.games = this.steamApps.extractGamesViaSteamWeb(parsedHtmlPages);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -225,7 +225,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamApi(steamApiApps);
 
-        this.games = this.steamApps.extractGamesfromSteamApi(steamApiApps);
+        this.games = this.steamApps.extractGamesViaSteamApi(steamApiApps);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -278,7 +278,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamApi(steamApiApps);
 
-        this.games = this.steamApps.extractGamesfromSteamApi(steamApiApps);
+        this.games = this.steamApps.extractGamesViaSteamApi(steamApiApps);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -405,12 +405,10 @@ describe("game.identifier.js", function () {
 
 function createSteamMock(args) {
   const spyObj = jasmine.createSpyObj("steamClient", [
-    "getSourceHtmlDetailsPage",
     "getSteamWebHtmlDetailsPage",
     "getSteamAppViaSteamApi",
   ]);
 
-  spyObj.getSourceHtmlDetailsPage.and.returnValues(...args);
   spyObj.getSteamWebHtmlDetailsPage.and.returnValues(...args);
   spyObj.getSteamAppViaSteamApi.and.returnValues(...args);
 
@@ -437,7 +435,6 @@ function createGamesRepositoryMock(gamesRepoRet) {
     updateGameDetailsFrom: Promise.resolve(undefined),
     getGamesWithoutReleaseDates: Promise.resolve(gamesRepoRet),
     updateReleaseDates: Promise.resolve(undefined),
-    getSourceHtmlDetailsPage: Promise.resolve(gamesRepoRet),
   });
 }
 

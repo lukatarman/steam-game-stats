@@ -1,7 +1,7 @@
 import { addPlayerHistoriesFromSteamcharts } from "./player.history.service.js";
 import { Game } from "../models/game.js";
-import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/elden.ring.multiple.histories.html.details.page.js";
-import { crushTheCastleHtmlDetailsSteamcharts } from "../../../assets/steamcharts-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
+import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-html-details-pages/elden.ring.multiple.histories.html.details.page.js";
+import { crushTheCastleHtmlDetailsSteamcharts } from "../../../assets/steamcharts-html-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 import { PlayerHistory } from "../models/player.history.js";
 
 describe("player.history.service.js", function () {

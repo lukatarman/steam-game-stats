@@ -19,22 +19,6 @@ export class GamesAggregate {
     return !this.#games.length > 0;
   }
 
-  extractReleaseDatesFrom(htmlDetailsPages) {
-    this.#games = this.#games.map((game) => {
-      const gameCopy = game.copy();
-
-      const page = this.#findPageForGameById(htmlDetailsPages, gameCopy.id);
-
-      gameCopy.updateReleaseDate(page);
-
-      return gameCopy;
-    });
-  }
-
-  #findPageForGameById(htmlDetailsPages, gameId) {
-    return htmlDetailsPages.find((page) => gameId === page.id).page;
-  }
-
   extractReleaseDatesViaSteamApi(steamApiApps) {
     this.#games = this.#games.map((game) => {
       const gameCopy = game.copy();

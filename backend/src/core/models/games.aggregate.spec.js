@@ -1,12 +1,6 @@
-import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
 import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
-import { counterStrikeHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/counter.strike.html.details.page.js";
-import { riskOfRainHtmlDetailsSteamDb } from "../../../assets/steamdb-details-pages/risk.of.rain.html.details.page.js";
-import {
-  getXGamesWithoutDetails,
-  getXsteamchartsInstantiatedGames,
-} from "./game.mocks.js";
+import { getXGamesWithoutDetails } from "./game.mocks.js";
 import { GamesAggregate } from "./games.aggregate.js";
 
 describe("GamesAggregate", function () {
@@ -29,7 +23,7 @@ describe("GamesAggregate", function () {
     });
   });
 
-  describe(".getIds", () => {
+  describe(".ids", () => {
     describe("if the aggregate contains two games,", function () {
       beforeAll(function () {
         const games = new GamesAggregate(getXGamesWithoutDetails(2));
@@ -65,36 +59,6 @@ describe("GamesAggregate", function () {
 
       it("the emptyness check is false", function () {
         expect(this.result).toBeFalsy();
-      });
-    });
-  });
-
-  describe(".extractReleaseDatesFrom.", function () {
-    describe("When we try to update two games with missing release dates,", function () {
-      beforeAll(function () {
-        const games = getXsteamchartsInstantiatedGames(2);
-        this.gamesArray = new GamesAggregate(games);
-
-        const htmlDetailsPages = [
-          counterStrikeHtmlDetailsSteamDb,
-          riskOfRainHtmlDetailsSteamDb,
-        ];
-
-        const parsedPages = getParsedHtmlPages(htmlDetailsPages);
-
-        this.gamesArray.extractReleaseDatesFrom(parsedPages);
-      });
-
-      it("the first game's release date is updated", function () {
-        expect(this.gamesArray.content[0].releaseDate).toEqual(
-          new Date("21 August 2012 UTC"),
-        );
-      });
-
-      it("the second game's release date is updated", function () {
-        expect(this.gamesArray.content[1].releaseDate).toEqual(
-          new Date("11 August 2020 UTC"),
-        );
       });
     });
   });

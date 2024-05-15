@@ -1,5 +1,5 @@
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
 import { daysToMs } from "../../common/time.utils.js";
 import { Game } from "./game.js";
 import { getSamplePlayerHistory } from "./player.history.mocks.js";
@@ -19,12 +19,6 @@ export const getOneSteamAppInstantiatedGame = () => {
   const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
 
   return Game.fromSteamApp(steamApp, page);
-};
-
-export const getXsteamchartsInstantiatedGames = (amount) => {
-  return Array.from({ length: amount }, (x, index) =>
-    Game.fromSteamcharts({ appid: index + 1, name: `Game #${index + 1}` }),
-  );
 };
 
 export const getOneGameWithDetails = () => {

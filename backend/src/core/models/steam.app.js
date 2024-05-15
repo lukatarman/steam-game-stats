@@ -32,6 +32,10 @@ export class SteamApp {
     return copy;
   }
 
+  get isGame() {
+    return this.type === SteamApp.validTypes.game;
+  }
+
   static manyFromSteamApi(apps) {
     return apps.map((app) => SteamApp.oneFromSteamApi(app));
   }
@@ -68,29 +72,7 @@ export class SteamApp {
     return steamAppsSource.filter((app) => !targetAppIds.includes(app.appid));
   }
 
-  get isGame() {
-    return this.type === SteamApp.validTypes.game;
-  }
-
-  recordHtmlAttempt(page, source) {
-    this.#addHtmlPageTriedViaSource(source);
-
-    if (page.toString() === "") this.#addHtmlPageFailedViaSource(source);
-  }
-
-  #addHtmlPageTriedViaSource(source) {
-    if (this.triedVia.includes(source)) return;
-
-    this.triedVia.push(source);
-  }
-
-  #addHtmlPageFailedViaSource(source) {
-    if (this.failedVia.includes(source)) return;
-
-    this.failedVia.push(source);
-  }
-
-  recordSteamWebHtmlAttempt(page) {
+  recordSteamWebCallAttempt(page) {
     const source = ValidDataSources.validDataSources.steamWeb;
 
     this.#addTriedViaSource(source);
@@ -132,7 +114,7 @@ export class SteamApp {
     return SteamApp.validTypes.game;
   }
 
-  recordSteamApiAttempt(steamApp) {
+  recordSteamApiCallAttempt(steamApp) {
     const source = ValidDataSources.validDataSources.steamApi;
 
     this.#addTriedViaSource(source);

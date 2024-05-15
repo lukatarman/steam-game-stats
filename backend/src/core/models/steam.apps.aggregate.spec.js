@@ -1,8 +1,8 @@
 import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { counterStrikeSteamApiData } from "../../../assets/steam-api-responses/counter.strike.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-details-pages/mortal.darkness.game.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
+import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
 import { getXSampleSteamApiApps } from "../../../assets/steam.api.responses.mock.js";
 import { Game } from "./game.js";
 import { SteamApp } from "./steam.app.js";
@@ -86,13 +86,13 @@ describe("SteamAppsAggregate", function () {
     });
   });
 
-  describe(".extractGames", function () {
+  describe(".extractGamesViaSteamWeb", function () {
     describe("when no steam apps are marked as games", function () {
       beforeAll(function () {
         const steamAppsArray = new SteamAppsAggregate(getXSampleSteamApps(2));
         const pages = getParsedHtmlPages(["", ""]);
 
-        this.result = steamAppsArray.extractGames(pages);
+        this.result = steamAppsArray.extractGamesViaSteamWeb(pages);
       });
 
       it("no games are returned", function () {
@@ -107,7 +107,7 @@ describe("SteamAppsAggregate", function () {
 
         steamAppsArray.identifyTypesViaSteamWeb(pages);
 
-        this.result = steamAppsArray.extractGames(pages);
+        this.result = steamAppsArray.extractGamesViaSteamWeb(pages);
       });
 
       it("one game is returned", function () {
@@ -125,7 +125,7 @@ describe("SteamAppsAggregate", function () {
           mortalDarknessGameHtmlDetailsPage,
         ]);
 
-        this.result = steamAppsArray.extractGames(pages);
+        this.result = steamAppsArray.extractGamesViaSteamWeb(pages);
       });
 
       it("two games are returned", function () {
@@ -178,7 +178,7 @@ describe("SteamAppsAggregate", function () {
     });
   });
 
-  describe(".extractGamesfromSteamApi", function () {
+  describe(".extractGamesViaSteamApi", function () {
     describe("when no steam apps are marked as games", function () {
       beforeAll(function () {
         const steamAppsArray = new SteamAppsAggregate(
@@ -187,7 +187,7 @@ describe("SteamAppsAggregate", function () {
 
         const steamApiApps = [eldenRingSteamApiData, counterStrikeSteamApiData];
 
-        this.result = steamAppsArray.extractGamesfromSteamApi(steamApiApps);
+        this.result = steamAppsArray.extractGamesViaSteamApi(steamApiApps);
       });
 
       it("no games are returned", function () {
@@ -205,7 +205,7 @@ describe("SteamAppsAggregate", function () {
 
         const steamApiApps = [eldenRingSteamApiData, counterStrikeSteamApiData];
 
-        this.result = steamAppsArray.extractGamesfromSteamApi(steamApiApps);
+        this.result = steamAppsArray.extractGamesViaSteamApi(steamApiApps);
       });
 
       it("two games are returned", function () {

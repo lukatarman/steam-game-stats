@@ -3,10 +3,10 @@ import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 import { SteamApp } from "./steam.app.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-details-pages/feartress.game.html.details.page.js";
-import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-details-pages/gta.5.age.restricted.html.details.page.js";
-import { padakVideoHtmlDetailsPage } from "../../../assets/steam-details-pages/padak.video.html.details.page.js";
-import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-details-pages/the.sims.4.dlc.html.details.page.js";
+import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
+import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/gta.5.age.restricted.html.details.page.js";
+import { padakVideoHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/padak.video.html.details.page.js";
+import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/the.sims.4.dlc.html.details.page.js";
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
 import { riskOfRainTwoDlcSteamApiData } from "../../../assets/steam-api-responses/risk.of.rain.2.dlc.js";
@@ -123,7 +123,7 @@ describe("SteamApp", function () {
             type: "game",
             triedVia: [
               ValidDataSources.validDataSources.steamWeb,
-              ValidDataSources.validDataSources.steamDb,
+              ValidDataSources.validDataSources.steamApi,
             ],
             failedVia: [ValidDataSources.validDataSources.steamWeb],
           },
@@ -248,87 +248,7 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".recordHtmlAttempt", () => {
-    describe("if the html page is not empty", function () {
-      describe("if the steamApp's triedVia doesn't already include the provided source", function () {
-        beforeAll(function () {
-          this.source = ValidDataSources.validDataSources.steamWeb;
-
-          this.steamApp = getXSampleSteamApps(1)[0];
-
-          const page = feartressGameHtmlDetailsPage;
-
-          this.steamApp.recordHtmlAttempt(page, this.source);
-        });
-
-        it("the steam app is mark as tried via steam web", function () {
-          expect(this.steamApp.triedVia).toEqual([this.source]);
-        });
-      });
-
-      describe("if the steamApp's triedVia already includes the provided source, and we try to add another", function () {
-        beforeAll(function () {
-          this.source = ValidDataSources.validDataSources.steamWeb;
-
-          this.steamApp = getXSampleSteamApps(1)[0];
-
-          const page = feartressGameHtmlDetailsPage;
-
-          this.steamApp.recordHtmlAttempt(page, this.source);
-          this.steamApp.recordHtmlAttempt(page, this.source);
-        });
-
-        it("the steam app is marked as tried via steam web only once", function () {
-          expect(this.steamApp.triedVia).toEqual([this.source]);
-        });
-      });
-    });
-
-    describe("if the html page is empty", function () {
-      describe("if the steamApp's failedVia doesn't already include steamWeb", function () {
-        beforeAll(function () {
-          this.source = ValidDataSources.validDataSources.steamWeb;
-
-          this.steamApp = getXSampleSteamApps(1)[0];
-
-          const page = "";
-
-          this.steamApp.recordHtmlAttempt(page, this.source);
-        });
-
-        it("the steam app is mark as tried via steam web", function () {
-          expect(this.steamApp.triedVia).toEqual([this.source]);
-        });
-
-        it("the steam app is marked as failed via steam web", function () {
-          expect(this.steamApp.failedVia).toEqual([this.source]);
-        });
-      });
-
-      describe("if the steamApp's failedVia already includes steamWeb and we try to add it again", function () {
-        beforeAll(function () {
-          this.source = ValidDataSources.validDataSources.steamWeb;
-
-          this.steamApp = getXSampleSteamApps(1)[0];
-
-          const page = "";
-
-          this.steamApp.recordHtmlAttempt(page, this.source);
-          this.steamApp.recordHtmlAttempt(page, this.source);
-        });
-
-        it("the steam app is mark as tried via steam web", function () {
-          expect(this.steamApp.triedVia).toEqual([this.source]);
-        });
-
-        it("the steam app is marked as failed via steam web only once", function () {
-          expect(this.steamApp.failedVia).toEqual([this.source]);
-        });
-      });
-    });
-  });
-
-  describe(".recordSteamWebHtmlAttempt", () => {
+  describe(".recordSteamWebCallAttempt", () => {
     describe("if the html page has content", function () {
       describe("if the steam app is still untried via SteamWeb", function () {
         beforeAll(function () {
@@ -336,7 +256,7 @@ describe("SteamApp", function () {
 
           const page = feartressGameHtmlDetailsPage;
 
-          this.steamApp.recordSteamWebHtmlAttempt(page);
+          this.steamApp.recordSteamWebCallAttempt(page);
         });
 
         it("the steam app is mark as tried via steam web", function () {
@@ -354,8 +274,8 @@ describe("SteamApp", function () {
 
           const page = feartressGameHtmlDetailsPage;
 
-          this.steamApp.recordSteamWebHtmlAttempt(page, this.source);
-          this.steamApp.recordSteamWebHtmlAttempt(page, this.source);
+          this.steamApp.recordSteamWebCallAttempt(page, this.source);
+          this.steamApp.recordSteamWebCallAttempt(page, this.source);
         });
 
         it("the steam app is marked as tried via steam web only once", function () {
@@ -373,7 +293,7 @@ describe("SteamApp", function () {
 
           const page = "";
 
-          this.steamApp.recordSteamWebHtmlAttempt(page);
+          this.steamApp.recordSteamWebCallAttempt(page);
         });
 
         it("the steam app is marked as tried via steam web", function () {
@@ -393,8 +313,8 @@ describe("SteamApp", function () {
 
           const page = "";
 
-          this.steamApp.recordSteamWebHtmlAttempt(page);
-          this.steamApp.recordSteamWebHtmlAttempt(page);
+          this.steamApp.recordSteamWebCallAttempt(page);
+          this.steamApp.recordSteamWebCallAttempt(page);
         });
 
         it("the steam app is marked as tried via steam web", function () {
@@ -466,13 +386,13 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".recordSteamApiAttempt", () => {
+  describe(".recordSteamApiCallAttempt", () => {
     describe("if the provided steam app exists", function () {
       describe("if the steam app is still untried via steam api", function () {
         beforeAll(function () {
           this.steamApp = getXSampleSteamApps(1)[0];
 
-          this.steamApp.recordSteamApiAttempt(true);
+          this.steamApp.recordSteamApiCallAttempt(true);
         });
 
         it("the steam app is marked as tried via steam api", function () {
@@ -486,8 +406,8 @@ describe("SteamApp", function () {
         beforeAll(function () {
           this.steamApp = getXSampleSteamApps(1)[0];
 
-          this.steamApp.recordSteamApiAttempt(true);
-          this.steamApp.recordSteamApiAttempt(true);
+          this.steamApp.recordSteamApiCallAttempt(true);
+          this.steamApp.recordSteamApiCallAttempt(true);
         });
 
         it("the steam app is marked as tried via steam api only once", function () {
@@ -505,7 +425,7 @@ describe("SteamApp", function () {
 
           this.steamApp = getXSampleSteamApps(1)[0];
 
-          this.steamApp.recordSteamApiAttempt(undefined);
+          this.steamApp.recordSteamApiCallAttempt(undefined);
         });
 
         it("the steam app is marked as tried via steam api", function () {
@@ -523,8 +443,8 @@ describe("SteamApp", function () {
 
           this.steamApp = getXSampleSteamApps(1)[0];
 
-          this.steamApp.recordSteamApiAttempt(undefined);
-          this.steamApp.recordSteamApiAttempt(undefined);
+          this.steamApp.recordSteamApiCallAttempt(undefined);
+          this.steamApp.recordSteamApiCallAttempt(undefined);
         });
 
         it("the steam app is marked as tried via steam api", function () {

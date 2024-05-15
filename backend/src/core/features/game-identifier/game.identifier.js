@@ -1,6 +1,5 @@
 import { delay } from "../../../common/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
-import { ValidDataSources } from "../../models/valid.data.sources.js";
 
 export class GameIdentifier {
   #steamClient;
@@ -50,7 +49,7 @@ export class GameIdentifier {
 
     steamApps.identifyTypesViaSteamWeb(htmlDetailsPages);
 
-    const games = steamApps.extractGames(htmlDetailsPages);
+    const games = steamApps.extractGamesViaSteamWeb(htmlDetailsPages);
 
     await this.#persistGameCheckUpdates(games, steamApps.content);
   };
@@ -107,7 +106,7 @@ export class GameIdentifier {
 
     steamApps.identifyTypesViaSteamApi(steamApiApps);
 
-    const games = steamApps.extractGamesfromSteamApi(steamApiApps);
+    const games = steamApps.extractGamesViaSteamApi(steamApiApps);
 
     this.#persistGameCheckUpdates(games, steamApps.content);
   };
