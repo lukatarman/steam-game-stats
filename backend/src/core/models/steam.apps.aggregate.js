@@ -34,7 +34,7 @@ export class SteamAppsAggregate {
     return htmlDetailsPages.find((page) => steamAppId === page.id).page;
   }
 
-  extractGamesFromSteamWeb(htmlDetailsPages) {
+  extractGamesViaSteamWeb(htmlDetailsPages) {
     return this.#apps
       .map((app) => {
         if (!app.isGame) return "";
@@ -64,7 +64,7 @@ export class SteamAppsAggregate {
     return steamApiApps.find((app) => app.steam_appid === steamAppId);
   }
 
-  extractGamesfromSteamApi(steamApiApps) {
+  extractGamesViaSteamApi(steamApiApps) {
     return this.#apps
       .map((app) => {
         if (!app.isGame) return "";

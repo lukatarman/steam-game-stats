@@ -32,6 +32,10 @@ export class SteamApp {
     return copy;
   }
 
+  get isGame() {
+    return this.type === SteamApp.validTypes.game;
+  }
+
   static manyFromSteamApi(apps) {
     return apps.map((app) => SteamApp.oneFromSteamApi(app));
   }
@@ -66,10 +70,6 @@ export class SteamApp {
     const targetAppIds = steamAppsTarget.map((app) => app.appid);
 
     return steamAppsSource.filter((app) => !targetAppIds.includes(app.appid));
-  }
-
-  get isGame() {
-    return this.type === SteamApp.validTypes.game;
   }
 
   recordSteamWebCallAttempt(page) {

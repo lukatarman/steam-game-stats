@@ -23,7 +23,7 @@ describe("GamesAggregate", function () {
     });
   });
 
-  describe(".getIds", () => {
+  describe(".ids", () => {
     describe("if the aggregate contains two games,", function () {
       beforeAll(function () {
         const games = new GamesAggregate(getXGamesWithoutDetails(2));

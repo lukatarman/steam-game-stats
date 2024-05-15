@@ -73,7 +73,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamWeb(parsedHtmlPages);
 
-        this.games = this.steamApps.extractGamesFromSteamWeb(parsedHtmlPages);
+        this.games = this.steamApps.extractGamesViaSteamWeb(parsedHtmlPages);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -128,7 +128,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamWeb(parsedHtmlPages);
 
-        this.games = this.steamApps.extractGamesFromSteamWeb(parsedHtmlPages);
+        this.games = this.steamApps.extractGamesViaSteamWeb(parsedHtmlPages);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -225,7 +225,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamApi(steamApiApps);
 
-        this.games = this.steamApps.extractGamesfromSteamApi(steamApiApps);
+        this.games = this.steamApps.extractGamesViaSteamApi(steamApiApps);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
@@ -278,7 +278,7 @@ describe("game.identifier.js", function () {
 
         this.steamApps.identifyTypesViaSteamApi(steamApiApps);
 
-        this.games = this.steamApps.extractGamesfromSteamApi(steamApiApps);
+        this.games = this.steamApps.extractGamesViaSteamApi(steamApiApps);
 
         this.historyChecks = HistoryCheck.manyFromGames(this.games);
 
