@@ -1,6 +1,5 @@
 import { delay } from "../../../common/time.utils.js";
 import { HistoryCheck } from "../../models/history.check.js";
-import { ValidDataSources } from "../../models/valid.data.sources.js";
 
 export class GameIdentifier {
   #steamClient;
