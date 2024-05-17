@@ -35,18 +35,15 @@ export const getOneGameWithDetails = () => {
 };
 
 export const getOneGameWithPlayerHistory = () => {
-  const dbEntry = [
-    {
-      id: 239140,
-      name: "Dying Light",
-      releaseDate: "21.09.1989",
-      developers: ["Techland"],
-      genres: ["Action", "RPG"],
-      description: "Best game",
-      playerHistory: getSamplePlayerHistory(),
-    },
-  ];
-
+  const dbEntry = {
+    id: 239140,
+    name: "Dying Light",
+    releaseDate: "21.09.1989",
+    developers: ["Techland"],
+    genres: ["Action", "RPG"],
+    description: "Best game",
+    playerHistory: getSamplePlayerHistory(),
+  };
   return Game.fromDbEntry(dbEntry);
 };
 

@@ -1,9 +1,9 @@
 import { SteamAppsAggregator } from "./steam.apps.aggregator.js";
-import { smallestGamesMock } from "../../../../assets/smallest.data.set.js";
-import { gamesMock } from "../../../../assets/small.data.set.js";
 import { hoursToMs } from "../../../common/time.utils.js";
 import { SteamApp } from "../../models/steam.app.js";
 import { createLoggerMock } from "../../../common/logger.mock.js";
+import { SteamAppsAggregate } from "../../models/steam.apps.aggregate.js";
+import { getXSampleSteamAppsMarkedAsNotGames } from "../../models/steam.app.mocks.js";
 
 describe("SteamAppsAggregator", function () {
   const baseTime = new Date(2023, 9, 23);
@@ -18,9 +18,12 @@ describe("SteamAppsAggregator", function () {
 
           this.updateTimestampsRepo = createSteamAppsUpdateTimestampsRepositoryMock(null);
           this.steamAppsRepo = createSteamAppsRepositoryMock(undefined);
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            getXSampleSteamAppsMarkedAsNotGames(2),
+          );
 
           await new SteamAppsAggregator(
-            createSteamMock(smallestGamesMock),
+            createSteamMock(this.steamApps),
             this.updateTimestampsRepo,
             this.steamAppsRepo,
             createLoggerMock(),
@@ -34,7 +37,7 @@ describe("SteamAppsAggregator", function () {
 
         it("then the recieved steam apps are stored to the database", function () {
           expect(this.steamAppsRepo.insertManySteamApps).toHaveBeenCalledOnceWith(
-            smallestGamesMock,
+            this.steamApps.content,
           );
         });
 
@@ -55,12 +58,20 @@ describe("SteamAppsAggregator", function () {
             jasmine.clock().install();
             jasmine.clock().mockDate(baseTime);
 
+            this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+              getXSampleSteamAppsMarkedAsNotGames(2),
+            );
+
+            this.moreSteamApps = SteamAppsAggregate.manyFromDbEntries(
+              getXSampleSteamAppsMarkedAsNotGames(4),
+            );
+
             this.updateTimestampsRepo =
               createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-            this.steamAppsRepo = createSteamAppsRepositoryMock(smallestGamesMock);
+            this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
 
             const agg = new SteamAppsAggregator(
-              createSteamMock(gamesMock),
+              createSteamMock(this.moreSteamApps),
               this.updateTimestampsRepo,
               this.steamAppsRepo,
               createLoggerMock(),
@@ -69,7 +80,10 @@ describe("SteamAppsAggregator", function () {
               },
             );
 
-            this.steamAppsDifference = SteamApp.diff(gamesMock, smallestGamesMock);
+            this.steamAppsDifference = SteamApp.diff(
+              this.moreSteamApps.content,
+              this.steamApps.content,
+            );
 
             await agg.collectSteamApps();
           });
@@ -98,12 +112,16 @@ describe("SteamAppsAggregator", function () {
             jasmine.clock().install();
             jasmine.clock().mockDate(baseTime);
 
+            this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+              getXSampleSteamAppsMarkedAsNotGames(2),
+            );
+
             this.updateTimestampsRepo =
               createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-            this.steamAppsRepo = createSteamAppsRepositoryMock(smallestGamesMock);
+            this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
 
             await new SteamAppsAggregator(
-              createSteamMock(smallestGamesMock),
+              createSteamMock(this.steamApps),
               this.updateTimestampsRepo,
               this.steamAppsRepo,
               createLoggerMock(),
@@ -136,10 +154,14 @@ describe("SteamAppsAggregator", function () {
           jasmine.clock().install();
           jasmine.clock().mockDate(baseTime);
 
-          this.steamClient = createSteamMock(smallestGamesMock);
+          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            getXSampleSteamAppsMarkedAsNotGames(4),
+          );
+
+          this.steamClient = createSteamMock(this.steamApps);
           this.updateTimestampsRepo =
             createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-          this.steamAppsRepo = createSteamAppsRepositoryMock(smallestGamesMock);
+          this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
 
           await new SteamAppsAggregator(
             this.steamClient,
@@ -174,12 +196,19 @@ describe("SteamAppsAggregator", function () {
         jasmine.clock().install();
         jasmine.clock().mockDate(baseTime);
 
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(4),
+        );
+
         this.updateTimestampsRepo =
           createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-        this.steamAppsRepo = createSteamAppsRepositoryMock(smallestGamesMock);
+        this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(3),
+        );
 
         await new SteamAppsAggregator(
-          createSteamMock(gamesMock),
+          createSteamMock(this.steamApps),
           this.updateTimestampsRepo,
           this.steamAppsRepo,
           createLoggerMock(),
@@ -195,7 +224,7 @@ describe("SteamAppsAggregator", function () {
 
       it("then the new steam apps are stored in the database and the existing steam apps are left unchanged", function () {
         expect(this.steamAppsRepo.insertManyIfNotExist).toHaveBeenCalledOnceWith(
-          gamesMock,
+          this.steamApps.content,
         );
       });
 

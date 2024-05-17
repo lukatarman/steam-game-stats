@@ -1,4 +1,4 @@
-import { SteamApp } from "../../../core/models/steam.app.js";
+import { SteamAppsAggregate } from "../../../core/models/steam.apps.aggregate.js";
 
 export class SteamClient {
   #httpClient;
@@ -12,7 +12,7 @@ export class SteamClient {
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
     const response = await this.#httpClient.get(url, options);
 
-    return SteamApp.manyFromSteamApi(response.data.applist.apps);
+    return SteamAppsAggregate.manyFromSteamApi(response.data.applist.apps);
   }
 
   async getCurrentPlayers(game) {

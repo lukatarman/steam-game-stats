@@ -40,7 +40,7 @@ export class SteamAppsAggregator {
 
     const steamApps = await this.#steamClient.getAppList();
 
-    await this.#steamAppsRepository.insertManySteamApps(steamApps);
+    await this.#steamAppsRepository.insertManySteamApps(steamApps.content);
     await this.#steamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
       new Date(),
     );
@@ -54,7 +54,7 @@ export class SteamAppsAggregator {
     /**
      * @TODO https://github.com/lukatarman/steam-game-stats/issues/32
      */
-    const steamApps = SteamApp.diff(steamAppsApi, steamAppsDb);
+    const steamApps = SteamApp.diff(steamAppsApi.content, steamAppsDb.content);
     if (steamApps.length === 0) {
       await this.#steamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
         new Date(),
@@ -83,7 +83,7 @@ export class SteamAppsAggregator {
   async #collectAndPersist() {
     this.#logger.debugc("collecting steam apps");
     const steamApps = await this.#steamClient.getAppList();
-    await this.#steamAppsRepository.insertManyIfNotExist(steamApps);
+    await this.#steamAppsRepository.insertManyIfNotExist(steamApps.content);
     await this.#steamAppsUpdateTimestampsRepository.insertOneSteamAppsUpdateTimestamp(
       new Date(),
     );

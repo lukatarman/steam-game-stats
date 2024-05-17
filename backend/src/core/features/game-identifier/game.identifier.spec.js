@@ -23,7 +23,7 @@ describe("game.identifier.js", function () {
         this.steamClient = createSteamMock([]);
         this.steamAppsRepository = createSteamAppsRepositoryMock(
           [],
-          new SteamAppsAggregate([]),
+          SteamAppsAggregate.manyFromDbEntries([]),
         );
         this.gamesRepository = createGamesRepositoryMock([]);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -62,7 +62,7 @@ describe("game.identifier.js", function () {
 
     describe("Finds two unidentified steam apps in the database, none of them being games", function () {
       beforeAll(async function () {
-        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
         const htmlDetailsPages = [
           gta5ageRestrictedHtmlDetailsPage,
@@ -117,7 +117,7 @@ describe("game.identifier.js", function () {
 
     describe("Finds two unidentified steam apps in the database, one of them being a game", function () {
       beforeAll(async function () {
-        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2));
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(getXSampleSteamApps(2));
 
         const htmlDetailsPages = [
           mortalDarknessGameHtmlDetailsPage,
@@ -178,7 +178,7 @@ describe("game.identifier.js", function () {
         this.steamAppsRepository = createSteamAppsRepositoryMock(
           [],
           [],
-          new SteamAppsAggregate([]),
+          SteamAppsAggregate.manyFromDbEntries([]),
         );
         this.gamesRepository = createGamesRepositoryMock([]);
         this.historyChecksRepository = createHistoryChecksRepositoryMock();
@@ -219,7 +219,9 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         const gameIds = [468060, 1607890];
 
-        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2, gameIds));
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamApps(2, gameIds),
+        );
 
         const steamApiApps = [padakVideoSteamApiData, riskOfRainTwoDlcSteamApiData];
 
@@ -272,7 +274,9 @@ describe("game.identifier.js", function () {
       beforeAll(async function () {
         const gameIds = [1245620, 468060];
 
-        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2, gameIds));
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamApps(2, gameIds),
+        );
 
         const steamApiApps = [eldenRingSteamApiData, padakVideoSteamApiData];
 
@@ -362,7 +366,9 @@ describe("game.identifier.js", function () {
 
         this.games = new GamesAggregate(getXGamesWithoutDetails(2, appIds));
 
-        this.steamApps = new SteamAppsAggregate(getXSampleSteamApps(2, appIds));
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamApps(2, appIds),
+        );
 
         const steamApiApps = [eldenRingSteamApiData, counterStrikeSteamApiData];
 

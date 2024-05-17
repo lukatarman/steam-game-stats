@@ -4,12 +4,22 @@ import { SteamApp } from "./steam.app.js";
 export class SteamAppsAggregate {
   #apps;
 
-  constructor(steamApps) {
-    this.#apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
+  static manyFromDbEntries(steamApps) {
+    const appsAggregate = new SteamAppsAggregate();
+    appsAggregate.#apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
+
+    return appsAggregate;
+  }
+
+  static manyFromSteamApi(steamApps) {
+    const appsAggregate = new SteamAppsAggregate();
+    appsAggregate.#apps = steamApps.map((app) => SteamApp.oneFromSteamApi(app));
+
+    return appsAggregate;
   }
 
   get content() {
-    return new SteamAppsAggregate(structuredClone(this.#apps)).#apps;
+    return SteamAppsAggregate.manyFromDbEntries(structuredClone(this.#apps)).#apps;
   }
 
   get isEmpty() {

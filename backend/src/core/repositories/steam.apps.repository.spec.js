@@ -52,7 +52,7 @@ describe("SteamAppsRepository", function () {
       });
 
       it("a total of 2 steam apps will be in the database", async function () {
-        const allSteamApps = await this.steamAppsRepo.getAllSteamApps();
+        const allSteamApps = (await this.steamAppsRepo.getAllSteamApps()).content;
         expect(allSteamApps).toHaveSize(2);
       });
     });
@@ -109,7 +109,7 @@ describe("SteamAppsRepository", function () {
 
         const steamAppsRepo = new SteamAppsRepository(this.databaseClient);
 
-        this.result = await steamAppsRepo.getAllSteamApps();
+        this.result = (await steamAppsRepo.getAllSteamApps()).content;
       });
 
       afterAll(function () {
@@ -145,7 +145,8 @@ describe("SteamAppsRepository", function () {
 
         const uninstantiatedApps = getXSampleSteamApps(3);
 
-        const instantiatedApps = SteamApp.manyFromSteamApi(uninstantiatedApps);
+        const instantiatedApps =
+          SteamAppsAggregate.manyFromSteamApi(uninstantiatedApps).content;
 
         await insertManyApps(this.databaseClient, instantiatedApps);
 

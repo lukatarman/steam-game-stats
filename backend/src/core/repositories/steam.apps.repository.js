@@ -29,7 +29,7 @@ export class SteamAppsRepository {
 
   async getAllSteamApps() {
     const response = await this.#dbClient.getAll("steam_apps");
-    return SteamApp.manyFromDbEntries(response);
+    return SteamAppsAggregate.manyFromDbEntries(response);
   }
 
   async updateSteamAppsById(steamApps) {
@@ -58,7 +58,7 @@ export class SteamAppsRepository {
       .limit(amount)
       .toArray();
 
-    return new SteamAppsAggregate(response);
+    return SteamAppsAggregate.manyFromDbEntries(response);
   }
 
   async getSteamApiUntriedFilteredSteamApps(amount) {
@@ -81,13 +81,13 @@ export class SteamAppsRepository {
       .limit(amount)
       .toArray();
 
-    return new SteamAppsAggregate(response);
+    return SteamAppsAggregate.manyFromDbEntries(response);
   }
 
   async getSteamAppsById(ids) {
     const response = await Promise.all(ids.map((id) => this.getSteamAppById(id)));
 
-    return new SteamAppsAggregate(response);
+    return SteamAppsAggregate.manyFromDbEntries(response);
   }
 
   async getSteamAppById(id) {
