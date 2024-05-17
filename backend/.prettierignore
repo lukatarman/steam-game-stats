@@ -4,3 +4,4 @@ db
 
 !assets/html.details.pages.mock.js
 !assets/steam.api.responses.mock.js
+!assets/db-responses/

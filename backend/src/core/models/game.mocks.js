@@ -47,7 +47,7 @@ export const getOneGameWithPlayerHistory = () => {
     },
   ];
 
-  return Game.manyFromDbEntry(dbEntry)[0];
+  return Game.fromDbEntry(dbEntry);
 };
 
 export const getGamesWithEmptyPlayerHistories = () => {

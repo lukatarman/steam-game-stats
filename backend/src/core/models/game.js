@@ -119,10 +119,6 @@ export class Game {
     return steamApiApp.short_description;
   }
 
-  static manyFromDbEntry(entries) {
-    return entries.map((entry) => this.fromDbEntry(entry));
-  }
-
   // prettier-ignore
   static fromDbEntry(dbEntry) {
     const game         = new Game();
