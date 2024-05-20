@@ -58,20 +58,20 @@ describe("SteamAppsAggregator", function () {
             jasmine.clock().install();
             jasmine.clock().mockDate(baseTime);
 
-            this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            const steamApps = SteamAppsAggregate.manyFromDbEntries(
               getXSampleSteamAppsMarkedAsNotGames(2),
             );
 
-            this.moreSteamApps = SteamAppsAggregate.manyFromDbEntries(
+            const moreSteamApps = SteamAppsAggregate.manyFromDbEntries(
               getXSampleSteamAppsMarkedAsNotGames(4),
             );
 
             this.updateTimestampsRepo =
               createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-            this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
+            this.steamAppsRepo = createSteamAppsRepositoryMock(steamApps);
 
             const agg = new SteamAppsAggregator(
-              createSteamMock(this.moreSteamApps),
+              createSteamMock(moreSteamApps),
               this.updateTimestampsRepo,
               this.steamAppsRepo,
               createLoggerMock(),
@@ -81,8 +81,8 @@ describe("SteamAppsAggregator", function () {
             );
 
             this.steamAppsDifference = SteamApp.diff(
-              this.moreSteamApps.content,
-              this.steamApps.content,
+              moreSteamApps.content,
+              steamApps.content,
             );
 
             await agg.collectSteamApps();
@@ -112,16 +112,16 @@ describe("SteamAppsAggregator", function () {
             jasmine.clock().install();
             jasmine.clock().mockDate(baseTime);
 
-            this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+            const steamApps = SteamAppsAggregate.manyFromDbEntries(
               getXSampleSteamAppsMarkedAsNotGames(2),
             );
 
             this.updateTimestampsRepo =
               createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-            this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
+            this.steamAppsRepo = createSteamAppsRepositoryMock(steamApps);
 
             await new SteamAppsAggregator(
-              createSteamMock(this.steamApps),
+              createSteamMock(steamApps),
               this.updateTimestampsRepo,
               this.steamAppsRepo,
               createLoggerMock(),
@@ -154,14 +154,14 @@ describe("SteamAppsAggregator", function () {
           jasmine.clock().install();
           jasmine.clock().mockDate(baseTime);
 
-          this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          const steamApps = SteamAppsAggregate.manyFromDbEntries(
             getXSampleSteamAppsMarkedAsNotGames(4),
           );
 
           this.steamClient = createSteamMock(this.steamApps);
           this.updateTimestampsRepo =
             createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
-          this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
+          this.steamAppsRepo = createSteamAppsRepositoryMock(steamApps);
 
           await new SteamAppsAggregator(
             this.steamClient,
@@ -197,18 +197,19 @@ describe("SteamAppsAggregator", function () {
         jasmine.clock().mockDate(baseTime);
 
         this.steamApps = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamAppsMarkedAsNotGames(4),
+          getXSampleSteamAppsMarkedAsNotGames(3),
+        );
+
+        const moreSteamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(3),
         );
 
         this.updateTimestampsRepo =
           createSteamAppsUpdateTimestampsRepositoryMock(updateTimestamp);
         this.steamAppsRepo = createSteamAppsRepositoryMock(this.steamApps);
-        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamAppsMarkedAsNotGames(3),
-        );
 
         await new SteamAppsAggregator(
-          createSteamMock(this.steamApps),
+          createSteamMock(moreSteamApps),
           this.updateTimestampsRepo,
           this.steamAppsRepo,
           createLoggerMock(),

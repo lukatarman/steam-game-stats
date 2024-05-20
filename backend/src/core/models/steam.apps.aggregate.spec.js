@@ -19,9 +19,7 @@ describe("SteamAppsAggregate", function () {
   describe(".manyFromDbEntries", function () {
     describe("When two apps are passed into it,", function () {
       beforeAll(function () {
-        this.result = SteamAppsAggregate.manyFromSteamApi(
-          twoGamesWithUncheckedPlayerHistory,
-        );
+        this.result = SteamAppsAggregate.manyFromSteamApi(getXSampleSteamApps(2));
       });
 
       it("an instance of Steam Apps Aggregate is returned", function () {
