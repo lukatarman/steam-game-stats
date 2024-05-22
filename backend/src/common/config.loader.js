@@ -31,6 +31,16 @@ export const config = {
     updateIntervalDelay: hoursToMs(Number(process.env.FEATURES_UPDATE_INTERVAL_DELAY)),
     globalIterationDelay: Number(process.env.RUNNER_GLOBAL_ITERATION_DELAY),
   },
+  externalApiUrls: {
+    steamWeb: "https://store.steampowered.com/app/",
+    steamcharts: "https://steamcharts.com/app/",
+    steamApi: {
+      appList: "https://api.steampowered.com/ISteamApps/GetAppList/v2",
+      currentPlayersForApp:
+        "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=",
+      appDetails: "https://store.steampowered.com/api/appdetails?appids=",
+    },
+  },
   featureToggles: {
     steamAppsAggregator: {
       /**

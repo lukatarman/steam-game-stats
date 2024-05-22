@@ -208,7 +208,7 @@ describe("SteamApp", function () {
     });
 
     describe("if the html page is empty", function () {
-      describe("if the steam app is unmarked as failed via steam web", function () {
+      describe("if the steam app is not marked as failed via steam web", function () {
         beforeAll(function () {
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -342,7 +342,7 @@ describe("SteamApp", function () {
     });
 
     describe("if the html page is empty", function () {
-      describe("if the steam app is unmarked as failed via steam api", function () {
+      describe("if the steam app is not marked as failed via steam api", function () {
         beforeAll(function () {
           this.source = ValidDataSources.validDataSources.steamApi;
 

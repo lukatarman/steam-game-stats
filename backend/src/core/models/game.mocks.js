@@ -34,15 +34,19 @@ export const getOneGameWithDetails = () => {
   ];
 };
 
-export const getOneGameWithPlayerHistory = () => {
+export const getEldenRingGameWithDetails = (hasPlayerHistory = false) => {
+  const playerHistory = hasPlayerHistory ? getSamplePlayerHistory() : [];
+
   const dbEntry = {
-    id: 239140,
-    name: "Dying Light",
-    releaseDate: "21.09.1989",
-    developers: ["Techland"],
+    id: 1245620,
+    name: "ELDEN RING",
+    releaseDate: new Date("Feb 24 2022 UTC"),
+    developers: ["FromSoftware Inc."],
     genres: ["Action", "RPG"],
-    description: "Best game",
-    playerHistory: getSamplePlayerHistory(),
+    imageUrl: `https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg`,
+    description:
+      "THE NEW FANTASY ACTION RPG. Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.",
+    playerHistory: playerHistory,
   };
   return Game.fromDbEntry(dbEntry);
 };

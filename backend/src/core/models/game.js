@@ -81,7 +81,7 @@ export class Game {
   // prettier-ignore
   static fromSteamApi(steamApiApp) {
       const game         = new Game();
-      game.id            = steamApiApp.steam_appid;
+      game.id            = steamApiApp.id;
       game.name          = steamApiApp.name;
       game.releaseDate   = game.#extractReleaseDateViaSteamApi(steamApiApp);
       game.developers    = game.#extractDevelopersViaSteamApi(steamApiApp);
@@ -94,9 +94,9 @@ export class Game {
     }
 
   #extractReleaseDateViaSteamApi(steamApiApp) {
-    if (!steamApiApp.release_date) return "";
+    if (!steamApiApp.releaseDate) return "";
 
-    const releaseDate = new Date(`${steamApiApp.release_date.date} UTC`);
+    const releaseDate = new Date(`${steamApiApp.releaseDate} UTC`);
 
     return releaseDate == "Invalid Date" ? "" : releaseDate;
   }
@@ -110,13 +110,13 @@ export class Game {
   #extractGenresViaSteamApi(steamApiApp) {
     if (!steamApiApp.genres) return [];
 
-    return steamApiApp.genres.map((genre) => genre.description);
+    return steamApiApp.genres;
   }
 
   #extractDescriptionViaSteamApi(steamApiApp) {
-    if (!steamApiApp.short_description) return "";
+    if (!steamApiApp.description) return "";
 
-    return steamApiApp.short_description;
+    return steamApiApp.description;
   }
 
   // prettier-ignore

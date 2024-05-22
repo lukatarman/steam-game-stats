@@ -1,10 +1,8 @@
-import { twoGamesWithUncheckedPlayerHistory } from "../../../assets/db-responses/two.games.unchecked.history.js";
 import { getParsedHtmlPages } from "../../../assets/html.details.pages.mock.js";
 import { counterStrikeSteamApiData } from "../../../assets/steam-api-responses/counter.strike.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
-import { getXSampleSteamApiApps } from "../../../assets/steam.api.responses.mock.js";
 import { Game } from "./game.js";
 import { SteamApp } from "./steam.app.js";
 import {
@@ -12,6 +10,7 @@ import {
   getXSampleSteamAppsMarkedAsGames,
   getXSampleSteamAppsMarkedAsNotGames,
 } from "./steam.app.mocks.js";
+import { getRawSteamApiApp, getXSampleRawSteamApiApps } from "./steam.app.raw.mock.js";
 import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 
@@ -44,6 +43,21 @@ describe("SteamAppsAggregate", function () {
 
       it("the result contains two steam apps", function () {
         expect(this.result.content.length).toBe(2);
+      });
+    });
+  });
+
+  describe(".ids", () => {
+    describe("if we try to get the ids of the aggregate", function () {
+      beforeAll(function () {
+        const steamApps = getXSampleSteamApps(2);
+        const steamAppsAggregate = SteamAppsAggregate.manyFromDbEntries(steamApps);
+
+        this.result = steamAppsAggregate.ids;
+      });
+
+      it("only the ids are returned", function () {
+        expect(this.result).toEqual([1, 2]);
       });
     });
   });
@@ -184,39 +198,25 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamApps(4),
         );
 
-        const steamApiApps = getXSampleSteamApiApps(3);
+        const steamApiApps = getXSampleRawSteamApiApps(3);
 
         this.steamAppsArray.identifyTypesViaSteamApi(steamApiApps);
       });
 
       it("the first app is correctly identified", function () {
-        expect(this.steamAppsArray.content[0].appid).toBe(1);
-        expect(this.steamAppsArray.content[0].triedVia).toEqual(["steamApi"]);
-        expect(this.steamAppsArray.content[0].failedVia).toEqual([]);
-        expect(this.steamAppsArray.content[0].type).toBe(SteamApp.validTypes.game);
+        expect(this.steamAppsArray.content[0]).toEqual(getExpectedResults().content[0]);
       });
 
       it("the second app is correctly identified", function () {
-        expect(this.steamAppsArray.content[1].appid).toBe(2);
-        expect(this.steamAppsArray.content[1].triedVia).toEqual(["steamApi"]);
-        expect(this.steamAppsArray.content[1].failedVia).toEqual([]);
-        expect(this.steamAppsArray.content[1].type).toBe(
-          SteamApp.validTypes.downloadableContent,
-        );
+        expect(this.steamAppsArray.content[1]).toEqual(getExpectedResults().content[1]);
       });
 
       it("the third app is correctly identified", function () {
-        expect(this.steamAppsArray.content[2].appid).toBe(3);
-        expect(this.steamAppsArray.content[2].triedVia).toEqual(["steamApi"]);
-        expect(this.steamAppsArray.content[2].failedVia).toEqual([]);
-        expect(this.steamAppsArray.content[2].type).toBe(SteamApp.validTypes.unknown);
+        expect(this.steamAppsArray.content[2]).toEqual(getExpectedResults().content[2]);
       });
 
       it("the fourth app is correctly identified", function () {
-        expect(this.steamAppsArray.content[3].appid).toBe(4);
-        expect(this.steamAppsArray.content[3].triedVia).toEqual(["steamApi"]);
-        expect(this.steamAppsArray.content[3].failedVia).toEqual(["steamApi"]);
-        expect(this.steamAppsArray.content[3].type).toBe(SteamApp.validTypes.unknown);
+        expect(this.steamAppsArray.content[3]).toEqual(getExpectedResults().content[3]);
       });
     });
   });
@@ -228,7 +228,7 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamAppsMarkedAsNotGames(2),
         );
 
-        const steamApiApps = [eldenRingSteamApiData, counterStrikeSteamApiData];
+        const steamApiApps = [getRawSteamApiApp(), getRawSteamApiApp()];
 
         this.result = steamAppsArray.extractGamesViaSteamApi(steamApiApps);
       });
@@ -246,7 +246,10 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamAppsMarkedAsGames(2, gameIds),
         );
 
-        const steamApiApps = [eldenRingSteamApiData, counterStrikeSteamApiData];
+        const steamApiApps = [
+          getRawSteamApiApp(eldenRingSteamApiData),
+          getRawSteamApiApp(counterStrikeSteamApiData),
+        ];
 
         this.result = steamAppsArray.extractGamesViaSteamApi(steamApiApps);
       });
@@ -266,7 +269,10 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamApps(2, [1245620, 130]),
         );
 
-        const steamApiApps = [eldenRingSteamApiData, ""];
+        const steamApiApps = [
+          getRawSteamApiApp(eldenRingSteamApiData),
+          getRawSteamApiApp(counterStrikeSteamApiData),
+        ];
 
         this.steamAppsArray.recordAttemptsViaSteamApi(steamApiApps);
       });
@@ -283,3 +289,38 @@ describe("SteamAppsAggregate", function () {
     });
   });
 });
+
+const getExpectedResults = () => {
+  const dbEntries = [
+    {
+      appid: 1,
+      name: "Game #1",
+      triedVia: ["steamApi"],
+      failedVia: [],
+      type: SteamApp.validTypes.game,
+    },
+    {
+      appid: 2,
+      name: "Game #2",
+      triedVia: ["steamApi"],
+      failedVia: [],
+      type: SteamApp.validTypes.downloadableContent,
+    },
+    {
+      appid: 3,
+      name: "Game #3",
+      triedVia: ["steamApi"],
+      failedVia: [],
+      type: SteamApp.validTypes.unknown,
+    },
+    {
+      appid: 4,
+      name: "Game #4",
+      triedVia: ["steamApi"],
+      failedVia: ["steamApi"],
+      type: SteamApp.validTypes.unknown,
+    },
+  ];
+
+  return SteamAppsAggregate.manyFromDbEntries(dbEntries);
+};

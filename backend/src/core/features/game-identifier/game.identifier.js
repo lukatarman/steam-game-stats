@@ -102,7 +102,7 @@ export class GameIdentifier {
       return;
     }
 
-    const steamApiApps = await this.#getSteamAppsViaSteamApi(steamApps.content);
+    const steamApiApps = await this.#getSteamAppsViaSteamApi(steamApps.ids);
 
     steamApps.identifyTypesViaSteamApi(steamApiApps);
 
@@ -111,18 +111,18 @@ export class GameIdentifier {
     this.#persistGameCheckUpdates(games, steamApps.content);
   };
 
-  async #getSteamAppsViaSteamApi(steamApps) {
-    const steamApiApps = [];
+  async #getSteamAppsViaSteamApi(steamAppsIds) {
+    const steamAppsApiRaw = [];
 
-    for (let steamApp of steamApps) {
-      const steamApiApp = await this.#steamClient.getSteamAppViaSteamApi(steamApp.appid);
+    for (let id of steamAppsIds) {
+      const steamApiApp = await this.#steamClient.getSteamAppViaSteamApi(id);
 
-      steamApiApps.push(steamApiApp);
+      steamAppsApiRaw.push(steamApiApp);
 
       await delay(this.#options.unitDelay);
     }
 
-    return steamApiApps;
+    return steamAppsApiRaw;
   }
 
   updateGamesWithoutReleaseDates = async () => {
@@ -144,7 +144,7 @@ export class GameIdentifier {
 
     const steamApps = await this.#steamAppsRepository.getSteamAppsById(games.ids);
 
-    const steamApiApps = await this.#getSteamAppsViaSteamApi(steamApps.content);
+    const steamApiApps = await this.#getSteamAppsViaSteamApi(steamApps.ids);
 
     steamApps.recordAttemptsViaSteamApi(steamApiApps);
 

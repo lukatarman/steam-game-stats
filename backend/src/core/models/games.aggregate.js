@@ -32,6 +32,6 @@ export class GamesAggregate {
   }
 
   #findGameByAppId(steamApiApps, gameId) {
-    return steamApiApps.find((app) => app.steam_appid === gameId);
+    return steamApiApps.find((app) => app.id === gameId);
   }
 }

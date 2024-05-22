@@ -18,6 +18,10 @@ export class SteamAppsAggregate {
     return appsAggregate;
   }
 
+  get ids() {
+    return this.#apps.map((app) => app.appid);
+  }
+
   get content() {
     return SteamAppsAggregate.manyFromDbEntries(structuredClone(this.#apps)).#apps;
   }
@@ -46,14 +50,12 @@ export class SteamAppsAggregate {
 
   extractGamesViaSteamWeb(htmlDetailsPages) {
     return this.#apps
+      .filter((app) => app.isGame)
       .map((app) => {
-        if (!app.isGame) return "";
-
         const page = this.#findPageForSteamAppById(htmlDetailsPages, app.appid);
 
         return Game.fromSteamApp(app, page);
-      })
-      .filter((game) => !!game);
+      });
   }
 
   identifyTypesViaSteamApi(steamApiApps) {
@@ -71,7 +73,7 @@ export class SteamAppsAggregate {
   }
 
   #findSteamApiAppById(steamApiApps, steamAppId) {
-    return steamApiApps.find((app) => app.steam_appid === steamAppId);
+    return steamApiApps.find((app) => app.id === steamAppId);
   }
 
   extractGamesViaSteamApi(steamApiApps) {

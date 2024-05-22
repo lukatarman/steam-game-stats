@@ -2,6 +2,7 @@ import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden
 import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { getXGamesWithoutDetails } from "./game.mocks.js";
 import { GamesAggregate } from "./games.aggregate.js";
+import { getRawSteamApiApp } from "./steam.app.raw.mock.js";
 
 describe("GamesAggregate", function () {
   describe(".content", () => {
@@ -70,7 +71,10 @@ describe("GamesAggregate", function () {
 
         this.gamesArray = new GamesAggregate(getXGamesWithoutDetails(2, gameIds));
 
-        const steamApiApps = [eldenRingSteamApiData, theLastNightSteamApiData];
+        const steamApiApps = [
+          getRawSteamApiApp(eldenRingSteamApiData),
+          getRawSteamApiApp(theLastNightSteamApiData),
+        ];
 
         this.gamesArray.extractReleaseDatesViaSteamApi(steamApiApps);
       });
