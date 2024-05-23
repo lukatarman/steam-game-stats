@@ -143,11 +143,11 @@ describe("SteamAppsRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["steam_apps"]);
 
-        const steamAppsRaw = getXSampleSteamApps(3);
+        const steamApps = getXSampleSteamApps(3);
 
-        const steamApps = SteamAppsAggregate.manyFromSteamApi(steamAppsRaw).content;
+        const steamAppsAggregate = SteamAppsAggregate.manyFromSteamApi(steamApps).content;
 
-        await insertManyApps(this.databaseClient, steamApps);
+        await insertManyApps(this.databaseClient, steamAppsAggregate);
 
         this.artt = await this.databaseClient.getAll("steam_apps");
 

@@ -141,7 +141,7 @@ describe("SteamAppsAggregate", function () {
     describe("when no steam apps are marked as games", function () {
       beforeAll(function () {
         const steamAppsArray = SteamAppsAggregate.manyFromDbEntries(
-          getXSampleSteamApps(2),
+          getXSampleSteamAppsMarkedAsNotGames(2),
         );
         const pages = getParsedHtmlPages(["", ""]);
 
@@ -228,9 +228,7 @@ describe("SteamAppsAggregate", function () {
           getXSampleSteamAppsMarkedAsNotGames(2),
         );
 
-        const steamApiApps = [getRawSteamApiApp(), getRawSteamApiApp()];
-
-        this.result = steamAppsArray.extractGamesViaSteamApi(steamApiApps);
+        this.result = steamAppsArray.extractGamesViaSteamApi([]);
       });
 
       it("no games are returned", function () {

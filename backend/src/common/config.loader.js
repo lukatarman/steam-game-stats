@@ -32,6 +32,25 @@ export const config = {
     globalIterationDelay: Number(process.env.RUNNER_GLOBAL_ITERATION_DELAY),
   },
   externalApiUrls: {
+    steamWeb: {
+      host: "https://store.steampowered.com",
+      appPage: "app",
+    },
+    steamApiOfficial: {
+      host: "https://api.steampowered.com",
+      currentPlayersForApp: "ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=",
+      appList: "ISteamApps/GetAppList/v2",
+    },
+    steamApiUnofficial: {
+      host: "https://api.steampowered.com/api",
+      appDetails: "api/appdetails?appids=",
+    },
+    steamcharts: {
+      host: "https://steamcharts.com",
+      appPage: "app",
+    },
+  },
+  externalApiUrlsx: {
     steamWeb: "https://store.steampowered.com/app/",
     steamcharts: "https://steamcharts.com/app/",
     steamApi: {

@@ -78,14 +78,14 @@ export class SteamAppsAggregate {
 
   extractGamesViaSteamApi(steamApiApps) {
     return this.#apps
+      .filter((app) => app.isGame)
       .map((app) => {
         if (!app.isGame) return "";
 
         const steamApiApp = this.#findSteamApiAppById(steamApiApps, app.appid);
 
         return Game.fromSteamApi(steamApiApp);
-      })
-      .filter((game) => !!game);
+      });
   }
 
   recordAttemptsViaSteamApi(steamApiApps) {

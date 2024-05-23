@@ -11,7 +11,9 @@ export class SteamClient {
   }
 
   async getAppList() {
-    const url = this.#options.steamApi.appList;
+    const { host, appList } = this.#options.steamApiOfficial;
+    const url = `${host}/${appList}`;
+
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
     const response = await this.#httpClient.get(url, options);
 
@@ -19,7 +21,9 @@ export class SteamClient {
   }
 
   async getCurrentPlayers(game) {
-    const url = `${this.#options.steamApi.currentPlayersForApps}${game.id}`;
+    const { host, currentPlayersForApp } = this.#options.steamApiOfficial;
+    const url = `${host}/${currentPlayersForApp}${game.id}`;
+
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
 
     return (await this.#httpClient.get(url, options)).data.response.player_count;
@@ -27,7 +31,8 @@ export class SteamClient {
 
   async getAllCurrentPlayersConcurrently(games) {
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
-    const url = this.#options.steamApi.currentPlayersForApps;
+    const { host, currentPlayersForApp } = this.#options.steamApiOfficial;
+    const url = `${host}/${currentPlayersForApp}`;
 
     return (
       await Promise.all(
@@ -38,7 +43,8 @@ export class SteamClient {
 
   // TODO https://github.com/lukatarman/steam-game-stats/issues/192
   async getSteamWebHtmlDetailsPage(id) {
-    const url = `${this.#options.steamWeb}${id}`;
+    const { host, appPage } = this.#options.steamWeb;
+    const url = `${host}/${appPage}/${id}`;
 
     try {
       return (await this.#httpClient.get(url)).data;
@@ -48,16 +54,18 @@ export class SteamClient {
   }
 
   async getSteamchartsGameHtmlDetailsPage(id) {
-    const url = `${this.#options.steamcharts}${id}`;
+    const { host, appPage } = this.#options.steamcharts;
+    const url = `${host}/${appPage}/${id}`;
 
     return (await this.#httpClient.get(url)).data;
   }
 
   async getSteamAppViaSteamApi(steamAppId) {
+    const { host, appDetails } = this.#options.steamApi;
+    const url = `${host}/${appDetails}${steamAppId}`;
+
     try {
-      const response = (
-        await this.#httpClient.get(`${this.#options.steamApi.appDetails}${steamAppId}`)
-      ).data[`${steamAppId}`];
+      const response = (await this.#httpClient.get(url)).data[`${steamAppId}`];
 
       if (!response.success) return "";
 
