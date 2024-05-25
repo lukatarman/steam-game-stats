@@ -100,3 +100,8 @@ export const getSixSteamApiUntriedFilteredSteamApps = () => {
     },
   ];
 };
+
+export const getEldenRingSteamApp = {
+  appid: 1245620,
+  name: "ELDEN RING",
+};

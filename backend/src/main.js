@@ -34,7 +34,7 @@ async function main() {
   logger.info("repositories setup finished");
 
   // http client
-  const steamClient = new SteamClient(httpClient);
+  const steamClient = new SteamClient(httpClient, config.externalApiUrls);
 
   const steamAppsAggregator = new SteamAppsAggregator(
     steamClient,

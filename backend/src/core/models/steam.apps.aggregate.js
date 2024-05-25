@@ -4,12 +4,26 @@ import { SteamApp } from "./steam.app.js";
 export class SteamAppsAggregate {
   #apps;
 
-  constructor(steamApps) {
-    this.#apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
+  static manyFromDbEntries(steamApps) {
+    const appsAggregate = new SteamAppsAggregate();
+    appsAggregate.#apps = steamApps.map((app) => SteamApp.oneFromDbEntry(app));
+
+    return appsAggregate;
+  }
+
+  static manyFromSteamApi(steamApps) {
+    const appsAggregate = new SteamAppsAggregate();
+    appsAggregate.#apps = steamApps.map((app) => SteamApp.oneFromSteamApi(app));
+
+    return appsAggregate;
+  }
+
+  get ids() {
+    return this.#apps.map((app) => app.appid);
   }
 
   get content() {
-    return new SteamAppsAggregate(structuredClone(this.#apps)).#apps;
+    return SteamAppsAggregate.manyFromDbEntries(structuredClone(this.#apps)).#apps;
   }
 
   get isEmpty() {
@@ -36,14 +50,12 @@ export class SteamAppsAggregate {
 
   extractGamesViaSteamWeb(htmlDetailsPages) {
     return this.#apps
+      .filter((app) => app.isGame)
       .map((app) => {
-        if (!app.isGame) return "";
-
         const page = this.#findPageForSteamAppById(htmlDetailsPages, app.appid);
 
         return Game.fromSteamApp(app, page);
-      })
-      .filter((game) => !!game);
+      });
   }
 
   identifyTypesViaSteamApi(steamApiApps) {
@@ -61,19 +73,19 @@ export class SteamAppsAggregate {
   }
 
   #findSteamApiAppById(steamApiApps, steamAppId) {
-    return steamApiApps.find((app) => app.steam_appid === steamAppId);
+    return steamApiApps.find((app) => app.id === steamAppId);
   }
 
   extractGamesViaSteamApi(steamApiApps) {
     return this.#apps
+      .filter((app) => app.isGame)
       .map((app) => {
         if (!app.isGame) return "";
 
         const steamApiApp = this.#findSteamApiAppById(steamApiApps, app.appid);
 
         return Game.fromSteamApi(steamApiApp);
-      })
-      .filter((game) => !!game);
+      });
   }
 
   recordAttemptsViaSteamApi(steamApiApps) {

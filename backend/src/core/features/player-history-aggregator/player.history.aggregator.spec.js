@@ -7,6 +7,7 @@ import { Game } from "../../models/game.js";
 import { addPlayerHistoriesFromSteamcharts } from "../../services/player.history.service.js";
 import { createLoggerMock } from "../../../common/logger.mock.js";
 import { createConfigMock } from "../../../common/config.loader.mock.js";
+import { GamesAggregate } from "../../models/games.aggregate.js";
 
 describe("PlayerHistoryAggregator", function () {
   describe(".addPlayerHistoryFromSteamcharts", function () {
@@ -14,9 +15,9 @@ describe("PlayerHistoryAggregator", function () {
       beforeAll(async function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
-        this.gamesRepositoryMock = createGamesRepositoryMock(
-          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
-        );
+        this.gamesRepositoryMock = createGamesRepositoryMock([
+          Game.fromDbEntry(oneGameWithUncheckedPlayerHistory),
+        ]);
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
         this.playerHistoryRepositoryMock = createPlayerHistoryRepositoryMock();
 
@@ -107,7 +108,7 @@ describe("PlayerHistoryAggregator", function () {
         this.steamClientMock = createSteamMock([crushTheCastleHtmlDetailsSteamcharts]);
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
-          Game.manyFromDbEntry(twoGamesWithUncheckedPlayerHistory),
+          new GamesAggregate(twoGamesWithUncheckedPlayerHistory).content,
         );
 
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
@@ -308,7 +309,7 @@ describe("PlayerHistoryAggregator", function () {
 
         this.gamesRepositoryMock = createGamesRepositoryMock(
           "",
-          Game.manyFromDbEntry(oneGameWithUncheckedPlayerHistory),
+          new GamesAggregate([oneGameWithUncheckedPlayerHistory]).content,
         );
 
         this.historyChecksRepositoryMock = createHistoryChecksRepositoryMock();
@@ -316,12 +317,11 @@ describe("PlayerHistoryAggregator", function () {
 
         this.steamClientMock = createSteamMock([], [285]);
 
-        this.gamesWithCurrentPlayers = Game.manyFromDbEntry(
-          oneGameWithUncheckedPlayerHistory,
-        ).map((game) => {
-          game.pushCurrentPlayers(285);
-          return game;
-        });
+        this.gamesWithCurrentPlayers = [
+          Game.fromDbEntry(oneGameWithUncheckedPlayerHistory),
+        ];
+
+        this.gamesWithCurrentPlayers[0].pushCurrentPlayers(285);
 
         const agg = new PlayerHistoryAggregator(
           this.steamClientMock,

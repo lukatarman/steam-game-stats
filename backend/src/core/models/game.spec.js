@@ -2,19 +2,20 @@ import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
 import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { crusaderKingsDetailsPage } from "../../../assets/steam-web-html-details-pages/crusader.kings.multiple.developers.html.details.page.js";
-import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
+import { eldenRingGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/elden.ring.game.html.details.page.js";
 import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-web-html-details-pages/risk.of.rain.missing.additional.info.page.js";
-import { getXSampleSteamApiApps } from "../../../assets/steam.api.responses.mock.js";
 import { Game } from "./game.js";
-import { getOneGameWithPlayerHistory, getXGamesWithoutDetails } from "./game.mocks.js";
+import { getEldenRingGameWithDetails, getXGamesWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
-import { getXSampleSteamApps } from "./steam.app.mocks.js";
+import { getEldenRingSteamApp, getXSampleSteamApps } from "./steam.app.mocks.js";
+import { SteamAppRaw } from "./steam.app.raw.js";
+import { getRawSteamApiApp, getXSampleRawSteamApiApps } from "./steam.app.raw.mock.js";
 
 describe("Game", function () {
   describe(".copy", function () {
     beforeAll(function () {
-      this.game = getOneGameWithPlayerHistory();
+      this.game = getEldenRingGameWithDetails(true);
       this.result = this.game.copy();
 
       this.game.id = 99;
@@ -26,37 +27,21 @@ describe("Game", function () {
     });
 
     it("the copy has identical values to the original", function () {
-      expect(this.result.id).toBe(239140);
-      expect(this.result.name).toBe("Dying Light");
-      expect(this.result.releaseDate).toBe("21.09.1989");
-      expect(this.result.developers).toEqual(["Techland"]);
-      expect(this.result.genres).toEqual(["Action", "RPG"]);
-      expect(this.result.description).toBe("Best game");
+      expect(this.result).toEqual(getEldenRingGameWithDetails(true));
     });
   });
 
   describe(".fromSteamApp", function () {
     describe("when the method is called", function () {
       beforeAll(function () {
-        const steamApp = getXSampleSteamApps(1)[0];
-        const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
+        const steamApp = getEldenRingSteamApp;
+        const page = getParsedHtmlPage(eldenRingGameHtmlDetailsPage);
 
         this.result = Game.fromSteamApp(steamApp, page);
       });
 
-      it("is an instance of Game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
       it("the game has the correct values", function () {
-        expect(this.result.id).toBe(1);
-        expect(this.result.name).toBe("Game #1");
-        expect(this.result.releaseDate).toEqual(new Date("Jan 1 2001 UTC"));
-        expect(this.result.developers).toEqual(["Frederik List", "Aaron Miles"]);
-        expect(this.result.imageUrl).toBe(
-          `https://cdn.akamai.steamstatic.com/steam/apps/1/header.jpg`,
-        );
-        expect(this.result.playerHistory).toEqual([]);
+        expect(this.result).toEqual(getEldenRingGameWithDetails());
       });
     });
 
@@ -205,7 +190,8 @@ describe("Game", function () {
   describe(".fromSteamApi", function () {
     describe("when the method is called", function () {
       beforeAll(function () {
-        this.result = Game.fromSteamApi(eldenRingSteamApiData);
+        this.expectedResult = getEldenRingGameWithDetails();
+        this.result = Game.fromSteamApi(getRawSteamApiApp(eldenRingSteamApiData));
       });
 
       it("is an instance of Game", function () {
@@ -213,24 +199,14 @@ describe("Game", function () {
       });
 
       it("the game has the correct values", function () {
-        expect(this.result.id).toBe(1245620);
-        expect(this.result.name).toBe("ELDEN RING");
-        expect(this.result.releaseDate).toEqual(new Date("Feb 24 2022 UTC"));
-        expect(this.result.description).toEqual(
-          "THE NEW FANTASY ACTION RPG. Rise, Tarnished, and be guided by grace to brandish the power of the Elden Ring and become an Elden Lord in the Lands Between.",
-        );
-        expect(this.result.developers).toEqual(["FromSoftware Inc."]);
-        expect(this.result.imageUrl).toBe(
-          `https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg`,
-        );
-        expect(this.result.playerHistory).toEqual([]);
+        expect(this.result).toEqual(this.expectedResult);
       });
     });
 
     describe("if the provided steam api app includes a release date", function () {
       describe("and the date is a valid date", function () {
         beforeAll(function () {
-          this.result = Game.fromSteamApi(eldenRingSteamApiData);
+          this.result = Game.fromSteamApi(getRawSteamApiApp(eldenRingSteamApiData));
         });
 
         it("the game's release date will have the correct value", function () {
@@ -251,7 +227,7 @@ describe("Game", function () {
 
     describe("if the provided steam api app doesn't include a release date", function () {
       beforeAll(function () {
-        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+        this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
       });
 
       it("the game's release date will be set to an empty string", function () {
@@ -261,7 +237,7 @@ describe("Game", function () {
 
     describe("if the provided steam api app doesn't include developers", function () {
       beforeAll(function () {
-        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+        this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
       });
 
       it("the game's developers will be set to an empty array", function () {
@@ -271,7 +247,7 @@ describe("Game", function () {
 
     describe("if the provided steam api app doesn't include genres", function () {
       beforeAll(function () {
-        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+        this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
       });
 
       it("the game's genres will be set to an empty array", function () {
@@ -281,7 +257,7 @@ describe("Game", function () {
 
     describe("if the provided steam api app doesn't include a description", function () {
       beforeAll(function () {
-        this.result = Game.fromSteamApi(getXSampleSteamApiApps(1)[0]);
+        this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
       });
 
       it("the game's description will be set to an empty string", function () {
@@ -509,7 +485,7 @@ describe("Game", function () {
 
         this.game.releaseDate = this.existingDate;
 
-        this.game.updateReleaseDateViaSteamApi(eldenRingSteamApiData);
+        this.game.updateReleaseDateViaSteamApi(getRawSteamApiApp(eldenRingSteamApiData));
       });
 
       it("the game's release date stays unchanged", function () {
@@ -517,12 +493,14 @@ describe("Game", function () {
       });
     });
 
-    describe("When we try to use a page that has no existing release date", function () {
-      describe("and the provided html page doesn't contain a valid release date,", function () {
+    describe("When we try to use a game that has no existing release date", function () {
+      describe("and the provided steam api app doesn't contain a valid release date,", function () {
         beforeAll(function () {
           this.game = getXGamesWithoutDetails(1)[0];
 
-          this.game.updateReleaseDateViaSteamApi(theLastNightSteamApiData);
+          this.game.updateReleaseDateViaSteamApi(
+            new SteamAppRaw(theLastNightSteamApiData),
+          );
         });
 
         it("the release date stays unchanged", function () {
@@ -530,11 +508,13 @@ describe("Game", function () {
         });
       });
 
-      describe("and the provided html page contains a valid release date,", function () {
+      describe("and the provided steam api app contains a valid release date,", function () {
         beforeAll(function () {
           this.game = getXGamesWithoutDetails(1)[0];
 
-          this.game.updateReleaseDateViaSteamApi(eldenRingSteamApiData);
+          this.game.updateReleaseDateViaSteamApi(
+            getRawSteamApiApp(eldenRingSteamApiData),
+          );
         });
 
         it("the release date is changed to the correct value", function () {

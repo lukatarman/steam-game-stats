@@ -36,10 +36,6 @@ export class SteamApp {
     return this.type === SteamApp.validTypes.game;
   }
 
-  static manyFromSteamApi(apps) {
-    return apps.map((app) => SteamApp.oneFromSteamApi(app));
-  }
-
   // prettier-ignore
   static oneFromSteamApi(data) {
     const steamApp      = new SteamApp();
@@ -49,10 +45,6 @@ export class SteamApp {
     steamApp.triedVia   = [];
     steamApp.failedVia  = [];
     return steamApp;
-  }
-
-  static manyFromDbEntries(dbEntries) {
-    return dbEntries.map((dbEntry) => SteamApp.oneFromDbEntry(dbEntry));
   }
 
   // prettier-ignore

@@ -1,8 +1,9 @@
-import { gamesMock } from "../../../assets/small.data.set.js";
-import { smallestGamesMock } from "../../../assets/smallest.data.set.js";
 import { ValidDataSources } from "./valid.data.sources.js";
 import { SteamApp } from "./steam.app.js";
-import { getXSampleSteamApps } from "./steam.app.mocks.js";
+import {
+  getXSampleSteamApps,
+  getXSampleSteamAppsMarkedAsNotGames,
+} from "./steam.app.mocks.js";
 import { feartressGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/feartress.game.html.details.page.js";
 import { gta5ageRestrictedHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/gta.5.age.restricted.html.details.page.js";
 import { padakVideoHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/padak.video.html.details.page.js";
@@ -10,6 +11,7 @@ import { theSims4dlcHtmlDetailsPage } from "../../../assets/steam-web-html-detai
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
 import { riskOfRainTwoDlcSteamApiData } from "../../../assets/steam-api-responses/risk.of.rain.2.dlc.js";
+import { SteamAppsAggregate } from "./steam.apps.aggregate.js";
 
 describe("SteamApp", function () {
   describe(".copy", function () {
@@ -43,37 +45,6 @@ describe("SteamApp", function () {
     });
   });
 
-  describe(".manyFromSteamApi returns an array of SteamApp instances.", function () {
-    describe("When two apps are passed into it,", function () {
-      beforeAll(function () {
-        this.apps = [
-          {
-            name: "Castlevania",
-            appid: 1,
-          },
-          {
-            name: "Elden Ring",
-            appid: 2,
-          },
-        ];
-
-        this.result = SteamApp.manyFromSteamApi(this.apps);
-      });
-
-      it("the array length is 2", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first app is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the second app is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
-      });
-    });
-  });
-
   describe(".oneFromSteamApi returns an instance of steamApp.", function () {
     describe("When an 'app' object is passed in, the returned instance", function () {
       beforeAll(function () {
@@ -99,49 +70,6 @@ describe("SteamApp", function () {
 
       it("has a property called 'failedVia'. It is an empty array.", function () {
         expect(this.result.failedVia).toEqual([]);
-      });
-    });
-  });
-
-  describe(".manyFromDbEntries returns an array of SteamApp instances.", function () {
-    describe("When dbEntries is passed into it,", function () {
-      beforeAll(function () {
-        this.dbEntries = [
-          {
-            name: "Castlevania",
-            appid: 1,
-            type: "game",
-            triedVia: [
-              ValidDataSources.validDataSources.steamWeb,
-              ValidDataSources.validDataSources.steamcharts,
-            ],
-            failedVia: [ValidDataSources.steam],
-          },
-          {
-            name: "Elden Ring",
-            appid: 2,
-            type: "game",
-            triedVia: [
-              ValidDataSources.validDataSources.steamWeb,
-              ValidDataSources.validDataSources.steamApi,
-            ],
-            failedVia: [ValidDataSources.validDataSources.steamWeb],
-          },
-        ];
-
-        this.result = SteamApp.manyFromDbEntries(this.dbEntries);
-      });
-
-      it("the returned array length is 2", function () {
-        expect(this.result.length).toBe(2);
-      });
-
-      it("the first app is an instance of SteamApp", function () {
-        expect(this.result[0]).toBeInstanceOf(SteamApp);
-      });
-
-      it("the second app is an instance of SteamApp", function () {
-        expect(this.result[1]).toBeInstanceOf(SteamApp);
       });
     });
   });
@@ -199,51 +127,46 @@ describe("SteamApp", function () {
   describe(".diff", function () {
     describe("finds the diff of two arrays of steam apps successfully in a big data set", function () {
       beforeAll(function () {
-        this.array = SteamApp.diff(gamesMock, smallestGamesMock);
+        const steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(2),
+        );
+        const moreSteamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(102),
+        );
+
+        this.array = SteamApp.diff(moreSteamApps.content, steamApps.content);
       });
 
       it("returns an array with the differences between the arrays", function () {
-        expect(this.array.length).toBe(205);
+        expect(this.array.length).toBe(100);
       });
     });
 
     describe("finds the diff of two arrays of steam apps in a tiny data set", function () {
       beforeAll(function () {
-        this.appsFromApi = [
-          {
-            appid: 9821,
-            name: "GTA",
-          },
-          {
-            appid: 21987,
-            name: "Metro",
-          },
-          {
-            appid: 34512,
-            name: "The Sims",
-          },
-        ];
+        this.steamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(2),
+        );
+        this.moreSteamApps = SteamAppsAggregate.manyFromDbEntries(
+          getXSampleSteamAppsMarkedAsNotGames(4),
+        );
 
-        this.appsFromDb = [
-          {
-            appid: 21987,
-            name: "Metro",
-          },
-        ];
-
-        this.resultDiff = SteamApp.diff(this.appsFromApi, this.appsFromDb);
+        this.resultDiff = SteamApp.diff(
+          this.moreSteamApps.content,
+          this.steamApps.content,
+        );
       });
 
       it("returns an array with the differences between the arrays", function () {
         expect(this.resultDiff.length).toBe(2);
       });
 
-      it("first entry is GTA", function () {
-        expect(this.resultDiff[0].appid).toBe(this.appsFromApi[0].appid);
+      it("first entry has the correct id", function () {
+        expect(this.resultDiff[0].appid).toBe(this.moreSteamApps.content[2].appid);
       });
 
-      it("second entry is The sims", function () {
-        expect(this.resultDiff[1].appid).toBe(this.appsFromApi[2].appid);
+      it("second entry has the correct id", function () {
+        expect(this.resultDiff[1].appid).toBe(this.moreSteamApps.content[3].appid);
       });
     });
   });
@@ -285,7 +208,7 @@ describe("SteamApp", function () {
     });
 
     describe("if the html page is empty", function () {
-      describe("if the steam app is unmarked as failed via steam web", function () {
+      describe("if the steam app is not marked as failed via steam web", function () {
         beforeAll(function () {
           this.source = ValidDataSources.validDataSources.steamWeb;
 
@@ -419,7 +342,7 @@ describe("SteamApp", function () {
     });
 
     describe("if the html page is empty", function () {
-      describe("if the steam app is unmarked as failed via steam api", function () {
+      describe("if the steam app is not marked as failed via steam api", function () {
         beforeAll(function () {
           this.source = ValidDataSources.validDataSources.steamApi;
 

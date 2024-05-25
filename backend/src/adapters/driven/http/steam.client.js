@@ -1,23 +1,29 @@
-import { SteamApp } from "../../../core/models/steam.app.js";
-import { ValidDataSources } from "../../../core/models/valid.data.sources.js";
+import { SteamAppRaw } from "../../../core/models/steam.app.raw.js";
+import { SteamAppsAggregate } from "../../../core/models/steam.apps.aggregate.js";
 
 export class SteamClient {
   #httpClient;
+  #options;
 
-  constructor(httpClient) {
+  constructor(httpClient, options) {
     this.#httpClient = httpClient;
+    this.#options = options;
   }
 
   async getAppList() {
-    const url = "https://api.steampowered.com/ISteamApps/GetAppList/v2";
+    const { host } = this.#options.steamApiOfficial;
+    const url = `${host}/ISteamApps/GetAppList/v2`;
+
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
     const response = await this.#httpClient.get(url, options);
 
-    return SteamApp.manyFromSteamApi(response.data.applist.apps);
+    return SteamAppsAggregate.manyFromSteamApi(response.data.applist.apps);
   }
 
   async getCurrentPlayers(game) {
-    const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${game.id}`;
+    const { host } = this.#options.steamApiOfficial;
+    const url = `${host}/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${game.id}`;
+
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
 
     return (await this.#httpClient.get(url, options)).data.response.player_count;
@@ -25,7 +31,8 @@ export class SteamClient {
 
   async getAllCurrentPlayersConcurrently(games) {
     const options = { params: { key: "79E04F52C6B5AD21266624C05CC12E42" } };
-    const url = `https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=`;
+    const { host } = this.#options.steamApiOfficial;
+    const url = `${host}/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=`;
 
     return (
       await Promise.all(
@@ -36,7 +43,8 @@ export class SteamClient {
 
   // TODO https://github.com/lukatarman/steam-game-stats/issues/192
   async getSteamWebHtmlDetailsPage(id) {
-    const url = `https://store.steampowered.com/app/${id}`;
+    const { host } = this.#options.steamWeb;
+    const url = `${host}/app/${id}`;
 
     try {
       return (await this.#httpClient.get(url)).data;
@@ -46,22 +54,22 @@ export class SteamClient {
   }
 
   async getSteamchartsGameHtmlDetailsPage(id) {
-    const url = `https://steamcharts.com/app/${id}`;
+    const { host } = this.#options.steamcharts;
+    const url = `${host}/app/${id}`;
 
     return (await this.#httpClient.get(url)).data;
   }
 
   async getSteamAppViaSteamApi(steamAppId) {
+    const { host } = this.#options.steamApi;
+    const url = `${host}/appdetails?appids=${steamAppId}`;
+
     try {
-      const response = (
-        await this.#httpClient.get(
-          `https://store.steampowered.com/api/appdetails?appids=${steamAppId}`,
-        )
-      ).data[`${steamAppId}`];
+      const response = (await this.#httpClient.get(url)).data[`${steamAppId}`];
 
       if (!response.success) return "";
 
-      return response.data;
+      return new SteamAppRaw(response.data);
     } catch (error) {
       return "";
     }

@@ -31,6 +31,20 @@ export const config = {
     updateIntervalDelay: hoursToMs(Number(process.env.FEATURES_UPDATE_INTERVAL_DELAY)),
     globalIterationDelay: Number(process.env.RUNNER_GLOBAL_ITERATION_DELAY),
   },
+  externalApiUrls: {
+    steamWeb: {
+      host: process.env.EXTERNAL_API_URLS_STEAMWEB_HOST,
+    },
+    steamApiOfficial: {
+      host: process.env.EXTERNAL_API_URLS_STEAM_API_OFFICIAL_HOST,
+    },
+    steamApiUnofficial: {
+      host: process.env.EXTERNAL_API_URLS_STEAM_API_UNOFFICIAL_HOST,
+    },
+    steamcharts: {
+      host: process.env.EXTERNAL_API_URLS_STEAMCHARTS_HOST,
+    },
+  },
   featureToggles: {
     steamAppsAggregator: {
       /**
