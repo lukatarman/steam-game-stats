@@ -33,31 +33,16 @@ export const config = {
   },
   externalApiUrls: {
     steamWeb: {
-      host: "https://store.steampowered.com",
-      appPage: "app",
+      host: process.env.EXTERNAL_API_URLS_STEAMWEB_HOST,
     },
     steamApiOfficial: {
-      host: "https://api.steampowered.com",
-      currentPlayersForApp: "ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=",
-      appList: "ISteamApps/GetAppList/v2",
+      host: process.env.EXTERNAL_API_URLS_STEAM_API_OFFICIAL_HOST,
     },
     steamApiUnofficial: {
-      host: "https://api.steampowered.com/api",
-      appDetails: "api/appdetails?appids=",
+      host: process.env.EXTERNAL_API_URLS_STEAM_API_UNOFFICIAL_HOST,
     },
     steamcharts: {
-      host: "https://steamcharts.com",
-      appPage: "app",
-    },
-  },
-  externalApiUrlsx: {
-    steamWeb: "https://store.steampowered.com/app/",
-    steamcharts: "https://steamcharts.com/app/",
-    steamApi: {
-      appList: "https://api.steampowered.com/ISteamApps/GetAppList/v2",
-      currentPlayersForApp:
-        "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=",
-      appDetails: "https://store.steampowered.com/api/appdetails?appids=",
+      host: process.env.EXTERNAL_API_URLS_STEAMCHARTS_HOST,
     },
   },
   featureToggles: {
