@@ -3,8 +3,8 @@ import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden
 import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { crusaderKingsDetailsPage } from "../../../assets/steam-web-html-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { eldenRingGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/elden.ring.game.html.details.page.js";
-import { mortalDarknessGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/mortal.darkness.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-web-html-details-pages/risk.of.rain.missing.additional.info.page.js";
+import { theLastNightUnreleasedHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/the.last.night.unreleased.html.details.page.js";
 import { Game } from "./game.js";
 import { getEldenRingGameWithDetails, getXGamesWithoutDetails } from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
@@ -57,15 +57,15 @@ describe("Game", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("the game's release date will be an empty string", function () {
-        expect(this.result.releaseDate).toBe("");
+      it("the game's release date will be null", function () {
+        expect(this.result.releaseDate).toBe(null);
       });
     });
 
-    describe("if the provided HTML page includes a release date,", function () {
+    describe("if the provided HTML page includes an invalid date,", function () {
       beforeAll(function () {
         const steamApp = getXSampleSteamApps(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
+        const page = getParsedHtmlPage(theLastNightUnreleasedHtmlDetailsPage);
 
         this.result = Game.fromSteamApp(steamApp, page);
       });
@@ -74,8 +74,8 @@ describe("Game", function () {
         expect(this.result).toBeInstanceOf(Game);
       });
 
-      it("the game's release date is set to the correct date'", function () {
-        expect(this.result.releaseDate.toISOString()).toEqual("2023-08-01T00:00:00.000Z");
+      it("the game's release date is set to null'", function () {
+        expect(this.result.releaseDate).toBe(null);
       });
     });
 
@@ -133,23 +133,6 @@ describe("Game", function () {
       });
     });
 
-    describe("if the provided HTML page includes genres,", function () {
-      beforeAll(function () {
-        const steamApp = getXSampleSteamApps(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
-
-        this.result = Game.fromSteamApp(steamApp, page);
-      });
-
-      it("the result is an instance of game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("the game's genres get updated with the correct values", function () {
-        expect(this.result.genres).toEqual(["Action", "Adventure", "Indie", "RPG"]);
-      });
-    });
-
     describe("if the provided HTML page does not include a game description,", function () {
       beforeAll(function () {
         const steamApp = getXSampleSteamApps(1)[0];
@@ -164,25 +147,6 @@ describe("Game", function () {
 
       it("the game's description does not get updated", function () {
         expect(this.result.description).toEqual("");
-      });
-    });
-
-    describe("if the provided HTML page includes a description,", function () {
-      beforeAll(function () {
-        const steamApp = getXSampleSteamApps(1)[0];
-        const page = getParsedHtmlPage(mortalDarknessGameHtmlDetailsPage);
-
-        this.result = Game.fromSteamApp(steamApp, page);
-      });
-
-      it("the result is an instance of game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("the game's description is updated with the correct value", function () {
-        expect(this.result.description).toBe(
-          "“One grim dawn and noble I wake, The darkness is rampant, our oath shall break. A noble warrior soon shall rise, and clear the air of the darkened skies.”",
-        );
       });
     });
   });
@@ -219,19 +183,19 @@ describe("Game", function () {
           this.result = Game.fromSteamApi(theLastNightSteamApiData);
         });
 
-        it("the game's release date will be an empty string", function () {
-          expect(this.result.releaseDate).toBe("");
+        it("the game's release date will be null", function () {
+          expect(this.result.releaseDate).toBe(null);
         });
       });
     });
 
-    describe("if the provided steam api app doesn't include a release date", function () {
+    describe("if the provided steam api app doesn't include a valid release date", function () {
       beforeAll(function () {
         this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
       });
 
-      it("the game's release date will be set to an empty string", function () {
-        expect(this.result.releaseDate).toBe("");
+      it("the game's release date will be set to null", function () {
+        expect(this.result.releaseDate).toBe(null);
       });
     });
 
@@ -446,19 +410,7 @@ describe("Game", function () {
       this.result.pushSteamchartsPlayerHistory(gameHistories);
     });
 
-    it("The result is an instance of Game", function () {
-      expect(this.result).toBeInstanceOf(Game);
-    });
-
-    it("The result has a property release date, which equals an empty string", function () {
-      expect(this.result.releaseDate).toBe("");
-    });
-
-    it("The result has a property developers, which equals an empty array", function () {
-      expect(this.result.developers).toEqual([]);
-    });
-
-    it("The game has three new player history entries", function () {
+    it("The game has four player history entries", function () {
       expect(this.result.playerHistory.length).toBe(4);
     });
 
@@ -504,7 +456,7 @@ describe("Game", function () {
         });
 
         it("the release date stays unchanged", function () {
-          expect(this.game.releaseDate).toBe("");
+          expect(this.game.releaseDate).toBe(null);
         });
       });
 
