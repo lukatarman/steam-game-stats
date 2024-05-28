@@ -43,11 +43,11 @@ export class Game {
   #extractReleaseDateViaSteamWeb(page) {
     const releaseDateElement = page.querySelector(".release_date .date");
 
-    if (!releaseDateElement) return "";
+    if (!releaseDateElement) return null;
 
     const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
 
-    return releaseDate == "Invalid Date" ? "" : releaseDate;
+    return releaseDate == "Invalid Date" ? null : releaseDate;
   }
 
   #extractDevelopersViaSteamWeb(page) {
@@ -94,11 +94,11 @@ export class Game {
     }
 
   #extractReleaseDateViaSteamApi(steamApiApp) {
-    if (!steamApiApp.releaseDate) return "";
+    if (!steamApiApp.releaseDate) return null;
 
     const releaseDate = new Date(`${steamApiApp.releaseDate} UTC`);
 
-    return releaseDate == "Invalid Date" ? "" : releaseDate;
+    return releaseDate == "Invalid Date" ? null : releaseDate;
   }
 
   #extractDevelopersViaSteamApi(steamApiApp) {
@@ -172,7 +172,7 @@ export class Game {
 
     const date = this.#extractReleaseDateViaSteamApi(steamApiApp);
 
-    if (date === "") return;
+    if (date === null) return;
 
     this.releaseDate = date;
   }

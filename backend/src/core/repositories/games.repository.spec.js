@@ -163,12 +163,12 @@ describe("GamesRepository", function () {
 
       it("the second game is missing the release date", function () {
         expect(this.result.content[1].id).toBe(2218750);
-        expect(this.result.content[1].releaseDate).toBe("");
+        expect(this.result.content[1].releaseDate).toBe(null);
       });
 
       it("the third game is missing the release date", function () {
         expect(this.result.content[2].id).toBe(239140);
-        expect(this.result.content[2].releaseDate).toBe("");
+        expect(this.result.content[2].releaseDate).toBe(null);
       });
     });
   });

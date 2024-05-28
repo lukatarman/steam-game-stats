@@ -303,7 +303,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 2218750,
       name: "Halls of Torment",
-      releaseDate: "",
+      releaseDate: null,
       developers: ["Chasing Carrots"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/2218750/header.jpg",
@@ -327,7 +327,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 239140,
       name: "Dying Light",
-      releaseDate: "",
+      releaseDate: null,
       developers: ["Sample Dev"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/239140/header.jpg",
@@ -565,7 +565,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 620,
       name: "Portal 2",
-      releaseDate: "",
+      releaseDate: null,
       developers: ["Valve"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/620/header.jpg",
@@ -591,7 +591,7 @@ export const getGamesDatasetMock = () => {
     {
       id: 646910,
       name: "The Crew 2",
-      releaseDate: "",
+      releaseDate: null,
       developers: [],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/646910/header.jpg",

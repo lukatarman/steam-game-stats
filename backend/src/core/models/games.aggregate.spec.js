@@ -65,7 +65,7 @@ describe("GamesAggregate", function () {
   });
 
   describe(".extractReleaseDatesViaSteamApi.", function () {
-    describe("When we try to update two games with missing release dates, one of them missing a release date", function () {
+    describe("When we try to update two games with missing release dates, one of them having in invalid date", function () {
       beforeAll(function () {
         const gameIds = [1245620, 612400];
 
@@ -86,7 +86,7 @@ describe("GamesAggregate", function () {
       });
 
       it("the second game's release date remains unchanged", function () {
-        expect(this.gamesArray.content[1].releaseDate).toEqual("");
+        expect(this.gamesArray.content[1].releaseDate).toEqual(null);
       });
     });
   });
