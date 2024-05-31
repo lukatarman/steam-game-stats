@@ -7,6 +7,7 @@ import {
   getGamesWithTrackedPlayersNoDate,
   getOneGameWithDetails,
   getTrendingGamesMockData,
+  getXGamesWithDetails,
 } from "../models/game.mocks.js";
 import { Game } from "../models/game.js";
 import { GamesAggregate } from "../models/games.aggregate.js";
@@ -126,7 +127,7 @@ describe("GamesRepository", function () {
     });
   });
 
-  describe(".getGamesWithoutReleaseDates", function () {
+  describe(".getXUnreleasedGames", function () {
     describe("When 3 games without valid release dates are requested", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
@@ -135,7 +136,7 @@ describe("GamesRepository", function () {
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
-        this.result = await gamesRepo.getGamesWithoutReleaseDates(3);
+        this.result = await gamesRepo.getXUnreleasedGames(3);
       });
 
       afterAll(function () {
@@ -158,17 +159,19 @@ describe("GamesRepository", function () {
 
       it("the first game has the correct date", function () {
         expect(this.result.content[0].id).toBe(227300);
-        expect(this.result.content[0].releaseDate).toEqual(new Date("Thu Oct 17 2999"));
+        expect(this.result.content[0].releaseDate.date).toEqual(
+          new Date("Thu Oct 17 2999"),
+        );
       });
 
       it("the second game is missing the release date", function () {
         expect(this.result.content[1].id).toBe(2218750);
-        expect(this.result.content[1].releaseDate).toBe(null);
+        expect(this.result.content[1].releaseDate.date).toBe(null);
       });
 
       it("the third game is missing the release date", function () {
         expect(this.result.content[2].id).toBe(239140);
-        expect(this.result.content[2].releaseDate).toBe(null);
+        expect(this.result.content[2].releaseDate.date).toBe(null);
       });
     });
   });
@@ -205,7 +208,7 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
-        await this.databaseClient.insertMany("games", getGamesWithEmptyPlayerHistories());
+        await this.databaseClient.insertMany("games", getXGamesWithDetails(3));
 
         await this.databaseClient.insertMany("history_checks", [
           { gameId: 1, checked: false },
@@ -222,18 +225,18 @@ describe("GamesRepository", function () {
         this.databaseClient.disconnect();
       });
 
-      it("the result has two games", function () {
+      it("two games are returned", function () {
         expect(this.result.length).toBe(2);
       });
 
-      it("the first array has the correct values", function () {
+      it("the first game has the correct values", function () {
         expect(this.result[0].id).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Train");
+        expect(this.result[0].name).toBe("Game 1");
       });
 
-      it("the second array has the correct values", function () {
+      it("the second game has the correct values", function () {
         expect(this.result[1].id).toBe(3);
-        expect(this.result[1].name).toBe("Risk of Brain");
+        expect(this.result[1].name).toBe("Game 3");
       });
     });
 
@@ -241,7 +244,7 @@ describe("GamesRepository", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games", "history_checks"]);
 
-        await this.databaseClient.insertMany("games", getGamesWithEmptyPlayerHistories());
+        await this.databaseClient.insertMany("games", getXGamesWithDetails(3));
 
         await this.databaseClient.insertMany("history_checks", [
           { gameId: 1, checked: false },
@@ -263,7 +266,7 @@ describe("GamesRepository", function () {
 
       it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Train");
+        expect(this.result[0].name).toBe("Game 1");
       });
     });
   });
@@ -275,27 +278,19 @@ describe("GamesRepository", function () {
 
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [
-              { trackedPlayers: [{ date: new Date("12:00 21 September 2022") }] },
-            ],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [
-              { trackedPlayers: [{ date: new Date("9:00 21 September 2022") }] },
-            ],
-          },
-          {
-            id: 3,
-            name: "Risk of Brain",
-            playerHistory: [],
-          },
-        ]);
+        const games = getXGamesWithDetails(3);
+
+        const firstGameHistories = [
+          { trackedPlayers: [{ date: new Date("12:00 21 September 2022") }] },
+        ];
+        const secondGameHistories = [
+          { trackedPlayers: [{ date: new Date("9:00 21 September 2022") }] },
+        ];
+
+        games[0].pushSteamchartsPlayerHistory(firstGameHistories);
+        games[1].pushSteamchartsPlayerHistory(secondGameHistories);
+
+        await this.databaseClient.insertMany("games", games);
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -313,12 +308,12 @@ describe("GamesRepository", function () {
 
       it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(2);
-        expect(this.result[0].name).toBe("Risk of Rain");
+        expect(this.result[0].name).toBe("Game 2");
       });
 
       it("the second array has the correct values", function () {
         expect(this.result[1].id).toBe(3);
-        expect(this.result[1].name).toBe("Risk of Brain");
+        expect(this.result[1].name).toBe("Game 3");
       });
     });
 
@@ -328,22 +323,19 @@ describe("GamesRepository", function () {
 
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
 
-        await this.databaseClient.insertMany("games", [
-          {
-            id: 1,
-            name: "Risk of Train",
-            playerHistory: [
-              { trackedPlayers: [{ date: new Date("10:00 21 September 2022") }] },
-            ],
-          },
-          {
-            id: 2,
-            name: "Risk of Rain",
-            playerHistory: [
-              { trackedPlayers: [{ date: new Date("11:24 21 September 2022") }] },
-            ],
-          },
-        ]);
+        const games = getXGamesWithDetails(2);
+
+        const firstGameHistories = [
+          { trackedPlayers: [{ date: new Date("10:00 21 September 2022") }] },
+        ];
+        const secondGameHistories = [
+          { trackedPlayers: [{ date: new Date("11:24 21 September 2022") }] },
+        ];
+
+        games[0].pushSteamchartsPlayerHistory(firstGameHistories);
+        games[1].pushSteamchartsPlayerHistory(secondGameHistories);
+
+        await this.databaseClient.insertMany("games", games);
 
         const gamesRepo = new GamesRepository(this.databaseClient);
 
@@ -361,7 +353,7 @@ describe("GamesRepository", function () {
 
       it("the first array has the correct values", function () {
         expect(this.result[0].id).toBe(1);
-        expect(this.result[0].name).toBe("Risk of Train");
+        expect(this.result[0].name).toBe("Game 1");
       });
     });
   });

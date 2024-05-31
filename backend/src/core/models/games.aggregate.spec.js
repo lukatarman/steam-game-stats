@@ -3,6 +3,7 @@ import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/th
 import { getXGamesWithoutDetails } from "./game.mocks.js";
 import { GamesAggregate } from "./games.aggregate.js";
 import { getRawSteamApiApp } from "./steam.app.raw.mock.js";
+import axios from "axios";
 
 describe("GamesAggregate", function () {
   describe(".content", () => {
@@ -23,6 +24,22 @@ describe("GamesAggregate", function () {
       });
     });
   });
+
+  // xdescribe(".contentx", () => {
+  //   describe("if we try to get the content of the class", function () {
+  //     beforeAll(async function () {
+  //       const myTest = await axios.get(
+  //         `https://steampowered.com/api/appdetails?appids=2246340`,
+  //       );
+  //       breakpoint;
+  //     });
+
+  //     it("the returned games are true deep copies", function () {
+  //       expect(this.contentCopy[0].developers).toEqual([]);
+  //       expect(this.contentCopy[1].developers).toEqual([]);
+  //     });
+  //   });
+  // });
 
   describe(".ids", () => {
     describe("if the aggregate contains two games,", function () {
@@ -80,13 +97,13 @@ describe("GamesAggregate", function () {
       });
 
       it("the first game's release date is updated", function () {
-        expect(this.gamesArray.content[0].releaseDate).toEqual(
+        expect(this.gamesArray.content[0].releaseDate.date).toEqual(
           new Date("24 February 2022 UTC"),
         );
       });
 
       it("the second game's release date remains unchanged", function () {
-        expect(this.gamesArray.content[1].releaseDate).toEqual(null);
+        expect(this.gamesArray.content[1].releaseDate.date).toEqual(null);
       });
     });
   });

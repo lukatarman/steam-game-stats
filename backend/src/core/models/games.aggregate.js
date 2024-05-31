@@ -25,7 +25,9 @@ export class GamesAggregate {
 
       const steamApiApp = this.#findGameByAppId(steamApiApps, gameCopy.id);
 
-      gameCopy.updateReleaseDateViaSteamApi(steamApiApp);
+      if (!steamApiApp) return gameCopy;
+
+      gameCopy.updateReleaseDateViaSteamApi(steamApiApp.releaseDate.date);
 
       return gameCopy;
     });

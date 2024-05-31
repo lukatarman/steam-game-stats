@@ -3,6 +3,7 @@ import { Game } from "../models/game.js";
 import { eldenRingHttpDetailsSteamcharts } from "../../../assets/steamcharts-html-details-pages/elden.ring.multiple.histories.html.details.page.js";
 import { crushTheCastleHtmlDetailsSteamcharts } from "../../../assets/steamcharts-html-details-pages/crush.the.castle.legacy.collection.html.details.page.js";
 import { PlayerHistory } from "../models/player.history.js";
+import { getXGamesWithoutDetails } from "../models/game.mocks.js";
 
 describe("player.history.service.js", function () {
   describe(".addPlayerHistoriesFromSteamcharts adds the player histories from Steamcharts to each game object", function () {
@@ -12,20 +13,10 @@ describe("player.history.service.js", function () {
         const firstPage = eldenRingHttpDetailsSteamcharts;
         const secondPage = crushTheCastleHtmlDetailsSteamcharts;
 
-        const firstGame = {
-          id: 1,
-          name: "Elden Ring",
-          playerHistory: [],
-        };
+        const games = getXGamesWithoutDetails(2);
 
-        const secondGame = {
-          id: 2,
-          name: "Crush The Castle",
-          playerHistory: [],
-        };
-
-        const instantiatedFirstGame = Game.fromDbEntry(firstGame);
-        const instantiatedSecondGame = Game.fromDbEntry(secondGame);
+        const instantiatedFirstGame = Game.fromDbEntry(games[0]);
+        const instantiatedSecondGame = Game.fromDbEntry(games[1]);
 
         map.set(instantiatedFirstGame, firstPage);
         map.set(instantiatedSecondGame, secondPage);
@@ -58,13 +49,7 @@ describe("player.history.service.js", function () {
       beforeAll(function () {
         const map = new Map();
 
-        const game = {
-          id: 1,
-          name: "Elden Ring",
-          playerHistory: [],
-        };
-
-        map.set(game, "");
+        map.set(getXGamesWithoutDetails(1)[0], "");
 
         this.result = addPlayerHistoriesFromSteamcharts(map);
       });

@@ -1,5 +1,11 @@
 import { PlayerHistory } from "./player.history.js";
 import cloneDeep from "lodash.clonedeep";
+import { ReleaseDate } from "./release.date.js";
+
+//todo:
+// add tests for release.date data model
+// add steam app raw test
+// fix typo from previous PR
 
 export class Game {
   id;
@@ -30,7 +36,7 @@ export class Game {
     const game         = new Game();
     game.id            = steamApp.appid;
     game.name          = steamApp.name;
-    game.releaseDate   = game.#extractReleaseDateViaSteamWeb(page);
+    game.releaseDate   = ReleaseDate.fromSteamWeb(page);
     game.developers    = game.#extractDevelopersViaSteamWeb(page);
     game.genres        = game.#extractGenresViaSteamWeb(page);
     game.description   = game.#extractDescriptionViaSteamWeb(page);
@@ -38,16 +44,6 @@ export class Game {
     game.playerHistory = [];
     
     return game;
-  }
-
-  #extractReleaseDateViaSteamWeb(page) {
-    const releaseDateElement = page.querySelector(".release_date .date");
-
-    if (!releaseDateElement) return null;
-
-    const releaseDate = new Date(`${releaseDateElement.textContent.trim()} UTC`);
-
-    return releaseDate == "Invalid Date" ? null : releaseDate;
   }
 
   #extractDevelopersViaSteamWeb(page) {
@@ -83,7 +79,7 @@ export class Game {
       const game         = new Game();
       game.id            = steamApiApp.id;
       game.name          = steamApiApp.name;
-      game.releaseDate   = game.#extractReleaseDateViaSteamApi(steamApiApp);
+      game.releaseDate   = steamApiApp.releaseDate.copy();
       game.developers    = game.#extractDevelopersViaSteamApi(steamApiApp);
       game.genres        = game.#extractGenresViaSteamApi(steamApiApp);
       game.description   = game.#extractDescriptionViaSteamApi(steamApiApp);
@@ -124,7 +120,7 @@ export class Game {
     const game         = new Game();
     game.id            = dbEntry.id;
     game.name          = dbEntry.name;
-    game.releaseDate   = dbEntry.releaseDate;
+    game.releaseDate   = ReleaseDate.fromDb(dbEntry.releaseDate);
     game.developers    = dbEntry.developers;
     game.genres        = dbEntry.genres;
     game.description   = dbEntry.description;
@@ -167,13 +163,9 @@ export class Game {
     });
   }
 
-  updateReleaseDateViaSteamApi(steamApiApp) {
-    if (this.releaseDate) return;
+  updateReleaseDateViaSteamApi(newDate) {
+    if (!newDate) return;
 
-    const date = this.#extractReleaseDateViaSteamApi(steamApiApp);
-
-    if (date === null) return;
-
-    this.releaseDate = date;
+    this.releaseDate.updateReleaseDate(newDate);
   }
 }

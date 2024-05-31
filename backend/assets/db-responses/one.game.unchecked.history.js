@@ -4,6 +4,10 @@ export const oneGameWithUncheckedPlayerHistory = {
   },
   id: 1838970,
   name: "Crush the Castle Legacy Collection",
+  releaseDate: {
+    date: null,
+    comingSoon: true,
+  },
   image: null,
   imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1838970/header.jpg",
   playerHistory: [],

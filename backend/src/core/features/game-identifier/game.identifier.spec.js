@@ -446,7 +446,7 @@ function createGamesRepositoryMock(gamesRepoRet) {
     insertManyGames: Promise.resolve(undefined),
     getGamesWithoutDetails: Promise.resolve(gamesRepoRet),
     updateGameDetailsFrom: Promise.resolve(undefined),
-    getGamesWithoutReleaseDates: Promise.resolve(gamesRepoRet),
+    getXUnreleasedGames: Promise.resolve(gamesRepoRet),
     updateReleaseDates: Promise.resolve(undefined),
   });
 }

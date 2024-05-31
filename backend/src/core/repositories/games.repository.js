@@ -21,13 +21,13 @@ export class GamesRepository {
     return await this.#dbClient.getAll("games");
   }
 
-  async getGamesWithoutReleaseDates(amount) {
+  async getXUnreleasedGames(amount) {
     const response = await this.#dbClient
       .get("games")
       .aggregate([
         {
           $match: {
-            $or: [{ releaseDate: { $eq: null } }, { releaseDate: { $gt: new Date() } }],
+            $or: [{ "releaseDate.comingSoon": { $eq: true } }],
           },
         },
         { $limit: amount },
