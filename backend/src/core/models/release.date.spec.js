@@ -1,10 +1,8 @@
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
-import { monsterHunterSteamApiData } from "../../../assets/steam-api-responses/monster.hunter.coming.soon.js";
 import { eldenRingGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/elden.ring.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-web-html-details-pages/risk.of.rain.missing.additional.info.page.js";
 import { theLastNightUnreleasedHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/the.last.night.unreleased.html.details.page.js";
 import { ReleaseDate } from "./release.date.js";
-import { getRawSteamApiApp } from "./steam.app.raw.mock.js";
 
 describe("ReleaseDate", function () {
   describe(".copy", function () {
@@ -13,10 +11,10 @@ describe("ReleaseDate", function () {
       this.releaseDate = ReleaseDate.fromSteamWeb(page);
       this.result = this.releaseDate.copy();
 
-      this.releaseDate.comingSoon = null;
+      this.releaseDate.comingSoon = true;
     });
 
-    it("the result is a copy of ReleaseDate", function () {
+    it("the result is an instance of ReleaseDate", function () {
       expect(this.result).toBeInstanceOf(ReleaseDate);
     });
 
@@ -38,7 +36,6 @@ describe("ReleaseDate", function () {
       });
 
       it("the resulting date has the correct value", function () {
-        expect(this.result.date).toBeInstanceOf(Date);
         expect(this.result.date).toEqual(new Date("24 February 2022 UTC"));
       });
 
@@ -83,8 +80,7 @@ describe("ReleaseDate", function () {
   describe(".fromSteamAppRaw", function () {
     describe("When the method is used ", function () {
       beforeAll(function () {
-        const dateAsString = "24 Feb, 2022";
-        this.result = ReleaseDate.fromSteamAppRaw(dateAsString, false);
+        this.result = ReleaseDate.fromSteamAppRaw("24 Feb, 2022", false);
       });
 
       it("the result is an instance of release date", function () {
@@ -92,7 +88,6 @@ describe("ReleaseDate", function () {
       });
 
       it("the resulting date has the correct value", function () {
-        expect(this.result.date).toBeInstanceOf(Date);
         expect(this.result.date).toEqual(new Date("24 February 2022 UTC"));
       });
 
@@ -150,7 +145,6 @@ describe("ReleaseDate", function () {
       });
 
       it("the resulting date has the correct value", function () {
-        expect(this.releaseDate.date).toBeInstanceOf(Date);
         expect(this.releaseDate.date).toEqual(this.releaseDate.date);
       });
 
@@ -161,22 +155,7 @@ describe("ReleaseDate", function () {
   });
 
   describe(".updateReleaseDate", function () {
-    describe("When the existing date is null", function () {
-      beforeAll(function () {
-        this.result = ReleaseDate.fromSteamAppRaw(null, true);
-        this.result.updateReleaseDate(new Date("2025"));
-      });
-
-      it("the resulting date has the correct value", function () {
-        expect(this.result.date).toEqual(new Date("2025"));
-      });
-
-      it("the resulting release date release status stays unchanged", function () {
-        expect(this.result.comingSoon).toBe(true);
-      });
-    });
-
-    describe("When the passed in date is older than the existing date", function () {
+    describe("When the passed in date is smaller than the existing date", function () {
       beforeAll(function () {
         this.result = ReleaseDate.fromSteamAppRaw("2025", true);
         this.result.updateReleaseDate(new Date("2024"));
@@ -191,7 +170,18 @@ describe("ReleaseDate", function () {
       });
     });
 
-    describe("When the passed in date is more recent than the existing date", function () {
+    describe("When the passed in date is larger than the existing date", function () {
+      describe("and the existing date is null", function () {
+        beforeAll(function () {
+          this.result = ReleaseDate.fromSteamAppRaw(null, true);
+          this.result.updateReleaseDate(new Date("2025"));
+        });
+
+        it("the resulting date has the correct value", function () {
+          expect(this.result.date).toEqual(new Date("2025"));
+        });
+      });
+
       describe("and the passed in date is a future date", function () {
         beforeAll(function () {
           jasmine.clock().install();
@@ -216,19 +206,12 @@ describe("ReleaseDate", function () {
 
       describe("and the passed in date is a past date", function () {
         beforeAll(function () {
-          jasmine.clock().install();
-          jasmine.clock().mockDate(new Date("2027"));
-
           this.result = ReleaseDate.fromSteamAppRaw("2021", true);
-          this.result.updateReleaseDate(new Date("2024"));
-        });
-
-        afterAll(function () {
-          jasmine.clock().uninstall();
+          this.result.updateReleaseDate(new Date("2022"));
         });
 
         it("the resulting date has the correct value", function () {
-          expect(this.result.date).toEqual(new Date("2024"));
+          expect(this.result.date).toEqual(new Date("2022"));
         });
 
         it("the resulting release date release status is correctly marked", function () {

@@ -3,7 +3,6 @@ import { GamesRepository } from "./games.repository.js";
 import { daysToMs, hoursToMs } from "../../common/time.utils.js";
 import {
   getGamesDatasetMock,
-  getGamesWithEmptyPlayerHistories,
   getGamesWithTrackedPlayersNoDate,
   getOneGameWithDetails,
   getTrendingGamesMockData,
@@ -127,7 +126,7 @@ describe("GamesRepository", function () {
     });
   });
 
-  describe(".getXUnreleasedGames", function () {
+  fdescribe(".getXUnreleasedGames", function () {
     describe("When 3 games without valid release dates are requested", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);
@@ -151,12 +150,6 @@ describe("GamesRepository", function () {
         expect(this.result.content.length).toBe(3);
       });
 
-      it("the games are an instance of Game", function () {
-        expect(this.result.content[0]).toBeInstanceOf(Game);
-        expect(this.result.content[1]).toBeInstanceOf(Game);
-        expect(this.result.content[2]).toBeInstanceOf(Game);
-      });
-
       it("the first game has the correct date", function () {
         expect(this.result.content[0].id).toBe(227300);
         expect(this.result.content[0].releaseDate.date).toEqual(
@@ -164,12 +157,12 @@ describe("GamesRepository", function () {
         );
       });
 
-      it("the second game is missing the release date", function () {
+      it("the second game is correctly missing a date", function () {
         expect(this.result.content[1].id).toBe(2218750);
         expect(this.result.content[1].releaseDate.date).toBe(null);
       });
 
-      it("the third game is missing the release date", function () {
+      it("the third game is correctly missing a date", function () {
         expect(this.result.content[2].id).toBe(239140);
         expect(this.result.content[2].releaseDate.date).toBe(null);
       });

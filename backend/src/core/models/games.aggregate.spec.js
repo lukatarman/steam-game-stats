@@ -3,7 +3,6 @@ import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/th
 import { getXGamesWithoutDetails } from "./game.mocks.js";
 import { GamesAggregate } from "./games.aggregate.js";
 import { getRawSteamApiApp } from "./steam.app.raw.mock.js";
-import axios from "axios";
 
 describe("GamesAggregate", function () {
   describe(".content", () => {
@@ -24,22 +23,6 @@ describe("GamesAggregate", function () {
       });
     });
   });
-
-  // xdescribe(".contentx", () => {
-  //   describe("if we try to get the content of the class", function () {
-  //     beforeAll(async function () {
-  //       const myTest = await axios.get(
-  //         `https://steampowered.com/api/appdetails?appids=2246340`,
-  //       );
-  //       breakpoint;
-  //     });
-
-  //     it("the returned games are true deep copies", function () {
-  //       expect(this.contentCopy[0].developers).toEqual([]);
-  //       expect(this.contentCopy[1].developers).toEqual([]);
-  //     });
-  //   });
-  // });
 
   describe(".ids", () => {
     describe("if the aggregate contains two games,", function () {
@@ -82,7 +65,7 @@ describe("GamesAggregate", function () {
   });
 
   describe(".extractReleaseDatesViaSteamApi.", function () {
-    describe("When we try to update two games with missing release dates, one of them having in invalid date", function () {
+    describe("When we try to update two games with missing release dates, one of them having an invalid date", function () {
       beforeAll(function () {
         const gameIds = [1245620, 612400];
 

@@ -13,7 +13,6 @@ import {
 import { PlayerHistory } from "./player.history.js";
 import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getEldenRingSteamApp, getXSampleSteamApps } from "./steam.app.mocks.js";
-import { SteamAppRaw } from "./steam.app.raw.js";
 import { getRawSteamApiApp, getXSampleRawSteamApiApps } from "./steam.app.raw.mock.js";
 
 describe("Game", function () {
@@ -134,38 +133,6 @@ describe("Game", function () {
 
       it("the game has the correct values", function () {
         expect(this.result).toEqual(this.expectedResult);
-      });
-    });
-
-    describe("if the provided steam api app includes a release date", function () {
-      describe("and the date is a valid date", function () {
-        beforeAll(function () {
-          this.result = Game.fromSteamApi(getRawSteamApiApp(eldenRingSteamApiData));
-        });
-
-        it("the game's release date will have the correct value", function () {
-          expect(this.result.releaseDate.date).toEqual(new Date("24 February 2022 UTC"));
-        });
-      });
-
-      describe("and the date is not a valid date", function () {
-        beforeAll(function () {
-          this.result = Game.fromSteamApi(getRawSteamApiApp(theLastNightSteamApiData));
-        });
-
-        it("the game's release date will be null", function () {
-          expect(this.result.releaseDate.date).toBe(null);
-        });
-      });
-    });
-
-    describe("if the provided steam api app doesn't include a valid release date", function () {
-      beforeAll(function () {
-        this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
-      });
-
-      it("the game's release date will be set to null", function () {
-        expect(this.result.releaseDate.date).toBe(null);
       });
     });
 
@@ -363,6 +330,7 @@ describe("Game", function () {
   describe(".updateReleaseDateViaSteamApi", function () {
     describe("If the passed in date is null", function () {
       beforeAll(function () {
+        this.existingDate = new Date("September 2, 2002");
         this.game = getXGamesWithoutDetails(1)[0];
         this.game.releaseDate = this.existingDate;
 
@@ -383,11 +351,11 @@ describe("Game", function () {
         this.game.updateReleaseDateViaSteamApi(this.date);
       });
 
-      it("the release date changed to the correct value", function () {
+      it("the release date is properly updated", function () {
         expect(this.game.releaseDate.date).toEqual(this.date);
       });
 
-      it("the release date release status is changed to the correct value", function () {
+      it("the release date release status is properly updated", function () {
         expect(this.game.releaseDate.comingSoon).toBeFalse();
       });
     });

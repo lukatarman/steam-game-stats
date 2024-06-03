@@ -24,14 +24,7 @@ export class GamesRepository {
   async getXUnreleasedGames(amount) {
     const response = await this.#dbClient
       .get("games")
-      .aggregate([
-        {
-          $match: {
-            $or: [{ "releaseDate.comingSoon": { $eq: true } }],
-          },
-        },
-        { $limit: amount },
-      ])
+      .aggregate([{ $match: { "releaseDate.comingSoon": true } }, { $limit: amount }])
       .toArray();
 
     return new GamesAggregate(response);

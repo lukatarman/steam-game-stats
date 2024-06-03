@@ -13,7 +13,7 @@ export class ReleaseDate {
   static fromSteamWeb(page) {
     const releaseDate = new ReleaseDate();
     releaseDate.date = releaseDate.#extractReleaseDateViaSteamWeb(page);
-    releaseDate.comingSoon = releaseDate.#isGettingReleasedSoon();
+    releaseDate.comingSoon = releaseDate.#isGettingReleasedSoon;
 
     return releaseDate;
   }
@@ -28,8 +28,9 @@ export class ReleaseDate {
     return releaseDate == "Invalid Date" ? null : releaseDate;
   }
 
-  #isGettingReleasedSoon() {
+  get #isGettingReleasedSoon() {
     if (!this.date) return true;
+
     return this.date > new Date();
   }
 
@@ -41,10 +42,10 @@ export class ReleaseDate {
     return releaseDate;
   }
 
-  #getSteamAppRawReleaseDate(rawReleaseDate) {
-    if (!rawReleaseDate) return null;
+  #getSteamAppRawReleaseDate(rawDate) {
+    if (!rawDate) return null;
 
-    const fixedReleaseDate = new Date(`${rawReleaseDate} UTC`);
+    const fixedReleaseDate = new Date(`${rawDate} UTC`);
 
     return fixedReleaseDate == "Invalid Date" ? null : fixedReleaseDate;
   }
@@ -55,10 +56,10 @@ export class ReleaseDate {
     return comingSoon;
   }
 
-  static fromDb(releaseDate) {
+  static fromDb({ date, comingSoon }) {
     const fixedReleaseDate = new ReleaseDate();
-    fixedReleaseDate.date = releaseDate.date;
-    fixedReleaseDate.comingSoon = releaseDate.comingSoon;
+    fixedReleaseDate.date = date;
+    fixedReleaseDate.comingSoon = comingSoon;
 
     return fixedReleaseDate;
   }

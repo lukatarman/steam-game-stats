@@ -2,11 +2,6 @@ import { PlayerHistory } from "./player.history.js";
 import cloneDeep from "lodash.clonedeep";
 import { ReleaseDate } from "./release.date.js";
 
-//todo:
-// add tests for release.date data model
-// add steam app raw test
-// fix typo from previous PR
-
 export class Game {
   id;
   name;
@@ -88,14 +83,6 @@ export class Game {
       
       return game;
     }
-
-  #extractReleaseDateViaSteamApi(steamApiApp) {
-    if (!steamApiApp.releaseDate) return null;
-
-    const releaseDate = new Date(`${steamApiApp.releaseDate} UTC`);
-
-    return releaseDate == "Invalid Date" ? null : releaseDate;
-  }
 
   #extractDevelopersViaSteamApi(steamApiApp) {
     if (!steamApiApp.developers) return [];
