@@ -1,6 +1,5 @@
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
-import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { crusaderKingsDetailsPage } from "../../../assets/steam-web-html-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { eldenRingGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/elden.ring.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-web-html-details-pages/risk.of.rain.missing.additional.info.page.js";
