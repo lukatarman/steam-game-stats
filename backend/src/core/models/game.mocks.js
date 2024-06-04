@@ -4,6 +4,7 @@ import { daysToMs } from "../../common/time.utils.js";
 import { Game } from "./game.js";
 import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getXSampleSteamApps } from "./steam.app.mocks.js";
+import { getXRawSteamApiApps } from "./steam.app.raw.mock.js";
 
 export const getXGamesWithoutDetails = (amount, ids = []) => {
   const steamApps = getXSampleSteamApps(amount, ids);
@@ -19,6 +20,14 @@ export const getOneSteamAppInstantiatedGame = () => {
   const page = getParsedHtmlPage(feartressGameHtmlDetailsPage);
 
   return Game.fromSteamApp(steamApp, page);
+};
+
+export const getXGamesWithDetails = (amount) => {
+  const steamApiApps = getXRawSteamApiApps(amount);
+
+  return Array.from({ length: amount }, (x, index) => {
+    return Game.fromSteamApi(steamApiApps[index]);
+  });
 };
 
 export const getOneGameWithDetails = () => {
@@ -40,7 +49,10 @@ export const getEldenRingGameWithDetails = (hasPlayerHistory = false) => {
   const dbEntry = {
     id: 1245620,
     name: "ELDEN RING",
-    releaseDate: new Date("Feb 24 2022 UTC"),
+    releaseDate: {
+      date: new Date("Feb 24 2022 UTC"),
+      comingSoon: false,
+    },
     developers: ["FromSoftware Inc."],
     genres: ["Action", "RPG"],
     imageUrl: `https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg`,
@@ -220,7 +232,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 582660,
       name: "Black Desert",
-      releaseDate: new Date("24 May, 2017"),
+      releaseDate: {
+        date: new Date("24 May, 2017"),
+        comingSoon: false,
+      },
       developers: ["Pearl Abyss"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/582660/header.jpg",
@@ -230,7 +245,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 227300,
       name: "Euro Truck Simulator 2",
-      releaseDate: new Date("17 Oct, 2999"),
+      releaseDate: {
+        date: new Date("17 Oct, 2999"),
+        comingSoon: true,
+      },
       developers: ["SCS Software"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/227300/header.jpg",
@@ -243,7 +261,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 255710,
       name: "Cities: Skylines",
-      releaseDate: new Date("23 Sep, 2015"),
+      releaseDate: {
+        date: new Date("23 Sep, 2015"),
+        comingSoon: false,
+      },
       developers: ["Colossal Order Ltd."],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/255710/header.jpg",
@@ -256,7 +277,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 648800,
       name: "Raft",
-      releaseDate: new Date("19 Jun, 2022"),
+      releaseDate: {
+        date: new Date("19 Jun, 2022"),
+        comingSoon: false,
+      },
       developers: ["Redbeet Interactive"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/648800/header.jpg",
@@ -269,7 +293,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 1293830,
       name: "Forza Horizon 4",
-      releaseDate: new Date("9 Mar, 2021"),
+      releaseDate: {
+        date: new Date("9 Mar, 2021"),
+        comingSoon: false,
+      },
       developers: ["Playground Games"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1293830/header.jpg",
@@ -279,7 +306,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 1283970,
       name: "YoloMouse",
-      releaseDate: new Date("1 May, 2020"),
+      releaseDate: {
+        date: new Date("1 May, 2020"),
+        comingSoon: false,
+      },
       developers: ["Dragonrise Games"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1283970/header.jpg",
@@ -303,7 +333,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 2218750,
       name: "Halls of Torment",
-      releaseDate: null,
+      releaseDate: {
+        date: null,
+        comingSoon: true,
+      },
       developers: ["Chasing Carrots"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/2218750/header.jpg",
@@ -327,7 +360,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 239140,
       name: "Dying Light",
-      releaseDate: null,
+      releaseDate: {
+        date: null,
+        comingSoon: true,
+      },
       developers: ["Sample Dev"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/239140/header.jpg",
@@ -353,7 +389,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 1263850,
       name: "Football Manager 2021",
-      releaseDate: new Date("24 Nov, 2020"),
+      releaseDate: {
+        date: new Date("24 Nov, 2020"),
+        comingSoon: false,
+      },
       developers: ["Sports Interactive"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1263850/header.jpg",
@@ -380,7 +419,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 311210,
       name: "Call of Duty: Black Ops III",
-      releaseDate: new Date("11.09.2005"),
+      releaseDate: {
+        date: new Date("11.09.2005"),
+        comingSoon: false,
+      },
       developers: [""],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/311210/header.jpg",
@@ -425,7 +467,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 221380,
       name: "Age of Empires II (2013)",
-      releaseDate: new Date("22 Aug 2013"),
+      releaseDate: {
+        date: new Date("22 Aug 2013"),
+        comingSoon: false,
+      },
       developers: [
         "Skybox Labs",
         "Hidden Path Entertainment",
@@ -457,7 +502,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 240,
       name: "Counter-Strike: Source",
-      releaseDate: new Date("31 Oct 2004"),
+      releaseDate: {
+        date: new Date("31 Oct 2004"),
+        comingSoon: false,
+      },
       developers: ["Valve"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/240/header.jpg",
@@ -484,7 +532,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 232090,
       name: "Killing Floor 2",
-      releaseDate: new Date("14.10.2004"),
+      releaseDate: {
+        date: new Date("14.10.2004"),
+        comingSoon: false,
+      },
       developers: [],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/232090/header.jpg",
@@ -511,7 +562,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 286160,
       name: "Tabletop Simulator",
-      releaseDate: new Date("22 Apr 2015"),
+      releaseDate: {
+        date: new Date("22 Apr 2015"),
+        comingSoon: false,
+      },
       developers: ["Berserk Games"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/286160/header.jpg",
@@ -538,7 +592,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 881100,
       name: "Noita",
-      releaseDate: new Date("14 Oct 2020"),
+      releaseDate: {
+        date: new Date("14 Oct 2020"),
+        comingSoon: false,
+      },
       developers: ["Nolla Games"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/881100/header.jpg",
@@ -565,7 +622,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 620,
       name: "Portal 2",
-      releaseDate: null,
+      releaseDate: {
+        date: null,
+        comingSoon: false,
+      },
       developers: ["Valve"],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/620/header.jpg",
@@ -591,7 +651,10 @@ export const getGamesDatasetMock = () => {
     {
       id: 646910,
       name: "The Crew 2",
-      releaseDate: null,
+      releaseDate: {
+        date: null,
+        comingSoon: true,
+      },
       developers: [],
       image: null,
       imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/646910/header.jpg",

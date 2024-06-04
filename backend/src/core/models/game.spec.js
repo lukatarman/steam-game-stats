@@ -1,15 +1,17 @@
 import { getParsedHtmlPage } from "../../../assets/html.details.pages.mock.js";
 import { eldenRingSteamApiData } from "../../../assets/steam-api-responses/elden.ring.js";
-import { theLastNightSteamApiData } from "../../../assets/steam-api-responses/the.last.night.unreleased.js";
 import { crusaderKingsDetailsPage } from "../../../assets/steam-web-html-details-pages/crusader.kings.multiple.developers.html.details.page.js";
 import { eldenRingGameHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/elden.ring.game.html.details.page.js";
 import { riskOfRainHtmlDetailsPageMissingInfo } from "../../../assets/steam-web-html-details-pages/risk.of.rain.missing.additional.info.page.js";
-import { theLastNightUnreleasedHtmlDetailsPage } from "../../../assets/steam-web-html-details-pages/the.last.night.unreleased.html.details.page.js";
 import { Game } from "./game.js";
-import { getEldenRingGameWithDetails, getXGamesWithoutDetails } from "./game.mocks.js";
+import {
+  getEldenRingGameWithDetails,
+  getXGamesWithDetails,
+  getXGamesWithoutDetails,
+} from "./game.mocks.js";
 import { PlayerHistory } from "./player.history.js";
+import { getSamplePlayerHistory } from "./player.history.mocks.js";
 import { getEldenRingSteamApp, getXSampleSteamApps } from "./steam.app.mocks.js";
-import { SteamAppRaw } from "./steam.app.raw.js";
 import { getRawSteamApiApp, getXSampleRawSteamApiApps } from "./steam.app.raw.mock.js";
 
 describe("Game", function () {
@@ -42,40 +44,6 @@ describe("Game", function () {
 
       it("the game has the correct values", function () {
         expect(this.result).toEqual(getEldenRingGameWithDetails());
-      });
-    });
-
-    describe("if the provided HTML page does not include a release date section,", function () {
-      beforeAll(function () {
-        const steamApp = getXSampleSteamApps(1)[0];
-        const page = getParsedHtmlPage(riskOfRainHtmlDetailsPageMissingInfo);
-
-        this.result = Game.fromSteamApp(steamApp, page);
-      });
-
-      it("the result is an instance of game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("the game's release date will be null", function () {
-        expect(this.result.releaseDate).toBe(null);
-      });
-    });
-
-    describe("if the provided HTML page includes an invalid date,", function () {
-      beforeAll(function () {
-        const steamApp = getXSampleSteamApps(1)[0];
-        const page = getParsedHtmlPage(theLastNightUnreleasedHtmlDetailsPage);
-
-        this.result = Game.fromSteamApp(steamApp, page);
-      });
-
-      it("the result is an instance of game", function () {
-        expect(this.result).toBeInstanceOf(Game);
-      });
-
-      it("the game's release date is set to null'", function () {
-        expect(this.result.releaseDate).toBe(null);
       });
     });
 
@@ -167,38 +135,6 @@ describe("Game", function () {
       });
     });
 
-    describe("if the provided steam api app includes a release date", function () {
-      describe("and the date is a valid date", function () {
-        beforeAll(function () {
-          this.result = Game.fromSteamApi(getRawSteamApiApp(eldenRingSteamApiData));
-        });
-
-        it("the game's release date will have the correct value", function () {
-          expect(this.result.releaseDate).toEqual(new Date("24 February 2022 UTC"));
-        });
-      });
-
-      describe("and the date is not a valid date", function () {
-        beforeAll(function () {
-          this.result = Game.fromSteamApi(theLastNightSteamApiData);
-        });
-
-        it("the game's release date will be null", function () {
-          expect(this.result.releaseDate).toBe(null);
-        });
-      });
-    });
-
-    describe("if the provided steam api app doesn't include a valid release date", function () {
-      beforeAll(function () {
-        this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
-      });
-
-      it("the game's release date will be set to null", function () {
-        expect(this.result.releaseDate).toBe(null);
-      });
-    });
-
     describe("if the provided steam api app doesn't include developers", function () {
       beforeAll(function () {
         this.result = Game.fromSteamApi(getXSampleRawSteamApiApps(1)[0]);
@@ -255,7 +191,10 @@ describe("Game", function () {
         this.testObject = {
           id: 123,
           name: "test game",
-          releaseDate: "3 Mar, 2022",
+          releaseDate: {
+            date: "3 Mar, 2022",
+            comingSoon: false,
+          },
           developers: ["Crossplatform"],
           genres: ["Action", "Adventure"],
           description: "A game's description",
@@ -279,7 +218,7 @@ describe("Game", function () {
       });
 
       it("has a 'releaseDate' property which equals '3 Mar, 2022", function () {
-        expect(this.result.releaseDate).toBe("3 Mar, 2022");
+        expect(this.result.releaseDate.date).toBe("3 Mar, 2022");
       });
 
       it("has a 'developers' property which equals 'Crossplatform", function () {
@@ -316,39 +255,26 @@ describe("Game", function () {
     describe("When this month's player history entry already exists,", function () {
       describe("players are added to the existing entry.", function () {
         beforeAll(function () {
-          this.currentPlayers = 45;
+          jasmine.clock().install();
+          jasmine.clock().mockDate(new Date("May 2024"));
+          this.result = getXGamesWithDetails(1)[0];
 
-          const playerHistory = [
-            {
-              year: new Date().getFullYear(),
-              month: new Date().getMonth(),
-              averagePlayers: 0,
-              trackedPlayers: [],
-            },
-          ];
+          this.result.playerHistory = getSamplePlayerHistory();
 
-          this.historyLength = playerHistory.length;
+          this.result.pushCurrentPlayers(45);
+        });
 
-          const game = {
-            id: 1,
-            name: "Test Game",
-            playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
-          };
-
-          this.result = Game.fromDbEntry(game);
-
-          this.result.pushCurrentPlayers(this.currentPlayers);
+        afterAll(function () {
+          jasmine.clock().uninstall();
         });
 
         it("No new entry is created", function () {
-          expect(this.result.playerHistory.length).toBe(this.historyLength);
+          expect(this.result.playerHistory.length).toBe(1);
         });
 
-        it("The existing entry is updated.", function () {
+        it("The existing entry is updated with the added players.", function () {
           expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
-          expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(
-            this.currentPlayers,
-          );
+          expect(this.result.playerHistory[0].trackedPlayers[2].players).toBe(45);
         });
       });
     });
@@ -356,41 +282,18 @@ describe("Game", function () {
     describe("When this month's player history entry does not exist yet", function () {
       describe("An entry for the current month is created. So,", function () {
         beforeAll(function () {
-          this.currentPlayers = 33;
+          this.result = getXGamesWithDetails(1)[0];
 
-          const playerHistory = [
-            {
-              year: "2022",
-              month: "10",
-              averagePlayers: 75,
-              trackedPlayers: [],
-            },
-          ];
-
-          this.game = {
-            id: 1,
-            name: "Test Game",
-            playerHistory: PlayerHistory.manyFromDbEntry(playerHistory),
-          };
-
-          this.result = Game.fromDbEntry(this.game);
-
-          this.result.pushCurrentPlayers(this.currentPlayers);
+          this.result.pushCurrentPlayers(33);
         });
 
         it("this month's entry is created", function () {
-          expect(this.result.playerHistory.length).toBe(2);
-          expect(this.result.playerHistory[1]).toBeInstanceOf(PlayerHistory);
+          expect(this.result.playerHistory.length).toBe(1);
+          expect(this.result.playerHistory[0]).toBeInstanceOf(PlayerHistory);
         });
 
         it("the last time we checked the game was played by 33 players", function () {
-          expect(this.result.playerHistory[1].trackedPlayers[0].players).toBe(
-            this.currentPlayers,
-          );
-        });
-
-        it("the existing entry does not change", function () {
-          expect(this.game.playerHistory[0]).toEqual(this.result.playerHistory[0]);
+          expect(this.result.playerHistory[0].trackedPlayers[0].players).toBe(33);
         });
       });
     });
@@ -430,14 +333,13 @@ describe("Game", function () {
   });
 
   describe(".updateReleaseDateViaSteamApi", function () {
-    describe("If the game already has an existing release date", function () {
+    describe("If the passed in date is null", function () {
       beforeAll(function () {
+        this.existingDate = new Date("September 2, 2002");
         this.game = getXGamesWithoutDetails(1)[0];
-        this.existingDate = new Date("23 July 2023");
-
         this.game.releaseDate = this.existingDate;
 
-        this.game.updateReleaseDateViaSteamApi(getRawSteamApiApp(eldenRingSteamApiData));
+        this.game.updateReleaseDateViaSteamApi(null);
       });
 
       it("the game's release date stays unchanged", function () {
@@ -445,33 +347,21 @@ describe("Game", function () {
       });
     });
 
-    describe("When we try to use a game that has no existing release date", function () {
-      describe("and the provided steam api app doesn't contain a valid release date,", function () {
-        beforeAll(function () {
-          this.game = getXGamesWithoutDetails(1)[0];
+    describe("When we pass in a date", function () {
+      beforeAll(function () {
+        this.game = getXGamesWithDetails(1)[0];
 
-          this.game.updateReleaseDateViaSteamApi(
-            new SteamAppRaw(theLastNightSteamApiData),
-          );
-        });
+        this.date = new Date("September 20, 2004");
 
-        it("the release date stays unchanged", function () {
-          expect(this.game.releaseDate).toBe(null);
-        });
+        this.game.updateReleaseDateViaSteamApi(this.date);
       });
 
-      describe("and the provided steam api app contains a valid release date,", function () {
-        beforeAll(function () {
-          this.game = getXGamesWithoutDetails(1)[0];
+      it("the release date is properly updated", function () {
+        expect(this.game.releaseDate.date).toEqual(this.date);
+      });
 
-          this.game.updateReleaseDateViaSteamApi(
-            getRawSteamApiApp(eldenRingSteamApiData),
-          );
-        });
-
-        it("the release date is changed to the correct value", function () {
-          expect(this.game.releaseDate).toEqual(new Date("24 February 2022 UTC"));
-        });
+      it("the release date release status is properly updated", function () {
+        expect(this.game.releaseDate.comingSoon).toBeFalse();
       });
     });
   });

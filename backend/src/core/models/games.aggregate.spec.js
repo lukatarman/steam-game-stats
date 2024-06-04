@@ -65,7 +65,7 @@ describe("GamesAggregate", function () {
   });
 
   describe(".extractReleaseDatesViaSteamApi.", function () {
-    describe("When we try to update two games with missing release dates, one of them having in invalid date", function () {
+    describe("When we try to update two games with missing release dates, one of them having an invalid date", function () {
       beforeAll(function () {
         const gameIds = [1245620, 612400];
 
@@ -80,13 +80,13 @@ describe("GamesAggregate", function () {
       });
 
       it("the first game's release date is updated", function () {
-        expect(this.gamesArray.content[0].releaseDate).toEqual(
+        expect(this.gamesArray.content[0].releaseDate.date).toEqual(
           new Date("24 February 2022 UTC"),
         );
       });
 
       it("the second game's release date remains unchanged", function () {
-        expect(this.gamesArray.content[1].releaseDate).toEqual(null);
+        expect(this.gamesArray.content[1].releaseDate.date).toEqual(null);
       });
     });
   });

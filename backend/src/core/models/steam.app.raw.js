@@ -1,3 +1,5 @@
+import { ReleaseDate } from "./release.date.js";
+
 export class SteamAppRaw {
   id;
   name;
@@ -11,10 +13,16 @@ export class SteamAppRaw {
     this.id = data.steam_appid;
     this.name = data.name;
     this.type = data.type;
-    this.developers = data.developers;
+    this.developers = this.#extractDevelopers(data.developers);
     this.genres = this.#extractGenres(data.genres);
-    this.description = data.short_description;
+    this.description = this.#extractDescription(data.short_description);
     this.releaseDate = this.#extractReleaseDate(data.release_date);
+  }
+
+  #extractDevelopers(developers) {
+    if (!developers) return [];
+
+    return developers.slice();
   }
 
   #extractGenres(genres) {
@@ -23,9 +31,15 @@ export class SteamAppRaw {
     return genres.map((genre) => genre.description);
   }
 
-  #extractReleaseDate(releaseDate) {
-    if (!releaseDate) return "";
+  #extractDescription(description) {
+    if (!description) return "";
 
-    return releaseDate.date;
+    return description;
+  }
+
+  #extractReleaseDate(releaseDate) {
+    if (!releaseDate) return ReleaseDate.fromSteamAppRaw(null, true);
+
+    return ReleaseDate.fromSteamAppRaw(releaseDate.date, releaseDate.coming_soon);
   }
 }

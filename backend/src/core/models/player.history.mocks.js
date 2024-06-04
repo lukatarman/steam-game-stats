@@ -3,8 +3,8 @@ import { getXSampleTrackedPlayers } from "./tracked.players.mocks.js";
 
 const histories = [
   {
-    year: "2020",
-    month: "September",
+    year: 2024,
+    month: 4,
     trackedPlayers: getXSampleTrackedPlayers(2),
     averagePlayers: 105,
   },

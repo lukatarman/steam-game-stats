@@ -5,6 +5,10 @@ export const twoGamesWithUncheckedPlayerHistory = [
     },
     id: 1838970,
     name: "Crush the Castle Legacy Collection",
+    releaseDate: {
+      date: null,
+      comingSoon: true,
+    },
     image: null,
     imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1838970/header.jpg",
     playerHistory: [],
@@ -15,6 +19,10 @@ export const twoGamesWithUncheckedPlayerHistory = [
     },
     id: 1838980,
     name: "Polyion",
+    releaseDate: {
+      date: null,
+      comingSoon: true,
+    },
     image: null,
     imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1838980/header.jpg",
     playerHistory: [],

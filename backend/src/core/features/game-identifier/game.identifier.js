@@ -128,7 +128,7 @@ export class GameIdentifier {
   updateGamesWithoutReleaseDates = async () => {
     this.#logger.debugc(`updating games without release dates via Steam API`);
 
-    const games = await this.#gamesRepository.getGamesWithoutReleaseDates(
+    const games = await this.#gamesRepository.getXUnreleasedGames(
       this.#options.batchSize,
     );
 
