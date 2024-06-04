@@ -126,7 +126,7 @@ describe("GamesRepository", function () {
     });
   });
 
-  fdescribe(".getXUnreleasedGames", function () {
+  describe(".getXUnreleasedGames", function () {
     describe("When 3 games without valid release dates are requested", function () {
       beforeAll(async function () {
         this.databaseClient = await initiateInMemoryDatabase(["games"]);

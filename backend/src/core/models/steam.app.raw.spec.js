@@ -6,7 +6,7 @@ import { eldenRingRawMockResult } from "./steam.app.raw.mock.js";
 
 describe("SteamAppRaw", function () {
   describe("When the class is instantiated", function () {
-    fdescribe("and all the data is provided", function () {
+    describe("and all the data is provided", function () {
       beforeAll(function () {
         this.result = new SteamAppRaw(eldenRingSteamApiData);
       });

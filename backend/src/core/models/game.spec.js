@@ -256,11 +256,17 @@ describe("Game", function () {
     describe("When this month's player history entry already exists,", function () {
       describe("players are added to the existing entry.", function () {
         beforeAll(function () {
+          jasmine.clock().install();
+          jasmine.clock().mockDate(new Date("May 2024"));
           this.result = getXGamesWithDetails(1)[0];
 
           this.result.playerHistory = getSamplePlayerHistory();
 
           this.result.pushCurrentPlayers(45);
+        });
+
+        afterAll(function () {
+          jasmine.clock().uninstall();
         });
 
         it("No new entry is created", function () {
