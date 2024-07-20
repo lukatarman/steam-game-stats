@@ -15,7 +15,6 @@ import { PlayerHistoryRepository } from "./core/repositories/player.history.repo
 import { HistoryChecksRepository } from "./core/repositories/history.checks.repository.js";
 import { config } from "./common/config.loader.js";
 import { Logger } from "./common/logger.js";
-import { ValidDataSources } from "./core/models/valid.data.sources.js";
 import { parseHTML } from "linkedom";
 
 // our entry point = main
@@ -62,7 +61,6 @@ async function main() {
   );
   logger.info("features setup finished");
 
-  // rest + web server
   const gameQueriesController = new GameQueriesController(gamesRepository);
   const gameQueriesRouter = new GameQueriesRouter(gameQueriesController);
   const webServer = new WebServer(gameQueriesRouter, logger);

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Application for steam games statistics",
   "scripts": {
+    "postinstall": "git config core.hooksPath ./dev-setup/git-hooks",
     "debug:backend:local-db": "docker compose -f docker-compose.yaml -f docker-compose.debug.yaml --env-file ./config/local-db.env up --build -d",
     "start:backend:local-db": "docker compose --env-file ./config/local-db.env up --build -d",
     "start:backend:cloud-db": "docker compose --env-file ./config/cloud-db.env up --build -d",
@@ -19,5 +20,14 @@
   "workspaces": [
     "backend",
     "frontend"
-  ]
+  ],
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
 }
